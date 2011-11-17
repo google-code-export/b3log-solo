@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 27, 2011
+ * @version 1.0.0.9, Nov 17, 2011
  */
 
 /* page-list 相关操作 */
@@ -65,27 +65,31 @@ admin.pageList = {
         if (language === "zh") {
             language = "zh-cn";
         }
-        tinyMCE.init({
-            // General options
-            language: language,
-            mode : "exact",
-            elements : "pageContent",
-            theme : "advanced",
-            plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl,inlinepopups",
+        try {
+            tinyMCE.init({
+                // General options
+                language: language,
+                mode : "exact",
+                elements : "pageContent",
+                theme : "advanced",
+                plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl,inlinepopups",
 
-            // Theme options
-            theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_resizing : true,
+                // Theme options
+                theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
+                theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
+                theme_advanced_resizing : true,
 
-            extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
+                extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
-            relative_urls: false,
-            remove_script_host: false
-        });
+                relative_urls: false,
+                remove_script_host: false
+            });
+        } catch (e) {
+            $("#tipMsg").text("TinyMCE load fail");
+        }
     },
 
     /* 
@@ -166,7 +170,13 @@ admin.pageList = {
                 }
                 
                 admin.pageList.id = id;
-                tinyMCE.get('pageContent').setContent(result.page.pageContent);
+                
+                try {
+                    tinyMCE.get('pageContent').setContent(result.page.pageContent);
+                } catch (e) {
+                    $("#pageContent").val(result.page.pageContent);
+                }
+                
                 $("#pagePermalink").val(result.page.pagePermalink);
                 $("#pageTitle").val(result.page.pageTitle);
                 
@@ -223,10 +233,18 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
+            
+            var pageContent = "";
+            try {
+                pageContent = tinyMCE.get('pageContent').getContent();
+            } catch (e) {
+                pageContent = $("#pageContent").val();
+            }
+            
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
-                    "pageContent": tinyMCE.get('pageContent').getContent(),
+                    "pageContent": pageContent,
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
@@ -245,12 +263,17 @@ admin.pageList = {
                     admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
-                    if (tinyMCE.get("pageContent")) {
-                        tinyMCE.get('pageContent').setContent("");
-                    } else {
+                    
+                    try {
+                        if (tinyMCE.get("pageContent")) {
+                            tinyMCE.get('pageContent').setContent("");
+                        } else {
+                            $("#pageContent").val("");
+                        }
+                    } catch (e) {
                         $("#pageContent").val("");
                     }
-                            
+                   
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount++;
@@ -275,11 +298,19 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
+            
+            var pageContent = "";
+            try {
+                pageContent = tinyMCE.get('pageContent').getContent();
+            } catch (e) {
+                pageContent = $("#pageContent").val();
+            }
+            
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "oId": this.id,
-                    "pageContent": tinyMCE.get('pageContent').getContent(),
+                    "pageContent": pageContent,
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
@@ -298,7 +329,11 @@ admin.pageList = {
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     admin.pageList.id = "";
                     $("#pageTitle").val("");
-                    tinyMCE.get('pageContent').setContent("");
+                    try {
+                        tinyMCE.get('pageContent').setContent("");
+                    } catch (e) {
+                        $("#pageContent").val("");
+                    }
                     $("#pagePermalink").val("");
                     
                     $("#loadMsg").text("");
@@ -311,10 +346,17 @@ admin.pageList = {
      * 验证字段
      */
     validate: function () {
+        var pageContent = "";
+        try {
+            pageContent = tinyMCE.get('pageContent').getContent();
+        } catch (e) {
+            pageContent = $("#pageContent").val();
+        }
+        
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#pageTitle").focus();
-        } else if (tinyMCE.get('pageContent').getContent().replace(/\s/g, "") === "") {
+        } else if (pageContent.replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.contentEmptyLabel);
         } else {
             return true;
