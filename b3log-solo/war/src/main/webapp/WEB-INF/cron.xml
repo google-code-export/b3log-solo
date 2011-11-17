@@ -20,7 +20,7 @@
     Description: Cron job configurations on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.1.0, Nov 10, 2011
+    Version: 1.0.1.1, Nov 17, 2011
     Author: Liang Ding
 -->
 <cronentries>
@@ -30,7 +30,12 @@
         <description>Upgrade checker, see issue 257 (http://code.google.com/p/b3log-solo/issues/detail?id=257).</description>
         <schedule>every 5 minutes</schedule>
     </cron>
-
+    
+    <cron>
+        <url>/console/stat/viewcnt</url>
+        <description>Async Blog/Article counter</description>
+        <schedule>every 1 minutes</schedule>
+    </cron>
 
     <!-- http://code.google.com/p/b3log-solo/issues/detail?id=308#c4
     <cron>
