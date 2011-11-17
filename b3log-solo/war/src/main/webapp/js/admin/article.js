@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Nov 15, 2011
+ * @version 1.0.1.4, Nov 17, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -57,14 +57,19 @@ admin.article = {
                 // set default value for article.
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
-                if (tinyMCE.get('articleContent')) {
-                    tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                } else {
+                try {
+                    if (tinyMCE.get('articleContent')) {
+                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                    } else {
+                        $("#articleContent").val(result.article.articleContent);
+                    }
+                    if (tinyMCE.get('abstract')) {
+                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                    } else {
+                        $("#abstract").val(result.article.articleAbstract);
+                    }
+                } catch (e) {
                     $("#articleContent").val(result.article.articleContent);
-                }
-                if (tinyMCE.get('abstract')) {
-                    tinyMCE.get('abstract').setContent(result.article.articleAbstract);
-                } else {
                     $("#abstract").val(result.article.articleAbstract);
                 }
 
@@ -141,11 +146,22 @@ admin.article = {
                 }
             });
 
+            var articleContent = "",
+            articleAbstract = "";
+            
+            try {
+                articleContent = tinyMCE.get('articleContent').getContent();
+                articleAbstract =  tinyMCE.get('abstract').getContent();
+            } catch (e) {
+                articleContent = $("#articleContent").val();
+                articleAbstract =  $("#abstract").val();
+            }
+            
             var requestJSONObject = {
                 "article": {
                     "articleTitle": $("#title").val(),
-                    "articleContent": tinyMCE.get('articleContent').getContent(),
-                    "articleAbstract": tinyMCE.get('abstract').getContent(),
+                    "articleContent": articleContent,
+                    "articleAbstract": articleAbstract,
                     "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
@@ -195,12 +211,23 @@ admin.article = {
                 }
             });
             
+            var articleContent = "",
+            articleAbstract = "";
+            
+            try {
+                articleContent = tinyMCE.get('articleContent').getContent();
+                articleAbstract =  tinyMCE.get('abstract').getContent();
+            } catch (e) {
+                articleContent = $("#articleContent").val();
+                articleAbstract =  $("#abstract").val();
+            }
+            
             var requestJSONObject = {
                 "article": {
                     "oId": this.status.id,
                     "articleTitle": $("#title").val(),
-                    "articleContent": tinyMCE.get('articleContent').getContent(),
-                    "articleAbstract": tinyMCE.get('abstract').getContent(),
+                    "articleContent": articleContent,
+                    "articleAbstract": articleAbstract,
                     "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
@@ -227,16 +254,22 @@ admin.article = {
                             
                     $("#tipMsg").text(Label.updateSuccLabel);
                     // reset article form
-                    if (tinyMCE.get("articleContent")) {
-                        tinyMCE.get('articleContent').setContent("");
-                    } else {
+                    try {
+                        if (tinyMCE.get("articleContent")) {
+                            tinyMCE.get('articleContent').setContent("");
+                        } else {
+                            $("#articleContent").val("");
+                        }
+                        if (tinyMCE.get('abstract')) {
+                            tinyMCE.get('abstract').setContent("");
+                        } else {
+                            $("#abstract").val("");
+                        }
+                    } catch (e) {
                         $("#articleContent").val("");
-                    }
-                    if (tinyMCE.get('abstract')) {
-                        tinyMCE.get('abstract').setContent("");
-                    } else {
                         $("#abstract").val("");
                     }
+                    
                     $("#tag").val("");
                     $("#permalink").val("");
                     $(".signs button").each(function (i) {
@@ -293,14 +326,19 @@ admin.article = {
             articleHadBeenPublished: undefined
         };
         this.setStatus();
-        if (tinyMCE.get("articleContent")) {
-            tinyMCE.get('articleContent').setContent("");
-        } else {
+        try {
+            if (tinyMCE.get("articleContent")) {
+                tinyMCE.get('articleContent').setContent("");
+            } else {
+                $("#articleContent").val("");
+            }
+            if (tinyMCE.get('abstract')) {
+                tinyMCE.get('abstract').setContent("");
+            } else {
+                $("#abstract").val("");
+            }
+        } catch (e) {
             $("#articleContent").val("");
-        }
-        if (tinyMCE.get('abstract')) {
-            tinyMCE.get('abstract').setContent("");
-        } else {
             $("#abstract").val("");
         }
         // reset tag
@@ -406,47 +444,62 @@ admin.article = {
         if (language === "zh") {
             language = "zh-cn";
         }
-        tinyMCE.init({
-            // General options
-            language: language,
-            mode : "exact",
-            elements : "articleContent, abstract",
-            theme : "advanced",
-            plugins : "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl",
+        try {
+            tinyMCE.init({
+                // General options
+                language: language,
+                mode : "exact",
+                elements : "articleContent, abstract",
+                theme : "advanced",
+                plugins : "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl",
 
-            // Theme options
-            theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_location : "top",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_resizing : true,
+                // Theme options
+                theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
+                theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
+                theme_advanced_resizing : true,
 
-            extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
+                extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
-            relative_urls: false,
-            remove_script_host: false,
-            oninit : function () {
-                if (typeof(fun) === "function") {
-                    fun();
+                relative_urls: false,
+                remove_script_host: false,
+                oninit : function () {
+                    if (typeof(fun) === "function") {
+                        fun();
+                    }
                 }
-            }
-        });
+            });
+        } catch (e) {
+            $("#tipMsg").text("TinyMCE load fail");
+        }
     },
     
     /*
      * 验证发布文章字段的合法性
      */
     validate: function () {
+        var articleContent = "",
+        articleAbstract = "";
+            
+        try {
+            articleContent = tinyMCE.get('articleContent').getContent();
+            articleAbstract =  tinyMCE.get('abstract').getContent();
+        } catch (e) {
+            articleContent = $("#articleContent").val();
+            articleAbstract =  $("#abstract").val();
+        }
+        
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#title").focus().val("");
-        } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
+        } else if (articleContent.replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.contentEmptyLabel);
         } else if ($("#tag").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.tagsEmptyLabel);
             $("#tag").focus().val("");
-        } else if(tinyMCE.get('abstract').getContent().replace(/\s/g, "") === "") {
+        } else if(articleAbstract.replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.abstractEmptyLabel);
         } else {
             return true;
@@ -493,8 +546,16 @@ admin.article = {
      * 点击发文文章时的处理
      */
     prePost:function () {
+        var articleContent = "";
+            
+        try {
+            articleContent = tinyMCE.get('articleContent').getContent();
+        } catch (e) {
+            articleContent = $("#articleContent").val();
+        }
+        
         if (window.location.hash === "#article/article" && 
-            tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+            articleContent.replace(/\s/g, '') !== "") {
             if (confirm(Label.editorPostLabel)) {
                 admin.article.clear();
             }

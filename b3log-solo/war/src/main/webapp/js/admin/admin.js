@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Nov 12, 2011
+ * @version 1.0.1.6, Nov 16, 2011
  */
 
 var Admin = function () {
@@ -99,11 +99,29 @@ $.extend(Admin.prototype, {
         }
         
         // 离开编辑器时进行提示
-        if (tinyMCE) {
-            if (tinyMCE.get('articleContent')) {
-                // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
+        try {
+            if (tinyMCE) {
+                if (tinyMCE.get('articleContent')) {
+                    // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
+                    if (tab !== "article" && admin.article.isConfirm &&
+                        tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                        if (!confirm(Label.editorLeaveLabel)) {
+                            window.location.hash = "#article/article";
+                            return;
+                        }
+                    }
+                    // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
+                    if (tab === "article" && admin.article.isConfirm &&
+                        tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                        return;
+                    }
+                }
+            }
+        } catch (e) {
+            var $articleContent =  $('#articleContent');
+            if ($articleContent.length > 0) {
                 if (tab !== "article" && admin.article.isConfirm &&
-                    tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== "") {
                     if (!confirm(Label.editorLeaveLabel)) {
                         window.location.hash = "#article/article";
                         return;
@@ -111,7 +129,7 @@ $.extend(Admin.prototype, {
                 }
                 // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
                 if (tab === "article" && admin.article.isConfirm &&
-                    tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== "") {
                     return;
                 }
             }
@@ -208,7 +226,7 @@ $.extend(Admin.prototype, {
                 $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
             }
         });
-        /*if (subNav.className === "none") {
+    /*if (subNav.className === "none") {
             $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
             subNav.className = "collapsed";
         } else {
