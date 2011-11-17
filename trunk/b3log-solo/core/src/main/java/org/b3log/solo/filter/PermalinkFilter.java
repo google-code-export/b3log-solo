@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Article/Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Nov 11, 2011
+ * @version 1.0.1.4, Nov 17, 2011
  * @since 0.3.1
  * @see org.b3log.solo.web.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext) 
  * @see org.b3log.solo.web.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext) 
@@ -87,8 +87,8 @@ public final class PermalinkFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
-        if (!Permalinks.matchDefaultArticlePermalinkFormat(requestURI)
-            && !Permalinks.matchDefaultPagePermalinkFormat(requestURI)
+        if (Permalinks.invalidArticlePermalinkFormat(requestURI)
+            && Permalinks.invalidPagePermalinkFormat(requestURI)
             && Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
