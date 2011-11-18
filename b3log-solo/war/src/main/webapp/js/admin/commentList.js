@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 17, 2011
+ * @version 1.0.0.8, Nov 18, 2011
  */
 
 /* comment-list 相关操作 */
@@ -73,12 +73,16 @@ admin.commentList = {
                     commentsData[i] = {};
                     
                     commentsData[i].content = Util.replaceEmString(comments[i].commentContent);
+                    commentsData[i].content += "<a class='action' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
+                    comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
                             
-                    commentsData[i].title = "<div style='margin:9px 0'><a href='" + comments[i].commentSharpURL + 
+                    commentsData[i].title = "<div style='margin:6px 0'><a href='" + comments[i].commentSharpURL + 
                     "' target='_blank'>" + comments[i].commentTitle +
                     "</a></div>";
                 
-                    commentsData[i].title += "<div class='left small-head'><img src='" + comments[i].commentThumbnailURL + "'/><br/>";
+                    commentsData[i].title += "<img class='small-head' src='" + comments[i].commentThumbnailURL + "'/>";
+                    
+                    commentsData[i].title += "<div class='left' style='font-size:12px;'>" + Label.authorLabel + ": ";
                     if ("http://" === comments[i].commentURL) {
                         commentsData[i].title += comments[i].commentName;
                     } else {
@@ -87,19 +91,18 @@ admin.commentList = {
                         "</a>";
                     }
                     
-                    commentsData[i].title += "</div><div class='left'>";
-                            
-                    commentsData[i].title += Label.commentEmailLabel + ": <a href='mailto:" + comments[i].commentEmail +
+                    commentsData[i].title += "<br/>" + Label.commentEmailLabel + 
+                        ": <a href='mailto:" + comments[i].commentEmail +
                     "'>" + comments[i].commentEmail + "</a><br/>";
-                        
-                    commentsData[i].title += Label.createDateLabel + ": " +$.bowknot.getDate(comments[i].commentTime, 1);
+                
+                    commentsData[i].title += Label.createDateLabel + ": " +
+                    $.bowknot.getDate(comments[i].commentTime, 1);
                             
                     var type = "Article"
                     if (comments[i].type === "pageComment") {
                         type = "Page"
                     }
-                    commentsData[i].title += "<br/><a class='action' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
-                    comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
+                    commentsData[i].title += "<br/>";
                 
                     commentsData[i].title += "</div>";
                 }
