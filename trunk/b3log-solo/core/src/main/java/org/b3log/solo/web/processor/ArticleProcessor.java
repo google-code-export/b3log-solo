@@ -73,7 +73,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Nov 11, 2011
+ * @version 1.1.0.9, Nov 18, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -891,13 +891,17 @@ public final class ArticleProcessor {
         }
         Stopwatchs.end();
 
-        Stopwatchs.start("Get Article CMTs");
-        LOGGER.finer("Getting article's comments....");
-        final List<JSONObject> articleComments =
-                commentQueryService.getComments(articleId);
-        dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-        LOGGER.finer("Got article's comments");
-        Stopwatchs.end();
+
+        final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+        if (0 != cmtCount) {
+            Stopwatchs.start("Get Article CMTs");
+            LOGGER.finer("Getting article's comments....");
+            final List<JSONObject> articleComments =
+                    commentQueryService.getComments(articleId);
+            dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+            LOGGER.finer("Got article's comments");
+            Stopwatchs.end();
+        }
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(
