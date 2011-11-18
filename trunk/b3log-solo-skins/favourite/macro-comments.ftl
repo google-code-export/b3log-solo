@@ -135,7 +135,7 @@
         commentHTML += '</div><div class="left comment-info"><div class="left">' + result.commentDate;
         
         if (state !== "") {
-            var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-author a").text();
+            var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-author>a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 3);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
