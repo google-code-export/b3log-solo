@@ -24,6 +24,7 @@
     Author: Liang Ding
 -->
 <queue-entries>
+    <!--
     <queue>
         <name>request-stat-queue</name>
         <rate>20/m</rate>
@@ -32,4 +33,5 @@
             <task-retry-limit>7</task-retry-limit>
         </retry-parameters>
     </queue>
+    -->
 </queue-entries>
