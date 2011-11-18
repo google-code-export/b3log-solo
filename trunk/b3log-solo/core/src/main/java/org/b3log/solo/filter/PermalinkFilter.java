@@ -89,7 +89,7 @@ public final class PermalinkFilter implements Filter {
 
         if (Permalinks.invalidArticlePermalinkFormat(requestURI)
             && Permalinks.invalidPagePermalinkFormat(requestURI)
-            && Skips.shouldSkip(requestURI)) {
+            && Skips.isStatic(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
@@ -140,7 +140,7 @@ public final class PermalinkFilter implements Filter {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);
         context.setResponse((HttpServletResponse) response);
-        
+
         if (null != article) {
             request.setAttribute(Article.ARTICLE, article);
             request.setAttribute("requestURI", "/article");
@@ -150,7 +150,7 @@ public final class PermalinkFilter implements Filter {
         }
 
         request.setAttribute("method", "GET");
-        
+
         HTTPRequestDispatcher.dispatch(context);
     }
 
