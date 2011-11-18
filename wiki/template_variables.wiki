@@ -8,7 +8,8 @@
 *公共的模板变量*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
-  <tr><td>topBarReplacement</td><td>String</td><td>公用 top-bar.ftl 内容</td><td></td></tr>
+  <tr><td>staticResourceVersion</td><td>String</td><td>js, css 版本号，防止缓存</td><td>0.4.0 引入</td></tr>
+  <tr><td>topBarReplacement</td><td>String</td><td>公用 top-bar.ftl 内容</td><td>0.3.5 引入</td></tr>
   <tr><td>path</td><td>String</td><td>Action 路径</td><td></td></tr>
   <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
   <tr><td>articles</td><td>List`<`JSONObject`>`</td><td>存档文章列表</td><td></td></tr>
