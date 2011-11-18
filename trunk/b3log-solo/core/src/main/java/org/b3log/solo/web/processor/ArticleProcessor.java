@@ -891,17 +891,18 @@ public final class ArticleProcessor {
         }
         Stopwatchs.end();
 
-
+        Stopwatchs.start("Get Article CMTs");
+        LOGGER.finer("Getting article's comments....");
         final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         if (0 != cmtCount) {
-            Stopwatchs.start("Get Article CMTs");
-            LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
                     commentQueryService.getComments(articleId);
             dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-            LOGGER.finer("Got article's comments");
-            Stopwatchs.end();
+        } else {
+            dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
         }
+        LOGGER.finer("Got article's comments");
+        Stopwatchs.end();
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(
