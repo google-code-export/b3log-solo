@@ -139,6 +139,20 @@ public final class Permalinks {
     }
 
     /**
+     * Checks whether the specified permalink is a
+     * {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article 
+     * permalink format} and {@link #invalidPagePermalinkFormat(java.lang.String) 
+     * invalid page permalink format}.
+     * 
+     * @param permalink the specified permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise 
+     */
+    public static boolean invalidPermalinkFormat(final String permalink) {
+        return invalidArticlePermalinkFormat(permalink)
+               || invalidPagePermalinkFormat(permalink);
+    }
+
+    /**
      * Checks whether the specified article permalink is invalid on format.
      * 
      * @param permalink the specified article permalink
