@@ -94,13 +94,13 @@ public final class StatProcessor {
         LOGGER.log(Level.INFO, "Sync statistic from memcache to repository");
 
         context.setRenderer(new DoNothingRenderer());
-        
+
         final JSONObject statistic =
                 (JSONObject) statisticRepository.getCache().
                 get(Statistic.STATISTIC);
         if (null == statistic) {
             LOGGER.log(Level.INFO, "Not found statistic in memcache");
-            
+
             return;
         }
 
@@ -109,6 +109,10 @@ public final class StatProcessor {
         try {
             statisticRepository.update(Statistic.STATISTIC, statistic);
             transaction.commit();
+
+            LOGGER.log(Level.INFO,
+                       "Synchronized statistic from cache to repository[statistic={0}]",
+                       statistic);
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

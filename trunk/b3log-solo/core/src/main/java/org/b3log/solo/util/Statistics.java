@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.Stopwatchs;
@@ -187,8 +188,11 @@ public final class Statistics {
                 statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
-        
+
         statisticRepository.getCache().putAsync(Statistic.STATISTIC, statistic);
+
+        LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]",
+                   statistic);
     }
 
     /**
@@ -207,7 +211,7 @@ public final class Statistics {
     public void incArticleViewCount(final String articleId)
             throws JSONException, RepositoryException {
         Stopwatchs.start("Inc Article View Count");
-        
+
         final JSONObject article = articleRepository.get(articleId);
         if (null == article) {
             return;
@@ -217,9 +221,9 @@ public final class Statistics {
                 article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
         article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        
+
         articleRepository.update(articleId, article);
-        
+
         Stopwatchs.end();
     }
 
