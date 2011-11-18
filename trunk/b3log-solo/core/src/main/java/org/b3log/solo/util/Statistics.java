@@ -186,7 +186,6 @@ public final class Statistics {
 
         long blogViewCnt =
                 statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-        System.out.println("~~~~: " + blogViewCnt);
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
