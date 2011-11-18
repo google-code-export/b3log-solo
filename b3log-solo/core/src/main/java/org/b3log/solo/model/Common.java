@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.9, Oct 31, 2011
+ * @version 1.0.4.0, Nov 18, 2011
  * @since 0.3.1
  */
 public final class Common {
@@ -91,6 +91,10 @@ public final class Common {
      * Version.
      */
     public static final String VERSION = "version";
+    /**
+     * Static resource version.
+     */
+    public static final String STATIC_RESOURCE_VERSION = "staticResourceVersion";
     /**
      * Year.
      */

@@ -490,6 +490,8 @@ public final class Filler {
             dataModel.put(Preference.BLOG_HOST, blogHost);
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+            dataModel.put(Common.STATIC_RESOURCE_VERSION,
+                          Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR,
                           String.valueOf(Calendar.getInstance().get(
                     Calendar.YEAR)));

@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -50,7 +51,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Nov 18, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -139,6 +140,8 @@ public final class InitProcessor {
         dataModel.putAll(langs);
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, 
+                      Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR,
                 String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         
