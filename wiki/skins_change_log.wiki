@@ -9,6 +9,10 @@
 </#if>
 }}}
  # 删除 article.ftl 和 page.ftl head 中的 <link .../>; 删除 macro-comment.ftl 中引入的 JS 文件：shAutoloader.js 和 shCore.js
+ # js, css 文件后添加 "?${staticResourceVersion}"，如：
+{{{
+<script type="text/javascript" src="/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+}}}
 
 === ver 0.3.5 ===
  # 删除 top-nav.ftl 文件
