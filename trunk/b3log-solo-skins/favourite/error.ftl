@@ -10,6 +10,7 @@
     </head>
     <body>
         ${topBarReplacement}
+        <#include "nav.ftl">
         <div class="wrapper">
             <div class="content">
                 <#include "header.ftl">
