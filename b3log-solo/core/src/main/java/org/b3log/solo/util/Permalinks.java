@@ -149,7 +149,7 @@ public final class Permalinks {
      */
     public static boolean invalidPermalinkFormat(final String permalink) {
         return invalidArticlePermalinkFormat(permalink)
-               || invalidPagePermalinkFormat(permalink);
+               && invalidPagePermalinkFormat(permalink);
     }
 
     /**
