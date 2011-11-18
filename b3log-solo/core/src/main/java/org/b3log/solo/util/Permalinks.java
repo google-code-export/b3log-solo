@@ -186,7 +186,7 @@ public final class Permalinks {
             return true;
         }
 
-        if ("/".equals(permalink)) {
+        if (isReservedLink(permalink)) {
             return true;
         }
 
@@ -213,6 +213,35 @@ public final class Permalinks {
     }
 
     /**
+     * Determines whether the specified request URI is a reserved link.
+     * 
+     * <p>
+     * A URI starts with one of {@link Permalinks#RESERVED_LINKS reserved links}
+     * will be treated as reserved link.
+     * </p>
+     * 
+     * @param requestURI the specified request URI
+     * @return {@code true} if it is a reserved link, returns {@code false}
+     * otherwise
+     */
+    private static boolean isReservedLink(final String requestURI) {
+        for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
+            final String reservedLink = Permalinks.RESERVED_LINKS[i];
+            if (reservedLink.startsWith(requestURI)) {
+                LOGGER.log(Level.WARNING,
+                           "The request[URI={0}] is a reserved link", requestURI);
+
+                return true;
+            }
+        }
+
+        LOGGER.log(Level.FINE, "The request[URI={0}] is NOT a reserved link",
+                   requestURI);
+
+        return false;
+    }
+
+    /**
      * Determines whether the specified permalink exists.
      *
      * @param permalink the specified permalink
@@ -220,7 +249,7 @@ public final class Permalinks {
      */
     public boolean exist(final String permalink) {
         try {
-            return isReserved(permalink)
+            return isReservedLink(permalink)
                    || null != articleRepository.getByPermalink(permalink)
                    || null != pageRepository.getByPermalink(permalink)
                    || permalink.endsWith(".ftl");
@@ -231,22 +260,6 @@ public final class Permalinks {
 
             return true;
         }
-    }
-
-    /**
-     * Determines whether the specified permalink is reserved.
-     *
-     * @param permalink the specified permalink
-     * @return {@code true} if it is reserved, returns {@code false} otherwise
-     */
-    private static boolean isReserved(final String permalink) {
-        for (final String reservedLink : RESERVED_LINKS) {
-            if (permalink.equals(reservedLink)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

@@ -16,7 +16,6 @@
 package org.b3log.solo.filter;
 
 import java.util.logging.Logger;
-import org.b3log.solo.util.Permalinks;
 
 /**
  * Skips for request filtering.
@@ -35,47 +34,6 @@ public final class Skips {
             Logger.getLogger(Skips.class.getName());
 
     /**
-     * Determines whether the specified request URI should be skipped filter.
-     *
-     * <p>
-     *   <b>Note</b>: This method SHOULD be invoked for all filters with pattern
-     *   "/*".
-     * </p>
-     *
-     * @param requestURI the specified request URI
-     * @return {@code true} if should be skipped, returns {@code false} 
-     * otherwise
-     */
-    // XXX: performance issue, super hard coding....
-    // TODO: skips new urls....
-    static boolean shouldSkip(final String requestURI) {
-        return containsMoreThenOneSlash(requestURI)
-               || isReservedLink(requestURI) || isStatic(requestURI);
-    }
-
-    /**
-     * Determines whether the specified request URI contains more then one slash. 
-     * 
-     * @param requestURI the specified request URI
-     * @return {@code true} if it contains more then one slash, returns 
-     * {@code false} otherwise
-     */
-    private static boolean containsMoreThenOneSlash(final String requestURI) {
-        int slashCnt = 0;
-        for (int i = 0; i < requestURI.length(); i++) {
-            if ('/' == requestURI.charAt(i)) {
-                slashCnt++;
-            }
-
-            if (slashCnt > 1) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Determines whether the specified request URI points to a static resource.
      * 
      * @param requestURI the specified request URI
@@ -85,29 +43,6 @@ public final class Skips {
     public static boolean isStatic(final String requestURI) {
         return requestURI.endsWith(".css") || requestURI.endsWith(".js")
                || requestURI.endsWith("png"); // TODO: todo static postfix, see HTTPRequestDispatcher#service
-    }
-
-    /**
-     * Determines whether the specified request URI is a reserved link.
-     * 
-     * <p>
-     * A URI starts with one of {@link Permalinks#RESERVED_LINKS reserved links}
-     * will be treated as reserved link.
-     * </p>
-     * 
-     * @param requestURI the specified request URI
-     * @return {@code true} if it is a reserved link, returns {@code false}
-     * otherwise
-     */
-    private static boolean isReservedLink(final String requestURI) {
-        for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
-            final String reservedLink = Permalinks.RESERVED_LINKS[i];
-            if (reservedLink.startsWith(requestURI)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
