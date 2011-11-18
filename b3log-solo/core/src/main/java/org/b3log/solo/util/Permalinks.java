@@ -242,15 +242,10 @@ public final class Permalinks {
         for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
             final String reservedLink = Permalinks.RESERVED_LINKS[i];
             if (reservedLink.startsWith(requestURI)) {
-                LOGGER.log(Level.WARNING,
-                           "The request[URI={0}] is a reserved link", requestURI);
 
                 return true;
             }
         }
-
-        LOGGER.log(Level.FINE, "The request[URI={0}] is NOT a reserved link",
-                   requestURI);
 
         return false;
     }
