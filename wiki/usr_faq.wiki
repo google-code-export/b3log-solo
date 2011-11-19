@@ -1,1 +1,10 @@
 #summary 用户 FAQ
+=使用常见问题=
+----
+<wiki:toc max_depth="3"/> 
+----
+<p align="right">[#Top]</p> 
+==`如何同步腾讯微博？`== 
+1. 访问腾讯微博同步设置：http://t.qq.com/setting/sync
+2. 
+----
