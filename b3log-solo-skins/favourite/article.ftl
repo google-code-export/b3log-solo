@@ -36,9 +36,9 @@
                             <div class="posttime-blue">
                                 <div class="posttime-MY">
                                     <#if article.hasUpdated>
-                                    ${article.articleUpdateDate?string("MMM yyyy")}
+                                    ${article.articleUpdateDate?string("yyyy-MM")}
                                     <#else>
-                                    ${article.articleCreateDate?string("MMM yyyy")}
+                                    ${article.articleCreateDate?string("yyyy-MM")}
                                     </#if>
                                 </div>
                                 <div class="posttime-D">
