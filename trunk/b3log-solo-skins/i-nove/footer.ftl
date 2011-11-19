@@ -15,7 +15,7 @@
 <#else>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" charset="utf-8"></script>
 </#if>
-<script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",

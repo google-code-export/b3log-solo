@@ -11,8 +11,8 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
         <meta http-equiv="Window-target" content="_top" />
-        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css" charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png" />
     </head>
     <body>
