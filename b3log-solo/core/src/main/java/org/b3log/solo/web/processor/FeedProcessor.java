@@ -131,7 +131,8 @@ public final class FeedProcessor {
             feed.setUpdated(timeZoneUtils.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setLink("http://" + blogHost);
+            feed.setLink("http://" + blogHost + "/blog-articles-feed.do");
+            feed.setId("http://" + blogHost + "/");
 
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
@@ -246,7 +247,8 @@ public final class FeedProcessor {
             feed.setUpdated(timeZoneUtils.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setLink("http://" + blogHost);
+            feed.setLink("http://" + blogHost + "/tag-articles-feed.do");
+            feed.setId("http://" + blogHost + "/");
 
             final JSONObject tagArticleResult =
                     tagArticleRepository.getByTagId(tagId, 1,
@@ -362,6 +364,7 @@ public final class FeedProcessor {
             channel.setLastBuildDate(timeZoneUtils.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
+            channel.setAtomLink("http://" + blogHost + "/blog-articles-rss.do");
             channel.setGenerator("B3log Solo, ver "
                                  + SoloServletListener.VERSION);
             final String localeString =
@@ -384,6 +387,16 @@ public final class FeedProcessor {
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
+            if (!hasMultipleUsers && 0 != articles.length()) {
+                authorName =
+                        articleUtils.getAuthor(articles.getJSONObject(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final Item item = new Item();
@@ -401,10 +414,17 @@ public final class FeedProcessor {
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
+                item.setGUID(link);
 
                 final String authorEmail =
                         article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-                item.setAuthor(authorEmail);
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
+
+                item.setAuthor(authorEmail + "(" + authorName + ")");
 
                 final String tagsString =
                         article.getString(Article.ARTICLE_TAGS_REF);
@@ -469,6 +489,7 @@ public final class FeedProcessor {
             channel.setLastBuildDate(timeZoneUtils.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
+            channel.setAtomLink("http://" + blogHost + "/tag-articles-rss.do");
             channel.setGenerator("B3log Solo, ver "
                                  + SoloServletListener.VERSION);
             final String localeString =
@@ -502,6 +523,16 @@ public final class FeedProcessor {
                 }
             }
 
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
+            if (!hasMultipleUsers && !articles.isEmpty()) {
+                authorName =
+                        articleUtils.getAuthor(articles.get(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Item item = new Item();
@@ -519,10 +550,17 @@ public final class FeedProcessor {
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
+                item.setGUID(link);
 
                 final String authorEmail =
                         article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-                item.setAuthor(authorEmail);
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
+
+                item.setAuthor(authorEmail + "(" + authorName + ")");
 
                 final String tagsString =
                         article.getString(Article.ARTICLE_TAGS_REF);

@@ -18,7 +18,6 @@ package org.b3log.solo.model.feed.rss;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
@@ -45,6 +44,10 @@ public final class Channel {
      * Link.
      */
     private String link;
+    /**
+     * Atom link.
+     */
+    private String atomLink;
     /**
      * Description.
      */
@@ -73,7 +76,8 @@ public final class Channel {
      * Start.
      */
     private static final String START =
-            "<?xml version='1.0' encoding='UTF-8'?><rss version=\"2.0\"><channel>";
+            "<?xml version='1.0' encoding='UTF-8'?><rss version=\"2.0\" "
+            + "xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel>";
     /**
      * End.
      */
@@ -91,9 +95,20 @@ public final class Channel {
      */
     private static final String START_LINK_ELEMENT = "<link>";
     /**
+     * Atom link variable.
+     */
+    private static final String ATOM_LINK_VARIABLE = "${atomLink}";
+    /**
      * End link element.
      */
     private static final String END_LINK_ELEMENT = "</link>";
+    /**
+     * Atom link element.
+     */
+    private static final String ATOM_LINK_ELEMENT =
+            "<atom:link href=\""
+            + ATOM_LINK_VARIABLE
+            + "\" rel=\"self\" type=\"application/rss+xml\" />";
     /**
      * Start description element.
      */
@@ -127,6 +142,24 @@ public final class Channel {
      * End last build date  element.
      */
     private static final String END_LAST_BUILD_DATE_ELEMENT = "</lastBuildDate>";
+
+    /**
+     * Sets the atom link with the specified atom link.
+     * 
+     * @param atomLink the specified atom link
+     */
+    public void setAtomLink(final String atomLink) {
+        this.atomLink = atomLink;
+    }
+
+    /**
+     * Gets the atom link.
+     * 
+     * @return atom link
+     */
+    public String getAtomLink() {
+        return atomLink;
+    }
 
     /**
      * Gets the last build date.
@@ -258,6 +291,9 @@ public final class Channel {
         stringBuilder.append(link);
         stringBuilder.append(END_LINK_ELEMENT);
 
+        stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE,
+                                                       atomLink));
+
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
         stringBuilder.append(description);
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
@@ -267,9 +303,8 @@ public final class Channel {
         stringBuilder.append(END_GENERATOR_ELEMENT);
 
         stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.format(
-                lastBuildDate, "EEE, dd MMM yyyy HH:mm:ss z",
-                TimeZone.getTimeZone(Channel.TIME_ZONE_ID)));
+        stringBuilder.append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(
+                lastBuildDate));
         stringBuilder.append(END_LAST_BUILD_DATE_ELEMENT);
 
         stringBuilder.append(START_LANGUAGE_ELEMENT);
