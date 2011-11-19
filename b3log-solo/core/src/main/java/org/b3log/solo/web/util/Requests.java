@@ -17,6 +17,7 @@ package org.b3log.solo.web.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Strings;
@@ -73,8 +74,10 @@ public final class Requests {
      * returns {@code false} otherwise
      */
     public static boolean mobileRequest(final HttpServletRequest request) {
-        // TODO: dx, ;-)
-        return false;
+        final String regx = "Android|iPod|iPhone|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile";
+        Pattern pattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        String ua = request.getHeader("User-Agent");
+        return pattern.matcher(ua).find();
     }
 
     /**
