@@ -64,6 +64,8 @@ public final class Permalinks {
         "/page",
         "/blog-articles-feed.do",
         "/tag-articles-feed.do",
+        "/blog-articles-rss.do",
+        "/tag-articles-rss.do",
         "/get-random-articles.do",
         "/article-random-double-gen.do",
         "/upgrade/checker.do",
