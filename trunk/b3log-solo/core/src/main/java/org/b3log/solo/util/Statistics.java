@@ -183,6 +183,9 @@ public final class Statistics {
         if (null == statistic) {
             return;
         }
+        
+        LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]",
+                   statistic);
 
         long blogViewCnt =
                 statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
