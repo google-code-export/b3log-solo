@@ -30,7 +30,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Nov 19, 2011
  * @see Item
  * @see Category
  * @since 0.3.1
@@ -257,10 +257,6 @@ public final class Channel {
         stringBuilder.append(START_LINK_ELEMENT);
         stringBuilder.append(link);
         stringBuilder.append(END_LINK_ELEMENT);
-
-        stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(description);
-        stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
         stringBuilder.append(description);
