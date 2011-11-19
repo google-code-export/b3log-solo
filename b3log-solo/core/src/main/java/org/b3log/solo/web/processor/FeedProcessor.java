@@ -168,11 +168,11 @@ public final class FeedProcessor {
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
-                final String id = article.getString(Keys.OBJECT_ID);
-                entry.setId(id);
+                
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
+                entry.setId(link);
 
                 if (hasMultipleUsers) {
                     authorName = StringEscapeUtils.escapeXml(
@@ -295,12 +295,11 @@ public final class FeedProcessor {
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
-                final String id = article.getString(Keys.OBJECT_ID);
-                entry.setId(id);
                 final String link = "http://" + blogHost
                                     + article.getString(
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
+                entry.setId(link);
 
                 if (hasMultipleUsers) {
                     authorName = StringEscapeUtils.escapeXml(
