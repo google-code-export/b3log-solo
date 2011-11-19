@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Nov 10, 2011
+ * @version 1.1.0.4, Nov 19, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,7 +111,7 @@ public final class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/blog-articles-feed.do"},
-                       method = HTTPRequestMethod.GET)
+                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesAtom(final HTTPRequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -196,7 +196,7 @@ public final class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/tag-articles-feed.do"},
-                       method = HTTPRequestMethod.GET)
+                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesAtom(final HTTPRequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -312,7 +312,7 @@ public final class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/blog-articles-rss.do"},
-                       method = HTTPRequestMethod.GET)
+                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
@@ -409,7 +409,7 @@ public final class FeedProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/tag-articles-rss.do"},
-                       method = HTTPRequestMethod.GET)
+                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final HttpServletRequest request = context.getRequest();
