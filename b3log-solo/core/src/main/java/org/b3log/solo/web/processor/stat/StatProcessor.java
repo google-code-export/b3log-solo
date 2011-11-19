@@ -28,6 +28,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 17, 2011
+ * @version 1.0.1.0, Nov 19, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -97,7 +98,7 @@ public final class StatProcessor {
 
         final JSONObject statistic =
                 (JSONObject) statisticRepository.getCache().
-                get(Statistic.STATISTIC);
+                get(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
         if (null == statistic) {
             LOGGER.log(Level.INFO, "Not found statistic in memcache");
 
