@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 8, 2011
+ * @version 1.0.1.2, Nov 19, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -52,6 +52,10 @@ public final class Statistics {
      */
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
+    /**
+     * Repository cache prefix, refers to GAERepository#CACHE_KEY_PREFIX.
+     */
+    public static final String REPOSITORY_CACHE_KEY_PREFIX = "repository";
 
     /**
      * Get blog comment count.
@@ -183,7 +187,7 @@ public final class Statistics {
         if (null == statistic) {
             return;
         }
-        
+
         LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]",
                    statistic);
 
@@ -192,7 +196,9 @@ public final class Statistics {
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
-        statisticRepository.getCache().putAsync(Statistic.STATISTIC, statistic);
+        // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
+        statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX
+                                                + Statistic.STATISTIC, statistic);
 
         LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]",
                    statistic);
