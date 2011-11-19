@@ -3,7 +3,7 @@
  * skin classic style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Nov 16, 2011
+ * @version 1.0.1.0, Nov 19, 2011
 */
 a, a:link {
     color: #0000CC;
@@ -55,7 +55,7 @@ h5 {
     padding-bottom: 24px;
 }
 .article-title {
-    background-color: #E3E9FF;
+    background-color: #E3E3FF;
     border-top: 1px solid #3366CC;
     margin-left: 91px;
     padding: 3px 0 3px 12px;
@@ -64,7 +64,7 @@ h5 {
     font-size: 12px;
 }
 .article-date {
-    background-color: #E3E9FF;
+    background-color: #E3E3FF;
     border: 1px solid #BBCCFF;
     float: left;
     margin: 0 12px 12px 0;
@@ -95,13 +95,13 @@ h5 {
     position: relative;
 }
 .comment-title {
-    background-color: #E3E9FF;
+    background-color: #E3E3FF;
     border-top: 1px solid #3366CC;
     padding: 3px 12px 3px 12px;
 }
 .comment-body-ref {
     background-color: #FFFFFF;
-    border: 1px solid #E3E9FF;
+    border: 1px solid #E3E3FF;
     filter: alpha(opacity=90);
     left: 88px;
     opacity: 0.9;
