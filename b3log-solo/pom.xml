@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.0.6, Nov 2, 2011
+    Version: 2.0.0.7, Nov 19, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -102,6 +102,19 @@
             <name>Yang Gao</name>
             <email>lamb52gao@gmail.com</email>
             <url>http://lamb.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+        
+        <developer>
+            <id>dongxv.vang@gmail.com</id>
+            <name>Dongxu Wang</name>
+            <email>dongxv.vang@gmail.com </email>
+            <url>http://dx.b3log.org</url>
             <roles>
                 <role>Committer</role>
             </roles>
