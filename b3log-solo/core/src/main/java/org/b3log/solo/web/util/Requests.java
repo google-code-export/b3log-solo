@@ -28,7 +28,8 @@ import org.json.JSONObject;
  * Request utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 8, 2011
+ * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
+ * @version 1.0.0.6, Nov 19, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -64,20 +65,30 @@ public final class Requests {
      * Default window size.
      */
     private static final int DEFAULT_WINDOW_SIZE = 20;
+    /**
+     * HTTP header "User-Agent" pattern for mobile device requests.
+     */
+    private static final Pattern MOBILE_USER_AGENT_PATTERN =
+            Pattern.compile(
+            "Android|iPod|iPhone|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile",
+            Pattern.CASE_INSENSITIVE);
 
     /**
      * Determines whether the specified request dose come from 
-     * mobile device or not with its header ""User-Agent".
+     * mobile device or not with its header "User-Agent".
      * 
      * @param request the specified request
      * @return {@code true} if the specified request come from mobile device,
      * returns {@code false} otherwise
      */
     public static boolean mobileRequest(final HttpServletRequest request) {
-        final String regx = "Android|iPod|iPhone|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile";
-        Pattern pattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
-        String ua = request.getHeader("User-Agent");
-        return pattern.matcher(ua).find();
+        final String userAgent = request.getHeader("User-Agent");
+
+        if (Strings.isEmptyOrNull(userAgent)) {
+            return false;
+        }
+
+        return MOBILE_USER_AGENT_PATTERN.matcher(userAgent).find();
     }
 
     /**
