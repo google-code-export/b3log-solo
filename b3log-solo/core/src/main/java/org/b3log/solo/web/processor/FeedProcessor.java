@@ -54,6 +54,7 @@ import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.TimeZones;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -140,8 +141,19 @@ public final class FeedProcessor {
                             SortDirection.DESCENDING).
                     setPageCount(1);
 
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+
+            if (!hasMultipleUsers && 0 != articles.length()) {
+                authorName =
+                        articleUtils.getAuthor(articles.getJSONObject(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final Entry entry = new Entry();
@@ -161,9 +173,12 @@ public final class FeedProcessor {
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
-                final String authorName =
-                        StringEscapeUtils.escapeXml(
-                        articleUtils.getAuthor(article).getString(User.USER_NAME));
+
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
                 entry.setAuthor(authorName);
 
                 final String tagsString =
@@ -210,29 +225,6 @@ public final class FeedProcessor {
 
         final Feed feed = new Feed();
         try {
-            final JSONObject tagArticleResult =
-                    tagArticleRepository.getByTagId(tagId, 1,
-                                                    ENTRY_OUTPUT_CNT);
-            final JSONArray tagArticleRelations =
-                    tagArticleResult.getJSONArray(Keys.RESULTS);
-            if (0 == tagArticleRelations.length()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
-                final String articleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
-                    articles.add(article);
-                }
-            }
-
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
@@ -256,6 +248,39 @@ public final class FeedProcessor {
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost);
 
+            final JSONObject tagArticleResult =
+                    tagArticleRepository.getByTagId(tagId, 1,
+                                                    ENTRY_OUTPUT_CNT);
+            final JSONArray tagArticleRelations =
+                    tagArticleResult.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.getJSONObject(i);
+                final String articleId =
+                        tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                     + Keys.OBJECT_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
+                    articles.add(article);
+                }
+            }
+
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
+            if (!hasMultipleUsers && !articles.isEmpty()) {
+                authorName =
+                        articleUtils.getAuthor(articles.get(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Entry entry = new Entry();
@@ -276,10 +301,13 @@ public final class FeedProcessor {
                                     + article.getString(
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
-                final String authorName =
-                        StringEscapeUtils.escapeXml(
-                        articleUtils.getAuthor(article).getString(
-                        User.USER_NAME));
+
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
+
                 entry.setAuthor(authorName);
 
                 final String tagsString =
@@ -354,8 +382,19 @@ public final class FeedProcessor {
                             SortDirection.DESCENDING).
                     setPageCount(1);
 
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+
+            if (!hasMultipleUsers && 0 != articles.length()) {
+                authorName =
+                        articleUtils.getAuthor(articles.getJSONObject(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final Item item = new Item();
@@ -373,9 +412,12 @@ public final class FeedProcessor {
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
-                final String authorName =
-                        StringEscapeUtils.escapeXml(
-                        articleUtils.getAuthor(article).getString(User.USER_NAME));
+
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
                 item.setAuthor(authorName);
 
                 final String tagsString =
@@ -423,28 +465,6 @@ public final class FeedProcessor {
 
         final Channel channel = new Channel();
         try {
-            final JSONObject tagArticleResult =
-                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
-            final JSONArray tagArticleRelations =
-                    tagArticleResult.getJSONArray(Keys.RESULTS);
-            if (0 == tagArticleRelations.length()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
-                final String articleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
-                    articles.add(article);
-                }
-            }
-
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
@@ -474,6 +494,38 @@ public final class FeedProcessor {
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
+            final JSONObject tagArticleResult =
+                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONArray tagArticleRelations =
+                    tagArticleResult.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.getJSONObject(i);
+                final String articleId =
+                        tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                     + Keys.OBJECT_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
+                    articles.add(article);
+                }
+            }
+
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            String authorName = "";
+
+            if (!hasMultipleUsers && !articles.isEmpty()) {
+                authorName =
+                        articleUtils.getAuthor(articles.get(0)).
+                        getString(User.USER_NAME);
+            }
+
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Item item = new Item();
@@ -491,9 +543,13 @@ public final class FeedProcessor {
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
-                final String authorName =
-                        StringEscapeUtils.escapeXml(
-                        articleUtils.getAuthor(article).getString(User.USER_NAME));
+
+
+                if (hasMultipleUsers) {
+                    authorName = StringEscapeUtils.escapeXml(
+                            articleUtils.getAuthor(article).
+                            getString(User.USER_NAME));
+                }
                 item.setAuthor(authorName);
 
                 final String tagsString =
