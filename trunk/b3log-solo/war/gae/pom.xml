@@ -93,6 +93,7 @@
                     <sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</sdkDir>
                     <appDir>${project.build.directory}/${project.build.finalName}</appDir>
                     <port>${gae.dev_sever.port}</port>
+                    <passIn>true</passIn>
                 </configuration>
             </plugin>
             
