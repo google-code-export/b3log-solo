@@ -168,7 +168,7 @@ public final class FeedProcessor {
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
-                
+
                 final String link = "http://" + blogHost + article.getString(
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
@@ -381,18 +381,8 @@ public final class FeedProcessor {
                             SortDirection.DESCENDING).
                     setPageCount(1);
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
-            String authorName = "";
-
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-
-            if (!hasMultipleUsers && 0 != articles.length()) {
-                authorName =
-                        articleUtils.getAuthor(articles.getJSONObject(0)).
-                        getString(User.USER_NAME);
-            }
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
@@ -412,12 +402,9 @@ public final class FeedProcessor {
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
 
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
-                }
-                item.setAuthor(authorName);
+                final String authorEmail =
+                        article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+                item.setAuthor(authorEmail);
 
                 final String tagsString =
                         article.getString(Article.ARTICLE_TAGS_REF);
@@ -515,16 +502,6 @@ public final class FeedProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
-            String authorName = "";
-
-            if (!hasMultipleUsers && !articles.isEmpty()) {
-                authorName =
-                        articleUtils.getAuthor(articles.get(0)).
-                        getString(User.USER_NAME);
-            }
-
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Item item = new Item();
@@ -543,13 +520,9 @@ public final class FeedProcessor {
                         Article.ARTICLE_PERMALINK);
                 item.setLink(link);
 
-
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
-                }
-                item.setAuthor(authorName);
+                final String authorEmail =
+                        article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+                item.setAuthor(authorEmail);
 
                 final String tagsString =
                         article.getString(Article.ARTICLE_TAGS_REF);
