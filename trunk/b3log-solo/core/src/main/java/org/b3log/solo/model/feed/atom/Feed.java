@@ -30,13 +30,17 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Nov 19, 2011
  * @see Entry
  * @see Category
  * @since 0.3.1
  */
 public final class Feed {
 
+    /**
+     * Id.
+     */
+    private String id;
     /**
      * Title.
      */
@@ -73,7 +77,7 @@ public final class Feed {
      * Start document.
      */
     private static final String START_DOCUMENT =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+            "<?xml version=\"1.0\"?>";
     /**
      * Start feed element.
      */
@@ -84,6 +88,14 @@ public final class Feed {
      */
     private static final String END_FEED_ELEMENT =
             "</feed>";
+    /**
+     * Start id element.
+     */
+    private static final String START_ID_ELEMENT = "<id>";
+    /**
+     * End if element.
+     */
+    private static final String END_ID_ELEMENT = "</id>";
     /**
      * Start title element.
      */
@@ -138,7 +150,26 @@ public final class Feed {
      * Link element.
      */
     private static final String LINK_ELEMENT =
-            "<link href=\"" + LINK_VARIABLE + "\" />";
+            "<link href=\"" + LINK_VARIABLE + "\" rel=\"self\" "
+            + "type=\"application/atom+xml\" />";
+
+    /**
+     * Gets the id.
+     * 
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id with the specified id.
+     * 
+     * @param id the specified id
+     */
+    public void setId(final String id) {
+        this.id = id;
+    }
 
     /**
      * Gets the link.
@@ -244,6 +275,10 @@ public final class Feed {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(START_DOCUMENT);
         stringBuilder.append(START_FEED_ELEMENT);
+
+        stringBuilder.append(START_ID_ELEMENT);
+        stringBuilder.append(id);
+        stringBuilder.append(END_ID_ELEMENT);
 
         stringBuilder.append(START_TITLE_ELEMENT);
         stringBuilder.append(title);

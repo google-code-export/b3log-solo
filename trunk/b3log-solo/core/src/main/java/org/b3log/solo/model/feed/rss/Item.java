@@ -25,7 +25,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * Item.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Nov 19, 2011
  * @since 0.3.1
  */
 public final class Item {
@@ -117,6 +117,24 @@ public final class Item {
      * Author.
      */
     private String author;
+
+    /**
+     * Gets the GUID.
+     * 
+     * @return GUID
+     */
+    public String getGUID() {
+        return guid;
+    }
+
+    /**
+     * Sets the GUID with the specified GUID.
+     * 
+     * @param guid the specified GUID
+     */
+    public void setGUID(final String guid) {
+        this.guid = guid;
+    }
 
     /**
      * Gets the author.
@@ -236,6 +254,10 @@ public final class Item {
         stringBuilder.append(START_AUTHOR_ELEMENT);
         stringBuilder.append(author);
         stringBuilder.append(END_AUTHOR_ELEMENT);
+
+        stringBuilder.append(START_GUID_ELEMENT);
+        stringBuilder.append(guid);
+        stringBuilder.append(END_GUID_ELEMENT);
 
         for (final Category category : categories) {
             stringBuilder.append(category.toString());
