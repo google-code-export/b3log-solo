@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Nov 16, 2011
+ * @version 1.0.1.6, Nov 21, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -221,7 +221,7 @@ $.extend(Page.prototype, {
                 }
         
                 // code high lighter
-                SyntaxHighlighter.autoloader.apply(null, languages);
+                SyntaxHighlighter.autoloader.apply(window, languages);
                 SyntaxHighlighter.config.tagName = "pre";
                 SyntaxHighlighter.config.stripBrs = true;
                 SyntaxHighlighter.defaults.toolbar = false;

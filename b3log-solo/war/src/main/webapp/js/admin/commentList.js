@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 18, 2011
+ * @version 1.0.0.9, Nov 21, 2011
  */
 
 /* comment-list 相关操作 */
@@ -70,10 +70,15 @@ admin.commentList = {
                 var comments = result.comments,
                 commentsData = [];
                 for (var i = 0; i < comments.length; i++) {
+                    var type = "Article"
+                    if (comments[i].type === "pageComment") {
+                        type = "Page"
+                    }
+                    
                     commentsData[i] = {};
                     
-                    commentsData[i].content = Util.replaceEmString(comments[i].commentContent);
-                    commentsData[i].content += "<a class='action' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
+                    commentsData[i].content = "<div>" + Util.replaceEmString(comments[i].commentContent) + "</div>";
+                    commentsData[i].content += "<a class='action right' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
                     comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
                             
                     commentsData[i].title = "<div style='margin:6px 0'><a href='" + comments[i].commentSharpURL + 
@@ -92,16 +97,11 @@ admin.commentList = {
                     }
                     
                     commentsData[i].title += "<br/>" + Label.commentEmailLabel + 
-                        ": <a href='mailto:" + comments[i].commentEmail +
+                    ": <a href='mailto:" + comments[i].commentEmail +
                     "'>" + comments[i].commentEmail + "</a><br/>";
                 
                     commentsData[i].title += Label.createDateLabel + ": " +
                     $.bowknot.getDate(comments[i].commentTime, 1);
-                            
-                    var type = "Article"
-                    if (comments[i].type === "pageComment") {
-                        type = "Page"
-                    }
                     commentsData[i].title += "<br/>";
                 
                     commentsData[i].title += "</div>";
