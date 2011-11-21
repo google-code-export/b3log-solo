@@ -34,7 +34,7 @@
     <div class="right article-main">
         <#list article.articleTags?split(",") as articleTag>
         <a class="article-tags" href="/tags/${articleTag?url('UTF-8')}">
-            ${articleTag}</a><#if articleTag_has_next>,</#if>
+            ${articleTag}</a>
         </#list>
         <div class="clear"></div>
         <div class="article-abstract">
