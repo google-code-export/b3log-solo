@@ -373,7 +373,7 @@ public final class MetaWeblogAPI {
                 final JSONObject data = member.getJSONObject("value").
                         getJSONObject("array").getJSONObject("data");
                 if (0 == data.length()) {
-                    throw new Exception("At least on Tag");
+                    throw new Exception("At least one Tag");
                 }
 
                 final Object value = data.get("value");
