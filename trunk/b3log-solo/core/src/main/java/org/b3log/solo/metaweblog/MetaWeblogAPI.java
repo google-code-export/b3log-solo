@@ -67,7 +67,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 7, 2011
+ * @version 1.0.0.3, Nov 21, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -250,12 +250,14 @@ public final class MetaWeblogAPI {
                 article.put(Keys.OBJECT_ID, postId);
 
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
-                articleMgmtService.updateArticle(article);
+                final JSONObject updateArticleRequest = new JSONObject();
+                updateArticleRequest.put(Article.ARTICLE, article);
+                articleMgmtService.updateArticle(updateArticleRequest);
 
                 final StringBuilder stringBuilder =
                         new StringBuilder(
                         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").
-                        append(article.getString(Keys.OBJECT_ID)).
+                        append(postId).
                         append(
                         "</string></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
