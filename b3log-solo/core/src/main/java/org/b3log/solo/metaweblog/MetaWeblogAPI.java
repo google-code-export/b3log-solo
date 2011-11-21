@@ -15,8 +15,12 @@
  */
 package org.b3log.solo.metaweblog;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletInputStream;
@@ -354,7 +358,29 @@ public final class MetaWeblogAPI {
             final JSONObject member = members.getJSONObject(i);
             final String name = member.getString("name");
 
-            if ("title".equals(name)) {
+            if ("dateCreated".equals(name)) {
+                final JSONObject preference =
+                        preferenceQueryService.getPreference();
+
+                final String dateString = member.getJSONObject("value").
+                        getString("dateTime.iso8601");
+                Date date = null;
+                try {
+                    date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.
+                            parseObject(dateString);
+                } catch (final ParseException e) {
+                    LOGGER.log(Level.WARNING,
+                               "Parses article create date failed with ISO8601, retry to parse with pattern[yyyy-MM-dd'T'HH:mm:ss]");
+                    final String timeZoneId =
+                            preference.getString(Preference.TIME_ZONE_ID);
+                    final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+                    final DateFormat format =
+                            new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
+                    format.setTimeZone(timeZone);
+                    date = format.parse(dateString);
+                }
+                ret.put(Article.ARTICLE_CREATE_DATE, date);
+            } else if ("title".equals(name)) {
                 ret.put(Article.ARTICLE_TITLE, member.getJSONObject("value").
                         getString("string"));
             } else if ("description".equals(name)) {
