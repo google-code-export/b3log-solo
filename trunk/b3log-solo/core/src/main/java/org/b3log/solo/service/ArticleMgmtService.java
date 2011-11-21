@@ -73,7 +73,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 15, 2011
+ * @version 1.0.0.5, Nov 21, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -306,15 +306,17 @@ public final class ArticleMgmtService {
             }
             // Add article-sign relation
             final String signId =
-                    article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            final JSONObject articleSignRelation =
-                    articleSignRepository.getByArticleId(articleId);
-            if (null != articleSignRelation) {
-                articleSignRepository.remove(
-                        articleSignRelation.getString(Keys.OBJECT_ID));
+                    article.optString(Article.ARTICLE_SIGN_REF + "_"
+                                      + Keys.OBJECT_ID);
+            if (!Strings.isEmptyOrNull(signId)) {
+                final JSONObject articleSignRelation =
+                        articleSignRepository.getByArticleId(articleId);
+                if (null != articleSignRelation) {
+                    articleSignRepository.remove(
+                            articleSignRelation.getString(Keys.OBJECT_ID));
+                }
+                addArticleSignRelation(signId, articleId);
             }
-
-            addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             if (publishNewArticle) {
                 incArchiveDatePublishedRefCount(articleId);
@@ -449,8 +451,11 @@ public final class ArticleMgmtService {
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
-            article.put(Article.ARTICLE_UPDATE_DATE, date);
-            article.put(Article.ARTICLE_CREATE_DATE, date);
+            if (!article.has(Article.ARTICLE_CREATE_DATE)) {
+                article.put(Article.ARTICLE_CREATE_DATE, date);
+            }
+            article.put(Article.ARTICLE_UPDATE_DATE,
+                        article.get(Article.ARTICLE_CREATE_DATE));
             // Step 4: Set put top to false
             article.put(Article.ARTICLE_PUT_TOP, false);
             // Step 5: Add tag-article relations
