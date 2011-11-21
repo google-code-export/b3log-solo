@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.6, Nov 18, 2011
+ * @version 1.0.2.7, Nov 21, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -337,11 +337,6 @@ a:hover {
 
 #commentTable .table-main td  {
     vertical-align: top;
-}
-
-#commentTable .action {
-    position: absolute;
-    right: 12px;
 }
 /* end common list */
 
