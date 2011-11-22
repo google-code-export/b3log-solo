@@ -100,7 +100,7 @@ public final class StatProcessor {
                 (JSONObject) statisticRepository.getCache().
                 get(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
         if (null == statistic) {
-            LOGGER.log(Level.INFO, "Not found statistic in memcache");
+            LOGGER.log(Level.INFO, "Not found statistic in memcache, ignores sync");
 
             return;
         }
