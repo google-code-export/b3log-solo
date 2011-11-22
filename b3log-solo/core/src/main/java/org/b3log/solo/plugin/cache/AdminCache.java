@@ -23,6 +23,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.6, Aug 6, 2011
+ * @since 0.3.1
  */
 public final class AdminCache extends AbstractPlugin {
 
