@@ -93,15 +93,9 @@
                         pageCacheStatusLabel = "${enabledLabel}";
                     }
                     
-                    var cacheHTML = "</span>${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
-                        + " </span>&nbsp;${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
-                        + " </span>&nbsp;${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
-                        + " </span>&nbsp;${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
-                        + " </span>&nbsp;${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                        + " </span>&nbsp;${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins['cache-list'].changeStatus(this);\">" 
+                    var cacheHTML = "${pageCacheStatus1Label}&nbsp;<button onclick=\"window.plugins['cache-list'].changeStatus(this);\">" 
                         + pageCacheStatusLabel
-                        + "</button><br/>"
-                        + "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
+                        + "</button>&nbsp;&nbsp;${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
                     
                     $("#cacheContent").html(cacheHTML);
                     

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.plugin.cache;
 
-import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Common;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
  * Admin cache service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 24, 2011
+ * @version 1.0.0.6, Nov 23, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -80,11 +79,6 @@ public final class AdminCacheService {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "cacheCachedCount": long,
-     *     "cacheHitCount": long,
-     *     "cachedBytes": long,
-     *     "hitBytes": long,
-     *     "cacheMissCount": long,
      *     "pageCacheEnabled": boolean,
      *     "pageCachedCnt": int
      * }
@@ -122,12 +116,6 @@ public final class AdminCacheService {
         final long hitBytes = cache.getHitBytes();
 
         try {
-            ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
-            ret.put(Cache.CACHE_HIT_COUNT, hitCount);
-            ret.put(Cache.CACHE_CACHED_BYTES, cachedBytes);
-            ret.put(Cache.CACHE_HIT_BYTES, hitBytes);
-            ret.put(Cache.CACHE_MISS_COUNT, missCount);
-
             final JSONObject preference = preferenceQueryService.getPreference();
             final boolean pageCacheEnabled =
                     preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
