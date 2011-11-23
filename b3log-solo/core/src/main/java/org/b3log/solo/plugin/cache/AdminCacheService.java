@@ -107,6 +107,10 @@ public final class AdminCacheService {
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
+        LOGGER.log(Level.INFO, "Cache status[cachedBytes={0}, cachedCount={1}]",
+                   new Object[]{PageCaches.getCache().getCachedBytes(),
+                                PageCaches.getCache().getCachedCount()});
+
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             final boolean pageCacheEnabled =
