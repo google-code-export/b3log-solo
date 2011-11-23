@@ -193,8 +193,6 @@ public final class AdminCacheService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            PageCaches.syncKeys();
-
             List<String> keys = new ArrayList<String>(PageCaches.getKeys());
             // Paginates
             final int pageCount =
