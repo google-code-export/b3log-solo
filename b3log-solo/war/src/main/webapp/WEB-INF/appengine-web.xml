@@ -68,8 +68,7 @@
     </static-files>
     
     <static-error-handlers>
-        <handler file="over-quota.html"/> <!-- FIXME: 88250, error-code="oever_quota" -->
-        <!-- <handler file="over-quota.html" error-code="over_quota"/> -->
+        <handler file="over-quota.html" error-code="over_quota"/>
     </static-error-handlers>
 </appengine-web-app>
 
