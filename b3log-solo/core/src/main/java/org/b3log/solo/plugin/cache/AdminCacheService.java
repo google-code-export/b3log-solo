@@ -107,14 +107,6 @@ public final class AdminCacheService {
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
-        final org.b3log.latke.cache.Cache<String, Object> cache =
-                PageCaches.getCache();
-        final long cachedCount = cache.getCachedCount();
-        final long hitCount = cache.getHitCount();
-        final long missCount = cache.getMissCount();
-        final long cachedBytes = cache.getCachedBytes();
-        final long hitBytes = cache.getHitBytes();
-
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             final boolean pageCacheEnabled =
@@ -203,8 +195,7 @@ public final class AdminCacheService {
 
             PageCaches.syncKeys();
 
-            List<String> keys =
-                    new ArrayList<String>(PageCaches.getKeys());
+            List<String> keys = new ArrayList<String>(PageCaches.getKeys());
             // Paginates
             final int pageCount =
                     (int) Math.ceil((double) keys.size() / (double) pageSize);
