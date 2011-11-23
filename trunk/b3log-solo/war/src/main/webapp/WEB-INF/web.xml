@@ -76,6 +76,7 @@
     
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Console Stats</web-resource-name>
             <url-pattern>/console/stat/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
