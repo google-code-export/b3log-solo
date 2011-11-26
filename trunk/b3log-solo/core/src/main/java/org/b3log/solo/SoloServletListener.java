@@ -109,7 +109,9 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             loadPreference();
 
-            transaction.commit();
+            if (transaction.isActive()) {
+                transaction.commit();
+            }
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
