@@ -59,17 +59,6 @@ admin.fileList = {
         }]);
         this.tablePagination.initPagination();
         this.getList(page);
-        
-        $("#formActionHidden").load(function () {
-            var $iframe = $("#formActionHidden").contents();
-            var tip = $iframe.find("pre").html();
-            if (tip === "") {
-                tip = Label.addSuccLabel; 
-                $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
-                admin.fileList.getList(1);
-            }
-            $("#tipMsg").html(tip);
-        });
     },
 
     /*

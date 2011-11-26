@@ -16,34 +16,19 @@
 package org.b3log.solo.web.action.file;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Blob;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
 
 /**
@@ -52,7 +37,8 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Aug 10, 2011
+ * @version 1.0.1.1, Nov 26, 2011
+ * @since 0.3.1
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -68,114 +54,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     /**
      * File repository.
      */
-    private FileRepository fileRepository =
-            FileRepositoryImpl.getInstance();
-    /**
-     * Maximum entity size limited by data store.
-     */
-    private static final long MAX_SIZE = 1024 * 1024;
-    /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
-    /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
-
-    @Override
-    protected void doPost(final HttpServletRequest request,
-                          final HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        final ServletFileUpload upload = new ServletFileUpload();
-        FileItemIterator iterator = null;
-
-        try {
-            iterator = upload.getItemIterator(request);
-
-            while (iterator.hasNext()) {
-                final FileItemStream item = iterator.next();
-                final InputStream stream = item.openStream();
-
-                final JSONObject preference = preferenceQueryService.
-                        getPreference();
-                if (null == preference) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-                }
-
-                final String localeString = preference.getString(
-                        Preference.LOCALE_STRING);
-                final Locale locale = new Locale(
-                        Locales.getLanguage(localeString),
-                        Locales.getCountry(localeString));
-                if (!item.isFormField()) {
-                    final ResourceBundle lang =
-                            ResourceBundle.getBundle(Keys.LANGUAGE, locale);
-                    // XXX: check size before streaming
-                    final byte[] contentBytes = IOUtils.toByteArray(stream);
-                    if (contentBytes.length > MAX_SIZE) {
-                        final String fail = lang.getString("uploadFailLabel");
-                        final String cause =
-                                lang.getString("exceedMaxUploadSizeLabel");
-                        sendError(request, response,
-                                  HttpServletResponse.SC_BAD_REQUEST,
-                                  fail, cause);
-                        return;
-                    }
-
-                    if (0 == contentBytes.length) {
-                        final String fail = lang.getString("uploadFailLabel");
-                        final String cause = lang.getString("fileEmptyLabel");
-                        sendError(request, response,
-                                  HttpServletResponse.SC_BAD_REQUEST,
-                                  fail, cause);
-                        return;
-                    }
-
-                    final Blob blob = new Blob(contentBytes);
-                    final JSONObject file = new JSONObject();
-                    final String id = Ids.genTimeMillisId();
-                    file.put(Keys.OBJECT_ID, id);
-
-                    file.put(File.FILE_CONTENT_TYPE, item.getContentType());
-                    file.put(File.FILE_CONTENT, blob);
-
-                    file.put(File.FILE_DOWNLOAD_COUNT, 0);
-                    final String timeZoneId =
-                            preference.getString(Preference.TIME_ZONE_ID);
-                    final Date createDate = timeZoneUtils.getTime(timeZoneId);
-                    file.put(File.FILE_UPLOAD_DATE, createDate);
-                    final String fileName = item.getName();
-                    file.put(File.FILE_NAME, fileName);
-                    final long fileSize = contentBytes.length;
-                    file.put(File.FILE_SIZE, fileSize);
-                    final String downloadURL = "/datastore-file-access.do?oId="
-                                               + id;
-                    file.put(File.FILE_DOWNLOAD_URL, downloadURL);
-
-                    final Transaction transaction =
-                            fileRepository.beginTransaction();
-
-                    try {
-                        fileRepository.add(file);
-                        transaction.commit();
-                    } catch (final RepositoryException e) {
-                        if (transaction.isActive()) {
-                            transaction.rollback();
-                        }
-
-                        throw new Exception(e);
-                    }
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException("File upload error: " + e.getMessage());
-        }
-    }
+    private FileRepository fileRepository = FileRepositoryImpl.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -214,27 +93,5 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File download error: " + e.getMessage());
         }
-    }
-
-    /**
-     * Sends error via {@linkplain HttpServletResponse#sendError(int, java.lang.String)}
-     * with the specified error URI and cause.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @param errorCode the specified error code
-     * @param errorURI the specified error URI
-     * @param cause the specified cause
-     * @throws IOException io exception
-     */
-    private void sendError(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final int errorCode,
-                           final String errorURI,
-                           final String cause) throws IOException {
-        request.setAttribute(ErrorPage.ERROR_PAGE_REQUEST_URI,
-                             request.getRequestURI());
-        request.setAttribute(ErrorPage.ERROR_PAGE_CAUSE, errorURI + cause);
-        response.sendError(errorCode);
     }
 }
