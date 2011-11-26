@@ -2,7 +2,7 @@
 === ver 0.4.0 ===
  # jQuery 升级为 1.7，采用本地 js。修改 footer.ftl 如下：
 {{{
-<script type="text/javascript" src="/js/lib/jquery/jquery-1.7.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 }}}
  # 删除 article.ftl 和 page.ftl head 中的 <link .../>; 删除 macro-comment.ftl 中引入的 JS 文件：shAutoloader.js 和 shCore.js
  # js, css 文件后添加 "?${staticResourceVersion}"，如：
