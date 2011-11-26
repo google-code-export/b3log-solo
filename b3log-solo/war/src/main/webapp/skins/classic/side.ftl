@@ -96,7 +96,7 @@
             <ul id="sideLink">
                 <#list links as link>
                 <li>
-                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         <img alt="${link.linkTitle}"
                              src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
@@ -111,13 +111,13 @@
     </#if>
     <#if 0 != archiveDates?size>
     <ul>
-        <li onclick="toggleArchive(this)" class="pointer">
-            <h4>${archiveLabel} +</h4>
+        <li>
+            <h4>${archiveLabel}</h4>
         </li>
-        <li class="none">
-            <ul>
+        <li>
+            <ul id="archiveSide">
                 <#list archiveDates as archiveDate>
-                <li>
+                <li data-year="${archiveDate.archiveDateYear}">
                     <#if "en" == localeString?substring(0, 2)>
                     <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                        title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">

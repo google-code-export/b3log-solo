@@ -27,18 +27,50 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
     });
-    common.init();
-    common.replaceSideEm($("#recentComments li"));
     
-    var toggleArchive = function (it) {
-        var $it = $(it);
-        $it.next().slideToggle(260, function () {
-            var h4Obj = $it.find("h4");
-            if (this.style.display === "none") {
-                h4Obj.html("${archiveLabel} +");
-            } else {
-                h4Obj.html("${archiveLabel} -");
+    var collapseArchive = function (it, year) {
+        var tag = true,
+        text = it.innerHTML;
+        if (text.indexOf("-") > -1) {
+            it.innerHTML = text.replace("-", "+");
+            tag = false;
+        } else {
+            it.innerHTML = text.replace("+", "-");
+        }
+    
+        $("#archiveSide li").each(function () {
+            var $this = $(this);
+            // hide other year month archives
+            if ($this.data("year") === year) {
+                if (tag) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
             }
         });
-    }
+    };
+    
+    (function () {
+        var currentYear = (new Date()).getFullYear(),
+        year = currentYear;
+        $("#archiveSide li").each(function (i) {
+            var $this = $(this);
+        
+            // hide other year month archives
+            if ($this.data("year") !== currentYear) {
+                $(this).hide()
+            }
+        
+            // append year archive
+            if (year !== $this.data("year")) {
+                year = $this.data("year");
+                $this.before("<li class='pointer'><div onclick='collapseArchive(this, " + 
+                    year + ")'>" + year + "&nbsp;\u5e74 +</div></li>");
+            }
+        });
+        
+        common.init();
+        common.replaceSideEm($("#recentComments li"));
+    })();
 </script>
