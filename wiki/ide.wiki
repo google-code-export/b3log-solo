@@ -10,7 +10,7 @@
  # 工具 -> 选项 -> 其他 -> Maven -> 外部&Maven主页 -> 浏览，把 Maven 的路径加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/b3log-solo
  # 在根项目上进行构建（mvn install）
- # 在 IDE 中打开项目，并展开所有模块项目。找到 B3log Solo (GAE) 项目，右键->定制-> gae:unpack（_在每次 GAE SDK 升级后都需要运行此命令_）<br/><img src="http://b3log-solo.googlecode.com/svn/wiki/src/images/gae-unpack.jpg"/>
+ # 在 IDE 中打开项目，并展开（打开）所有模块项目。找到 B3log Solo (GAE) 项目，右键->定制-> gae:unpack（_在每次 GAE SDK 升级后都需要运行此命令_）<br/><img src="http://b3log-solo.googlecode.com/svn/wiki/src/images/gae-unpack.jpg"/>
  # 运行项目。右键项目，定制-> gae:run
  # 部署项目，定制-> gae:deploy，按提示在控制台输入账号密码即可
 ====`Eclipse`====
