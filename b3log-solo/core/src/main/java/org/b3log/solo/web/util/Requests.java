@@ -70,7 +70,10 @@ public final class Requests {
      */
     private static final Pattern MOBILE_USER_AGENT_PATTERN =
             Pattern.compile(
-            "Android|iPod|iPhone|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile",
+            "android.+mobile|avantgo|bada|blackberry|blazer|compal|elaine|fennec"
+            + "|hiptop|iemobile|ip(hone|od)|iris|kindle|lge|maemo|midp|mmp|opera m(ob|in)i"
+            + "|palm( os)?|phone|p(ixi|re)|plucker|pocket|psp|symbian|treo|up.(browser"
+            + "|link)|ucweb|vodafone|wap|webos|windows (ce|phone)|xda|xiino|htc",
             Pattern.CASE_INSENSITIVE);
 
     /**
