@@ -4,7 +4,8 @@
 <wiki:toc max_depth="3"/> 
 ----
 <p align="right">[#Top]</p> 
-==`如何同步腾讯微博？`== 
- # 访问腾讯微博同步设置：http://t.qq.com/setting/sync
- #  
+==`如何重新初始化？`== 
+重新初始化将删除所有数据：
+ # 正常登录
+ # 访问 /rm-all-data.do 
 ----
