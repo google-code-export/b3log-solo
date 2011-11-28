@@ -131,11 +131,14 @@ public final class PermalinkFilter implements Filter {
      * @param response the specified response
      * @param article the specified article
      * @param page the specified page
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
      * @see HTTPRequestDispatcher#dispatch(org.b3log.latke.servlet.HTTPRequestContext) 
      */
     private void dispatchToArticleOrPageProcessor(
             final ServletRequest request, final ServletResponse response,
-            final JSONObject article, final JSONObject page) {
+            final JSONObject article, final JSONObject page) 
+            throws ServletException, IOException {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);
         context.setResponse((HttpServletResponse) response);

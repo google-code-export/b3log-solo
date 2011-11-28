@@ -413,7 +413,7 @@ public final class InitService {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/"
                                     + skinDirName;
-            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+            Templates.getConfiguration().setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Loads skins error!", e);
