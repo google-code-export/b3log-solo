@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Nov 16, 2011
+ * @version 1.0.1.0, Nov 28, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -532,6 +532,10 @@ textarea, input {
 .article-body a:hover {
     color: #D54E21;
     border-bottom: 1px solid #D54E21;
+}
+
+.article-body p {
+    line-height: 18px;
 }
 
 .pagination {
