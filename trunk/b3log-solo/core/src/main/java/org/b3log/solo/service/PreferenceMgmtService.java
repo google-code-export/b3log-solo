@@ -227,7 +227,7 @@ public final class PreferenceMgmtService {
 
             transaction.commit();
 
-            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+            Templates.getConfiguration().setDirectoryForTemplateLoading(
                     new File(skinPath));
 
             if (preference.getBoolean(PAGE_CACHE_ENABLED)) {
