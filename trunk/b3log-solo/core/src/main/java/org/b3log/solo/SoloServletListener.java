@@ -91,6 +91,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
         super.contextInitialized(servletContextEvent);
 
+        // Default to skin "classic", loads from preference later
+        Skins.setDirectoryForTemplateLoading("classic");
+
         if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
             final String repositoryPath = ResourceBundle.getBundle("local").
                     getString("repositoryPath");
