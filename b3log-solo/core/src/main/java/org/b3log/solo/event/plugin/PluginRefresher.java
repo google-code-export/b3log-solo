@@ -32,7 +32,8 @@ import org.b3log.solo.util.Plugins;
  * This listener is responsible for refreshing plugin after every loaded.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 23, 2011
+ * @version 1.0.0.1, Nov 28, 2011
+ * @since 0.3.1
  */
 public final class PluginRefresher extends AbstractEventListener<List<AbstractPlugin>> {
 
@@ -58,6 +59,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
                                 PluginRefresher.class.getName()});
 
         final Transaction transaction = pluginRepository.beginTransaction();
+        transaction.clearQueryCache(false);
         try {
             Plugins.refresh(plugins);
             transaction.commit();
