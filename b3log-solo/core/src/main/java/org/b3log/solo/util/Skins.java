@@ -228,7 +228,7 @@ public final class Skins {
      * 
      * @param skinDirName the specified skin directory name
      */
-    private void setDirectoryForTemplateLoading(final String skinDirName) {
+    public static void setDirectoryForTemplateLoading(final String skinDirName) {
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + SKINS + File.separator
