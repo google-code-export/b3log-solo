@@ -64,6 +64,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
     @Override
     protected void beforeRender(final HTTPRequestContext context)
             throws Exception {
+        LOGGER.log(Level.FINEST, "Before render....");
         getDataModel().put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
                            Common.TOP_BAR_REPLACEMENT_FLAG);
     }
@@ -73,6 +74,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
                             final HttpServletRequest request,
                             final HttpServletResponse response)
             throws Exception {
+        LOGGER.log(Level.FINEST, "Do render....");
         final PrintWriter writer = response.getWriter();
         if (response.isCommitted()) { // response has been sent redirect
             writer.flush();
@@ -106,6 +108,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
     @Override
     protected void afterRender(final HTTPRequestContext context)
             throws Exception {
+        LOGGER.log(Level.FINEST, "After render....");
         super.afterRender(context);
 
         try {
