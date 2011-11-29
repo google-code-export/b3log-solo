@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 10, 2011
+ * @version 1.0.0.6, Nov 29, 2011
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -105,6 +105,7 @@ public final class PageCacheFilter implements Filter {
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
         if (!Latkes.isPageCacheEnabled()) {
+            LOGGER.log(Level.FINEST, "Page cache is disabled");
             chain.doFilter(request, response);
 
             return;
