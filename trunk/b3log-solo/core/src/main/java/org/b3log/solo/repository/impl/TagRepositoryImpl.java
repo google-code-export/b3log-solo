@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Tag repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Nov 10, 2011
+ * @version 1.0.1.1, Nov 29, 2011
  * @since 0.3.1
  */
 public final class TagRepositoryImpl extends AbstractRepository
@@ -61,20 +61,14 @@ public final class TagRepositoryImpl extends AbstractRepository
                                                   FilterOperator.EQUAL, tagTitle).
                 setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
+        if (0 == array.length()) {
             return null;
         }
+
+        return array.optJSONObject(0);
     }
 
     @Override
