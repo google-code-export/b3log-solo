@@ -71,7 +71,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 21, 2011
+ * @version 1.0.0.4, Nov 30, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -201,6 +201,7 @@ public final class MetaWeblogAPI {
             final JSONObject methodCall =
                     requestJSONObject.getJSONObject(METHOD_CALL);
             final String methodName = methodCall.getString(METHOD_NAME);
+            LOGGER.log(Level.INFO, "MetaWeblog[methodName={0}]", methodName);
 
             final JSONArray params = methodCall.getJSONObject("params").
                     getJSONArray("param");
@@ -277,6 +278,9 @@ public final class MetaWeblogAPI {
                         "</boolean></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             }
+
+            throw new UnsupportedOperationException("Unsupported method[name="
+                                                    + methodName + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
