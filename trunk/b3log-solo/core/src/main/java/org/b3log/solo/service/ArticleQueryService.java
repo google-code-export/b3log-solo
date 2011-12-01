@@ -62,7 +62,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 17, 2011
+ * @version 1.0.0.6, Dec 1, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -269,11 +269,10 @@ public final class ArticleQueryService {
                     addFilter(ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL,
                               articleIsPublished);
-            int articleCount = -1;
+
+            int articleCount = statistics.getPublishedBlogArticleCount();
             if (!articleIsPublished) {
-                articleCount = statistics.getBlogArticleCount();
-            } else {
-                articleCount = statistics.getPublishedBlogArticleCount();
+                articleCount -= statistics.getPublishedBlogArticleCount();
             }
 
             final int pageCount = (int) Math.ceil((double) articleCount
