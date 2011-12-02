@@ -26,4 +26,4 @@
 ||19||Latke <font color='orange'>JPA</font> 简版实现<font color='brown'>（已暂停）</font>|| D, J||2011-10-10||2011-12-10|| ||<font color='blue'>10%</font>||仅仅实现几个关键的 Annotations||
 ||20||Symphony 0.2.0||D, V||2011-11-01||2012-02-19|| ||<font color='blue'>10%</font>||主要是重写皮肤||
 ||21||Solo 0.4.0 发布||D, V||2012-02-19||2012-02-19|| || || ||
-||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27|| ||<font color='blue'>20%</font>|| ||
+||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27||2011-11-27||<font color='green'>已完成</font>|| ||
