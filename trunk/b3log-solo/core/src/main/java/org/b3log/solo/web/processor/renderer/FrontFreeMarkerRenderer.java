@@ -34,7 +34,7 @@ import org.b3log.solo.web.util.TopBars;
  * renderer.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 17, 2011
+ * @version 1.0.0.5, Dec 3, 2011
  * @since 0.3.1
  */
 public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
@@ -75,9 +75,16 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
                             final HttpServletResponse response)
             throws Exception {
         LOGGER.log(Level.FINEST, "Do render....");
-        final PrintWriter writer = response.getWriter();
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+        } catch (final Exception e) {
+            writer = new PrintWriter(response.getOutputStream());
+        }
+
         if (response.isCommitted()) { // response has been sent redirect
             writer.flush();
+            writer.close();
 
             return;
         }

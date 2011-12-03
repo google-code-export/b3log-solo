@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 9, 2011
+ * @version 1.0.0.6, Dec 3, 2011
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -77,6 +77,10 @@ public final class InitCheckFilter implements Filter {
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
 
         try {
+            if (Skips.isStatic(requestURI)) {
+                chain.doFilter(request, response);
+            }
+
             if (SoloServletListener.isInited()) {
                 chain.doFilter(request, response);
 
