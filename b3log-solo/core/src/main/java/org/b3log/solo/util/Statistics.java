@@ -425,7 +425,7 @@ public final class Statistics {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
+        private SingletonHolder() { 
         }
     }
 }

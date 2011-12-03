@@ -41,19 +41,17 @@ import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
-import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.web.processor.stat.StatProcessor;
 import org.json.JSONObject;
 
 /**
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.4, Nov 15, 2011
+ * @version 1.0.6.5, Dec 3, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -158,10 +156,10 @@ public final class SoloServletListener extends AbstractServletListener {
         final String requestURI = servletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
-        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
-            || Skips.isStatic(requestURI)) {
-            return;
-        }
+//        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
+//            || Skips.isStatic(requestURI)) {
+//            return;
+//        }
 
         // For request statistics
 //        final Queue queue = taskQueueService.getQueue("request-stat-queue");
