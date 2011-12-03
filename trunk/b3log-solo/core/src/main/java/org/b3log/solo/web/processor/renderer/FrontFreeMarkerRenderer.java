@@ -21,11 +21,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
-import org.b3log.latke.repository.Repository;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.util.TopBars;
 
@@ -34,7 +32,7 @@ import org.b3log.solo.web.util.TopBars;
  * renderer.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 3, 2011
+ * @version 1.0.0.6, Dec 3, 2011
  * @since 0.3.1
  */
 public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
@@ -48,11 +46,6 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
-    /**
-     * Statistic repository.
-     */
-    private Repository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
 
     /**
      * {@inheritDoc}
@@ -88,6 +81,9 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
 
             return;
         }
+
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
 
         final String pageContent =
                 (String) request.getAttribute(
