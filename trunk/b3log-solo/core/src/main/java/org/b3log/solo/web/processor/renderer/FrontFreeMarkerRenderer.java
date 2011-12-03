@@ -68,6 +68,9 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
                             final HttpServletResponse response)
             throws Exception {
         LOGGER.log(Level.FINEST, "Do render....");
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -81,9 +84,6 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
 
             return;
         }
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
 
         final String pageContent =
                 (String) request.getAttribute(
