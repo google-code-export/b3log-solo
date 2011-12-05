@@ -2,4 +2,6 @@
 
 ===Maven2+===
  * Maven 2.2.1: http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-2.2.1-bin.tar.gz
-将 Maven 的全局 settings.xml（在 .m2 目录下） 修改如下载的[http://lamb.b3log.org/datastore-file-access.do?oId=1291005995109 文件]所示。
+
+_注意_：
+Maven 3 可能不能成功支持，如果你有兴趣，请帮我们折腾，然后提 Issue 吧 ;-)
