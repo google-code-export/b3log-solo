@@ -227,8 +227,7 @@ public final class PreferenceMgmtService {
 
             transaction.commit();
 
-            Templates.getConfiguration().setDirectoryForTemplateLoading(
-                    new File(skinPath));
+            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
 
             if (preference.getBoolean(PAGE_CACHE_ENABLED)) {
                 Latkes.enablePageCache();

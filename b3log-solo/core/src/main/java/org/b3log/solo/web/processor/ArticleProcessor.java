@@ -73,7 +73,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.9, Nov 18, 2011
+ * @version 1.1.1.0, Dec 6, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -357,6 +357,8 @@ public final class ArticleProcessor {
                                       currentPageNum, articles, author,
                                       preference);
 
+            filler.fillSide(request, dataModel, preference);
+
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -457,6 +459,7 @@ public final class ArticleProcessor {
                                                currentPageNum,
                                                pageCount, archiveDateString,
                                                archiveDate);
+            filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -585,6 +588,7 @@ public final class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             prepareShowArticle(preference, dataModel, article);
+            filler.fillSide(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -728,14 +732,14 @@ public final class ArticleProcessor {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    private void prepareShowAuthorArticles(final List<Integer> pageNums,
-                                           final Map<String, Object> dataModel,
-                                           final int pageCount,
-                                           final int currentPageNum,
-                                           final List<JSONObject> articles,
-                                           final JSONObject author,
-                                           final JSONObject preference)
-            throws ServiceException {
+    private void prepareShowAuthorArticles(
+            final List<Integer> pageNums,
+            final Map<String, Object> dataModel,
+            final int pageCount,
+            final int currentPageNum,
+            final List<JSONObject> articles,
+            final JSONObject author,
+            final JSONObject preference) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
                           pageNums.get(0));
@@ -766,7 +770,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
 
-        filler.fillSide(dataModel, preference);
         filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
         skins.fillSkinLangs(preference, dataModel);
@@ -785,14 +788,14 @@ public final class ArticleProcessor {
      * @return page title for caching
      * @throws Exception  exception
      */
-    private String prepareShowArchiveArticles(final JSONObject preference,
-                                              final Map<String, Object> dataModel,
-                                              final List<JSONObject> articles,
-                                              final int currentPageNum,
-                                              final int pageCount,
-                                              final String archiveDateString,
-                                              final JSONObject archiveDate)
-            throws Exception {
+    private String prepareShowArchiveArticles(
+            final JSONObject preference,
+            final Map<String, Object> dataModel,
+            final List<JSONObject> articles,
+            final int currentPageNum,
+            final int pageCount,
+            final String archiveDateString,
+            final JSONObject archiveDate) throws Exception {
         final int pageSize = preference.getInt(
                 Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize = preference.getInt(
@@ -822,7 +825,7 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.PATH, "/archives/" + archiveDateString);
         dataModel.put(Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
-        filler.fillSide(dataModel, preference);
+
         filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
         final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
@@ -912,7 +915,6 @@ public final class ArticleProcessor {
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
 
-        filler.fillSide(dataModel, preference);
         filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
     }

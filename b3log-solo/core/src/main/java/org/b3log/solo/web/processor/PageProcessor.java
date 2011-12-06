@@ -122,11 +122,11 @@ public final class PageProcessor {
                                  page.getString(Page.PAGE_PERMALINK));
 
             dataModel.put(Page.PAGE, page);
-            final List<JSONObject> comments = 
+            final List<JSONObject> comments =
                     commentQueryService.getComments(pageId);
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
-            filler.fillSide(dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {

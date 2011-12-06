@@ -22,6 +22,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.event.EventManager;
@@ -41,10 +42,12 @@ import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**
@@ -156,6 +159,8 @@ public final class SoloServletListener extends AbstractServletListener {
         final String requestURI = servletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
+        resolveSkinDir(servletRequest);
+
 //        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
 //            || Skips.isStatic(requestURI)) {
 //            return;
@@ -266,5 +271,40 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.log(Level.INFO, "Registering event processors....");
 
         Stopwatchs.end();
+    }
+
+    /**
+     * Resolve skin (template) for the specified HTTP servlet request.
+     * 
+     * @param httpServletRequest the specified HTTP servlet request
+     */
+    private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
+        try {
+            final PreferenceRepository preferenceRepository =
+                    PreferenceRepositoryImpl.getInstance();
+            final JSONObject preference =
+                    preferenceRepository.get(Preference.PREFERENCE);
+            if (null == preference) {  // Did not initialize yet
+                return;
+            }
+            
+            final String requestURI = httpServletRequest.getRequestURI();
+
+            if (Requests.mobileRequest(httpServletRequest)
+                && Requests.mobileCookie(httpServletRequest)) {
+                // TODO: 88250, mobile request dispatching
+                LOGGER.log(Level.FINER,
+                           "The request [URI={0}] comes frome mobile device",
+                           requestURI);
+                httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, "mobile");
+                
+                return;
+            }
+
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skinDirName);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Resolves skin failed", e);
+        }
     }
 }

@@ -132,7 +132,7 @@ public final class IndexProcessor {
                 }
             }
 
-            filler.fillSide(dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
 
@@ -191,7 +191,7 @@ public final class IndexProcessor {
 
             skins.fillSkinLangs(preference, dataModel);
 
-            filler.fillSide(dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final ServiceException e) {
