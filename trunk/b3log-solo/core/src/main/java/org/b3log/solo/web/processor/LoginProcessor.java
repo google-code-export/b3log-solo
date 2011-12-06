@@ -108,7 +108,8 @@ public final class LoginProcessor {
                 new AbstractFreeMarkerRenderer() {
 
                     @Override
-                    protected Template getTemplate(final String templateName)
+                    protected Template getTemplate(final String templateDirName,
+                                                   final String templateName)
                             throws IOException {
                         return InitProcessor.TEMPLATE_CFG.getTemplate(
                                 templateName);
@@ -136,7 +137,7 @@ public final class LoginProcessor {
         dataModel.put(Common.YEAR,
                       String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, 
+        dataModel.put(Common.STATIC_RESOURCE_VERSION,
                       Latkes.getStaticResourceVersion());
 
         filler.fillMinified(dataModel);

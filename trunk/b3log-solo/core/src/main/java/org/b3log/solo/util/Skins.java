@@ -224,7 +224,7 @@ public final class Skins {
 
     /**
      * Sets the directory for template loading with the specified skin directory
-     * name.
+     * name, and sets the directory for mobile request template loading.
      * 
      * @param skinDirName the specified skin directory name
      */
@@ -233,8 +233,10 @@ public final class Skins {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + SKINS + File.separator
                                     + skinDirName;
-            Templates.getConfiguration().setDirectoryForTemplateLoading(
-                    new File(skinPath));
+            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
+
+            Templates.MOBILE_CFG.setDirectoryForTemplateLoading(
+                    new File(webRootPath + SKINS + File.separator + "mobile"));
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Loads skins error!", e);
             throw new IllegalStateException(e);

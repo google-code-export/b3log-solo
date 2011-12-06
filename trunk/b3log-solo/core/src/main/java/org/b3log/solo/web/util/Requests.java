@@ -18,6 +18,7 @@ package org.b3log.solo.web.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Strings;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.6, Nov 19, 2011
+ * @version 1.0.0.7, Dec 6, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -77,11 +78,39 @@ public final class Requests {
             Pattern.CASE_INSENSITIVE);
 
     /**
+     * Determines whether the specified request has a mobile request flag in 
+     * cookie "b3log-latke".
+     * 
+     * @param request the specified request
+     * @return {@code true} if has the flag with value "true", 
+     * returns {@code false} otherwise
+     */
+    public static boolean mobileCookie(final HttpServletRequest request) {
+        final Cookie[] cookies = request.getCookies();
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+
+                if ("b3log-latke".equals(cookie.getName())) {
+                    final JSONObject cookieJSONObject =
+                            new JSONObject(cookie.getValue());
+                    return cookieJSONObject.optBoolean("mobile", true);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Parse cookie failed", e);
+        }
+
+        return true;
+    }
+
+    /**
      * Determines whether the specified request dose come from 
      * mobile device or not with its header "User-Agent".
      * 
      * @param request the specified request
-     * @return {@code true} if the specified request come from mobile device,
+     * @return {@code true} if the specified request comes from mobile device,
      * returns {@code false} otherwise
      */
     public static boolean mobileRequest(final HttpServletRequest request) {

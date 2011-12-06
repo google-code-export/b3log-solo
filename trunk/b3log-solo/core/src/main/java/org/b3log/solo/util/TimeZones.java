@@ -25,7 +25,7 @@ import org.b3log.solo.model.Comment;
  * Time zone utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 3, 2011
+ * @version 1.0.0.2, Dec 6, 2011
  */
 public final class TimeZones {
 
@@ -62,7 +62,8 @@ public final class TimeZones {
         System.setProperty("user.timezone", timeZoneId);
         ArchiveDate.DATE_FORMAT.setTimeZone(timeZone);
         Comment.DATE_FORMAT.setTimeZone(timeZone);
-        Templates.getConfiguration().setTimeZone(timeZone);
+        Templates.MAIN_CFG.setTimeZone(timeZone);
+        Templates.MOBILE_CFG.setTimeZone(timeZone);
     }
 
     /**

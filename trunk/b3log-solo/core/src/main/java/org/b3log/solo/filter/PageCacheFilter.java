@@ -44,7 +44,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.web.util.TopBars;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +52,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 29, 2011
+ * @version 1.0.0.7, Dec 6, 2011
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -111,11 +110,13 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        if (Requests.mobileRequest(httpServletRequest)) {
-            // TODO: 88250, mobile request dispatching
-            LOGGER.log(Level.FINER,
-                       "The request [URI={0}] comes frome mobile device",
-                       requestURI);
+        final String skinDirName =
+                (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+        if ("mobile".equals(skinDirName)) {
+            // Mobile request, bypasses page caching
+            chain.doFilter(request, response);
+
+            return;
         }
 
         String pageCacheKey = null;

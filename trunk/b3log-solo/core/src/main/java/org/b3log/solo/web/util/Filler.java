@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Articles;
@@ -574,20 +575,23 @@ public final class Filler {
     }
 
     /**
-     * Fills article-side.ftl.
+     * Fills side.ftl.
      *
+     * @param request the specified HTTP servlet request
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillSide(final Map<String, Object> dataModel,
+    public void fillSide(final HttpServletRequest request,
+                         final Map<String, Object> dataModel,
                          final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Side");
         try {
             LOGGER.fine("Filling side....");
 
-            final Template template = Templates.getTemplate("side.ftl");
+            final Template template = Templates.getTemplate((String) request.
+                    getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
 
 // TODO:       fillRecentArticles(dataModel, preference);
             if (Templates.hasExpression(template, "<#list links as link>")) {

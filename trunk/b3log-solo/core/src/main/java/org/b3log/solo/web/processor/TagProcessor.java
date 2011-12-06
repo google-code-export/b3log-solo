@@ -237,7 +237,7 @@ public final class TagProcessor {
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
 
-            filler.fillSide(dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final ServiceException e) {
@@ -336,7 +336,7 @@ public final class TagProcessor {
 
             dataModel.put(Tag.TAGS, tags);
 
-            filler.fillSide(dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {

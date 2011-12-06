@@ -57,7 +57,7 @@ import static org.b3log.solo.model.Preference.*;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 5, 2011
+ * @version 1.0.0.3, Dec 6, 2011
  * @since 0.4.0
  */
 public final class InitService {
@@ -413,8 +413,7 @@ public final class InitService {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/"
                                     + skinDirName;
-            Templates.getConfiguration().setDirectoryForTemplateLoading(
-                    new File(skinPath));
+            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Loads skins error!", e);
             throw new IllegalStateException(e);

@@ -114,7 +114,8 @@ public final class InitProcessor {
                 new AbstractFreeMarkerRenderer() {
 
                     @Override
-                    protected Template getTemplate(final String templateName)
+                    protected Template getTemplate(final String templateDirName,
+                                                   final String templateName)
                             throws IOException {
                         return TEMPLATE_CFG.getTemplate(templateName);
                     }
@@ -134,17 +135,17 @@ public final class InitProcessor {
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        
+
         final Map<String, String> langs =
                 langPropsService.getAll(Locales.getLocale(request));
         dataModel.putAll(langs);
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, 
+        dataModel.put(Common.STATIC_RESOURCE_VERSION,
                       Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR,
-                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        
+                      String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+
         filler.fillMinified(dataModel);
     }
 
