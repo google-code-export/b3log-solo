@@ -99,7 +99,7 @@ public final class Requests {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Parse cookie failed", e);
+            LOGGER.log(Level.SEVERE, "Parses cookie failed", e);
         }
 
         return true;
