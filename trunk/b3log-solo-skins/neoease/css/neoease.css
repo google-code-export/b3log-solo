@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Nov 28, 2011
+ * @version 1.0.1.1, Dec 8, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -15,7 +15,7 @@ body {
     font-family: "Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';
     font-size: 12px;
     background-color: #F9F9F9;
-    color: #555;
+    color: #333;
 }
 
 a:link {
@@ -25,7 +25,7 @@ a:link {
 }
 
 a:visited {
-    color: #777777;
+    color: #555777;
 }
 
 a:hover {
@@ -33,7 +33,7 @@ a:hover {
 }
 
 a:active {
-    color: #555555;
+    color: #333;
 }
 
 img {
@@ -148,7 +148,7 @@ textarea, input {
 .feed-ico {
     background-position: right -146px;
     background-repeat: no-repeat;
-    color: #555;
+    color: #333;
     padding-right: 24px;
 }
 
@@ -310,7 +310,7 @@ textarea, input {
     height: 33px;
     line-height: 33px;
     margin: -2px 0 -3px;
-    color: #555;
+    color: #333;
     text-shadow : 1px 1px 1px #C6D9E9;
 }
 
@@ -442,7 +442,7 @@ textarea, input {
 
 /* start article list */
 .article {
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCC;
     padding: 0 5px 10px;
     margin-top: 20px;
 }
@@ -455,7 +455,7 @@ textarea, input {
 
 .article-element a {
     border-bottom: 1px solid #DFDFDF;
-    color: #777777;    
+    color: #555;    
     text-decoration: none;
     padding-bottom: 1px;
 }
@@ -759,7 +759,7 @@ textarea, input {
 
 #tags a {
     border-radius: 3px 3px 3px 3px;
-    box-shadow: 1px 1px 3px #555555;
+    box-shadow: 1px 1px 3px #333;
     float: left;
     margin: 3px 6px;
     padding: 3px 12px;
@@ -837,7 +837,7 @@ textarea, input {
     background-color: #9CD941;
     border: 265px none;
     bottom: 12px;
-    color: #555555;
+    color: #333555;
     float: left;
     padding: 10px 15px;
     position: absolute;
