@@ -3,14 +3,14 @@
  * skin neoease min style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Nov 28, 2011
+ * @version 1.0.1.1, Dec 8 2011
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6{margin:0;padding:0;}
-body{background-color:#F9F9F9;color:#555;font-family:"Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';font-size:12px;}
+body{background-color:#F9F9F9;color:#333;font-family:"Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';font-size:12px;}
 a:link{color:#21759B;outline:none;text-decoration:none;}
-a:visited{color:#777777;}
+a:visited{color:#555;}
 a:hover{color:#D54E21;}
-a:active{color:#555555;}
+a:active{color:#333;}
 img{border:0;vertical-align:middle;}
 textarea, input{outline:none;}
 .left{float:left;}
@@ -39,7 +39,7 @@ textarea, input{outline:none;}
 .em-br{line-height:24px;}
 .date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search,
 .translate-ico, .feed-ico{background-image:url("/skins/neoease/images/icons.png");}
-.feed-ico{background-position:right -146px;background-repeat:no-repeat;color:#555;padding-right:24px;}
+.feed-ico{background-position:right -146px;background-repeat:no-repeat;color:#333;padding-right:24px;}
 .translate-ico{background-position:1px -125px;background-repeat:no-repeat;border:1px solid #999;border-radius:3px 3px 3px 3px;cursor:pointer;float:right;height:16px;margin:6px 0 0 18px;padding:1px;width:16px;}
 .translate-ico:hover{background-color:#F2F2F2;border-color:#D54E21;box-shadow:0 0 1px #999;}
 .expand-ico, .collapse-ico{background-position:54px -84px;background-repeat:no-repeat;cursor:pointer;height:16px;}
@@ -62,7 +62,7 @@ textarea, input{outline:none;}
 .nav a{color:#666666;display:block;float:left;font-size:14px;height:30px;line-height:30px;padding:0 15px;text-shadow:0 1px 0 #EEE;}
 .nav a:hover{background-color:#DDD;color:#D54E21;}
 .nav .current{background-color:#DDD;margin:-1px 0;padding-right:2px;}
-.nav .current a{background-color:#F9F9F9;border-color:#CCCCCC #CCCCCC #F9F9F9;border-style:solid;border-width:1px 1px 3px;color:#555;font-weight:700;height:33px;line-height:33px;margin:-2px 0 -3px;text-shadow:1px 1px 1px #C6D9E9;}
+.nav .current a{background-color:#F9F9F9;border-color:#CCCCCC #CCCCCC #F9F9F9;border-style:solid;border-width:1px 1px 3px;color:#333;font-weight:700;height:33px;line-height:33px;margin:-2px 0 -3px;text-shadow:1px 1px 1px #C6D9E9;}
 .nav img{margin-left:3px;}
 .nav .right{line-height:29px;}
 .footer{background-color:#E9E9E9;border-top:3px solid #DDD;color:#999;font-size:11px;padding:12px 0;}
@@ -85,7 +85,7 @@ textarea, input{outline:none;}
 .recent-comments-content{height:18px;overflow:hidden;text-overflow: ellipsis;-o-text-overflow: ellipsis;}
 .article{border-bottom:1px solid #CCCCCC;margin-top:20px;padding:0 5px 10px;}
 .article-element{font-size:11px;line-height:16px;margin:12px 0;}
-.article-element a{border-bottom:1px solid #DFDFDF;color:#777777;padding-bottom:1px;text-decoration:none;}
+.article-element a{border-bottom:1px solid #DFDFDF;color:#555;padding-bottom:1px;text-decoration:none;}
 .article-element a:hover{border-bottom-color:#D54E21;color:#D54E21;}
 .article-title{color:#21759B;font-size:20px;font-weight:normal;}
 .article-title:hover{color:#D54E21;}
@@ -137,7 +137,7 @@ textarea, input{outline:none;}
 .form button:hover{background-color:#98C64C;border-color:#76B33A #98C64C #98C64C #76B33A;color:#074A7E;}
 #tags li{float:left;height:38px;list-style:none;}
 #tags a:hover{text-shadow:0 0 2px;}
-#tags a{border-radius:3px 3px 3px 3px;box-shadow:1px 1px 3px #555555;float:left;margin:3px 6px;padding:3px 12px;}
+#tags a{border-radius:3px 3px 3px 3px;box-shadow:1px 1px 3px #333;float:left;margin:3px 6px;padding:3px 12px;}
 #tagsSide li a{float:left;line-height:20px;margin-right:7px;white-space:nowrap;}
 .tags1{color:#A1A1A1;font-size:12px;}
 .tags2{color:#687F95;font-size:14px;}
@@ -151,5 +151,5 @@ textarea, input{outline:none;}
 .main>h2{margin-top:16px;}
 .error {background-image: url("/skins/neoease/images/404.png");float: left;height: 536px;margin: 50px 80px;position: relative; width: 363px;}
 .error h2 {left: -68px;position: absolute;top: -20px;}
-.error a {background-color: #9CD941;border: 265px none;bottom: 12px;color: #555555;float: left;padding: 10px 15px;position: absolute;right: -106px;}
+.error a {background-color: #9CD941;border: 265px none;bottom: 12px;color: #333555;float: left;padding: 10px 15px;position: absolute;right: -106px;}
 .error a:hover{background-color:#ADEb51;}
