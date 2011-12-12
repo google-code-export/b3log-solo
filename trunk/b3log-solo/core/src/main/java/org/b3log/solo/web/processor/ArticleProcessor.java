@@ -17,8 +17,6 @@ package org.b3log.solo.web.processor;
 
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Statistics;
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.latke.action.util.Paginator;
@@ -60,7 +58,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -73,7 +70,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Dec 6, 2011
+ * @version 1.1.1.1, Dec 12, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -597,24 +594,6 @@ public final class ArticleProcessor {
                 return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
-            }
-        }
-
-        if (!Strings.isEmptyOrNull(articleId)) {
-            final Repository statisticRepository =
-                    StatisticRepositoryImpl.getInstance();
-            final Transaction transaction =
-                    statisticRepository.beginTransaction();
-            transaction.clearQueryCache(false);
-            try {
-                statistics.incArticleViewCount(articleId);
-                transaction.commit();
-            } catch (final Exception e) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARNING, "Inc article view count failed", e);
             }
         }
     }
