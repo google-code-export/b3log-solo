@@ -18,8 +18,6 @@ package org.b3log.solo.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
@@ -32,7 +30,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 19, 2011
+ * @version 1.0.1.3, Dec 12, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -175,8 +173,8 @@ public final class Statistics {
      * Blog statistic view count +1.
      * 
      * <p>
-     * There is a cron job to flush the blog view count from memcache to 
-     * datastore.
+     * There is a cron job (/console/stat/viewcnt) to flush the blog view count 
+     * from cache to datastore.
      * </p>
      * @throws RepositoryException repository exception
      * @throws JSONException json exception 
@@ -202,38 +200,6 @@ public final class Statistics {
 
         LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]",
                    statistic);
-    }
-
-    /**
-     * Article view count +1 in memcache for an article specified by the given
-     * article id.
-     *
-     * <p>
-     * The property(named {@value Article#ARTICLE_RANDOM_DOUBLE}) of the
-     * specified article will be regenerated.
-     * </p>
-     *
-     * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception 
-     */
-    public void incArticleViewCount(final String articleId)
-            throws JSONException, RepositoryException {
-        Stopwatchs.start("Inc Article View Count");
-
-        final JSONObject article = articleRepository.get(articleId);
-        if (null == article) {
-            return;
-        }
-
-        final int viewCnt =
-                article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
-        article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
-        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
-        articleRepository.update(articleId, article);
-
-        Stopwatchs.end();
     }
 
     /**
@@ -425,7 +391,7 @@ public final class Statistics {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() { 
+        private SingletonHolder() {
         }
     }
 }

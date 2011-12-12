@@ -37,9 +37,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
@@ -49,7 +47,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Statistics;
@@ -62,7 +59,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 1, 2011
+ * @version 1.0.0.7, Dec 12, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -695,7 +692,7 @@ public final class ArticleQueryService {
      * Gets article contents with the specified article id.
      * 
      * <p>
-     * If gets article content successfully, increments article view count.
+     * Invoking this method dose not effect on article view count.
      * </p>
      * 
      * @param articleId the specified article id
@@ -714,26 +711,7 @@ public final class ArticleQueryService {
                 return null;
             }
 
-            final String ret = article.getString(Article.ARTICLE_CONTENT);
-
-            final Repository statisticRepository =
-                    StatisticRepositoryImpl.getInstance();
-            final Transaction transaction =
-                    statisticRepository.beginTransaction();
-            transaction.clearQueryCache(false);
-            try {
-                statistics.incArticleViewCount(articleId);
-                transaction.commit();
-            } catch (final Exception e) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARNING, "Inc article view count failed[articleId="
-                                          + articleId + "]", e);
-            }
-
-            return ret;
+            return article.getString(Article.ARTICLE_CONTENT);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets article content failed[articleId="
                                      + articleId + "]", e);
