@@ -73,6 +73,7 @@ $.extend(Page.prototype, {
         } else {
             return true;
         }
+        $("#commentErrorTip").show();
         return false;
     },
     
@@ -433,6 +434,56 @@ $.extend(Page.prototype, {
         }
     },
 
+    submitCommentMoblie: function (commentId, state) {
+        if (!state) {
+            state = '';
+        }
+        var that = this,
+        tips = this.tips,
+        type = "article";
+        if (tips.externalRelevantArticlesDisplayCount === undefined) {
+            type = "page";
+        }
+        
+        if (this.validateComment(state)) {
+            $("#submitCommentButton" + state).attr("disabled", "disabled");
+            $("#commentErrorTip" + state).html(this.tips.loadingLabel);
+            
+            var requestJSONObject = {
+                "oId": tips.oId,
+                "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "commentEmail": $("#commentEmail" + state).val(),
+                "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
+                "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "captcha": $("#commentValidate" + state).val()
+            };
+
+            if (state === "Reply") {
+                requestJSONObject.commentOriginalCommentId = commentId;
+            }
+            $wpt("#loading").fadeIn(400);
+            $.ajax({
+                type: "POST",
+                url: "/add-" + type + "-comment.do",
+                contentType: "application/json",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result){
+					$wpt("#commentForm").hide();
+					$wpt("#loading").fadeOut(400);
+					$wpt("#refresher").fadeIn(400);
+                }, // end success 
+				error:  function() {
+					$wpt('#commentErrorTip').show();
+					$wpt("#loading").fadeOut(400);
+					} //end error
+            });
+
+            Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
+            Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
+            Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+        }
+    },
+    
     addReplyForm: function (id, commentFormHTML, endHTML) {
         var that = this;
         if (id === this.currentCommentId) {
@@ -483,7 +534,7 @@ $.extend(Page.prototype, {
             });
         
             $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("");
-            
+            $("#commentErrorTip").hide();
             $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply").
             unbind("click").removeAttr("onclick").click(function () {
                 that.submitComment(id, 'Reply');
@@ -523,6 +574,7 @@ $.extend(Page.prototype, {
 
         if (state === "") {
             $("#commentErrorTip").html("");
+            $("#commentErrorTip").hide();
             $("#comment").val("");
             $("#commentValidate").val("");
             $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
