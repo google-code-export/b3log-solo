@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 12, 2011
+ * @version 1.0.1.2, Dec 13, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -148,6 +148,13 @@ public final class StatProcessor {
                     continue;
                 }
 
+                final int hitCount =
+                        cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
+                if (2 > hitCount) {
+                    // Skips for view count tiny-changes, reduces Datastore Write Quota for Solo GAE version
+                    continue;
+                }
+
                 final String articleId = cachedPage.optString(
                         AbstractCacheablePageAction.CACHED_OID);
 
@@ -161,8 +168,6 @@ public final class StatProcessor {
                     continue;
                 }
 
-                final int hitCount =
-                        cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
                 final int oldViewCount = article.optInt(
                         Article.ARTICLE_VIEW_COUNT);
                 final int viewCount = oldViewCount + hitCount;
