@@ -37,8 +37,10 @@ import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Statistic;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
@@ -57,7 +59,6 @@ import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,7 +68,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Oct 3, 2011
+ * @version 1.1.0.2, Dec 13, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -83,10 +84,6 @@ public final class RepairProcessor {
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
-    /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
     /**
      * Mail service.
      */
@@ -106,6 +103,79 @@ public final class RepairProcessor {
      */
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository =
+            StatisticRepositoryImpl.getInstance();
+
+    /**
+     * Restores the statistics.
+     * 
+     * <p>
+     *   <ul>
+     *     <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT}
+     *     for {@link Statistic#STATISTIC_BLOG_COMMENT_COUNT}</li>
+     *     <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT}
+     *     for {@link Statistic#STATISTIC_BLOG_ARTICLE_COUNT}</li>
+     *   </ul>
+     * </p>
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/fix/restore-stat.do"},
+                       method = HTTPRequestMethod.GET)
+    public void restoreStat(final HTTPRequestContext context) {
+        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+        context.setRenderer(renderer);
+
+        Transaction transaction = null;
+        try {
+            PageCaches.removeAll(); // Clears all first
+
+            final JSONObject statistic =
+                    statisticRepository.get(Statistic.STATISTIC);
+            if (null == statistic) {
+                LOGGER.log(Level.WARNING, "Statistic is null");
+                return;
+            }
+
+            if (statistic.has(Statistic.STATISTIC_BLOG_COMMENT_COUNT)
+                && statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
+                LOGGER.info("No need for repairing statistic");
+                renderer.setContent("No need for repairing statistic.");
+                
+                return;
+            }
+
+            if (!statistic.has(Statistic.STATISTIC_BLOG_COMMENT_COUNT)) {
+                statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
+                              statistic.getInt(
+                        Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+            }
+
+            if (!statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
+                statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
+                              statistic.getInt(
+                        Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
+            }
+
+            transaction = statisticRepository.beginTransaction();
+            statisticRepository.update(Statistic.STATISTIC, statistic);
+
+            transaction.commit();
+            
+            renderer.setContent("Restores statistic succeeded.");
+        } catch (final Exception e) {
+            if (null != transaction && transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            renderer.setContent("Restores statistics failed, error msg["
+                                + e.getMessage() + "]");
+        }
+    }
 
     /**
      * Restores the signs of preference to default.
