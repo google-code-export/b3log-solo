@@ -144,7 +144,7 @@ public final class RepairProcessor {
                 && statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
                 LOGGER.info("No need for repairing statistic");
                 renderer.setContent("No need for repairing statistic.");
-                
+
                 return;
             }
 
@@ -164,7 +164,7 @@ public final class RepairProcessor {
             statisticRepository.update(Statistic.STATISTIC, statistic);
 
             transaction.commit();
-            
+
             renderer.setContent("Restores statistic succeeded.");
         } catch (final Exception e) {
             if (null != transaction && transaction.isActive()) {
@@ -424,6 +424,9 @@ public final class RepairProcessor {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+
+            LOGGER.log(Level.SEVERE, "Removes all data in repository[name="
+                                     + repository.getName() + "] failed", e);
         }
     }
 }
