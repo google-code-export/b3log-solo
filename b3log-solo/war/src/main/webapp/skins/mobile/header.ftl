@@ -38,7 +38,7 @@
 				    <#list pageNavigations as page>
 				    <li><a href="${page.pagePermalink}"><img src="/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
 				    </#list>           
-					<li><a href="/blog-articles-feed.do"><img src="/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
+					<li><a href="/blog-articles-rss.do"><img src="/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
 					<li><a href="mailto:alnxcc@gmail.com"><img src="/skins/${skinDirName}/images/icon-pool/Mail.png" alt="" />E-Mail</a></li>           
 				</ul>
 				<ul id="head-tags">
