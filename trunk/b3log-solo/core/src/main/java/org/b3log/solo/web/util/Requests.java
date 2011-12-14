@@ -30,7 +30,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.7, Dec 6, 2011
+ * @version 1.0.0.8, Dec 14, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -87,6 +87,10 @@ public final class Requests {
      */
     public static boolean mobileCookie(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
+        
+        if (null == cookies || 0 == cookies.length) {
+            return false;
+        }
 
         try {
             for (int i = 0; i < cookies.length; i++) {
