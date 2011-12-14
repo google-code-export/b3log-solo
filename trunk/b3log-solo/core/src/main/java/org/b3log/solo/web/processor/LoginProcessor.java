@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Nov 19, 2011
+ * @version 1.1.0.5, Dec 14, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,7 +99,7 @@ public final class LoginProcessor {
     public void showLogin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        String destinationURL = request.getParameter("goto");
+        String destinationURL = request.getParameter(Common.GOTO);
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/";
         }
@@ -133,7 +133,7 @@ public final class LoginProcessor {
         final Map<String, String> langs =
                 langPropsService.getAll(Latkes.getLocale());
         dataModel.putAll(langs);
-        dataModel.put("goto", destinationURL);
+        dataModel.put(Common.GOTO, destinationURL);
         dataModel.put(Common.YEAR,
                       String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
@@ -167,7 +167,6 @@ public final class LoginProcessor {
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
-
         try {
             jsonObject.put(Common.IS_LOGGED_IN, false);
             final String loginFailLabel = langPropsService.get("loginFailLabel");
@@ -200,6 +199,7 @@ public final class LoginProcessor {
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
+                jsonObject.put(Common.GOTO, "/admin-index.do#main");
                 jsonObject.remove(Keys.MSG);
 
                 return;
@@ -223,7 +223,7 @@ public final class LoginProcessor {
 
         Sessions.logout(httpServletRequest, context.getResponse());
 
-        String destinationURL = httpServletRequest.getParameter("goto");
+        String destinationURL = httpServletRequest.getParameter(Common.GOTO);
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/";
         }
