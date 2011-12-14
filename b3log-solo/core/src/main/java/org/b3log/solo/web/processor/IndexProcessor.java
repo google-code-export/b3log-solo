@@ -133,7 +133,7 @@ public final class IndexProcessor {
             }
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
@@ -192,7 +192,7 @@ public final class IndexProcessor {
             skins.fillSkinLangs(preference, dataModel);
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

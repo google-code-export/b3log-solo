@@ -65,7 +65,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Nov 17, 2011
+ * @version 1.1.0.7, Dec 14, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -238,7 +238,7 @@ public final class TagProcessor {
             dataModel.put(Tag.TAG, tag);
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -337,7 +337,7 @@ public final class TagProcessor {
             dataModel.put(Tag.TAGS, tags);
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

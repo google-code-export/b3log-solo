@@ -507,11 +507,13 @@ public final class Filler {
     /**
      * Fills article-header.ftl.
      *
+     * @param request the specified HTTP servlet request
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogHeader(final Map<String, Object> dataModel,
+    public void fillBlogHeader(final HttpServletRequest request,
+                               final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Header");
@@ -539,7 +541,9 @@ public final class Filler {
                 user.remove(User.USER_EMAIL);
             }
 
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+
+            final String skinDirName =
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
             fillMinified(dataModel);
 

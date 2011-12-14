@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 2, 2011
+ * @version 1.0.0.9, Dec 14, 2011
  * @since 0.3.1
  */
 public final class AdminIndexAction extends AbstractAdminAction {
@@ -93,7 +93,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
             ret.put(User.USER_NAME, userName);
             ret.put(User.USER_ROLE, roleName);
 
-            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogHeader(request, ret, preference);
             filler.fillBlogFooter(ret, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
