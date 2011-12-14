@@ -86,7 +86,7 @@
  <!-- #start the Prowl Message Area -->
  <div id="prowl-message" style="display:none">
  	 <div id="push-style-bar"></div><!-- filler to get the styling just right -->
-	 <img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/push-icon.png" alt="push icon" />
+	 <img src="/skins/${skinDirName}/themes/core/core-images/push-icon.png" alt="push icon" />
 	 <h4>Send a Message</h4>
 	 <p>This message will be pushed to the admin's iPhone instantly.</p>
 	 
