@@ -199,7 +199,7 @@ public final class LoginProcessor {
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
-                jsonObject.put(Common.GOTO, "/admin-index.do#main");
+                jsonObject.put(Common.GOTO, Common.ADMIN_INDEX_URI);
                 jsonObject.remove(Keys.MSG);
 
                 return;
