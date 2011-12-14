@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
@@ -70,7 +71,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
         LOGGER.log(Level.FINEST, "Do render....");
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-        
+
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -112,12 +113,20 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
     protected void afterRender(final HTTPRequestContext context)
             throws Exception {
         LOGGER.log(Level.FINEST, "After render....");
-        super.afterRender(context);
 
         try {
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "After render failed", e);
         }
+
+        final HttpServletRequest request = context.getRequest();
+        if ("mobile".equals(
+                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME))) {
+            // Skips page caching if requested by mobile device
+            return;
+        }
+
+        super.afterRender(context);
     }
 }
