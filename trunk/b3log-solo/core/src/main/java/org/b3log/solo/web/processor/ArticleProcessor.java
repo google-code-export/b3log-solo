@@ -70,7 +70,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.1, Dec 12, 2011
+ * @version 1.1.1.2, Dec 14, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -353,7 +353,7 @@ public final class ArticleProcessor {
             prepareShowAuthorArticles(pageNums, dataModel, pageCount,
                                       currentPageNum, articles, author,
                                       preference);
-
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
         } catch (final ServiceException e) {
@@ -456,6 +456,8 @@ public final class ArticleProcessor {
                                                currentPageNum,
                                                pageCount, archiveDateString,
                                                archiveDate);
+
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs =
@@ -585,6 +587,8 @@ public final class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             prepareShowArticle(preference, dataModel, article);
+
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -749,7 +753,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
 
-        filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
         skins.fillSkinLangs(preference, dataModel);
     }
@@ -805,7 +808,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.PATH, "/archives/" + archiveDateString);
         dataModel.put(Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
 
-        filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
         final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
         final String dateString = ArchiveDate.DATE_FORMAT.format(time);
@@ -894,7 +896,6 @@ public final class ArticleProcessor {
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
 
-        filler.fillBlogHeader(dataModel, preference);
         filler.fillBlogFooter(dataModel, preference);
     }
 }

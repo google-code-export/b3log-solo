@@ -44,7 +44,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Page processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 8, 2011
+ * @version 1.1.0.1, Dec 14, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -127,7 +127,7 @@ public final class PageProcessor {
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
