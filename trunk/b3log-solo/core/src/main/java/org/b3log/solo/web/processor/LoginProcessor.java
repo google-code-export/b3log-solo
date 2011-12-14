@@ -281,43 +281,54 @@ public final class LoginProcessor {
      * 
      * @param request the specified request
      * @param response the specified response
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception 
      */
     public static void tryLogInWithCookie(final HttpServletRequest request,
                                           final HttpServletResponse response)
-            throws JSONException, RepositoryException {
+            throws RepositoryException {
         final Cookie[] cookies = request.getCookies();
-        if (null == cookies) {
+        if (null == cookies || 0 == cookies.length) {
             return;
         }
 
-        for (int i = 0; i < cookies.length; i++) {
-            final Cookie cookie = cookies[i];
-            if ("b3log-latke".equals(cookie.getName())) {
-                final JSONObject cookieJSONObject =
-                        new JSONObject(cookie.getValue());
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+                if ("b3log-latke".equals(cookie.getName())) {
+                    final JSONObject cookieJSONObject =
+                            new JSONObject(cookie.getValue());
 
-                final String userEmail =
-                        cookieJSONObject.getString(User.USER_EMAIL);
-                if (Strings.isEmptyOrNull(userEmail)) {
-                    break;
-                }
+                    final String userEmail =
+                            cookieJSONObject.optString(User.USER_EMAIL);
+                    if (Strings.isEmptyOrNull(userEmail)) {
+                        break;
+                    }
 
-                final JSONObject user = userRepository.getByEmail(
-                        userEmail.toLowerCase().trim());
-                if (null == user) {
-                    break;
-                }
+                    final JSONObject user = userRepository.getByEmail(
+                            userEmail.toLowerCase().trim());
+                    if (null == user) {
+                        break;
+                    }
 
-                final String userPassword =
-                        user.getString(User.USER_PASSWORD);
-                final String hashPassword =
-                        cookieJSONObject.getString(User.USER_PASSWORD);
-                if (MD5.hash(userPassword).equals(hashPassword)) {
-                    Sessions.login(request, response, user);
+                    final String userPassword =
+                            user.optString(User.USER_PASSWORD);
+                    final String hashPassword =
+                            cookieJSONObject.optString(User.USER_PASSWORD);
+                    if (MD5.hash(userPassword).equals(hashPassword)) {
+                        Sessions.login(request, response, user);
+                    }
                 }
             }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.WARNING,
+                       "Parses cookie failed, clears the cookie[name=b3log-latke]",
+                       e);
+
+            final Cookie cookie = new Cookie("b3log-latke", null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+
+            response.addCookie(cookie);
         }
     }
 }
