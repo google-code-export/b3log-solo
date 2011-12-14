@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.0, Nov 18, 2011
+ * @version 1.0.4.1, Dec 14, 2011
  * @since 0.3.1
  */
 public final class Common {
@@ -222,6 +222,11 @@ public final class Common {
      * Key of unused tags.
      */
     public static final String UNUSED_TAGS = "unusedTags";
+    
+    /**
+     * Key of go to.
+     */
+    public static final String GOTO = "to";
 
     /**
      * Private default constructor.

@@ -36,7 +36,7 @@ $.extend(Admin.prototype, {
      * 登出
      */
     logout: function () {
-        window.location.href = "/logout?goto=/";
+        window.location.href = "/logout?to=/";
     },
     
     /*
