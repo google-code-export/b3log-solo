@@ -31,7 +31,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -57,7 +56,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Dec 14, 2011
+ * @version 1.1.0.6, Dec 15, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -229,51 +228,6 @@ public final class LoginProcessor {
         }
 
         context.getResponse().sendRedirect(destinationURL);
-    }
-
-    /**
-     * Checks logged in with the specified context.
-     * 
-     * @param context the specified context
-     * @throws Exception exception 
-     */
-    @RequestProcessing(value = {"/check-login.do"},
-                       method = HTTPRequestMethod.POST)
-    public void checkLoggedIn(final HTTPRequestContext context)
-            throws Exception {
-
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final HttpServletRequest request = context.getRequest();
-        tryLogInWithCookie(request, context.getResponse());
-
-        final JSONObject currentUser = userUtils.getCurrentUser(request);
-        final JSONObject jsonObjectToRender = new JSONObject();
-        renderer.setJSONObject(jsonObjectToRender);
-
-        try {
-            jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
-
-            if (null == currentUser) {
-                jsonObjectToRender.put(Common.LOGIN_URL,
-                                       userService.createLoginURL(
-                        Common.ADMIN_INDEX_URI));
-                return;
-            }
-
-            jsonObjectToRender.put(Common.IS_LOGGED_IN, true);
-            jsonObjectToRender.put(Common.LOGOUT_URL, userService.
-                    createLogoutURL("/"));
-            jsonObjectToRender.put(Common.IS_ADMIN,
-                                   Role.ADMIN_ROLE.equals(currentUser.getString(
-                    User.USER_ROLE)));
-
-            final String userName = currentUser.getString(User.USER_NAME);
-            jsonObjectToRender.put(User.USER_NAME, userName);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
     }
 
     /**
