@@ -520,6 +520,8 @@ public final class ArticleMgmtService {
                         new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             }
 
+            article.remove(Common.POST_TO_COMMUNITY);
+
             return ret;
         } catch (final ServiceException e) {
             throw e;

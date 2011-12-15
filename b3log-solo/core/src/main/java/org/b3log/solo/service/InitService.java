@@ -235,6 +235,8 @@ public final class InitService {
         requestJSONObject.put(Comment.COMMENT_NAME, "88250");
         requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");
         requestJSONObject.put(Comment.COMMENT_URL, "http://88250.b3log.org");
+        requestJSONObject.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+        requestJSONObject.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         requestJSONObject.put(
                 Comment.COMMENT_CONTENT,
                 "Hi, this is a comment. To delete a comment, just log in and "
