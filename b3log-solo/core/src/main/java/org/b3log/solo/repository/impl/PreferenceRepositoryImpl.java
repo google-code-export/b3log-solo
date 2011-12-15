@@ -17,14 +17,16 @@ package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.json.JSONObject;
 
 /**
  * Preference repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.2, Dec 15, 2011
  * @since 0.3.1
  */
 public final class PreferenceRepositoryImpl extends AbstractRepository
@@ -35,6 +37,35 @@ public final class PreferenceRepositoryImpl extends AbstractRepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(PreferenceRepositoryImpl.class.getName());
+
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Bypasses {@linkplain org.b3log.latke.repository.Repositories validation}
+     * against the repository structure, adds the specified json 
+     * object as preference directly.
+     * </p>
+     */
+    @Override
+    public String add(final JSONObject jsonObject) throws RepositoryException {
+        return getUnderlyingRepository().add(jsonObject);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Bypasses {@linkplain org.b3log.latke.repository.Repositories validation}
+     * against the repository structure, adds the specified json 
+     * object as preference directly.
+     * </p>
+     */
+    @Override
+    public void update(final String id, final JSONObject jsonObject)
+            throws RepositoryException {
+        getUnderlyingRepository().update(id, jsonObject);
+    }
 
     /**
      * Gets the {@link PreferenceRepositoryImpl} singleton.

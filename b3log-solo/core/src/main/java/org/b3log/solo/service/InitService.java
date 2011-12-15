@@ -389,6 +389,7 @@ public final class InitService {
                 Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         ret.put(VERSION, SoloServletListener.VERSION);
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
+        ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
