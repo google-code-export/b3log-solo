@@ -48,6 +48,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -412,7 +413,7 @@ public final class CommentProcessor {
             final HttpServletRequest request) throws Exception {
         final JSONObject ret = new JSONObject();
 
-        String articleId, commentId;
+        String articleId;
 
         final String captcha =
                 requestJSONObject.getString(CaptchaProcessor.CAPTCHA);
@@ -483,15 +484,19 @@ public final class CommentProcessor {
         // Sets comment on article....
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
-        commentId = commentRepository.add(comment);
-        // Save comment sharp URL
+        final String commentId = Ids.genTimeMillisId();
+        comment.put(Keys.OBJECT_ID, commentId);
+
         final String commentSharpURL =
                 getCommentSharpURLForArticle(article,
                                              commentId);
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
         ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
-        comment.put(Keys.OBJECT_ID, commentId);
-        commentRepository.update(commentId, comment);
+        
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+
+        commentRepository.add(comment);
         // Step 2: Update article comment count
         articleUtils.incArticleCommentCount(articleId);
         // Step 3: Update blog statistic comment count
