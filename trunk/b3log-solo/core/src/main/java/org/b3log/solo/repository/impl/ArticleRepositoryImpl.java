@@ -267,33 +267,29 @@ public final class ArticleRepositoryImpl extends AbstractRepository
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
-        try {
-            final List<JSONObject> list1 =
-                    CollectionUtils.<JSONObject>jsonArrayToList(array1);
-            ret.addAll(list1);
+        final List<JSONObject> list1 =
+                CollectionUtils.<JSONObject>jsonArrayToList(array1);
+        ret.addAll(list1);
 
-            final int reminingSize = fetchSize - array1.length();
-            if (0 != reminingSize) { // Query for remains
-                query = new Query();
-                query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                                FilterOperator.GREATER_THAN_OR_EQUAL, 0D);
-                query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                                FilterOperator.LESS_THAN_OR_EQUAL, mid);
-                query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                                FilterOperator.EQUAL, true);
-                query.setCurrentPageNum(1);
-                query.setPageSize(reminingSize);
-                query.setPageCount(1);
+        final int reminingSize = fetchSize - array1.length();
+        if (0 != reminingSize) { // Query for remains
+            query = new Query();
+            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                            FilterOperator.GREATER_THAN_OR_EQUAL, 0D);
+            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                            FilterOperator.LESS_THAN_OR_EQUAL, mid);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            FilterOperator.EQUAL, true);
+            query.setCurrentPageNum(1);
+            query.setPageSize(reminingSize);
+            query.setPageCount(1);
 
-                final JSONObject result2 = get(query);
-                final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
+            final JSONObject result2 = get(query);
+            final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
 
-                final List<JSONObject> list2 =
-                        CollectionUtils.<JSONObject>jsonArrayToList(array2);
-                ret.addAll(list2);
-            }
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            final List<JSONObject> list2 =
+                    CollectionUtils.<JSONObject>jsonArrayToList(array2);
+            ret.addAll(list2);
         }
 
         return ret;

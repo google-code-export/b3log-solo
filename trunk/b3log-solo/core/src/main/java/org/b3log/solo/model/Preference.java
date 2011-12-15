@@ -172,7 +172,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.3, Oct 31, 2011
+     * @version 1.1.0.4, Dec 15, 2011
      * @since 0.3.1
      */
     public static final class Default {
@@ -300,6 +300,10 @@ public final class Preference {
          */
         public static final String DEFAULT_ARTICLE_LIST_STYLE =
                 "titleAndAbstract";
+        /**
+         * Default key of solo.
+         */
+        public static final String DEFAULT_KEY_OF_SOLO = "Your key";
         /**
          * Default reply notification template.
          */
