@@ -19,9 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Statistic;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +28,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 12, 2011
+ * @version 1.0.1.4, Dec 15, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -45,11 +43,6 @@ public final class Statistics {
      */
     private StatisticRepository statisticRepository =
             StatisticRepositoryImpl.getInstance();
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
     /**
      * Repository cache prefix, refers to GAERepository#CACHE_KEY_PREFIX.
      */
