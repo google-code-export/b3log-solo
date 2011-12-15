@@ -457,8 +457,8 @@ public final class CommentProcessor {
                 preference.getString(Preference.TIME_ZONE_ID);
         final Date date = timeZoneUtils.getTime(timeZoneId);
         comment.put(Comment.COMMENT_DATE, date);
-        ret.put(Comment.COMMENT_DATE,
-                Comment.DATE_FORMAT.format(date));
+        ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
+
         if (!Strings.isEmptyOrNull(originalCommentId)) {
             originalComment =
                     commentRepository.get(originalCommentId);
@@ -492,9 +492,6 @@ public final class CommentProcessor {
                                              commentId);
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
         ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
-        
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
 
         commentRepository.add(comment);
         // Step 2: Update article comment count
