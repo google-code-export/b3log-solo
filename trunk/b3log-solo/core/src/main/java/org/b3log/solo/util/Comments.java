@@ -181,7 +181,8 @@ public final class Comments {
             return;
         }
 
-        if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+        if (null != originalComment && comment.has(
+                Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
             final String originalEmail =
                     originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
