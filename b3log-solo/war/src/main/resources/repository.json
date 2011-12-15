@@ -440,7 +440,7 @@
             "length": 255
         },
         {
-            "name": "article_oId ",
+            "name": "article_oId",
             "type": "String",
             "length": 255
         },
