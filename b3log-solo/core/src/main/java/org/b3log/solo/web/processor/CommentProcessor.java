@@ -452,6 +452,12 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_EMAIL, commentEmail);
         comment.put(Comment.COMMENT_URL, commentURL);
         comment.put(Comment.COMMENT_CONTENT, commentContent);
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
+                    requestJSONObject.getString(
+                Comment.COMMENT_ORIGINAL_COMMENT_ID));
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                    requestJSONObject.getString(
+                Comment.COMMENT_ORIGINAL_COMMENT_NAME));
         final JSONObject preference = preferenceQueryService.getPreference();
         final String timeZoneId =
                 preference.getString(Preference.TIME_ZONE_ID);
