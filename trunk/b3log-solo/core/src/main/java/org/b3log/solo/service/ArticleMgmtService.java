@@ -478,7 +478,7 @@ public final class ArticleMgmtService {
                 permalink = "/" + permalink;
             }
 
-            if (permalinks.invalidArticlePermalinkFormat(permalink)) {
+            if (Permalinks.invalidArticlePermalinkFormat(permalink)) {
                 throw new ServiceException(langPropsService.get(
                         "invalidPermalinkFormatLabel"));
             }
