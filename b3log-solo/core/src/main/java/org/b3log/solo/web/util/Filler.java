@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.6, Nov 10, 2011
+ * @version 1.0.4.7, Dec 15, 2011
  * @since 0.3.1
  */
 public final class Filler {
@@ -672,9 +672,6 @@ public final class Filler {
             LOGGER.finer("Filling statistic....");
             final JSONObject statistic =
                     statisticRepository.get(Statistic.STATISTIC);
-
-            statistic.remove(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
-            statistic.remove(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
 
             dataModel.put(Statistic.STATISTIC, statistic);
         } catch (final RepositoryException e) {
