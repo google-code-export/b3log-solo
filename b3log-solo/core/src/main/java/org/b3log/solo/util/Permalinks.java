@@ -30,7 +30,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Nov 9, 2011
+ * @version 1.1.0.6, Dec 15, 2011
  * @since 0.3.1
  */
 public final class Permalinks {
@@ -74,7 +74,6 @@ public final class Permalinks {
         "/file-access.do",
         "/datastore-file-access.do",
         "/kill-browser.html",
-        "/check-login.do",
         "/add-article-comment.do",
         "/add-article-from-symphony-comment.do",
         "/add-page-comment.do",
