@@ -70,7 +70,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.2, Dec 14, 2011
+ * @version 1.1.1.3, Dec 16, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -579,11 +579,6 @@ public final class ArticleProcessor {
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
 
-            LOGGER.finer("Getting article sign....");
-            article.put(Article.ARTICLE_SIGN_REF,
-                        articleUtils.getSign(articleId, preference));
-            LOGGER.finer("Got article sign");
-
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             prepareShowArticle(preference, dataModel, article);
@@ -847,6 +842,13 @@ public final class ArticleProcessor {
         skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
+
+        Stopwatchs.start("Get Sign");
+        LOGGER.finer("Getting article sign....");
+        article.put(Article.ARTICLE_SIGN_REF,
+                    articleUtils.getSign(articleId, preference));
+        LOGGER.finer("Got article sign");
+        Stopwatchs.end();
 
         Stopwatchs.start("Get Next Article");
         LOGGER.finer("Getting the next article....");
