@@ -101,7 +101,7 @@
     
     <servlet>
         <servlet-name>AdminIndexAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AdminIndexAction</servlet-class>
+        <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminIndexAction</servlet-name>
@@ -109,7 +109,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AdminDoNothingAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AdminDoNothingAction</servlet-class>
+        <servlet-class>org.b3log.solo.action.impl.AdminDoNothingAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminDoNothingAction</servlet-name>
@@ -129,7 +129,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>DataStoreFileAccessServlet</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.file.DataStoreFileAccessServlet</servlet-class>
+        <servlet-class>org.b3log.solo.action.file.DataStoreFileAccessServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DataStoreFileAccessServlet</servlet-name>
@@ -137,7 +137,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AddArticleCommentFromSymphonyAction</servlet-class>
+        <servlet-class>org.b3log.solo.action.impl.AddArticleCommentFromSymphonyAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
@@ -145,7 +145,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AdminError</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AdminErrorAction</servlet-class>
+        <servlet-class>org.b3log.solo.action.impl.AdminErrorAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminError</servlet-name>
