@@ -15,7 +15,7 @@
 ||8||Latke <font color='grey'>Local</font> User Service||D||2011-08-07||2011-10-15||2011-09-30||<font color='green'>已完成</font>|| ||
 ||9||用户 FAQ||L||2011-06-11||2011-08-07|| || <font color='red'>未开始</font>|| ||
 ||10||Index 修改与发布||L||2011-08-07||2011-08-25|| ||<font color='blue'>10%</font>|| ||
-||~~<font color='purple'>11</font>~~||Latke <font color='grey'>Local</font> (MySQL) Repository||L, D||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>||使用 Sleepycat 实现本地存储，见 #17||
+||11||Latke <font color='grey'>Local</font> (MySQL) Repository||Y, D||2011-12-15||2012-02-19|| ||<font color='blue'>10%</font>|| ||
 ||12||开发 FAQ||J||2011-06-11||2011-07-15||2011-07-15||<font color='green'>已完成</font>||还需要持续补充||
 ||13||入伙文档||J||2011-06-11||2011-07-01||2011-07-01||<font color='green'>已完成</font>|| ||
 ||14||Latke <font color='grey'>Local</font> Mail Service||J||2011-08-07||2011-10-01||2011-09-30||<font color='green'>已完成</font>|| || 
@@ -24,6 +24,6 @@
 ||17||Latke <font color='grey'>Local</font> (Sleepycat) Repository|| D||2011-09-24||2011-11-01||2011-09-30||<font color='green'>已完成</font>||Query 性能低下，待改进||
 ||18||B3log <font color='#7BB026'>Android</font> 客户端|| L||2011-10-01||2012-01-01|| ||<font color='blue'>2%</font>||长期事件，for Solo and Symphony||
 ||19||Latke <font color='orange'>JPA</font> 简版实现<font color='brown'>（已暂停）</font>|| D, J||2011-10-10||2011-12-10|| ||<font color='blue'>10%</font>||仅仅实现几个关键的 Annotations||
-||20||Symphony 0.2.0||D, V||2011-11-01||2012-02-19|| ||<font color='blue'>10%</font>||主要是重写皮肤||
+||20||Symphony 0.2.0<font color='brown'>（已暂停）</font>||D, V||2011-11-01||2012-02-19|| ||<font color='blue'>10%</font>||主要是重写皮肤||
 ||21||Solo 0.4.0 发布||D, V||2012-02-19||2012-02-19|| || || ||
 ||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27||2011-11-27||<font color='green'>已完成</font>|| ||
