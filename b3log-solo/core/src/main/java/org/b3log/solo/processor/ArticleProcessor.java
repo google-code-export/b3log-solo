@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web.processor;
+package org.b3log.solo.processor;
 
+import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.processor.util.Requests;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -23,9 +26,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.util.Collections;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
@@ -45,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;

@@ -25,8 +25,8 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.web.util.TopBars;
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response 

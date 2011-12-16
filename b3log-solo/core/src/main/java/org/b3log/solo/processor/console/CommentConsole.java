@@ -32,7 +32,7 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.web.util.Requests;
+import org.b3log.solo.processor.util.Requests;
 import org.json.JSONObject;
 
 /**
