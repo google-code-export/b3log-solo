@@ -253,7 +253,6 @@ public final class Comments {
         MAIL_SVC.send(message);
     }
 
-    // XXX: remove this unused class?
     /**
      * Gets the {@link Comments} singleton.
      *

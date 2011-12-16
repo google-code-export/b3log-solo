@@ -64,10 +64,6 @@ public final class CommentMgmtService {
     private PageRepository pageRepository =
             PageRepositoryImpl.getInstance();
     /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
-    /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
