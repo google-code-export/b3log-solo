@@ -1,4 +1,4 @@
 /**
- * Templates, captcha, upload/download, Atom process.
+ * Admin index.ftl template and upload/download processing, .
  */
 package org.b3log.solo.web.action;
