@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web.processor;
+package org.b3log.solo.processor;
 
 import freemarker.template.Template;
 import java.io.IOException;
@@ -44,9 +44,9 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.web.util.Filler;
 import org.json.JSONException;
 import org.json.JSONObject;
 

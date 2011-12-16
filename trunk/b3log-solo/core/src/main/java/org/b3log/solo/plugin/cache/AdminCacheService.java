@@ -35,10 +35,10 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.processor.util.Requests;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**

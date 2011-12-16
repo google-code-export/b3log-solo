@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.solo.processor.CaptchaProcessor;
+import org.b3log.solo.processor.CommentProcessor;
 import org.b3log.solo.util.Users;
 import org.b3log.latke.service.ServiceException;
 import java.io.File;
@@ -46,8 +48,6 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.web.processor.CaptchaProcessor;
-import org.b3log.solo.web.processor.CommentProcessor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

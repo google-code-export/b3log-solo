@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.b3log.solo.web.processor;
+package org.b3log.solo.processor;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -42,9 +38,9 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.web.util.Filler;
 import org.json.JSONObject;
 
 /**

@@ -36,8 +36,8 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.web.util.TopBars;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web.processor;
+package org.b3log.solo.processor;
 
+import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.processor.util.Requests;
 import org.json.JSONException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.util.Articles;
@@ -23,7 +26,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Tags;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.net.URLDecoder;
 import java.util.Collections;
 import org.b3log.latke.action.util.Paginator;
@@ -49,11 +51,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.TagQueryService;

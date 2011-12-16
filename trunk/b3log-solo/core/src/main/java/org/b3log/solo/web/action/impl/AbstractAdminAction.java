@@ -30,8 +30,8 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.processor.InitProcessor;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.web.processor.InitProcessor;
 import org.json.JSONObject;
 
 /**

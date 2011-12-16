@@ -34,9 +34,9 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.InitProcessor;
+import org.b3log.solo.processor.LoginProcessor;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.web.processor.InitProcessor;
-import org.b3log.solo.web.processor.LoginProcessor;
 import org.json.JSONException;
 import org.json.JSONObject;
 

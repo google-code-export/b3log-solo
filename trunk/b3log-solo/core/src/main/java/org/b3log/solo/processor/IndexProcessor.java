@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web.processor;
+package org.b3log.solo.processor;
 
+import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.processor.util.Requests;
+import org.b3log.solo.processor.util.TopBars;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.web.util.TopBars;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import freemarker.template.Template;
@@ -25,7 +28,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +37,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.URIPatternMode;
-import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
