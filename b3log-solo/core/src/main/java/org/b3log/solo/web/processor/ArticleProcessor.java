@@ -843,7 +843,7 @@ public final class ArticleProcessor {
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
 
-        Stopwatchs.start("Get Sign");
+        Stopwatchs.start("Get Article Sign");
         LOGGER.finer("Getting article sign....");
         article.put(Article.ARTICLE_SIGN_REF,
                     articleUtils.getSign(articleId, preference));
