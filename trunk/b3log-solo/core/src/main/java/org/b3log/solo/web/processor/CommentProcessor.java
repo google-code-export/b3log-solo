@@ -447,16 +447,19 @@ public final class CommentProcessor {
                 Comment.COMMENT_ORIGINAL_COMMENT_ID);
         // Step 1: Add comment
         final JSONObject comment = new JSONObject();
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+
         JSONObject originalComment = null;
         comment.put(Comment.COMMENT_NAME, commentName);
         comment.put(Comment.COMMENT_EMAIL, commentEmail);
         comment.put(Comment.COMMENT_URL, commentURL);
         comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
-                    requestJSONObject.getString(
+                    requestJSONObject.optString(
                 Comment.COMMENT_ORIGINAL_COMMENT_ID));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                    requestJSONObject.getString(
+                    requestJSONObject.optString(
                 Comment.COMMENT_ORIGINAL_COMMENT_NAME));
         final JSONObject preference = preferenceQueryService.getPreference();
         final String timeZoneId =
