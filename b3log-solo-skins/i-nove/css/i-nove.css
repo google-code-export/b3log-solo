@@ -3,7 +3,7 @@
  * skin i-nove style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Oct 25, 2011
+ * @version 1.0.0.8, Dec 19, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat-x scroll 0 20px #BEC3C6;
@@ -137,9 +137,6 @@ h5 {
 }
 .footer .copyright span {
     margin: 0px;
-}
-.footer .copyright a span {
-    margin: 0px -1px;
 }
 .footer .goTop {
     background: url("../images/icons.gif") no-repeat scroll 0 -304px transparent;
@@ -326,6 +323,7 @@ h5 {
 }
 .side-navi sup {
     margin-right: 3px;
+    float: left;
 }
 
 .side-navi .navi-comments img {
@@ -379,12 +377,18 @@ h5 {
     background: url("../images/icons.gif") no-repeat scroll 0 -623px transparent;
     margin: 5px 0 0 0;
     overflow: hidden;
-    padding-left: 22px;
+    padding-left: 20px;
     white-space: nowrap;
 }
+
 .side-navi li.aboutMe {
     white-space: normal;
 }
+
+.side-navi li a {
+    float: left;
+}
+
 .side-navi .line {
     background: url("../images/widgetsep.png") no-repeat scroll center bottom transparent;
     height: 6px;
