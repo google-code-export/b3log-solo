@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
@@ -56,7 +57,7 @@ import org.json.JSONObject;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Dec 13, 2011
+ * @version 1.0.1.3, Dec 20, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -173,6 +174,9 @@ public final class StatProcessor {
                 final int viewCount = oldViewCount + hitCount;
 
                 article.put(Article.ARTICLE_VIEW_COUNT, viewCount);
+                
+                // Removes unused properties for legacy dirty data
+                article.remove(Common.POST_TO_COMMUNITY);
 
                 articleRepository.update(articleId, article);
 
