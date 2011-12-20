@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 15, 2011
+ * @version 1.0.1.5, Dec 20, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -101,8 +101,7 @@ public final class Statistics {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
-                      count);
+        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, count);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -182,8 +181,8 @@ public final class Statistics {
         LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]",
                    statistic);
 
-        long blogViewCnt =
-                statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+        int blogViewCnt =
+                statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
