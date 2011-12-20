@@ -87,7 +87,9 @@
                                 </div>
                                 <div class="clear"></div>
                             </div>
+                            <#if 0 != relevantArticlesDisplayCount>
                             <div id="relevantArticles" class="article-relative left" style="width: 50%;"></div>
+                            </#if>
                             <div id="randomArticles" class="left article-relative"></div>
                             <div class="clear"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
