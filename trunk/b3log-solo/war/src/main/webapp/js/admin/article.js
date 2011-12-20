@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Nov 17, 2011
+ * @version 1.0.1.5, Dec 20, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -391,6 +391,8 @@ admin.article = {
                         }
                     });
                 });
+                
+                $("#loadMsg").text("");
             }
         });
         
@@ -546,6 +548,7 @@ admin.article = {
      * 点击发文文章时的处理
      */
     prePost:function () {
+        $("#loadMsg").text(Label.loadingLabel);
         var articleContent = "";
             
         try {
@@ -560,6 +563,8 @@ admin.article = {
                 admin.article.clear();
             }
         }
+        
+        $("#loadMsg").text("");
     }
 }
 
