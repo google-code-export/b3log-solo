@@ -32,7 +32,7 @@
                 </div><!--end comtop-->
                 <div class="combody">  
                     <p>${comment.commentContent}</p>
-                    <input class="reply-button" onclick="replyTo('${comment.oId}')" value="Reply >>" />
+                    <input type="button" class="reply-button" onclick="replyTo('${comment.oId}')" value="Reply >>" />
                 </div>
             </div>
         </li>
