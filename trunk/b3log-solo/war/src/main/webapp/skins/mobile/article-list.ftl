@@ -39,7 +39,7 @@
 <!--TODO ajax load page
 	<div id="call${paginationCurrentPageNum}" class="ajax-load-more">
 		<div id="spinner${paginationCurrentPageNum}" class="spin"	 style="display:none"></div>
-		<a class="ajax" href="javascript:return false;" onclick="$wpt('#spinner${paginationCurrentPageNum}').fadeIn(200); $wpt('#ajaxentries${paginationCurrentPageNum}').load('${path}/${paginationPreviousPageNum}', {}, function(){ $wpt('#call${paginationCurrentPageNum}').fadeOut();});">
+		<a class="ajax" href="javascript:void(0)" onclick="$wpt('#spinner${paginationCurrentPageNum}').fadeIn(200); $wpt('#ajaxentries${paginationCurrentPageNum}').load('${path}/${paginationPreviousPageNum}', {}, function(){ $wpt('#call${paginationCurrentPageNum}').fadeOut();});">
 			Load more entries...
 		</a>
 	</div>
