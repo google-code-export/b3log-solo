@@ -32,7 +32,7 @@
                 </div><!--end comtop-->
                 <div class="combody">  
                     <p>${comment.commentContent}</p>
-                    <button onclick="replyTo('${comment.oId}')">Replay</button>
+                    <input class="reply-button" onclick="replyTo('${comment.oId}')" value="Reply >>" />
                 </div>
             </div>
         </li>
@@ -73,7 +73,7 @@
                 <img id="captcha" alt="validate" src="/captcha.do" />
             </p>
             <p>
-                <input id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
+                <input class="reply-button" id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
             <div id="loading" style="display:none">
                 <img src="/skins/${skinDirName}/themes/core/core-images/comment-ajax-loader.gif" alt="" /> <p>Publishing...</p>
             </div>
