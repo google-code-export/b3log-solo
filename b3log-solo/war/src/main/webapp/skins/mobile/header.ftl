@@ -34,7 +34,7 @@
 				</div>
 	
 				<ul id="head-pages">
-					<li><a href="/"><img src="/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Home</a></li>
+					<li><a href="/admin-index.do#main"><img src="/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
 				    <#list pageNavigations as page>
 				    <li><a href="${page.pagePermalink}"><img src="/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
 				    </#list>           
