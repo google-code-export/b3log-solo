@@ -27,6 +27,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 10, 2011
+ * @version 1.0.0.4, Dec 20, 2011
  * @since 0.3.5
  */
 public final class CommentQueryService {
@@ -206,7 +207,8 @@ public final class CommentQueryService {
 
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
-                if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+                if (!Strings.isEmptyOrNull(
+                        comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply
                     comment.put(Common.IS_REPLY, true);
                 }
