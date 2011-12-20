@@ -2,7 +2,7 @@
 <div id="footer">
 	<center>
 		<div id="wptouch-switch-link">
-			<script type="text/javascript">function switch_delayer() { window.location = "/?normal"}</script>Mobile Theme <a id="switch-link" onclick="wptouch_switch_confirmation();" href="javascript:return false;"></a>		</div>
+			<script type="text/javascript">function switch_delayer() { window.location = "/?normal"}</script>Mobile Theme <a id="switch-link" onclick="wptouch_switch_confirmation();" href="javascript:void(0)"></a>		</div>
 	</center>
 	<p><span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a></p>
 	<p>Powered by <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">

@@ -20,7 +20,7 @@
 	            <input type="hidden" name="sitesearch" value="dx.b3log.org" />
 				<input type="text" placeholder="Search..." id="search" name="q" /> 
 				<input name="submit" type="submit" tabindex="1" id="search-submit" placeholder="Search..."  />
-			<a href="javascript:return false;"><img class="head-close" src="/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
+			<a href="javascript:void(0)"><img class="head-close" src="/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
 			</form>
 		</div>
 	</div>
@@ -75,14 +75,14 @@
 		<a href="/">${blogTitle}</a>
 	</div>
 	<div id="headerbar-menu">
-		    <a href="javascript:return false;"></a>
+		    <a href="javascript:void(0)"></a>
 	</div>
 </div>
 
 
 <div id="drop-fade">
 				    
-    	<a id="searchopen" class="top" href="javascript:return false;">Search</a>
+    	<a id="searchopen" class="top" href="javascript:void(0)">Search</a>
  <!-- #start the Prowl Message Area -->
  <div id="prowl-message" style="display:none">
  	 <div id="push-style-bar"></div><!-- filler to get the styling just right -->
