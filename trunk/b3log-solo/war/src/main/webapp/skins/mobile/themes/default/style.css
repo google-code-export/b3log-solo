@@ -1815,7 +1815,7 @@ p.logged {
     margin-right: 10px;
 }
 
-#commentForm input, #replyForm input {
+#commentForm input, #replyForm input, .reply-button {
     -webkit-border-radius: 8px;
     border: 1px solid #adadad;
     padding: 3px;
@@ -1826,7 +1826,7 @@ p.logged {
     vertical-align: middle;
 }
 
-#commentForm input#submitCommentButton, #replyForm input#submitCommentButtonReply {
+.reply-button {
     color: #555;
     font-weight: bold;
     width: 25%;
