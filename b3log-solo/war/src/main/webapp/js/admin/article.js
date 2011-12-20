@@ -465,6 +465,7 @@ admin.article = {
 
                 extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
+                valid_children : "+body[style]",
                 relative_urls: false,
                 remove_script_host: false,
                 oninit : function () {
