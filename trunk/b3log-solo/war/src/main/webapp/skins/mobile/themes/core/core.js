@@ -19,13 +19,41 @@ $wpt.fn.wptouchFadeToggle = function( speed, easing, callback ) {
 	return this.animate( {opacity: 'toggle'}, speed, easing, callback ); 
 };
 
-function wptouch_switch_confirmation( e ) {
-	if ( document.cookie && document.cookie.indexOf( 'wptouch_switch_toggle' ) > -1 ) {
+var Cookie = {
+    readCookie: function (name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return "";
+    },
+
+    eraseCookie: function (name) {
+        this.createCookie(name,"",-1);
+    },
+
+    createCookie: function (name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            expires = "; expires="+date.toGMTString();
+        }
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
+};
+function wptouch_switch_confirmation(skin, e ) {
+	if ( document.cookie && document.cookie.indexOf( 'btouch_switch_toggle' ) > -1 ) {
 	// just switch
+                Cookie.createCookie("btouch_switch_toggle", skin, 365);
 		$wpt( 'a#switch-link' ).toggleClass( 'offimg' );
-		setTimeout('switch_delayer()', 1250 ); 
+                    setTimeout('switch_delayer()', 1250 ); 
 	} else {
 	// ask first
+            Cookie.createCookie("btouch_switch_toggle", skin, 365);
 	    if ( confirm( "Switch to regular view? \n \n You can switch back again in the footer." ) ) {
 			$wpt( 'a#switch-link' ).toggleClass( 'offimg' );
 			setTimeout( 'switch_delayer()', 1350 ); 

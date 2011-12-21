@@ -133,8 +133,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
         LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                   new Object[]{Strings.LINE_SEPARATOR,
-                                Stopwatchs.getTimingStat()});
+                new Object[]{Strings.LINE_SEPARATOR,
+                    Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -179,8 +179,8 @@ public final class SoloServletListener extends AbstractServletListener {
         Stopwatchs.end();
 
         LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                   new Object[]{Strings.LINE_SEPARATOR,
-                                Stopwatchs.getTimingStat()});
+                new Object[]{Strings.LINE_SEPARATOR,
+                    Stopwatchs.getTimingStat()});
         Stopwatchs.release();
     }
 
@@ -212,7 +212,7 @@ public final class SoloServletListener extends AbstractServletListener {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
-                           "Can't not init default skin, please init B3log Solo first");
+                        "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
@@ -287,22 +287,22 @@ public final class SoloServletListener extends AbstractServletListener {
             if (null == preference) {  // Did not initialize yet
                 return;
             }
-            
+
             final String requestURI = httpServletRequest.getRequestURI();
 
-            if (Requests.mobileRequest(httpServletRequest)
-                && Requests.mobileCookie(httpServletRequest)) {
-                // TODO: 88250, mobile request dispatching
+            String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
+
+            if (desiredView == null && !Requests.mobileRequest(httpServletRequest)
+                    || desiredView != null && desiredView.equals("normal")) {
+                desiredView = preference.getString(Skin.SKIN_DIR_NAME);
+            } else {
+                desiredView = "mobile";
                 LOGGER.log(Level.FINER,
-                           "The request [URI={0}] comes frome mobile device",
-                           requestURI);
-                httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, "mobile");
-                
-                return;
+                        "The request [URI={0}] comes frome mobile device",
+                        requestURI);
             }
 
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skinDirName);
+            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Resolves skin failed", e);
         }

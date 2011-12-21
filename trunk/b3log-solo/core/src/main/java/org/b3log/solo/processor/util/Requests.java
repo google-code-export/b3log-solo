@@ -81,6 +81,7 @@ public final class Requests {
      * Determines whether the specified request has a mobile request flag in 
      * cookie "b3log-latke".
      * 
+     * @deprecated 
      * @param request the specified request
      * @return {@code true} if has the flag with value "true", 
      * returns {@code false} otherwise
@@ -95,11 +96,8 @@ public final class Requests {
         try {
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
-
-                if ("b3log-latke".equals(cookie.getName())) {
-                    final JSONObject cookieJSONObject =
-                            new JSONObject(cookie.getValue());
-                    return cookieJSONObject.optBoolean("mobile", true);
+                if ("btouch_switch_toggle".equals(cookie.getName())) {
+                    return "mobile".equals(cookie.getValue());
                 }
             }
         } catch (final Exception e) {
@@ -107,6 +105,34 @@ public final class Requests {
         }
 
         return true;
+    }
+    
+    /**
+     * mobile and normal skin toggle.
+     * 
+     * @param request the specified request
+     * @return {@code null} if not set cookie, or (mobile | $OTHER) according to cookie value
+     */
+    public static String mobileSwitchToggle(final HttpServletRequest request){
+        final Cookie[] cookies = request.getCookies();
+        String tmp = null;
+        
+        if (null == cookies || 0 == cookies.length) {
+            return tmp;
+        }
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+                if ("btouch_switch_toggle".equals(cookie.getName())) {
+                    tmp = cookie.getValue();
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Parses cookie failed", e);
+        }
+
+        return tmp;
     }
 
     /**
