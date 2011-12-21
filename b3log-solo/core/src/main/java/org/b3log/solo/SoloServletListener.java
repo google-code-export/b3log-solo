@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.5, Dec 3, 2011
+ * @version 1.0.6.6, Dec 21, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -95,7 +96,8 @@ public final class SoloServletListener extends AbstractServletListener {
         // Default to skin "classic", loads from preference later
         Skins.setDirectoryForTemplateLoading("classic");
 
-        if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
+        if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()
+            && RuntimeDatabase.SLEEPYCAT == Latkes.getRuntimeDatabase()) {
             final String repositoryPath = ResourceBundle.getBundle("local").
                     getString("repositoryPath");
 
@@ -133,8 +135,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
         LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                new Object[]{Strings.LINE_SEPARATOR,
-                    Stopwatchs.getTimingStat()});
+                   new Object[]{Strings.LINE_SEPARATOR,
+                                Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -179,8 +181,8 @@ public final class SoloServletListener extends AbstractServletListener {
         Stopwatchs.end();
 
         LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                new Object[]{Strings.LINE_SEPARATOR,
-                    Stopwatchs.getTimingStat()});
+                   new Object[]{Strings.LINE_SEPARATOR,
+                                Stopwatchs.getTimingStat()});
         Stopwatchs.release();
     }
 
@@ -212,7 +214,7 @@ public final class SoloServletListener extends AbstractServletListener {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
-                        "Can't not init default skin, please init B3log Solo first");
+                           "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
@@ -292,14 +294,15 @@ public final class SoloServletListener extends AbstractServletListener {
 
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
 
-            if (desiredView == null && !Requests.mobileRequest(httpServletRequest)
-                    || desiredView != null && desiredView.equals("normal")) {
+            if (desiredView == null && !Requests.mobileRequest(
+                    httpServletRequest)
+                || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = "mobile";
                 LOGGER.log(Level.FINER,
-                        "The request [URI={0}] comes frome mobile device",
-                        requestURI);
+                           "The request [URI={0}] comes frome mobile device",
+                           requestURI);
             }
 
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
