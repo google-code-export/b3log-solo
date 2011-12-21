@@ -22,6 +22,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -163,6 +164,11 @@ public final class CommentMgmtService {
                 new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
+
+        // Removes unused properties for legacy dirty data
+        // TODO: 88250, 041, post to community dirty data
+        newArticle.remove(Common.POST_TO_COMMUNITY);
+
         articleRepository.update(articleId, newArticle);
     }
 
