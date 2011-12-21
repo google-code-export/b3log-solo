@@ -175,6 +175,11 @@ public final class ArticleMgmtService {
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagUtils.decTagPublishedRefCount(articleId);
             decArchiveDatePublishedRefCount(articleId);
+
+            // Removes unused properties for legacy dirty data
+            // TODO: 88250, 041, post to community dirty data
+            article.remove(Common.POST_TO_COMMUNITY);
+
             articleRepository.update(articleId, article);
             statistics.decPublishedBlogArticleCount();
             final int blogCmtCnt =
@@ -211,6 +216,11 @@ public final class ArticleMgmtService {
         try {
             final JSONObject topArticle = articleRepository.get(articleId);
             topArticle.put(ARTICLE_PUT_TOP, top);
+
+            // Removes unused properties for legacy dirty data
+            // TODO: 88250, 041, post to community dirty data
+            topArticle.remove(Common.POST_TO_COMMUNITY);
+
             articleRepository.update(articleId, topArticle);
 
             transaction.commit();
@@ -323,6 +333,10 @@ public final class ArticleMgmtService {
             }
 
             // Update
+
+            // Removes unused properties for legacy dirty data
+            // TODO: 88250, 041, post to community dirty data
+            article.remove(Common.POST_TO_COMMUNITY);
             articleRepository.update(articleId, article);
 
             if (publishNewArticle) {
@@ -589,6 +603,10 @@ public final class ArticleMgmtService {
 
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+                // Removes unused properties for legacy dirty data
+                // TODO: 88250, 041, post to community dirty data
+                article.remove(Common.POST_TO_COMMUNITY);
 
                 articleRepository.update(article.getString(Keys.OBJECT_ID),
                                          article);
