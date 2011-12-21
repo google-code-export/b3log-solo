@@ -16,6 +16,7 @@
 package org.b3log.solo.util;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -36,7 +37,8 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 10, 2011
+ * @version 1.0.0.7, Dec 21, 2011
+ * @since 0.3.1
  */
 public final class Comments {
 
@@ -103,6 +105,8 @@ public final class Comments {
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             if (MAX_COMMENT_NAME_LENGTH < commentName.length()
                 || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
+                LOGGER.log(Level.WARNING, "Comment name is too long[{0}]",
+                           commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
@@ -112,6 +116,8 @@ public final class Comments {
                     requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
                     toLowerCase();
             if (!Strings.isEmail(commentEmail)) {
+                LOGGER.log(Level.WARNING, "Comment email is invalid[{0}]",
+                           commentEmail);
                 ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
                 return ret;
@@ -119,13 +125,28 @@ public final class Comments {
 
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
-            // TODO: checks comment URL
+            try {
+                new URL(commentURL);
+
+                if (commentURL.contains("<") || commentURL.contains(">")) {
+                    throw new IllegalArgumentException();
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]",
+                           commentURL);
+                ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
+
+                return ret;
+            }
 
             final String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length()
                 || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
+                LOGGER.log(Level.WARNING,
+                           "Comment conent length is invalid[{0}]",
+                           commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get(
                         "commentContentCannotEmptyLabel"));
 
