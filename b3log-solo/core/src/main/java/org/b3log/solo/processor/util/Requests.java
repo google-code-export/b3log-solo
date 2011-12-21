@@ -30,7 +30,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.8, Dec 14, 2011
+ * @version 1.0.0.9, Dec 21, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -78,61 +78,32 @@ public final class Requests {
             Pattern.CASE_INSENSITIVE);
 
     /**
-     * Determines whether the specified request has a mobile request flag in 
-     * cookie "b3log-latke".
+     * Mobile and normal skin toggle.
      * 
-     * @deprecated 
      * @param request the specified request
-     * @return {@code true} if has the flag with value "true", 
-     * returns {@code false} otherwise
+     * @return {@code null} if not set cookie, returns value (mobile | $OTHER) 
+     * of the cookie named "btouch_switch_toggle"
      */
-    public static boolean mobileCookie(final HttpServletRequest request) {
+    public static String mobileSwitchToggle(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
-        
+        String ret = null;
+
         if (null == cookies || 0 == cookies.length) {
-            return false;
+            return ret;
         }
 
         try {
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
                 if ("btouch_switch_toggle".equals(cookie.getName())) {
-                    return "mobile".equals(cookie.getValue());
+                    ret = cookie.getValue();
                 }
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Parses cookie failed", e);
         }
 
-        return true;
-    }
-    
-    /**
-     * mobile and normal skin toggle.
-     * 
-     * @param request the specified request
-     * @return {@code null} if not set cookie, or (mobile | $OTHER) according to cookie value
-     */
-    public static String mobileSwitchToggle(final HttpServletRequest request){
-        final Cookie[] cookies = request.getCookies();
-        String tmp = null;
-        
-        if (null == cookies || 0 == cookies.length) {
-            return tmp;
-        }
-
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-                if ("btouch_switch_toggle".equals(cookie.getName())) {
-                    tmp = cookie.getValue();
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Parses cookie failed", e);
-        }
-
-        return tmp;
+        return ret;
     }
 
     /**
