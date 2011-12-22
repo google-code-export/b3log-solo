@@ -178,6 +178,7 @@ public final class StatProcessor {
                 // Removes unused properties for legacy dirty data
                 // TODO: 88250, 041, post to community dirty data
                 article.remove(Common.POST_TO_COMMUNITY);
+                article.remove(Common.AUTHOR_ID);
 
                 articleRepository.update(articleId, article);
 
