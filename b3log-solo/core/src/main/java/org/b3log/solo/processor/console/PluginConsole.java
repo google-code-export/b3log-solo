@@ -32,7 +32,7 @@ import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.processor.util.Requests;
+import org.b3log.latke.util.Requests;
 import org.json.JSONObject;
 
 /**
