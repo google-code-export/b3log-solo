@@ -32,6 +32,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.InitProcessor;
@@ -44,7 +45,8 @@ import org.json.JSONObject;
  * Top bar utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 10, 2011
+ * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
+ * @version 1.0.0.2, Dec 22, 2011
  * @since 0.3.5
  */
 public final class TopBars {
@@ -93,6 +95,9 @@ public final class TopBars {
             final JSONObject currentUser = userUtils.getCurrentUser(request);
 
             topBarModel.put(Common.IS_LOGGED_IN, false);
+            
+            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(request));
+            topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
 
             if (null == currentUser) {
                 topBarModel.put(Common.LOGIN_URL,

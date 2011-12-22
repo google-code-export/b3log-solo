@@ -53,6 +53,27 @@
         <#else>
         <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>
         </#if>
+        <#if isMobileRequest>
+        <script type="text/javascript">
+        function switch_delayer() { location.reload();}
+        var Cookie = {
+            createCookie: function (name,value,days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime()+(days*24*60*60*1000));
+                    expires = "; expires="+date.toGMTString();
+                }
+                document.cookie = name+"="+value+expires+"; path=/";
+            }
+        };
+        function wptouch_switch_confirmation(skin ) {
+                        Cookie.createCookie("btouch_switch_toggle", skin, 365);
+                            setTimeout('switch_delayer()', 1250 ); 
+        }
+        </script>
+        <a href="javascript:void(0)" onclick="wptouch_switch_confirmation('mobile');" title="${mobileLabel}">${mobileLabel}</a>
+        </#if>
     </span>
     <div class="clear"></div>
 </div>
