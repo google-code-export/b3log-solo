@@ -355,7 +355,10 @@ public final class ArticleProcessor {
                                       preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -459,6 +462,10 @@ public final class ArticleProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -585,6 +592,10 @@ public final class ArticleProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -749,7 +760,6 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
 
         filler.fillBlogFooter(dataModel, preference);
-        skins.fillSkinLangs(preference, dataModel);
     }
 
     /**
@@ -782,7 +792,6 @@ public final class ArticleProcessor {
                 Paginator.paginate(currentPageNum, pageSize, pageCount,
                                    windowSize);
 
-        skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLES, articles);
         final String previousPageNum =
                 Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
@@ -839,7 +848,6 @@ public final class ArticleProcessor {
                                     final Map<String, Object> dataModel,
                                     final JSONObject article)
             throws Exception {
-        skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
 

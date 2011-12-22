@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
@@ -102,7 +103,11 @@ public final class PageProcessor {
                 return;
             }
 
-            skins.fillSkinLangs(preference, dataModel);
+            skins.fillSkinLangs(
+                    preference.getString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
+
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));

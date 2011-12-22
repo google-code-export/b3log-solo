@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.processor;
 
+import org.b3log.latke.Keys;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
@@ -104,7 +106,10 @@ public final class IndexProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            skins.fillSkinLangs(preference, dataModel);
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -188,8 +193,11 @@ public final class IndexProcessor {
             final String topBarHTML = TopBars.getTopBarHTML(request, response);
             dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
                           topBarHTML);
-
-            skins.fillSkinLangs(preference, dataModel);
+            
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
