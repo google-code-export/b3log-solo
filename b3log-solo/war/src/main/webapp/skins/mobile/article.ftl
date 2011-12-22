@@ -56,18 +56,16 @@
                     </#if>
                 </ul>
             </div>
-            <!--TODO bookmark
-                            <div id="bookmark-box" style="display:none">
-                                    <ul>
-                                            <li><a  href="http://del.icio.us/post?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/delicious.jpg" alt="" /> Del.icio.us</a></li>
-                                            <li><a href="http://digg.com/submit?phase=2&url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/digg.jpg" alt="" /> Digg</a></li>
-                                            <li><a href="http://technorati.com/faves?add=http://localhost/blog/?p=12" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/technorati.jpg" alt="" /> Technorati</a></li>
-                                            <li><a href="http://ma.gnolia.com/bookmarklet/add?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/magnolia.jpg" alt="" /> Magnolia</a></li>
-                                            <li><a href="http://www.newsvine.com/_wine/save?popoff=0&u=http://localhost/blog/?p=12&h=${article.articleTitle}" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/newsvine.jpg" target="_blank"> Newsvine</a></li>
-                                            <li class="noborder"><a href="http://reddit.com/submit?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="http://localhost/blog/wp-content/plugins/wptouch/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
-                                    </ul>
-                            </div>
-            -->
+            <div id="bookmark-box" style="display:none">
+                <ul>
+                    <li><a  href="http://del.icio.us/post?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/delicious.jpg" alt="" /> Del.icio.us</a></li>
+                    <li><a href="http://digg.com/submit?phase=2&url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/digg.jpg" alt="" /> Digg</a></li>
+                    <li><a href="http://technorati.com/faves?add=http://localhost/blog/?p=12" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/technorati.jpg" alt="" /> Technorati</a></li>
+                    <li><a href="http://ma.gnolia.com/bookmarklet/add?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/magnolia.jpg" alt="" /> Magnolia</a></li>
+                    <li><a href="http://www.newsvine.com/_wine/save?popoff=0&u=http://localhost/blog/?p=12&h=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/newsvine.jpg" target="_blank"> Newsvine</a></li>
+                    <li class="noborder"><a href="http://reddit.com/submit?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
+                </ul>
+            </div>
             <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
         </div>
         <#include "footer.ftl">    

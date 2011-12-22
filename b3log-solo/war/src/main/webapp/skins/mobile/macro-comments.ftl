@@ -4,7 +4,7 @@
 <div class="comment_wrapper" id="comments">
     <#if 0 lt commentList?size>
     <h3 onclick="bnc_showhide_coms_toggle();" id="com-head">
-        ${commentList?size} Responses
+        ${commentList?size} ${responses}
     </h3>
     </#if>
     <ol class="commentlist" id="commentlist">
@@ -25,14 +25,13 @@
                         </#if>
                     </div>										
                     <div class="comdater">
-                        <span><!--TODO wptouch_moderate_comment_link(get_comment_ID())--></span>
+                        <!--<span>TODO wptouch_moderate_comment_link(get_comment_ID())</span>-->
                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                        <!--TODO<a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>-->
+                        <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                     </div>									
                 </div><!--end comtop-->
                 <div class="combody">  
                     <p>${comment.commentContent}</p>
-                    <input type="button" class="reply-button" onclick="replyTo('${comment.oId}')" value="Reply >>" />
                 </div>
             </div>
         </li>
