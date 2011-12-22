@@ -38,14 +38,13 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceMgmtService;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Nov 7, 2011
+ * @version 1.0.2.3, Dec 22, 2011
  * @since 0.3.1
  */
 public final class Skins {
@@ -68,21 +67,18 @@ public final class Skins {
      * Fills the specified data model with the current skink's language 
      * configurations.
      * 
-     * @param preference the specified preference
+     * @param localeString the specified locale string
+     * @param currentSkinDirName the specified current skin directory name
      * @param dataModel the specified data model
      * @throws ServiceException service exception 
      */
-    public void fillSkinLangs(final JSONObject preference,
+    public void fillSkinLangs(final String localeString,
+                              final String currentSkinDirName,
                               final Map<String, Object> dataModel)
             throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
         try {
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final String currentSkinDirName =
-                    preference.getString(SKIN_DIR_NAME);
-
             final String langName = currentSkinDirName + "." + localeString;
             Map<String, String> langs = LANG_MAP.get(langName);
             if (null == langs) {
@@ -121,10 +117,6 @@ public final class Skins {
             }
 
             dataModel.putAll(langs);
-
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
-            throw new ServiceException(e);
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
             throw new ServiceException(e);

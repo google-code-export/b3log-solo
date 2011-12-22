@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
@@ -164,7 +165,10 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            skins.fillSkinLangs(preference, dataModel);
+            skins.fillSkinLangs(
+                    preference.getString(Preference.LOCALE_STRING),
+                    preference.getString(Skin.SKIN_DIR_NAME),
+                    dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -316,7 +320,10 @@ public final class TagProcessor {
                 return;
             }
 
-            skins.fillSkinLangs(preference, dataModel);
+            skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
 
             request.setAttribute(CACHED_OID, "No id");
             final Map<String, String> langs =
