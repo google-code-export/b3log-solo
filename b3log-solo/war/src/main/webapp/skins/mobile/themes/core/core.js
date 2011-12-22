@@ -54,7 +54,7 @@ function wptouch_switch_confirmation(skin, e ) {
 	} else {
 	// ask first
             Cookie.createCookie("btouch_switch_toggle", skin, 365);
-	    if ( confirm( "Switch to regular view? \n \n You can switch back again in the footer." ) ) {
+	    if ( confirm( "Switch to regular view? \n \n You can switch back again in the top bar." ) ) {
 			$wpt( 'a#switch-link' ).toggleClass( 'offimg' );
 			setTimeout( 'switch_delayer()', 1350 ); 
 		} else {
