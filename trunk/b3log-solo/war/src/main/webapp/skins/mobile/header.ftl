@@ -28,9 +28,9 @@
         <div id="wptouch-menu-inner">
 	        <div id="menu-head">
 	        	<div id="tabnav">
-					<a href="#head-pages"><img src="/skins/${skinDirName}/images/icon-pool/Notes.png" alt=""/></a>
-		        	<a href="#head-tags"><img src="/skins/${skinDirName}/images/icon-pool/Podcast.png" alt=""/></a>
-					<a href="#head-cats"><img src="/skins/${skinDirName}/images/icon-pool/Squares.png" alt=""/></a>
+					<a href="#head-pages"><img src="/skins/${skinDirName}/images/icon-pool/Pages.png" alt=""/></a>
+		        	<a href="#head-tags"><img src="/skins/${skinDirName}/images/icon-pool/Tags.png" alt=""/></a>
+					<a href="#head-cats"><img src="/skins/${skinDirName}/images/icon-pool/Archives.png" alt=""/></a>
 				</div>
 	
 				<ul id="head-pages">
