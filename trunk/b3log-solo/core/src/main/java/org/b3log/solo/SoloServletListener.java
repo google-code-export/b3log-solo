@@ -44,7 +44,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.util.Requests;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;

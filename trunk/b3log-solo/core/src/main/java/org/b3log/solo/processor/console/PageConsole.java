@@ -33,7 +33,7 @@ import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.processor.util.Requests;
+import org.b3log.latke.util.Requests;
 import org.json.JSONObject;
 
 /**

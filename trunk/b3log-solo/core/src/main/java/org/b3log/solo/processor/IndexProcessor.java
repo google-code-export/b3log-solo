@@ -17,7 +17,7 @@ package org.b3log.solo.processor;
 
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
-import org.b3log.solo.processor.util.Requests;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.processor.util.TopBars;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.PreferenceQueryService;

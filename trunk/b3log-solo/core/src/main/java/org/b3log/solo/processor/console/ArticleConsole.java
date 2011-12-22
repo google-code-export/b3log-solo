@@ -30,7 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.processor.util.Requests;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.QueryResults;
