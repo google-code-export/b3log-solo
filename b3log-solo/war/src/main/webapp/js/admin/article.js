@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 20, 2011
+ * @version 1.0.1.6, Dec 22, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -137,6 +137,9 @@ admin.article = {
      */
     add: function (articleIsPublished) {
         if (admin.article.validate()) {
+            var that = this;
+            that._addDisabled();
+            
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
@@ -176,7 +179,9 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
+                    
+                    that._removeDisabled();
+                      
                     if (!result.sc) {
                         return;
                     }
@@ -202,6 +207,9 @@ admin.article = {
      */
     update: function (articleIsPublished) {
         if (admin.article.validate()) {
+            var that = this;
+            that._addDisabled();
+            
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
@@ -241,6 +249,8 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
+                     
+                    that._removeDisabled();
                      
                     if (!result.sc) {
                         return;
@@ -514,11 +524,16 @@ admin.article = {
      * 取消发布
      */
     unPublish: function () {
+        var that = this;
+        that._addDisabled();
+        
         $.ajax({
             url: "/console/article/unpublish/" + admin.article.status.id,
             type: "PUT",
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
+                
+                that._removeDisabled();
                      
                 if (!result.sc) {
                     return;
@@ -566,7 +581,26 @@ admin.article = {
         }
         
         $("#loadMsg").text("");
+    },
+    
+    /*
+     * @description: 仿重复提交，点击一次后，按钮设置为 disabled
+     */
+    _addDisabled: function () {
+        $("#unSubmitArticle").attr("disabled", "disabled");
+        $("#saveArticle").attr("disabled", "disabled");
+        $("#submitArticle").attr("disabled", "disabled");
+    },
+    
+    /*
+     * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
+     */
+    _removeDisabled: function () {
+        $("#unSubmitArticle").removeAttr("disabled");
+        $("#saveArticle").removeAttr("disabled");
+        $("#submitArticle").removeAttr("disabled");
     }
+    
 }
 
 /*
