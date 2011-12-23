@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
@@ -66,7 +65,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Dec 14, 2011
+ * @version 1.1.0.8, Dec 23, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -166,8 +165,8 @@ public final class TagProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             skins.fillSkinLangs(
-                    preference.getString(Preference.LOCALE_STRING),
-                    preference.getString(Skin.SKIN_DIR_NAME),
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
 
             final int pageSize = preference.getInt(
