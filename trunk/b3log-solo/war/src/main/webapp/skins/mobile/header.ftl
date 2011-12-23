@@ -17,7 +17,7 @@
 	            <input type="hidden" name="oe" value="UTF-8" />
 	            <input type="hidden" name="ie" value="UTF-8" />
 	            <input type="hidden" name="newwindow" value="0" />
-	            <input type="hidden" name="sitesearch" value="dx.b3log.org" />
+	            <input type="hidden" name="sitesearch" value="${blogHost}" />
 				<input type="text" placeholder="Search..." id="search" name="q" /> 
 				<input name="submit" type="submit" tabindex="1" id="search-submit" placeholder="Search..."  />
 			<a href="javascript:void(0)"><img class="head-close" src="/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
@@ -82,13 +82,13 @@
 
 <div id="drop-fade">
 				    
-    	<a id="searchopen" class="top" href="javascript:void(0)">Search</a>
+    	<a id="searchopen" class="top" href="javascript:void(0)">${searchLabel}</a>
  <!-- #start the Prowl Message Area -->
  <div id="prowl-message" style="display:none">
  	 <div id="push-style-bar"></div><!-- filler to get the styling just right -->
 	 <img src="/skins/${skinDirName}/themes/core/core-images/push-icon.png" alt="push icon" />
 	 <h4>Send a Message</h4>
-	 <p>This message will be pushed to the admin's iPhone instantly.</p>
+	 <p>This message will be pushed to the admin's iPhone instantly.</p><!--TODO instant msg-->
 	 
 	 <form id="prowl-direct-message" method="post" action="/blog/">
 	 	<p>

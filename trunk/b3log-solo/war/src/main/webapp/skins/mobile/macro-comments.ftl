@@ -73,7 +73,7 @@
             <p>
                 <input class="reply-button" id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
             <div id="loading" style="display:none">
-                <img src="/skins/${skinDirName}/themes/core/core-images/comment-ajax-loader.gif" alt="" /> <p>Publishing...</p>
+                <img src="/skins/${skinDirName}/themes/core/core-images/comment-ajax-loader.gif" alt="" /> <p>${publishing}</p>
             </div>
             </p>
         </div>

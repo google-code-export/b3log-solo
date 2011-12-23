@@ -21,7 +21,6 @@
 		<a class="h2" href="${article.articlePermalink}">${article.articleTitle}</a>
 		<div class="post-author">
 			<span class="lead">By</span> ${article.authorName}<br />
-			<!--<span class="lead">Categories:</span> <a href="http://localhost/blog/?cat=4" title="View all posts in c1" rel="category">c1</a><br /> TODO-->
 			<span class="lead">${tags1Label}</span> 
             <#list article.articleTags?split(",") as articleTag>
                 <a href="/tags/${articleTag?url('UTF-8')}">
@@ -31,7 +30,7 @@
 		<div class="clearer"></div>	
         <div id="entry-${article.oId}" style="display:none" class="mainentry left-justified">
 			${article.articleAbstract}
-			<a class="read-more" href="${article.articlePermalink}">Read This Post</a>
+			<a class="read-more" href="${article.articlePermalink}">${readThisPost}</a>
         </div>  
       </div>
     </div>
