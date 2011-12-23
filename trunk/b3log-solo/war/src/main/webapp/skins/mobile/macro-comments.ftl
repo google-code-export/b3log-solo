@@ -40,9 +40,8 @@
     <div id="textinputwrap">
         <div id="refresher" style="display:none;">
             <img src="/skins/${skinDirName}/images/good.png" alt="checkmark" />
-            <h3>Success! Comment added.</h3>
-            <a href="javascript:this.location.reload();">&lt; Refresh the page to see your comment.</a><br />
-            (If your comment requires moderation it will be added soon.)
+            <h3>${commentSuccess}</h3>
+            <a href="javascript:this.location.reload();">${refresh2CComment}</a>
         </div>
         <div id="commentForm">
             <h3 id="respond">${postCommentsLabel}</h3>
