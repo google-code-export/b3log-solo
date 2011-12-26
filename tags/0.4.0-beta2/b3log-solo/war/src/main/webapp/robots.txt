@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /blog-articles-feed.do
+Allow: /tag-articles-feed.do*
+Disallow: /*.do
+Disallow: /login
+Disallow: /logout
+Disallow: /tags
