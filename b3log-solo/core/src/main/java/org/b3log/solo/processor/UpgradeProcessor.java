@@ -27,8 +27,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
-import org.b3log.latke.servlet.renderer.DoNothingRenderer;
+import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -52,7 +51,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Nov 2, 2011
+ * @version 1.1.0.6, Dec 26, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -104,17 +103,20 @@ public final class UpgradeProcessor {
     @RequestProcessing(value = {"/upgrade/checker.do"},
                        method = HTTPRequestMethod.GET)
     public void upgrade(final HTTPRequestContext context) {
-        final AbstractHTTPResponseRenderer renderer = new DoNothingRenderer();
+        final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
-        
+
         try {
             final JSONObject preference =
                     preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) { // Not init yet
                 LOGGER.log(Level.INFO, "Not init yet");
+                renderer.setContent("Not init yet");
 
                 return;
             }
+
+            renderer.setContent("Upgrade successfully ;-)");
 
             if (!preference.has(Preference.VERSION)) {
                 v030ToV031();
@@ -135,11 +137,17 @@ public final class UpgradeProcessor {
             } else if ("0.3.5".equals(version)) { // 0.3.5 -> 0.4.0
                 v035ToV040();
             } else {
-                LOGGER.warning(
-                        "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers");
+                final String msg =
+                        "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";
+                LOGGER.warning(msg);
+                renderer.setContent(msg);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            renderer.setContent(
+                    "Upgrade failed [" + e.getMessage()
+                    + "], please contact the B3log Solo developers or reports this "
+                    + "issue directly (https://code.google.com/p/b3log-solo/issues/entry) ");
         }
     }
 
@@ -251,7 +259,7 @@ public final class UpgradeProcessor {
             for (int i = 0; i < links.length(); i++) {
                 final JSONObject link = links.getJSONObject(i);
                 link.put(Link.LINK_ORDER, i);
-                
+
                 link.put(Link.LINK_DESCRIPTION, ""); // Adds default link description
 
                 linkRepository.update(link.getString(Keys.OBJECT_ID), link);
@@ -273,8 +281,9 @@ public final class UpgradeProcessor {
             JSONObject replyNotificationTemplate = preferenceRepository.get(
                     Preference.REPLY_NOTIFICATION_TEMPLATE);
             if (null == replyNotificationTemplate) {
-                replyNotificationTemplate = 
-                        new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+                replyNotificationTemplate =
+                        new JSONObject(
+                        Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
                 replyNotificationTemplate.put(Keys.OBJECT_ID,
                                               Preference.REPLY_NOTIFICATION_TEMPLATE);
 
