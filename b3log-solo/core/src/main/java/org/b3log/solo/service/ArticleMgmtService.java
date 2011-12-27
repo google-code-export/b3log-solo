@@ -42,6 +42,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
@@ -60,6 +61,7 @@ import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
@@ -73,7 +75,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 21, 2011
+ * @version 1.0.0.6, Dec 27, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -270,8 +272,15 @@ public final class ArticleMgmtService {
                     oldArticle, article, (Date) oldArticle.get(
                     ARTICLE_CREATE_DATE));
             article.put(ARTICLE_PERMALINK, permalink);
-            // Process tag
+
             processTagsForArticleUpdate(oldArticle, article);
+
+            if (!oldArticle.getString(Article.ARTICLE_PERMALINK).
+                    equals(permalink)) { // The permalink has been updated
+                // Updates related comments' links
+                processCommentsForArticleUpdate(article);
+            }
+
             // Fill auto properties
             fillAutoProperties(oldArticle, article);
             // Set date
@@ -724,6 +733,30 @@ public final class ArticleMgmtService {
     }
 
     /**
+     * Processes comments for article update.
+     * 
+     * @param article the specified article to update
+     * @throws Exception exception 
+     */
+    public void processCommentsForArticleUpdate(final JSONObject article)
+            throws Exception {
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        
+        final List<JSONObject> comments =
+                commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
+        
+        for (final JSONObject comment : comments) {
+            final String commentId = comment.getString(Keys.OBJECT_ID);
+            final String sharpURL =
+                    Comments.getCommentSharpURLForArticle(article, commentId);
+
+            comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
+            
+            commentRepository.update(commentId, comment);
+        }
+    }
+
+    /**
      * Processes tags for article update.
      *
      * <ul>
@@ -1165,7 +1198,7 @@ public final class ArticleMgmtService {
                 ret = "/" + ret;
             }
 
-            if (permalinks.invalidArticlePermalinkFormat(ret)) {
+            if (Permalinks.invalidArticlePermalinkFormat(ret)) {
                 throw new ServiceException(langPropsService.get(
                         "invalidPermalinkFormatLabel"));
             }

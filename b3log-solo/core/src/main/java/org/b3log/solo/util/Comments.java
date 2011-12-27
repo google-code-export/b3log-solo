@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 21, 2011
+ * @version 1.0.0.8, Dec 27, 2011
  * @since 0.3.1
  */
 public final class Comments {
@@ -81,6 +81,36 @@ public final class Comments {
             + "{title}</a>]" + " received a new comment:</p>"
             + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
             + "{commentContent}</a></span>";
+
+    /**
+     * Gets comment sharp URL with the specified page and comment id.
+     *
+     * @param page the specified page
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     * @throws JSONException json exception
+     */
+    public static String getCommentSharpURLForPage(final JSONObject page,
+                                                   final String commentId)
+            throws JSONException {
+        return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
+    }
+
+    /**
+     * Gets comment sharp URL with the specified article and comment id.
+     *
+     * @param article the specified article
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     * @throws JSONException json exception
+     */
+    public static String getCommentSharpURLForArticle(final JSONObject article,
+                                                      final String commentId)
+            throws JSONException {
+        final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
+
+        return articleLink + "#" + commentId;
+    }
 
     /**
      * Checks the specified comment adding request.

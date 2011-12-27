@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Nov 10, 2011
+ * @version 1.1.0.4, Dec 27, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -271,8 +271,9 @@ public final class CommentProcessor {
             comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
-            final String commentSharpURL = getCommentSharpURLForPage(page,
-                                                                     commentId);
+            final String commentSharpURL =
+                    Comments.getCommentSharpURLForPage(page,
+                                                       commentId);
             jsonObject.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
@@ -497,8 +498,7 @@ public final class CommentProcessor {
         comment.put(Keys.OBJECT_ID, commentId);
 
         final String commentSharpURL =
-                getCommentSharpURLForArticle(article,
-                                             commentId);
+                Comments.getCommentSharpURLForArticle(article, commentId);
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
         ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
@@ -528,36 +528,6 @@ public final class CommentProcessor {
 
         return ret;
 
-    }
-
-    /**
-     * Gets comment sharp URL with the specified page and comment id.
-     *
-     * @param page the specified page
-     * @param commentId the specified comment id
-     * @return comment sharp URL
-     * @throws JSONException json exception
-     */
-    private String getCommentSharpURLForPage(final JSONObject page,
-                                             final String commentId)
-            throws JSONException {
-        return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
-    }
-
-    /**
-     * Gets comment sharp URL with the specified article and comment id.
-     *
-     * @param article the specified article
-     * @param commentId the specified comment id
-     * @return comment sharp URL
-     * @throws JSONException json exception
-     */
-    private static String getCommentSharpURLForArticle(final JSONObject article,
-                                                       final String commentId)
-            throws JSONException {
-        final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
-
-        return articleLink + "#" + commentId;
     }
 
     /**
