@@ -48,7 +48,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Dec 27, 2011
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -239,19 +239,19 @@ public final class PreferenceMgmtService {
                 transaction.rollback();
             }
             LOGGER.log(Level.SEVERE, "Updates preference failed", e);
-            throw new ServiceException(e);
+            throw new ServiceException(langPropsService.get("updateFailLabel"));
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             LOGGER.log(Level.SEVERE, "Updates preference failed", e);
-            throw new ServiceException(e);
+            throw new ServiceException(langPropsService.get("updateFailLabel"));
         } catch (final IOException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             LOGGER.log(Level.SEVERE, "Updates preference failed", e);
-            throw new ServiceException(e);
+            throw new ServiceException(langPropsService.get("updateFailLabel"));
         }
 
         LOGGER.log(Level.FINER, "Updates preference successfully");
