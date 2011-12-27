@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -24,11 +25,13 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
@@ -38,7 +41,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 2, 2011
+ * @version 1.0.0.2, Dec 27, 2011
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -136,19 +139,17 @@ public final class PageMgmtService {
             }
             newPage.put(Page.PAGE_PERMALINK, permalink);
 
+            if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) {  // The permalink has been updated
+                // Updates related comments' links
+                processCommentsForPageUpdate(newPage);
+            }
+
             pageRepository.update(pageId, newPage);
 
             transaction.commit();
 
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            throw new ServiceException(e);
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -351,6 +352,30 @@ public final class PageMgmtService {
                 statistics.getPublishedBlogCommentCount();
         publishedBlogCommentCount -= removedCnt;
         statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+    }
+
+    /**
+     * Processes comments for page update.
+     * 
+     * @param page the specified page to update
+     * @throws Exception exception 
+     */
+    public void processCommentsForPageUpdate(final JSONObject page)
+            throws Exception {
+        final String pageId = page.getString(Keys.OBJECT_ID);
+
+        final List<JSONObject> comments =
+                commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
+
+        for (final JSONObject comment : comments) {
+            final String commentId = comment.getString(Keys.OBJECT_ID);
+            final String sharpURL =
+                    Comments.getCommentSharpURLForPage(page, commentId);
+
+            comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
+
+            commentRepository.update(commentId, comment);
+        }
     }
 
     /**
