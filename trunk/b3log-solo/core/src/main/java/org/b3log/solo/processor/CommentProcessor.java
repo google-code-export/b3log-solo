@@ -198,7 +198,7 @@ public final class CommentProcessor {
 
         final Transaction transaction = commentRepository.beginTransaction();
 
-        String pageId, commentId;
+        String pageId;
         try {
             final String captcha = requestJSONObject.getString(
                     CaptchaProcessor.CAPTCHA);
@@ -232,6 +232,9 @@ public final class CommentProcessor {
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+
             JSONObject originalComment = null;
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
@@ -269,7 +272,7 @@ public final class CommentProcessor {
             // Sets comment on page....
             comment.put(Comment.COMMENT_ON_ID, pageId);
             comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
-            commentId = commentRepository.add(comment);
+            final String commentId = Ids.genTimeMillisId();
             // Save comment sharp URL
             final String commentSharpURL =
                     Comments.getCommentSharpURLForPage(page,
@@ -277,7 +280,7 @@ public final class CommentProcessor {
             jsonObject.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
-            commentRepository.update(commentId, comment);
+            commentRepository.add(comment);
             // Step 2: Update page comment count
             commentMgmtService.incPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
