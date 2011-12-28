@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.0.7, Nov 19, 2011
+    Version: 2.0.0.8, Dec 28, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -50,6 +50,7 @@
         <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
+        <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
         <maven-min-plugin.version>0.5.0-SNAPSHOT</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
