@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Nov 12, 2011
+ * @version 1.0.1.6, Dec 28, 2011
 */
 *,html,body {
     margin: 0;
@@ -12,7 +12,7 @@
 body {
     background-color: #FFF;
     color: #000;
-    font-family: Helvetica,Arial,sans-serif,\u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
+    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
     font-size: small;
 }
 
