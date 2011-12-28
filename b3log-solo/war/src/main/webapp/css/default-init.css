@@ -3,7 +3,7 @@
  * init, login and kill IE page style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Oct 25, 2011
+ * @version 1.0.0.6, Dec 28, 2011
 */
 html {
     height: 100%;
@@ -16,7 +16,7 @@ html {
 body {
     background-color: #F3F1E5;
     color: #4D505D;
-    font-family: \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
+    font-family: \5fae\8f6f\96c5\9ed1;
     font-size: small;
     height: 100%;
 }
@@ -35,17 +35,24 @@ button {
     outline: none;
 }
 
-input{
+input {
     background: none repeat scroll 0 0 #FBFBFB;
     border: 1px solid #E5E5E5;
     box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
-    font-family: Helvetica,Arial,sans-serif,\u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
-    font-size: 24px;
+    color: #4D505D;
+    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
+    font-size: 20px;
     font-weight: 200;
+    height: 28px;
     margin-right: 6px;
     margin-top: 2px;
     outline: medium none;
     padding: 3px;
+    width: 280px;
+}
+
+input:focus {
+    box-shadow: 0px 0px 5px rgba(200, 200, 200, 0.9);
 }
 
 tr {

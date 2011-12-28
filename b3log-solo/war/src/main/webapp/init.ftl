@@ -85,7 +85,7 @@
                             </div>
                             <div id="sys" class="none">
                                 ${initIntroLabel}
-                                <button onclick='initSys();'>${initLabel}</button>
+                                <button onclick='initSys();' id="initButton">${initLabel}</button>
                                 <button onclick='returnTo();'>${previousStepLabel}</button>
                                 <span class="clear"></span>
                             </div>
@@ -110,7 +110,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            $("#userPasswordConfirm").keypress(function (event) {
+            $("input").keypress(function (event) {
                 if (event.keyCode === 13) {
                     getUserInfo();
                 }
@@ -146,6 +146,8 @@
                         "display": "block",
                         "opacity": 1
                     });
+                    
+                    $("#initButton").focus();
                 }
             };
             
