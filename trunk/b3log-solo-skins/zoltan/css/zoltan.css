@@ -3,12 +3,12 @@
  * zoltan skin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Oct 25, 2011
+ * @version 1.0.0.7, Dec 28, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
     color: #846D55;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \5fae\8f6f\96c5\9ed1;
     font-size: 13px;
 }   
 
@@ -23,7 +23,7 @@ h2 {
 input, textarea {
     color: #846D55;
     font-size: 13px;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \5fae\8f6f\96c5\9ed1;
 }
 
 a, a:link, a:active, a:visited {

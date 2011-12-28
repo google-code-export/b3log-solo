@@ -3,10 +3,10 @@
  * skin neoease min style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Dec 8 2011
+ * @version 1.0.1.2, Dec 28 2011
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6{margin:0;padding:0;}
-body{background-color:#F9F9F9;color:#333;font-family:"Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';font-size:12px;}
+body{background-color:#F9F9F9;color:#333;font-family:"Lucida Grande",Verdana,\5fae\8f6f\96c5\9ed1;font-size:12px;}
 a:link{color:#21759B;outline:none;text-decoration:none;}
 a:visited{color:#555;}
 a:hover{color:#D54E21;}
