@@ -297,12 +297,11 @@ $.extend(Page.prototype, {
     },
     
     /*
-         * 加载相关文章
-         * @id {string} 文章 id
-         * @headtitle {string} 相关文章标题
-         */
+     * 加载相关文章
+     * @id {string} 文章 id
+     * @headtitle {string} 相关文章标题
+     */
     loadRelevantArticles: function (id, headTitle) {
-        var tips = this.tips;
         try {
             $.ajax({
                 url: "/article/id/" + id + "/relevant/articles",
