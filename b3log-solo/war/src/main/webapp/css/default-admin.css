@@ -3,11 +3,11 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.7, Nov 21, 2011
+ * @version 1.0.2.8, Dec 28, 2011
 */
 /* start resset */
 *, input, textarea {
-    font-family: \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
+    font-family: \5fae\8f6f\96c5\9ed1;
 }
 html, body {
     height: 100%;
@@ -117,6 +117,7 @@ a:hover {
 }
 /* end top-nav */
 
+/* start part */
 .comment-title {
     background-color: #ECECEC;
     border-bottom: 1px solid #DFDFDF;
@@ -127,6 +128,14 @@ a:hover {
     height: 462px;
     overflow: auto;
 }
+
+button#submitArticle {
+    background: none repeat scroll 0 0 #D54121;
+    box-shadow: 0 0 0 1px #FFFFFF inset, 0 1px 1px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    color: #FFF;
+}
+/* end part */
 
 /* start first tab */
 #tabs {
