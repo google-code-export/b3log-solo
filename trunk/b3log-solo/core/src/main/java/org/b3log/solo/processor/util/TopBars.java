@@ -37,6 +37,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.InitProcessor;
 import org.b3log.solo.processor.LoginProcessor;
+import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.2, Dec 22, 2011
+ * @version 1.0.0.3, Dec 26, 2011
  * @since 0.3.5
  */
 public final class TopBars {
@@ -95,9 +96,15 @@ public final class TopBars {
             final JSONObject currentUser = userUtils.getCurrentUser(request);
 
             topBarModel.put(Common.IS_LOGGED_IN, false);
-            
-            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(request));
+
+            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(
+                    request));
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
+
+            topBarModel.put("onlineVisitor1Label",
+                            langPropsService.get("onlineVisitor1Label"));
+            topBarModel.put(Common.ONLINE_VISITOR_CNT,
+                            Statistics.getOnlineVisitorCount());
 
             if (null == currentUser) {
                 topBarModel.put(Common.LOGIN_URL,

@@ -26,9 +26,14 @@ import org.json.JSONObject;
 
 /**
  * Statistic utilities.
+ * 
+ * <p>
+ *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is 
+ *   NOT cluster-safe.
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 20, 2011
+ * @version 1.0.1.6, Dec 26, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -44,9 +49,40 @@ public final class Statistics {
     private StatisticRepository statisticRepository =
             StatisticRepositoryImpl.getInstance();
     /**
+     * Online visitor count.
+     */
+    private static int onlineVisitorCount = 0;
+    /**
      * Repository cache prefix, refers to GAERepository#CACHE_KEY_PREFIX.
      */
     public static final String REPOSITORY_CACHE_KEY_PREFIX = "repository";
+
+    /**
+     * Gets the online visitor count.
+     * 
+     * @return online visitor count
+     */
+    public static int getOnlineVisitorCount() {
+        return onlineVisitorCount;
+    }
+
+    /**
+     * Increments the online visitor count.
+     */
+    public static void incOnlineVisitorCount() {
+        ++onlineVisitorCount;
+    }
+
+    /**
+     * Decrements the online visitor count.
+     */
+    public static void decOnlineVisitorCount() {
+        --onlineVisitorCount;
+        
+        if (0 > onlineVisitorCount) {
+            onlineVisitorCount = 0;
+        }
+    }
 
     /**
      * Get blog comment count.
