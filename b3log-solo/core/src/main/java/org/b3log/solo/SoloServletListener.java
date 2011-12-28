@@ -49,6 +49,7 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
@@ -86,7 +87,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-
+    
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
@@ -148,10 +149,12 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
+        Statistics.incOnlineVisitorCount();
     }
 
     @Override
     public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
+        Statistics.decOnlineVisitorCount();
     }
 
     @Override
@@ -184,6 +187,8 @@ public final class SoloServletListener extends AbstractServletListener {
                    new Object[]{Strings.LINE_SEPARATOR,
                                 Stopwatchs.getTimingStat()});
         Stopwatchs.release();
+        
+        super.requestDestroyed(servletRequestEvent);
     }
 
     /**

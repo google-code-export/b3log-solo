@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.2, Dec 22, 2011
+ * @version 1.0.4.3, Dec 26, 2011
  * @since 0.3.1
  */
 public final class Common {
@@ -232,6 +232,11 @@ public final class Common {
      * Key of go to.
      */
     public static final String GOTO = "to";
+    
+    /**
+     * Key of online visitor count.
+     */
+    public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
 
     /**
      * Private default constructor.

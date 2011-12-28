@@ -35,6 +35,7 @@
     <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
         B3log Solo
     </a>
+    &nbsp;${onlineVisitor1Label}${onlineVisitorCnt}
     <span class="right" id="admin">
         <#if isLoggedIn>
         <span>${userName}</span>
