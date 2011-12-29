@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 28, 2011
+ * @version 1.0.0.8, Dec 29, 2011
  */
 
 /* article-list 相关操作 */
@@ -36,18 +36,8 @@ admin.articleList = {
             minWidth: 110,
             style: "padding-left: 12px;font-size:14px;"
         }, {
-            text: Label.tagsLabel,
-            index: "tags",
-            width: 300,
-            style: "padding-left: 12px;"
-        }, {
             text: Label.authorLabel,
             index: "author",
-            width: 150,
-            style: "padding-left: 12px;"
-        }, {
-            text: Label.createDateLabel,
-            index: "date",
             width: 150,
             style: "padding-left: 12px;"
         }, {
@@ -57,8 +47,13 @@ admin.articleList = {
             style: "padding-left: 12px;"
         }, {
             text: Label.viewLabel,
-            width: 80,
+            width: 60,
             index: "articleViewCount",
+            style: "padding-left: 12px;"
+        }, {
+            text: Label.createDateLabel,
+            index: "date",
+            width: 90,
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();
@@ -88,10 +83,9 @@ admin.articleList = {
                 articleData = [];
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
-                    articleData[i].tags = articles[i].articleTags;
                     articleData[i].title = "<a href='" + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
-                    + articles[i].articleTitle + "</a>";
-                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime, 1);
+                    + articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
+                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime);
                     articleData[i].comments = articles[i].articleCommentCount;
                     articleData[i].articleViewCount = articles[i].articleViewCount;
                     articleData[i].author = articles[i].authorName;

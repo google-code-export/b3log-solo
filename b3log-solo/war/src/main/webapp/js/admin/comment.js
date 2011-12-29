@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 28, 2011
+ * @version 1.0.0.4, Dec 29, 2011
  */
 
 admin.comment = { 
@@ -78,7 +78,7 @@ admin.comment = {
                     commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
                     + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='right'><a href='mailto:"
                     + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
-                    + $.bowknot.getDate(comments[i].commentTime, 1)
+                    + $.bowknot.getDate(comments[i].commentTime)
                     + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
                     + contentHTML + "</div>";
                 }
