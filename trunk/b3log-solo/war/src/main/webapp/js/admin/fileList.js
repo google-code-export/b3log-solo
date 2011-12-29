@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 24, 2011
+ * @version 1.0.0.9, Dec 29, 2011
  */
 
 /* file-list 相关操作 */
@@ -42,11 +42,6 @@ admin.fileList = {
             index: "name",
             minWidth: 260
         }, {
-            text: Label.uploadDateLabel,
-            index: "uploadDate",
-            width: 200,
-            style: "padding-left: 12px;"
-        }, {
             text: Label.sizeLabel + " (Bytes)",
             index: "size",
             width: 150,
@@ -55,6 +50,11 @@ admin.fileList = {
             text: Label.downloadCountLabel,
             index: "downloadCnt",
             width: 80,
+            style: "padding-left: 12px;"
+        }, {
+            text: Label.uploadDateLabel,
+            index: "uploadDate",
+            width: 100,
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();
@@ -89,7 +89,7 @@ admin.fileList = {
                     fileData[i] = {};
                     fileData[i].name = "<a class='no-underline' href='" + files[i].fileDownloadURL + "'>"
                     + files[i].fileName + "</a>";
-                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadTime, 1);
+                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadTime);
                     fileData[i].downloadCnt = files[i].fileDownloadCount;
                     fileData[i].size = files[i].fileSize;
                     fileData[i].expendRow = "<a href='" + files[i].fileDownloadURL + "'>" + Label.downloadLabel + "</a>  \

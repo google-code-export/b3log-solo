@@ -3,11 +3,12 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.8, Dec 28, 2011
+ * @version 1.0.2.9, Dec 29, 2011
 */
+
 /* start resset */
 *, input, textarea {
-    font-family: \5fae\8f6f\96c5\9ed1;
+    font-family: sans-serif,\5fae\8f6f\96c5\9ed1;
 }
 html, body {
     height: 100%;
@@ -116,26 +117,6 @@ a:hover {
     border-left-color: #707070;
 }
 /* end top-nav */
-
-/* start part */
-.comment-title {
-    background-color: #ECECEC;
-    border-bottom: 1px solid #DFDFDF;
-    border-top: 1px solid #F9F9F9;
-    padding: 3px 6px 3px 12px;
-}
-#comments {
-    height: 462px;
-    overflow: auto;
-}
-
-button#submitArticle {
-    background: none repeat scroll 0 0 #D54121;
-    box-shadow: 0 0 0 1px #FFFFFF inset, 0 1px 1px rgba(0, 0, 0, 0.1);
-    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-    color: #FFF;
-}
-/* end part */
 
 /* start first tab */
 #tabs {
@@ -296,6 +277,29 @@ button#submitArticle {
 }
 /* end module */
 
+/* start comments */
+.comment-title {
+    background-color: #ECECEC;
+    border-bottom: 1px solid #DFDFDF;
+    border-top: 1px solid #F9F9F9;
+    padding: 3px 6px 3px 12px;
+}
+
+#comments {
+    height: 462px;
+    overflow: auto;
+}
+/* end comments */
+
+/* start article */
+button#submitArticle {
+    background: none repeat scroll 0 0 #D54121;
+    box-shadow: 0 0 0 1px #FFFFFF inset, 0 1px 1px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    color: #FFF;
+}
+/* end article */
+
 /* start preference */
 #skinsPanel {
     min-width: 328px;
@@ -339,9 +343,9 @@ button#submitArticle {
 /* start common list */
 .small-head {
     float: left;
-    height: 45px;
-    margin: 3px 9px 12px 3px;
-    width: 45px;
+    height: 35px;
+    margin: 3px 9px 0 3px;
+    width: 35px;
 }
 
 #commentTable .table-main td  {
@@ -543,7 +547,7 @@ button#submitArticle {
 .table-expendRow td  span {
     margin-left: 60px;
 }
-.table-expendRow td a, .table-main a.action  {
+.table-expendRow td a {
     background-color: #999;
     border-radius: 3px;
     color: #FFF;
@@ -552,7 +556,7 @@ button#submitArticle {
     padding: 1px 6px;
     text-decoration: none;
 }
-.table-expendRow td a:hover, .table-main a.action:hover {
+.table-expendRow td a:hover {
     background-color: #BBB;
 }
 .table-center {
@@ -569,6 +573,13 @@ button#submitArticle {
 .table-upIcon {
     background-position: -64px -32px;
     margin-right: 6px;
+}
+
+.table-tag {
+    color: #D54121;
+    font-size: 12px;
+    font-style: italic;
+    margin-left: 10px;
 }
 
 .tip-panel {

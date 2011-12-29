@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 21, 2011
+ * @version 1.0.1.0, Dec 29, 2011
  */
 
 /* comment-list 相关操作 */
@@ -33,17 +33,22 @@ admin.commentList = {
      * 初始化 table, pagination, comments dialog 
      */
     init: function (page) {
-        this.tablePagination.buildTable([ {
-            text: "",
-            index: "title",
-            width: 300,
-            style: "padding-left: 12px;"
-        }, {
+        this.tablePagination.buildTable([{
             text: Label.commentContentLabel,
             index: "content",
             minWidth: 300,
             style: "padding-left: 12px;"
-        }], true);
+        }, {
+            text: Label.authorLabel,
+            index: "title",
+            width: 230,
+            style: "padding-left: 12px;"
+        }, {
+            text: Label.createDateLabel,
+            index: "date",
+            width: 90,
+            style: "padding-left: 12px;"
+        }]);
         this.tablePagination.initPagination();
         this.getList(page);
     },
@@ -77,34 +82,27 @@ admin.commentList = {
                     
                     commentsData[i] = {};
                     
-                    commentsData[i].content = "<div>" + Util.replaceEmString(comments[i].commentContent) + "</div>";
-                    commentsData[i].content += "<a class='action right' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
-                    comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
-                            
-                    commentsData[i].title = "<div style='margin:6px 0'><a href='" + comments[i].commentSharpURL + 
+                    commentsData[i].content = Util.replaceEmString(comments[i].commentContent) + 
+                    "<span class='table-tag'> on &nbsp;&nbsp;</span><a href='" + comments[i].commentSharpURL + 
                     "' target='_blank'>" + comments[i].commentTitle +
-                    "</a></div>";
+                    "</a>";
                 
-                    commentsData[i].title += "<img class='small-head' src='" + comments[i].commentThumbnailURL + "'/>";
-                    
-                    commentsData[i].title += "<div class='left' style='font-size:12px;'>" + Label.authorLabel + ": ";
+                    commentsData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.commentList.del('" +
+                    comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
+                
+                    commentsData[i].title = "<img class='small-head' src='" + 
+                        comments[i].commentThumbnailURL + "'/>";
                     if ("http://" === comments[i].commentURL) {
                         commentsData[i].title += comments[i].commentName;
                     } else {
                         commentsData[i].title += "<a href='" + comments[i].commentURL +
                         "' target='_blank' class='no-underline'>" + comments[i].commentName + 
                         "</a>";
-                    }
+                    }                    
+                    commentsData[i].title += "<br/><a href='mailto:" + comments[i].commentEmail +
+                    "'>" + comments[i].commentEmail + "</a>";                
                     
-                    commentsData[i].title += "<br/>" + Label.commentEmailLabel + 
-                    ": <a href='mailto:" + comments[i].commentEmail +
-                    "'>" + comments[i].commentEmail + "</a><br/>";
-                
-                    commentsData[i].title += Label.createDateLabel + ": " +
-                    $.bowknot.getDate(comments[i].commentTime, 1);
-                    commentsData[i].title += "<br/>";
-                
-                    commentsData[i].title += "</div>";
+                    commentsData[i].date = $.bowknot.getDate(comments[i].commentTime);
                 }
                 
                 that.tablePagination.updateTablePagination(commentsData, pageNum, result.pagination);
