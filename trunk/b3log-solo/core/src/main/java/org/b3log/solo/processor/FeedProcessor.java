@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Nov 19, 2011
+ * @version 1.1.0.5, Dec 29, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -91,10 +91,6 @@ public final class FeedProcessor {
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
-    /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Tag repository.
      */
@@ -128,7 +124,7 @@ public final class FeedProcessor {
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(timeZoneUtils.getTime(
+            feed.setUpdated(TimeZones.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost + "/blog-articles-feed.do");
@@ -244,7 +240,7 @@ public final class FeedProcessor {
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(timeZoneUtils.getTime(
+            feed.setUpdated(TimeZones.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost + "/tag-articles-feed.do");
@@ -361,7 +357,7 @@ public final class FeedProcessor {
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(timeZoneUtils.getTime(
+            channel.setLastBuildDate(TimeZones.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
             channel.setAtomLink("http://" + blogHost + "/blog-articles-rss.do");
@@ -486,7 +482,7 @@ public final class FeedProcessor {
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(timeZoneUtils.getTime(
+            channel.setLastBuildDate(TimeZones.getTime(
                     preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
             channel.setAtomLink("http://" + blogHost + "/tag-articles-rss.do");

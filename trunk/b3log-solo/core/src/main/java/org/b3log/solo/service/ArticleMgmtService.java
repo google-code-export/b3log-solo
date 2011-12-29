@@ -125,10 +125,6 @@ public final class ArticleMgmtService {
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
-    /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
@@ -288,7 +284,7 @@ public final class ArticleMgmtService {
             final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = timeZoneUtils.getTime(timeZoneId);
+            final Date date = TimeZones.getTime(timeZoneId);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleUtils.hadBeenPublished(oldArticle)) {
                     // Edit update date only for published article
@@ -473,7 +469,7 @@ public final class ArticleMgmtService {
             final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = timeZoneUtils.getTime(timeZoneId);
+            final Date date = TimeZones.getTime(timeZoneId);
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 article.put(Article.ARTICLE_CREATE_DATE, date);
             }

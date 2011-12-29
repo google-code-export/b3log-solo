@@ -25,7 +25,7 @@ import org.b3log.solo.model.Comment;
  * Time zone utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 6, 2011
+ * @version 1.0.0.3, Dec 29, 2011
  */
 public final class TimeZones {
 
@@ -35,7 +35,7 @@ public final class TimeZones {
      * @param timeZoneId the specified time zone id
      * @return date
      */
-    public Date getTime(final String timeZoneId) {
+    public static Date getTime(final String timeZoneId) {
         final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
         final TimeZone defaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(timeZone);
@@ -55,7 +55,7 @@ public final class TimeZones {
      *
      * @param timeZoneId the specified time zone id
      */
-    public void setTimeZone(final String timeZoneId) {
+    public static void setTimeZone(final String timeZoneId) {
         final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
         TimeZone.setDefault(timeZone);
@@ -67,37 +67,8 @@ public final class TimeZones {
     }
 
     /**
-     * Gets the {@link TimeZones} singleton.
-     *
-     * @return the singleton
-     */
-    public static TimeZones getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
      * Private default constructor.
      */
     private TimeZones() {
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final TimeZones SINGLETON = new TimeZones();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

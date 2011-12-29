@@ -48,7 +48,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 27, 2011
+ * @version 1.0.0.2, Dec 29, 2011
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -68,14 +68,6 @@ public final class PreferenceMgmtService {
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
-    /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
-    /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Language service.
      */
@@ -176,15 +168,15 @@ public final class PreferenceMgmtService {
             preference.put(BLOG_HOST, blogHost);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            final String skinName = skins.getSkinName(skinDirName);
+            final String skinName = Skins.getSkinName(skinDirName);
             preference.put(Skin.SKIN_NAME, skinName);
-            final Set<String> skinDirNames = skins.getSkinDirNames();
+            final Set<String> skinDirNames = Skins.getSkinDirNames();
             final JSONArray skinArray = new JSONArray();
             for (final String dirName : skinDirNames) {
                 final JSONObject skin = new JSONObject();
                 skinArray.put(skin);
 
-                final String name = skins.getSkinName(dirName);
+                final String name = Skins.getSkinName(dirName);
                 skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
@@ -196,7 +188,7 @@ public final class PreferenceMgmtService {
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
-            timeZoneUtils.setTimeZone(timeZoneId);
+            TimeZones.setTimeZone(timeZoneId);
 
             preference.put(Preference.SIGNS,
                            preference.get(Preference.SIGNS).toString());
