@@ -44,15 +44,11 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Dec 22, 2011
+ * @version 1.0.2.4, Dec 29, 2011
  * @since 0.3.1
  */
 public final class Skins {
 
-    /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Logger.
      */
@@ -72,9 +68,9 @@ public final class Skins {
      * @param dataModel the specified data model
      * @throws ServiceException service exception 
      */
-    public void fillSkinLangs(final String localeString,
-                              final String currentSkinDirName,
-                              final Map<String, Object> dataModel)
+    public static void fillSkinLangs(final String localeString,
+                                     final String currentSkinDirName,
+                                     final Map<String, Object> dataModel)
             throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
@@ -137,7 +133,7 @@ public final class Skins {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    public void loadSkins(final JSONObject preference) throws Exception {
+    public static void loadSkins(final JSONObject preference) throws Exception {
         Stopwatchs.start("Load Skins");
 
         LOGGER.info("Loading skins....");
@@ -206,7 +202,7 @@ public final class Skins {
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         if ("zh_CN".equals(localeString)) {
-            timeZoneUtils.setTimeZone("Asia/Shanghai");
+            TimeZones.setTimeZone("Asia/Shanghai");
         }
 
         LOGGER.info("Loaded skins....");
@@ -249,7 +245,7 @@ public final class Skins {
      *
      * @return a set of skin name, returns an empty set if not found
      */
-    public Set<String> getSkinDirNames() {
+    public static Set<String> getSkinDirNames() {
         final String webRootPath = SoloServletListener.getWebRoot();
         final File skins = new File(webRootPath + "skins" + File.separator);
         final File[] skinDirs = skins.listFiles(new FileFilter() {
@@ -278,7 +274,7 @@ public final class Skins {
      * @return skin name, returns {@code null} if not found or error occurs
      * @see #getSkinDirNames()
      */
-    public String getSkinName(final String skinDirName) {
+    public static String getSkinName(final String skinDirName) {
         final String webRootPath = SoloServletListener.getWebRoot();
         final File skins = new File(webRootPath + "skins" + File.separator);
         final File[] skinDirs = skins.listFiles(new FileFilter() {

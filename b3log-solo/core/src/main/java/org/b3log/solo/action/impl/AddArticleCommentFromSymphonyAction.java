@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 10, 2011
+ * @version 1.0.0.9, Dec 29, 2011
  * @since 0.3.1
  */
 public final class AddArticleCommentFromSymphonyAction
@@ -89,10 +89,6 @@ public final class AddArticleCommentFromSymphonyAction
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
-    /**
-     * Time zone utilities.
-     */
-    private static TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Article repository.
      */
@@ -214,7 +210,7 @@ public final class AddArticleCommentFromSymphonyAction
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = timeZoneUtils.getTime(timeZoneId);
+            final Date date = TimeZones.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
             if (!Strings.isEmptyOrNull(originalCommentId)) {

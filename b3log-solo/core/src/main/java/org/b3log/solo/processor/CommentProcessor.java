@@ -111,10 +111,6 @@ public final class CommentProcessor {
     private CommentMgmtService commentMgmtService =
             CommentMgmtService.getInstance();
     /**
-     * Time zone utilities.
-     */
-    private static TimeZones timeZoneUtils = TimeZones.getInstance();
-    /**
      * Article utilities.
      */
     private static Articles articleUtils = Articles.getInstance();
@@ -243,7 +239,7 @@ public final class CommentProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = timeZoneUtils.getTime(timeZoneId);
+            final Date date = TimeZones.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
             jsonObject.put(Comment.COMMENT_DATE,
                            Comment.DATE_FORMAT.format(date));
@@ -468,7 +464,7 @@ public final class CommentProcessor {
         final JSONObject preference = preferenceQueryService.getPreference();
         final String timeZoneId =
                 preference.getString(Preference.TIME_ZONE_ID);
-        final Date date = timeZoneUtils.getTime(timeZoneId);
+        final Date date = TimeZones.getTime(timeZoneId);
         comment.put(Comment.COMMENT_DATE, date);
         ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
 

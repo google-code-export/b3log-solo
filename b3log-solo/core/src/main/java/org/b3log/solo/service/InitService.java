@@ -57,7 +57,7 @@ import static org.b3log.solo.model.Preference.*;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 6, 2011
+ * @version 1.0.0.4, Dec 29, 2011
  * @since 0.4.0
  */
 public final class InitService {
@@ -67,10 +67,6 @@ public final class InitService {
      */
     private static final Logger LOGGER =
             Logger.getLogger(InitService.class.getName());
-    /**
-     * Time zone utilities.
-     */
-    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Statistic repository.
      */
@@ -90,10 +86,6 @@ public final class InitService {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
-    /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
     /**
      * User utilities.
      */
@@ -394,16 +386,16 @@ public final class InitService {
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-        final String skinName = skins.getSkinName(skinDirName);
+        final String skinName = Skins.getSkinName(skinDirName);
         ret.put(Skin.SKIN_NAME, skinName);
 
-        final Set<String> skinDirNames = skins.getSkinDirNames();
+        final Set<String> skinDirNames = Skins.getSkinDirNames();
         final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
             skinArray.put(skin);
 
-            final String name = skins.getSkinName(dirName);
+            final String name = Skins.getSkinName(dirName);
             skin.put(Skin.SKIN_NAME, name);
             skin.put(Skin.SKIN_DIR_NAME, dirName);
         }
@@ -420,7 +412,7 @@ public final class InitService {
             throw new IllegalStateException(e);
         }
 
-        timeZoneUtils.setTimeZone("Asia/Shanghai");
+        TimeZones.setTimeZone("Asia/Shanghai");
 
         ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);
