@@ -63,6 +63,33 @@
             <artifactId>freemarker-gae</artifactId>
         </dependency>
         
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-labs</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+            
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+            
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-testing</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
     
     <build>
@@ -81,6 +108,17 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <configuration>
                     <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
