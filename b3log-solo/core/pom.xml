@@ -49,7 +49,7 @@
             <artifactId>commons-fileupload</artifactId>
         </dependency>
         
-        <!-- GAE related dependencies just for test -->
+        <!-- BEGIN GAE related dependencies just for test -->
         
         <dependency>
             <groupId>org.b3log</groupId>
@@ -84,6 +84,7 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- END GAE related dependencies just for test -->
     </dependencies>
 
     <build>
