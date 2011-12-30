@@ -17,9 +17,12 @@ package org.b3log.solo.repository.impl;
 
 import java.util.List;
 import junit.framework.Assert;
+import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -108,8 +111,20 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "add", dependsOnGroups = "tag-article")
+    @Test(dependsOnMethods = "add")
     public void getByArticleId() throws Exception {
+        final TagArticleRepository tagArticleRepository =
+                getTagArticleRepository();
+
+        final JSONObject tagArticle = new JSONObject();
+
+        tagArticle.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, "article1 id");
+        tagArticle.put(Tag.TAG + "_" + Keys.OBJECT_ID, "tag1 id");
+
+        final Transaction transaction = tagArticleRepository.beginTransaction();
+        tagArticleRepository.add(tagArticle);
+        transaction.commit();
+
         final TagRepository tagRepository = getTagRepository();
 
         List<JSONObject> tags = tagRepository.getByArticleId("article1 id");
