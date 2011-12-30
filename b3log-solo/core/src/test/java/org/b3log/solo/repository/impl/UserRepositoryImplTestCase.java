@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
 
     /**
-     * Tests add user.
+     * Tests.
      * 
      * @throws Exception exception
      */
