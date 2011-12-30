@@ -52,7 +52,6 @@ import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.repository.impl.SkinRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -348,8 +347,6 @@ public final class RepairProcessor {
             remove(PageRepositoryImpl.getInstance());
 
             remove(PreferenceRepositoryImpl.getInstance());
-
-            remove(SkinRepositoryImpl.getInstance());
 
             remove(StatisticRepositoryImpl.getInstance());
 
