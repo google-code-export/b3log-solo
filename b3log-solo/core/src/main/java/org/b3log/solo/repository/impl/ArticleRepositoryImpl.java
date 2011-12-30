@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Dec 26, 2011
+ * @version 1.0.3.6, Dec 30, 2011
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository
@@ -48,7 +48,6 @@ public final class ArticleRepositoryImpl extends AbstractRepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleRepositoryImpl.class.getName());
-    
     /**
      * Random range.
      */
@@ -255,20 +254,20 @@ public final class ArticleRepositoryImpl extends AbstractRepository
             return ret;
         }
 
-        final double mid = Math.random();
+        final double mid = Math.random() + RANDOM_RANGE;
         LOGGER.log(Level.FINEST, "Random mid[{0}]", mid);
 
         Query query = new Query();
         query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
                         FilterOperator.GREATER_THAN_OR_EQUAL, mid);
         query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                        FilterOperator.LESS_THAN_OR_EQUAL, mid + RANDOM_RANGE);
+                        FilterOperator.LESS_THAN_OR_EQUAL, mid);
         query.addFilter(Article.ARTICLE_IS_PUBLISHED,
                         FilterOperator.EQUAL, true);
         query.setCurrentPageNum(1);
         query.setPageSize(fetchSize);
         query.setPageCount(1);
-        
+
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
