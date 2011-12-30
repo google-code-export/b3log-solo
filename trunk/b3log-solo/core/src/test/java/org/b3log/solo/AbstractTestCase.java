@@ -19,7 +19,9 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
+import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -43,6 +45,10 @@ public abstract class AbstractTestCase {
      * User repository.
      */
     private UserRepository userRepository;
+    /**
+     * Link repository.
+     */
+    private LinkRepository linkRepository;
 
     /**
      * Before class.
@@ -60,6 +66,7 @@ public abstract class AbstractTestCase {
         Latkes.initRuntimeEnv();
 
         userRepository = UserRepositoryImpl.getInstance();
+        linkRepository = LinkRepositoryImpl.getInstance();
     }
 
     /**
@@ -84,5 +91,14 @@ public abstract class AbstractTestCase {
      */
     public UserRepository getUserRepository() {
         return userRepository;
+    }
+
+    /**
+     * Gets link repository.
+     * 
+     * @return link repository
+     */
+    public LinkRepository getLinkRepository() {
+        return linkRepository;
     }
 }
