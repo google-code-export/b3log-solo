@@ -18,12 +18,14 @@ package org.b3log.solo.repository.impl;
 import java.util.List;
 import junit.framework.Assert;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
@@ -113,6 +115,20 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "add")
     public void getByArticleId() throws Exception {
+        addTagArticle();
+
+        final TagRepository tagRepository = getTagRepository();
+
+        List<JSONObject> tags = tagRepository.getByArticleId("article1 id");
+        Assert.assertNotNull(tags);
+        Assert.assertEquals(tags.size(), 1);
+
+        tags = tagRepository.getByArticleId("not found");
+        Assert.assertNotNull(tags);
+        Assert.assertEquals(tags.size(), 0);
+    }
+
+    private void addTagArticle() throws Exception {
         final TagArticleRepository tagArticleRepository =
                 getTagArticleRepository();
 
@@ -124,15 +140,5 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         final Transaction transaction = tagArticleRepository.beginTransaction();
         tagArticleRepository.add(tagArticle);
         transaction.commit();
-
-        final TagRepository tagRepository = getTagRepository();
-
-        List<JSONObject> tags = tagRepository.getByArticleId("article1 id");
-        Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 1);
-
-        tags = tagRepository.getByArticleId("not found");
-        Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 0);
     }
 }
