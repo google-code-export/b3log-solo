@@ -70,7 +70,7 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         final String link2Id = linkRepository.add(link2);
         transaction.commit();
 
-        Assert.assertEquals(link2Order, linkRepository.getMaxOrder());
+        Assert.assertEquals(linkRepository.getMaxOrder(), link2Order);
 
 
         JSONObject link3 = new JSONObject();
@@ -86,14 +86,14 @@ public final class LinkRepositoryImplTestCase extends AbstractTestCase {
         transaction.commit();
 
         final int total = 3;
-        Assert.assertEquals(total, linkRepository.count());
+        Assert.assertEquals(linkRepository.count(), total);
 
         link1 = linkRepository.getUpper(link2Id);
         Assert.assertNotNull(link1);
-        Assert.assertEquals(link1Order, link1.getInt(Link.LINK_ORDER));
+        Assert.assertEquals(link1.getInt(Link.LINK_ORDER), link1Order);
 
         link3 = linkRepository.getUnder(link2Id);
         Assert.assertNotNull(link3);
-        Assert.assertEquals(link3Order, link3.getInt(Link.LINK_ORDER));
+        Assert.assertEquals(link3.getInt(Link.LINK_ORDER), link3Order);
     }
 }
