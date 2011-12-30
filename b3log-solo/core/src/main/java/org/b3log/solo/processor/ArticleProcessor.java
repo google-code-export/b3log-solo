@@ -355,7 +355,7 @@ public final class ArticleProcessor {
                                       preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
@@ -454,6 +454,12 @@ public final class ArticleProcessor {
             sort(preference, articles);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
+
+            Skins.fillSkinLangs(
+                    preference.optString(Preference.LOCALE_STRING),
+                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                    dataModel);
+
             final String cachedTitle =
                     prepareShowArchiveArticles(preference, dataModel, articles,
                                                currentPageNum,
@@ -462,10 +468,6 @@ public final class ArticleProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -592,7 +594,7 @@ public final class ArticleProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
