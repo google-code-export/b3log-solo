@@ -102,4 +102,19 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(mostUsedTags.get(0).getInt(
                 Tag.TAG_PUBLISHED_REFERENCE_COUNT), 3);
     }
+
+    /**
+     * Get By ArticleId.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "add", dependsOnGroups = "tag-article")
+    public void getByArticleId() throws Exception {
+        final TagRepository tagRepository = getTagRepository();
+        
+        final List<JSONObject> tags =
+                tagRepository.getByArticleId("article1 id");
+        Assert.assertNotNull(tags);
+        Assert.assertEquals(tags.size(), 1);
+    }
 }
