@@ -111,10 +111,13 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "add", dependsOnGroups = "tag-article")
     public void getByArticleId() throws Exception {
         final TagRepository tagRepository = getTagRepository();
-        
-        final List<JSONObject> tags =
-                tagRepository.getByArticleId("article1 id");
+
+        List<JSONObject> tags = tagRepository.getByArticleId("article1 id");
         Assert.assertNotNull(tags);
         Assert.assertEquals(tags.size(), 1);
+
+        tags = tagRepository.getByArticleId("not found");
+        Assert.assertNotNull(tags);
+        Assert.assertEquals(tags.size(), 0);
     }
 }
