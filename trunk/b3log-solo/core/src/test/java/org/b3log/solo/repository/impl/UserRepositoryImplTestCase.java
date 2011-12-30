@@ -15,22 +15,17 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
@@ -39,40 +34,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 29, 2011
  */
-public final class UserRepositoryImplTestCase {
-
-    /**
-     * Local service test helper.
-     */
-    private final LocalServiceTestHelper localServiceTestHelper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig(),
-                                       new LocalMemcacheServiceTestConfig());
-    /**
-     * User repository.
-     */
-    private UserRepository userRepository;
-
-    /**
-     * Before class.
-     */
-    @BeforeClass
-    public void beforeClass() {
-        localServiceTestHelper.setUp();
-
-        Latkes.initRuntimeEnv();
-
-        userRepository = UserRepositoryImpl.getInstance();
-    }
-
-    /**
-     * After class.
-     */
-    @AfterClass
-    public void afterClass() {
-        localServiceTestHelper.tearDown();
-
-        Latkes.shutdown();
-    }
+public final class UserRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Tests add user.
@@ -81,6 +43,8 @@ public final class UserRepositoryImplTestCase {
      */
     @Test
     public void test() throws Exception {
+        final UserRepository userRepository = getUserRepository();
+
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, "test");
         user.put(User.USER_EMAIL, "test@gmail.com");
@@ -94,10 +58,10 @@ public final class UserRepositoryImplTestCase {
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
 
         final Transaction transaction = userRepository.beginTransaction();
-        
+
         userRepository.add(user);
         userRepository.add(another);
-        
+
         transaction.commit();
 
         Assert.assertTrue(userRepository.isAdminEmail("test@gmail.com"));
@@ -117,5 +81,13 @@ public final class UserRepositoryImplTestCase {
         Assert.assertEquals(users.length(), 1);
         Assert.assertEquals(users.getJSONObject(0).getString(User.USER_EMAIL),
                             "test1@gmail.com");
+
+        final JSONObject notFound =
+                userRepository.getByEmail("not.found@gmail.com");
+        Assert.assertNull(notFound);
+
+        final JSONObject found = userRepository.getByEmail("test1@gmail.com");
+        Assert.assertNotNull(found);
+        Assert.assertEquals(found.getString(User.USER_PASSWORD), "pass1");
     }
 }

@@ -20,6 +20,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>Gmail</word>
         <word>http</word>
         <word>json</word>
+        <word>Latke</word>
         <word>loc</word>
         <word>memcache</word>
         <word>permalink</word>
