@@ -20,12 +20,14 @@ import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestCo
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
@@ -73,6 +75,10 @@ public abstract class AbstractTestCase {
      * Page repository.
      */
     private PageRepository pageRepository;
+    /**
+     * Comment repository.
+     */
+    private CommentRepository commentRepository;
 
     /**
      * Before class.
@@ -95,6 +101,7 @@ public abstract class AbstractTestCase {
         tagRepository = TagRepositoryImpl.getInstance();
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
         pageRepository = PageRepositoryImpl.getInstance();
+        commentRepository = CommentRepositoryImpl.getInstance();
     }
 
     /**
@@ -164,5 +171,14 @@ public abstract class AbstractTestCase {
      */
     public PageRepository getPageRepository() {
         return pageRepository;
+    }
+
+    /**
+     * Gets comment repository.
+     * 
+     * @return comment repository
+     */
+    public CommentRepository getCommentRepository() {
+        return commentRepository;
     }
 }
