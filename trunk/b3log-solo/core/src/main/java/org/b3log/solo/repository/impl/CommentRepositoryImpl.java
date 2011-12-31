@@ -114,8 +114,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
     @SuppressWarnings("unchecked")
     public List<JSONObject> getRecentComments(final int num) {
         if (isCacheEnabled()) {
-            final Cache<String, Serializable> cache =
-                    (Cache<String, Serializable>) getCache();
+            final Cache<String, Serializable> cache = getCache();
             final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
             if (null != ret) {
                 return (List<JSONObject>) ret;
@@ -143,8 +142,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
         }
 
         if (isCacheEnabled()) {
-            final Cache<String, Serializable> cache =
-                    (Cache<String, Serializable>) getCache();
+            final Cache<String, Serializable> cache = getCache();
             cache.put(RECENT_CMTS_CACHE_KEY, (Serializable) ret);
         }
 
