@@ -16,13 +16,13 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.List;
-import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -41,6 +41,8 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
     @Test
     public void add() throws Exception {
         final PageRepository pageRepository = getPageRepository();
+
+        Assert.assertEquals(pageRepository.getMaxOrder(), -1);
 
         final JSONObject page = new JSONObject();
 
@@ -125,11 +127,11 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject page2 =
                 pageRepository.getByPermalink("page2 permalink");
         Assert.assertNotNull(page2);
-        
+
         final JSONObject page1 =
                 pageRepository.getUpper(page2.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(page1);
-        
+
         final JSONObject page3 =
                 pageRepository.getUnder(page2.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(page3);
@@ -137,5 +139,21 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject notFound =
                 pageRepository.getUpper(page1.getString(Keys.OBJECT_ID));
         Assert.assertNull(notFound);
+    }
+
+    /**
+     * Get By Order.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = {"add", "getMaxOrder"})
+    public void getByOrder() throws Exception {
+        final PageRepository pageRepository = getPageRepository();
+
+        final JSONObject page1 = pageRepository.getByOrder(0);
+        Assert.assertNotNull(page1);
+        Assert.assertEquals(page1.getString(Page.PAGE_TITLE), "page1 title");
+        
+        Assert.assertNull(pageRepository.getByOrder(Integer.MIN_VALUE));
     }
 }
