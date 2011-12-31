@@ -43,8 +43,8 @@ public final class PreferenceRepositoryImpl extends AbstractRepository
      * 
      * <p>
      * Bypasses {@linkplain org.b3log.latke.repository.Repositories validation}
-     * against the repository structure, adds the specified json 
-     * object as preference directly.
+     * against the repository structure, adds the specified json object as 
+     * preference directly.
      * </p>
      */
     @Override
@@ -57,8 +57,8 @@ public final class PreferenceRepositoryImpl extends AbstractRepository
      * 
      * <p>
      * Bypasses {@linkplain org.b3log.latke.repository.Repositories validation}
-     * against the repository structure, adds the specified json 
-     * object as preference directly.
+     * against the repository structure, adds the specified json object as 
+     * preference directly.
      * </p>
      */
     @Override
