@@ -19,6 +19,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
+import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
@@ -26,6 +27,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
@@ -40,8 +42,9 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 30, 2011
+ * @version 1.0.0.1, Dec 31, 2011
  * @see #beforeClass() 
+ * @see #afterClass() 
  */
 public abstract class AbstractTestCase {
 
@@ -79,6 +82,10 @@ public abstract class AbstractTestCase {
      * Comment repository.
      */
     private CommentRepository commentRepository;
+    /**
+     * Archive date repository.
+     */
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Before class.
@@ -102,6 +109,7 @@ public abstract class AbstractTestCase {
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
         pageRepository = PageRepositoryImpl.getInstance();
         commentRepository = CommentRepositoryImpl.getInstance();
+        archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
     }
 
     /**
@@ -180,5 +188,14 @@ public abstract class AbstractTestCase {
      */
     public CommentRepository getCommentRepository() {
         return commentRepository;
+    }
+
+    /**
+     * Gets archive date repository.
+     * 
+     * @return archive date repository
+     */
+    public ArchiveDateRepository getArchiveDateRepository() {
+        return archiveDateRepository;
     }
 }
