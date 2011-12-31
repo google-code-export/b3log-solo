@@ -17,7 +17,6 @@ package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
@@ -29,14 +28,13 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 10, 2011
+ * @version 1.0.0.9, Dec 31, 2011
  * @since 0.3.1
  */
 public final class PageRepositoryImpl extends AbstractRepository
@@ -77,93 +75,72 @@ public final class PageRepositoryImpl extends AbstractRepository
             return -1;
         }
 
-        try {
-            return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
+        return array.optJSONObject(0).optInt(Page.PAGE_ORDER);
     }
 
     @Override
     public JSONObject getUpper(final String id) throws RepositoryException {
-        try {
-            final JSONObject page = get(id);
-            if (null == page) {
-                return null;
-            }
-
-            final Query query = new Query().addFilter(
-                    Page.PAGE_ORDER, FilterOperator.LESS_THAN,
-                    page.getInt(Page.PAGE_ORDER)).
-                    addSort(Page.PAGE_ORDER,
-                            SortDirection.DESCENDING).
-                    setCurrentPageNum(1).
-                    setPageSize(1).setPageCount(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+        final JSONObject page = get(id);
+        if (null == page) {
+            return null;
         }
+
+        final Query query = new Query().addFilter(
+                Page.PAGE_ORDER, FilterOperator.LESS_THAN,
+                page.optInt(Page.PAGE_ORDER)).
+                addSort(Page.PAGE_ORDER,
+                        SortDirection.DESCENDING).
+                setCurrentPageNum(1).
+                setPageSize(1).setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     @Override
     public JSONObject getUnder(final String id) throws RepositoryException {
-        try {
-            final JSONObject page = get(id);
-            if (null == page) {
-                return null;
-            }
-
-            final Query query = new Query().addFilter(
-                    Page.PAGE_ORDER, FilterOperator.GREATER_THAN,
-                    page.getInt(Page.PAGE_ORDER)).
-                    addSort(Page.PAGE_ORDER,
-                            SortDirection.ASCENDING).setCurrentPageNum(1).
-                    setPageSize(1).
-                    setPageCount(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+        final JSONObject page = get(id);
+        if (null == page) {
+            return null;
         }
+
+        final Query query = new Query().addFilter(
+                Page.PAGE_ORDER, FilterOperator.GREATER_THAN,
+                page.optInt(Page.PAGE_ORDER)).
+                addSort(Page.PAGE_ORDER,
+                        SortDirection.ASCENDING).setCurrentPageNum(1).
+                setPageSize(1).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     @Override
-    public JSONObject getByOrder(final int order) {
+    public JSONObject getByOrder(final int order) throws RepositoryException {
         final Query query = new Query().addFilter(Page.PAGE_ORDER,
                                                   FilterOperator.EQUAL, order).
                 setPageCount(1);
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
+        if (0 == array.length()) {
             return null;
         }
+
+        return array.optJSONObject(0);
     }
 
     @Override
@@ -173,15 +150,7 @@ public final class PageRepositoryImpl extends AbstractRepository
                 Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
         final JSONObject result = get(query);
 
-        try {
-            ret = CollectionUtils.jsonArrayToList(
-                    result.getJSONArray(Keys.RESULTS));
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
-
-        return ret;
+        return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
     }
 
     /**
