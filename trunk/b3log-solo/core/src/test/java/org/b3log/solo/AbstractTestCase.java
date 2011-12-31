@@ -19,6 +19,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -27,6 +28,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
@@ -86,6 +88,10 @@ public abstract class AbstractTestCase {
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository;
+    /**
+     * Archive date article repository.
+     */
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Before class.
@@ -110,6 +116,8 @@ public abstract class AbstractTestCase {
         pageRepository = PageRepositoryImpl.getInstance();
         commentRepository = CommentRepositoryImpl.getInstance();
         archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+        archiveDateArticleRepository =
+                ArchiveDateArticleRepositoryImpl.getInstance();
     }
 
     /**
@@ -197,5 +205,14 @@ public abstract class AbstractTestCase {
      */
     public ArchiveDateRepository getArchiveDateRepository() {
         return archiveDateRepository;
+    }
+
+    /**
+     * Archive date article repository.
+     * 
+     * @return archive date article repository
+     */
+    public ArchiveDateArticleRepository getArchiveDateArticleRepository() {
+        return archiveDateArticleRepository;
     }
 }
