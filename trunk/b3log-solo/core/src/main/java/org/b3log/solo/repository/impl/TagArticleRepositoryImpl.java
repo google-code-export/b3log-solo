@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
@@ -57,15 +55,10 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
                                                   articleId).
                 setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
-        }
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override

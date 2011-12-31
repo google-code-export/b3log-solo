@@ -53,6 +53,7 @@ public interface TagRepository extends Repository {
      *
      * @param num the specified number
      * @return a list of most used tags, returns an empty list if not found
+     * @throws RepositoryException repository exception
      */
-    List<JSONObject> getMostUsedTags(final int num);
+    List<JSONObject> getMostUsedTags(final int num) throws RepositoryException;
 }
