@@ -16,9 +16,7 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
@@ -30,7 +28,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -72,22 +69,18 @@ public final class TagRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public List<JSONObject> getMostUsedTags(final int num) {
+    public List<JSONObject> getMostUsedTags(final int num)
+            throws RepositoryException {
         final Query query = new Query().addSort(
                 Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
                 setCurrentPageNum(1).
                 setPageSize(num).
                 setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
-        }
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
@@ -95,20 +88,15 @@ public final class TagRepositoryImpl extends AbstractRepository
             throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-        try {
-            final List<JSONObject> tagArticleRelations =
-                    tagArticleRepository.getByArticleId(articleId);
-            for (final JSONObject tagArticleRelation : tagArticleRelations) {
-                final String tagId =
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID);
-                final JSONObject tag = get(tagId);
+        final List<JSONObject> tagArticleRelations =
+                tagArticleRepository.getByArticleId(articleId);
+        for (final JSONObject tagArticleRelation : tagArticleRelations) {
+            final String tagId =
+                    tagArticleRelation.optString(Tag.TAG + "_"
+                                                 + Keys.OBJECT_ID);
+            final JSONObject tag = get(tagId);
 
-                ret.add(tag);
-            }
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+            ret.add(tag);
         }
 
         return ret;

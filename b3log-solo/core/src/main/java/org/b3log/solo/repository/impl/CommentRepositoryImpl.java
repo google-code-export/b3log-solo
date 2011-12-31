@@ -34,7 +34,6 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -67,16 +66,9 @@ public final class CommentRepositoryImpl extends AbstractRepository
         final List<JSONObject> comments =
                 getComments(onId, 1, Integer.MAX_VALUE);
 
-        try {
-            for (final JSONObject comment : comments) {
-                final String commentId = comment.getString(Keys.OBJECT_ID);
-                remove(commentId);
-            }
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Remove comments[onId=" + onId + "] error",
-                       e);
-
-            throw new RepositoryException(e);
+        for (final JSONObject comment : comments) {
+            final String commentId = comment.optString(Keys.OBJECT_ID);
+            remove(commentId);
         }
 
         LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]",
@@ -106,7 +98,8 @@ public final class CommentRepositoryImpl extends AbstractRepository
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<JSONObject> getRecentComments(final int num) {
+    public List<JSONObject> getRecentComments(final int num)
+            throws RepositoryException {
         if (isCacheEnabled()) {
             final Cache<String, Serializable> cache = getCache();
             final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
@@ -121,19 +114,14 @@ public final class CommentRepositoryImpl extends AbstractRepository
                 setPageSize(num).setPageCount(1);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
-        try {
-            final JSONObject result = get(query);
+        final JSONObject result = get(query);
 
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            ret = CollectionUtils.jsonArrayToList(array);
+        ret = CollectionUtils.jsonArrayToList(array);
 
-            // Removes unpublished article related comments
-            removeForUnpublishedArticles(ret);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return ret;
-        }
+        // Removes unpublished article related comments
+        removeForUnpublishedArticles(ret);
 
         if (isCacheEnabled()) {
             final Cache<String, Serializable> cache = getCache();
@@ -147,21 +135,19 @@ public final class CommentRepositoryImpl extends AbstractRepository
      * Removes comments of unpublished articles for the specified comments.
      *
      * @param comments the specified comments
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     private void removeForUnpublishedArticles(
-            final List<JSONObject> comments) throws JSONException,
-                                                    RepositoryException {
+            final List<JSONObject> comments) throws RepositoryException {
         LOGGER.finer("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
         while (iterator.hasNext()) {
             final JSONObject comment = iterator.next();
             final String commentOnType =
-                    comment.getString(Comment.COMMENT_ON_TYPE);
+                    comment.optString(Comment.COMMENT_ON_TYPE);
             if (Article.ARTICLE.equals(commentOnType)) {
                 final String articleId =
-                        comment.getString(Comment.COMMENT_ON_ID);
+                        comment.optString(Comment.COMMENT_ON_ID);
 
                 if (!articleRepository.isPublished(articleId)) {
                     iterator.remove();
