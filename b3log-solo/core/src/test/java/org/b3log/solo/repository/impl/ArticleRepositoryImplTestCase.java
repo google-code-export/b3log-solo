@@ -307,6 +307,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
                 articleRepository.getByPermalink("article permalink4");
         Assert.assertNotNull(notPublished);
         Assert.assertFalse(notPublished.getBoolean(Article.ARTICLE_IS_PUBLISHED));
-
+        
+        Assert.assertFalse(articleRepository.isPublished("not found"));
     }
 }
