@@ -64,7 +64,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "add")
     public void getByArchiveDate() throws Exception {
         final ArchiveDateRepository archiveDateRepository =
                 getArchiveDateRepository();
