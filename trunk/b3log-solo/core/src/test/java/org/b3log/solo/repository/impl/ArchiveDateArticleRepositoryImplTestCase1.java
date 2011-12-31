@@ -69,7 +69,7 @@ public class ArchiveDateArticleRepositoryImplTestCase1 extends AbstractTestCase 
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "add")
     public void getByArchiveDateId() throws Exception {
         final ArchiveDateArticleRepository archiveDateArticleRepository =
                 getArchiveDateArticleRepository();
@@ -82,5 +82,21 @@ public class ArchiveDateArticleRepositoryImplTestCase1 extends AbstractTestCase 
         final JSONObject notFound = archiveDateArticleRepository.
                 getByArchiveDateId("not found", 1, Integer.MAX_VALUE);
         Assert.assertNotNull(notFound);
+    }
+
+    /**
+     * Get By Archive Id.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "add")
+    public void getByArticleId() throws Exception {
+        final ArchiveDateArticleRepository archiveDateArticleRepository =
+                getArchiveDateArticleRepository();
+
+        Assert.assertNotNull(
+                archiveDateArticleRepository.getByArticleId("articleId"));
+        Assert.assertNull(
+                archiveDateArticleRepository.getByArticleId("not found"));
     }
 }
