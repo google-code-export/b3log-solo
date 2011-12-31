@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Nov 8, 2011
+ * @version 1.0.1.9, Dec 31, 2011
  * @since 0.3.1
  */
 public interface ArticleRepository extends Repository {
@@ -80,8 +80,10 @@ public interface ArticleRepository extends Repository {
      * @param num the specified number
      * @return a list of most comment articles, returns an empty list if not
      * found
+     * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getMostCommentArticles(final int num);
+    List<JSONObject> getMostCommentArticles(final int num)
+            throws RepositoryException;
 
     /**
      * Gets most view count and published articles with the specified number.
@@ -89,8 +91,10 @@ public interface ArticleRepository extends Repository {
      * @param num the specified number
      * @return a list of most view count articles, returns an empty list if not
      * found
+     * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getMostViewCountArticles(final int num);
+    List<JSONObject> getMostViewCountArticles(final int num)
+            throws RepositoryException;
 
     /**
      * Gets the previous article(by create date) by the specified article
