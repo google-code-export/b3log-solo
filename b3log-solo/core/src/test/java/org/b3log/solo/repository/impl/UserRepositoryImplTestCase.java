@@ -44,30 +44,33 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
     @Test
     public void test() throws Exception {
         final UserRepository userRepository = getUserRepository();
-
-        final JSONObject user = new JSONObject();
-        user.put(User.USER_NAME, "test");
-        user.put(User.USER_EMAIL, "test@gmail.com");
-        user.put(User.USER_PASSWORD, "pass");
-        user.put(User.USER_ROLE, Role.ADMIN_ROLE);
-
+        
         final JSONObject another = new JSONObject();
         another.put(User.USER_NAME, "test1");
         another.put(User.USER_EMAIL, "test1@gmail.com");
         another.put(User.USER_PASSWORD, "pass1");
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
 
-        final Transaction transaction = userRepository.beginTransaction();
-
-        userRepository.add(user);
+        Transaction transaction = userRepository.beginTransaction();
         userRepository.add(another);
-
         transaction.commit();
+        
+        Assert.assertNull(userRepository.getAdmin());
 
+        JSONObject admin = new JSONObject();
+        admin.put(User.USER_NAME, "test");
+        admin.put(User.USER_EMAIL, "test@gmail.com");
+        admin.put(User.USER_PASSWORD, "pass");
+        admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+
+        transaction = userRepository.beginTransaction();
+        userRepository.add(admin);
+        transaction.commit();
+        
         Assert.assertTrue(userRepository.isAdminEmail("test@gmail.com"));
+        Assert.assertFalse(userRepository.isAdminEmail("notFound@gmail.com"));
 
-
-        final JSONObject admin = userRepository.getAdmin();
+        admin = userRepository.getAdmin();
 
         Assert.assertNotNull(admin);
         Assert.assertEquals("test", admin.optString(User.USER_NAME));
