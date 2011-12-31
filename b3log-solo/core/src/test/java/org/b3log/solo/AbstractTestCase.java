@@ -23,8 +23,12 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -32,8 +36,12 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.PluginRepositoryImpl;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -92,6 +100,22 @@ public abstract class AbstractTestCase {
      * Archive date article repository.
      */
     private ArchiveDateArticleRepository archiveDateArticleRepository;
+    /**
+     * Plugin repository.
+     */
+    private PluginRepository pluginRepository;
+    /**
+     * File repository.
+     */
+    private FileRepository fileRepository;
+    /**
+     * Preference repository.
+     */
+    private PreferenceRepository preferenceRepository;
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository;
 
     /**
      * Before class.
@@ -118,6 +142,10 @@ public abstract class AbstractTestCase {
         archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
         archiveDateArticleRepository =
                 ArchiveDateArticleRepositoryImpl.getInstance();
+        pluginRepository = PluginRepositoryImpl.getInstance();
+        fileRepository = FileRepositoryImpl.getInstance();
+        preferenceRepository = PreferenceRepositoryImpl.getInstance();
+        statisticRepository = StatisticRepositoryImpl.getInstance();
     }
 
     /**
@@ -214,5 +242,41 @@ public abstract class AbstractTestCase {
      */
     public ArchiveDateArticleRepository getArchiveDateArticleRepository() {
         return archiveDateArticleRepository;
+    }
+
+    /**
+     * Gets plugin repository.
+     * 
+     * @return plugin repository
+     */
+    public PluginRepository getPluginRepository() {
+        return pluginRepository;
+    }
+
+    /**
+     * Gets file repository.
+     * 
+     * @return file repository
+     */
+    public FileRepository getFileRepository() {
+        return fileRepository;
+    }
+
+    /**
+     * Gets preference repository.
+     * 
+     * @return preference repository
+     */
+    public PreferenceRepository getPreferenceRepository() {
+        return preferenceRepository;
+    }
+
+    /**
+     * Gets statistic repository.
+     * 
+     * @return statistic repository
+     */
+    public StatisticRepository getStatisticRepository() {
+        return statisticRepository;
     }
 }
