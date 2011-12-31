@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
@@ -30,14 +28,13 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Article-Sign relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 10, 2011
+ * @version 1.0.0.3, Dec 31, 2011
  * @since 0.3.1
  */
 public final class ArticleSignRepositoryImpl extends AbstractRepository
@@ -59,14 +56,9 @@ public final class ArticleSignRepositoryImpl extends AbstractRepository
                 setPageCount(1);
 
         final JSONObject result = get(query);
-        try {
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
-        }
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
@@ -85,12 +77,7 @@ public final class ArticleSignRepositoryImpl extends AbstractRepository
             return null;
         }
 
-        try {
-            return array.getJSONObject(0);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
+        return array.optJSONObject(0);
     }
 
     /**
