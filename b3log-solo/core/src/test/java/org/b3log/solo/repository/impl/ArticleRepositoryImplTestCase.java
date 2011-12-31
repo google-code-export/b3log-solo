@@ -144,9 +144,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNotNull(previousArticle);
         Assert.assertEquals(nextArticle.getString(Article.ARTICLE_TITLE),
                             "article title2");
-        
-        Assert.assertNull(articleRepository.getPreviousArticle("not found"));
-        Assert.assertNull(articleRepository.getNextArticle("not found"));
     }
 
     /**
