@@ -54,6 +54,17 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
     }
 
     /**
+     * Get User.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "addUser")
+    public void getUser() throws Exception {
+        final UserQueryService userQueryService = getUserQueryService();
+        Assert.assertNull(userQueryService.getUser("not found"));
+    }
+
+    /**
      * Get User By Email.
      * 
      * @throws Exception exception
