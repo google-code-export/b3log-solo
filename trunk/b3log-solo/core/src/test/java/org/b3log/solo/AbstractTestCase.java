@@ -45,6 +45,8 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -116,6 +118,14 @@ public abstract class AbstractTestCase {
      * Statistic repository.
      */
     private StatisticRepository statisticRepository;
+    /**
+     * User management service.
+     */
+    private UserMgmtService userMgmtService;
+    /**
+     * User query service.
+     */
+    private UserQueryService userQueryService;
 
     /**
      * Before class.
@@ -132,6 +142,7 @@ public abstract class AbstractTestCase {
 
         Latkes.initRuntimeEnv();
 
+        // Repositories
         userRepository = UserRepositoryImpl.getInstance();
         linkRepository = LinkRepositoryImpl.getInstance();
         articleRepository = ArticleRepositoryImpl.getInstance();
@@ -146,6 +157,10 @@ public abstract class AbstractTestCase {
         fileRepository = FileRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
+
+        // Services
+        userMgmtService = UserMgmtService.getInstance();
+        userQueryService = UserQueryService.getInstance();
     }
 
     /**
@@ -278,5 +293,23 @@ public abstract class AbstractTestCase {
      */
     public StatisticRepository getStatisticRepository() {
         return statisticRepository;
+    }
+
+    /**
+     * Gets user management service.
+     * 
+     * @return user management service
+     */
+    public UserMgmtService getUserMgmtService() {
+        return userMgmtService;
+    }
+
+    /**
+     * Gets user query service.
+     * 
+     * @return user query service
+     */
+    public UserQueryService getUserQueryService() {
+        return userQueryService;
     }
 }
