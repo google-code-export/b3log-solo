@@ -88,7 +88,8 @@ public final class CommentRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getComments(final String onId,
                                         final int currentPageNum,
-                                        final int pageSize) {
+                                        final int pageSize)
+            throws RepositoryException {
         final Query query = new Query().addSort(Keys.OBJECT_ID,
                                                 SortDirection.DESCENDING).
                 addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId).
@@ -96,18 +97,11 @@ public final class CommentRepositoryImpl extends AbstractRepository
                 setPageSize(pageSize).
                 setPageCount(1);
 
-        List<JSONObject> ret = new ArrayList<JSONObject>();
-        try {
-            final JSONObject result = get(query);
+        final JSONObject result = get(query);
 
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            ret = CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-
-        return ret;
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
