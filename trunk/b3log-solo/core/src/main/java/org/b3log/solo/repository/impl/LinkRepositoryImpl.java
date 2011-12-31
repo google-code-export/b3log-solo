@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
@@ -26,7 +25,6 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -46,25 +44,20 @@ public final class LinkRepositoryImpl extends AbstractRepository
             Logger.getLogger(LinkRepositoryImpl.class.getName());
 
     @Override
-    public JSONObject getByAddress(final String address) {
+    public JSONObject getByAddress(final String address)
+            throws RepositoryException {
         final Query query = new Query().addFilter(Link.LINK_ADDRESS,
                                                   FilterOperator.EQUAL, address).
                 setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        if (0 == array.length()) {
             return null;
         }
 
+        return array.optJSONObject(0);
     }
 
     @Override
@@ -79,95 +72,74 @@ public final class LinkRepositoryImpl extends AbstractRepository
             return -1;
         }
 
-        try {
-            return array.getJSONObject(0).getInt(Link.LINK_ORDER);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
+        return array.optJSONObject(0).optInt(Link.LINK_ORDER);
     }
 
     @Override
-    public JSONObject getByOrder(final int order) {
+    public JSONObject getByOrder(final int order) throws RepositoryException {
         final Query query = new Query();
         query.addFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
+        if (0 == array.length()) {
             return null;
         }
+
+        return array.optJSONObject(0);
     }
 
     @Override
     public JSONObject getUpper(final String id) throws RepositoryException {
-        try {
-            final JSONObject link = get(id);
-            if (null == link) {
-                return null;
-            }
-
-            final Query query = new Query();
-            query.addFilter(Link.LINK_ORDER,
-                            FilterOperator.LESS_THAN,
-                            link.getInt(Link.LINK_ORDER)).
-                    addSort(Link.LINK_ORDER,
-                            SortDirection.DESCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+        final JSONObject link = get(id);
+        if (null == link) {
+            return null;
         }
+
+        final Query query = new Query();
+        query.addFilter(Link.LINK_ORDER,
+                        FilterOperator.LESS_THAN,
+                        link.optInt(Link.LINK_ORDER)).
+                addSort(Link.LINK_ORDER,
+                        SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     @Override
     public JSONObject getUnder(final String id) throws RepositoryException {
-        try {
-            final JSONObject link = get(id);
-            if (null == link) {
-                return null;
-            }
-
-            final Query query = new Query();
-            query.addFilter(Link.LINK_ORDER,
-                            FilterOperator.GREATER_THAN,
-                            link.getInt(Link.LINK_ORDER)).
-                    addSort(Link.LINK_ORDER,
-                            SortDirection.ASCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+        final JSONObject link = get(id);
+        if (null == link) {
+            return null;
         }
+
+        final Query query = new Query();
+        query.addFilter(Link.LINK_ORDER,
+                        FilterOperator.GREATER_THAN,
+                        link.optInt(Link.LINK_ORDER)).
+                addSort(Link.LINK_ORDER,
+                        SortDirection.ASCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     /**

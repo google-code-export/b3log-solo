@@ -33,8 +33,9 @@ public interface LinkRepository extends Repository {
      *
      * @param address the specified address
      * @return link, returns {@code null} if not found
+     * @throws RepositoryException repository exception
      */
-    JSONObject getByAddress(final String address);
+    JSONObject getByAddress(final String address) throws RepositoryException;
 
     /**
      * Gets the maximum order.
@@ -67,6 +68,7 @@ public interface LinkRepository extends Repository {
      *
      * @param order the specified order
      * @return link, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
      */
-    JSONObject getByOrder(final int order);
+    JSONObject getByOrder(final int order) throws RepositoryException;
 }
