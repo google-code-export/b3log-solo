@@ -62,7 +62,7 @@ public interface ArchiveDateArticleRepository extends Repository {
      * @return for example
      * <pre>
      * {
-     *     "archiveDate": "2009/10",
+     *     "archiveDate_oId": "",
      *     "article_oId": articleId
      * }, returns {@code null} if not found
      * </pre>
