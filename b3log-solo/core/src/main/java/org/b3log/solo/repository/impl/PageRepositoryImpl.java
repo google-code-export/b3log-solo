@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -145,7 +144,6 @@ public final class PageRepositoryImpl extends AbstractRepository
 
     @Override
     public List<JSONObject> getPages() throws RepositoryException {
-        List<JSONObject> ret = new ArrayList<JSONObject>();
         final Query query = new Query().addSort(
                 Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
         final JSONObject result = get(query);
