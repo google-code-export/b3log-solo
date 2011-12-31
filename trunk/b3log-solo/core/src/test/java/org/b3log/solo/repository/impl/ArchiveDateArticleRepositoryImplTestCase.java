@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 31, 2011
  */
-public class ArchiveDateArticleRepositoryImplTestCase1 extends AbstractTestCase {
+public class ArchiveDateArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
