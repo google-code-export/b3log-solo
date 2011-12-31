@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,14 +31,13 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jun 30, 2011
+ * @version 1.0.0.6, Dec 31, 2011
  * @since 0.3.1
  */
 public final class ArchiveDateRepositoryImpl extends AbstractRepository
@@ -52,25 +52,28 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByArchiveDate(final String archiveDate)
             throws RepositoryException {
+        long time = 0L;
         try {
-            final Query query = new Query();
-            query.addFilter(ArchiveDate.ARCHIVE_TIME,
-                            FilterOperator.EQUAL,
-                            ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime()).
-                    setPageCount(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
+            time = ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime();
+        } catch (final ParseException e) {
+            LOGGER.log(Level.SEVERE, "Can not parse archive date ["
+                                     + archiveDate + "]", e);
+            throw new RepositoryException("Can not parse archive date ["
+                                          + archiveDate + "]");
         }
+
+        final Query query = new Query();
+        query.addFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     @Override
@@ -82,20 +85,11 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
         final JSONObject result = get(query);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
-        try {
-            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+        final JSONArray archiveDates = result.optJSONArray(Keys.RESULTS);
 
-            ret = CollectionUtils.jsonArrayToList(archiveDates);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
+        ret = CollectionUtils.jsonArrayToList(archiveDates);
 
-        try {
-            removeForUnpublishedArticles(ret);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        removeForUnpublishedArticles(ret);
 
         return ret;
     }
@@ -105,16 +99,14 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
      * dates.
      *
      * @param archiveDates the specified archive dates
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     private void removeForUnpublishedArticles(
-            final List<JSONObject> archiveDates) throws JSONException,
-                                                        RepositoryException {
+            final List<JSONObject> archiveDates) throws RepositoryException {
         final Iterator<JSONObject> iterator = archiveDates.iterator();
         while (iterator.hasNext()) {
             final JSONObject archiveDate = iterator.next();
-            if (0 == archiveDate.getInt(
+            if (0 == archiveDate.optInt(
                     ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
                 iterator.remove();
             }
