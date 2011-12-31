@@ -21,11 +21,13 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -67,6 +69,10 @@ public abstract class AbstractTestCase {
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository;
+    /**
+     * Page repository.
+     */
+    private PageRepository pageRepository;
 
     /**
      * Before class.
@@ -88,6 +94,7 @@ public abstract class AbstractTestCase {
         articleRepository = ArticleRepositoryImpl.getInstance();
         tagRepository = TagRepositoryImpl.getInstance();
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+        pageRepository = PageRepositoryImpl.getInstance();
     }
 
     /**
@@ -148,5 +155,14 @@ public abstract class AbstractTestCase {
      */
     public TagArticleRepository getTagArticleRepository() {
         return tagArticleRepository;
+    }
+
+    /**
+     * Gets page repository.
+     * 
+     * @return page repository
+     */
+    public PageRepository getPageRepository() {
+        return pageRepository;
     }
 }
