@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.7, Dec 15, 2011
+ * @version 1.0.4.8, Dec 31, 2011
  * @since 0.3.1
  */
 public final class Filler {
@@ -355,7 +355,7 @@ public final class Filler {
 
             dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
 
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Fills most view count articles failed", e);
             throw new ServiceException(e);
         } finally {
@@ -385,7 +385,7 @@ public final class Filler {
                     mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Fills most comment articles failed", e);
             throw new ServiceException(e);
         } finally {

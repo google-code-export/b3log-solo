@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Dec 30, 2011
+ * @version 1.0.3.7, Dec 31, 2011
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository
@@ -102,20 +101,15 @@ public final class ArticleRepositoryImpl extends AbstractRepository
         query.setPageSize(fetchSize);
         query.setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            throw new RepositoryException(e);
-        }
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
-    public List<JSONObject> getMostCommentArticles(final int num) {
+    public List<JSONObject> getMostCommentArticles(final int num)
+            throws RepositoryException {
         final Query query = new Query().addSort(Article.ARTICLE_COMMENT_COUNT,
                                                 SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
@@ -125,19 +119,15 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                 setPageSize(num).
                 setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return Collections.emptyList();
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
-    public List<JSONObject> getMostViewCountArticles(final int num) {
+    public List<JSONObject> getMostViewCountArticles(final int num)
+            throws RepositoryException {
         final Query query = new Query();
         query.addSort(Article.ARTICLE_VIEW_COUNT,
                       SortDirection.DESCENDING).
@@ -149,83 +139,77 @@ public final class ArticleRepositoryImpl extends AbstractRepository
         query.setPageSize(num);
         query.setPageCount(1);
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-
-        return Collections.emptyList();
+        return CollectionUtils.jsonArrayToList(array);
     }
 
     @Override
     public JSONObject getPreviousArticle(final String articleId)
             throws RepositoryException {
+        final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                  FilterOperator.LESS_THAN,
+                                                  articleId).addFilter(
+                Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                addSort(Keys.OBJECT_ID,
+                        SortDirection.DESCENDING).setCurrentPageNum(1).
+                setPageSize(1).setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        final JSONObject ret = new JSONObject();
+        final JSONObject article = array.optJSONObject(0);
+
         try {
-            final Query query = new Query().addFilter(Keys.OBJECT_ID,
-                                                      FilterOperator.LESS_THAN,
-                                                      articleId).addFilter(
-                    Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID,
-                            SortDirection.DESCENDING).setCurrentPageNum(1).
-                    setPageSize(1).setPageCount(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            final JSONObject ret = new JSONObject();
-            final JSONObject article = array.getJSONObject(0);
             ret.put(Article.ARTICLE_TITLE,
                     article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_PERMALINK,
                     article.getString(Article.ARTICLE_PERMALINK));
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (final JSONException e) {
             throw new RepositoryException(e);
         }
+
+        return ret;
     }
 
     @Override
     public JSONObject getNextArticle(final String articleId)
             throws RepositoryException {
+        final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                  FilterOperator.GREATER_THAN,
+                                                  articleId).addFilter(
+                Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                addSort(Keys.OBJECT_ID,
+                        SortDirection.ASCENDING).setCurrentPageNum(1).
+                setPageSize(1).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        final JSONObject ret = new JSONObject();
+        final JSONObject article = array.optJSONObject(0);
+
         try {
-            final Query query = new Query().addFilter(Keys.OBJECT_ID,
-                                                      FilterOperator.GREATER_THAN,
-                                                      articleId).addFilter(
-                    Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID,
-                            SortDirection.ASCENDING).setCurrentPageNum(1).
-                    setPageSize(1).
-                    setPageCount(1);
-
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (1 != array.length()) {
-                return null;
-            }
-
-            final JSONObject ret = new JSONObject();
-            final JSONObject article = array.getJSONObject(0);
             ret.put(Article.ARTICLE_TITLE,
                     article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE_PERMALINK,
                     article.getString(Article.ARTICLE_PERMALINK));
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (final JSONException e) {
             throw new RepositoryException(e);
         }
+
+        return ret;
     }
 
     @Override
@@ -234,15 +218,9 @@ public final class ArticleRepositoryImpl extends AbstractRepository
         final JSONObject article = get(articleId);
         if (null == article) {
             return false;
-        } else {
-            try {
-                return article.getBoolean(Article.ARTICLE_IS_PUBLISHED);
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-                throw new RepositoryException(e);
-            }
         }
+
+        return article.optBoolean(Article.ARTICLE_IS_PUBLISHED);
     }
 
     @Override
