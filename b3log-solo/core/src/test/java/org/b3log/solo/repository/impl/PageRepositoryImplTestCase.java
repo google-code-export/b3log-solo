@@ -139,6 +139,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject notFound =
                 pageRepository.getUpper(page1.getString(Keys.OBJECT_ID));
         Assert.assertNull(notFound);
+        
+        Assert.assertNull(pageRepository.getUpper("not found"));
+        Assert.assertNull(pageRepository.getUnder("not found"));
     }
 
     /**
