@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 27, 2011
+ * @version 1.0.0.3, Jan 4, 2011
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -373,6 +373,15 @@ public final class PageMgmtService {
                     Comments.getCommentSharpURLForPage(page, commentId);
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
+
+            // TODO: 88250, 041, original comment id and name default value
+            if (Strings.isEmptyOrNull(
+                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+            }
+            if (Strings.isEmptyOrNull(Comment.COMMENT_ORIGINAL_COMMENT_NAME)) {
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+            }
 
             commentRepository.update(commentId, comment);
         }
