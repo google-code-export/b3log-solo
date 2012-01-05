@@ -1,16 +1,16 @@
 <aside>
     <!--
-	<h4>Search</h4>
-	<form action="http://www.google.com/cse" id="cse-search-box" class="s" target="_blank">
-	  <div>
-	    <input type="hidden" name="cx" value="014052262704486520429:eeg5ule8tro" />
-	    <input type="hidden" name="ie" value="UTF-8" />
-		<input type="hidden" name="oe" value="UTF-8">
-		<input type="hidden" name="hl" value="zh-CN">
-	    <input type="text" name="q" size="15" value="&#x7AD9;&#x5185;&#x641C;&#x7D22;" onclick="this.value=''"/>
-	    <input type="hidden" name="sa" value="site-search"/>
-	  </div>
-	</form>-->
+        <h4>Search</h4>
+        <form action="http://www.google.com/cse" id="cse-search-box" class="s" target="_blank">
+          <div>
+            <input type="hidden" name="cx" value="014052262704486520429:eeg5ule8tro" />
+            <input type="hidden" name="ie" value="UTF-8" />
+                <input type="hidden" name="oe" value="UTF-8">
+                <input type="hidden" name="hl" value="zh-CN">
+            <input type="text" name="q" size="15" value="&#x7AD9;&#x5185;&#x641C;&#x7D22;" onclick="this.value=''"/>
+            <input type="hidden" name="sa" value="site-search"/>
+          </div>
+        </form>-->
     <nav>
         <h4>Navigation</h4>
         <ul>
@@ -20,7 +20,7 @@
             <#list pageNavigations as page>
             <li>
                 <a href="${page.pagePermalink}">
-		            ${page.pageTitle}
+                    ${page.pageTitle}
                 </a>
             </li>
             </#list>
@@ -29,7 +29,7 @@
             </li>
             <li>
                 <a href="/blog-articles-feed.do">
-		            ${atomLabel}
+                    ${atomLabel}
                     <img src="/images/feed.png" alt="Atom"/>
                 </a>
             </li>
@@ -57,12 +57,12 @@
             <div class="left">
                 <div>
                     <a target="_blank" href="${comment.commentURL}">
-		            ${comment.commentName}
+                        ${comment.commentName}
                     </a>
                 </div>
                 <div>
                     <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
-		            ${comment.commentContent}
+                        ${comment.commentContent}
                     </a>
                 </div>
             </div>
@@ -76,9 +76,11 @@
     <ul id="mostCommentArticles">
         <#list mostCommentArticles as article>
         <li>
-            <sup>[${article.articleCommentCount}]</sup>&nbsp<a
-                title="${article.articleTitle}"
-                href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
+            <a title="${article.articleTitle}"
+               href="${article.articlePermalink}">
+                <sup>[${article.articleCommentCount}]</sup>
+                ${article.articleTitle}
+            </a>
         </li>
         </#list>
     </ul>
@@ -88,8 +90,11 @@
     <ul id="mostViewCountArticles">
         <#list mostViewCountArticles as article>
         <li>
-            <sup>[${article.articleViewCount}]</sup>&nbsp<a title="${article.articleTitle}"
-                                                            href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
+            <a title="${article.articleTitle}"
+               href="${article.articlePermalink}">
+                <sup>[${article.articleViewCount}]</sup>
+                ${article.articleTitle}
+            </a>
         </li>
         </#list>
     </ul>
@@ -114,8 +119,8 @@
         <#list links as link>
         <li>
             <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
-                    <img alt="${link.linkTitle}" 
-                         src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
+                <img alt="${link.linkTitle}" 
+                     src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
             <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                 ${link.linkTitle}
             </a>

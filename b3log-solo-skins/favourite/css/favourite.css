@@ -3,7 +3,7 @@
  * skin favoutite style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 25, 2011
+ * @version 1.0.0.5, Jan 5, 2012
 */
 body {
     background: url("../images/bg.jpg") repeat scroll left top transparent;
@@ -370,6 +370,8 @@ h5 {
     overflow: hidden;
     padding-left: 22px;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
 }
 .side-navi li.aboutMe {
     white-space: normal;

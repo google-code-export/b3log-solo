@@ -72,13 +72,13 @@
                                         <span class="article-create-date left">
                                             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                         </span>
-                                        <span class="left commentIcon" title="${commentLabel}"></span>
-                                        <span class="left">
+                                        <a href="${article.articlePermalink}#comments" class="left">
+                                            <span class="left commentIcon" title="${commentLabel}"></span>
                                             &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
-                                        </span>
+                                        </a>
                                         <a href="${article.articlePermalink}" class="left">
                                             <span class="left browserIcon" title="${viewLabel}"></span>
-                                            ${article.articleViewCount}
+                                            &nbsp;&nbsp;${article.articleViewCount}&nbsp;&nbsp;
                                         </a>
                                     </div>
                                     <div class="clear"></div>
@@ -104,7 +104,7 @@
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         page.loadRandomArticles();
-         page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
+        page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
