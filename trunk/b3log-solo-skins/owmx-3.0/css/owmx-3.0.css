@@ -7,12 +7,12 @@ Date:		2010-09-13
 Editor:		Jonas Jacek
 License:	CC Attribution-Share Alike 3.0 Unported
 Update: 	Dongxu Wang 2011-02-24 
-			@ http://lightdian.b3log.org/
+                        @ http://lightdian.b3log.org/
 ==================================================*/
 /*
  * skin owmx-3.0 style
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 25, 2011
+ * @version 1.0.0.5, Jan 5, 2012
 */
 /* Reset */
 header, footer, article, nav, section, aside, time, hgroup {
@@ -76,13 +76,14 @@ h4 {
     background-position: 0 5px;
 }
 
-SUP {
+sup {
+    color: #444;
     top : -4px;
 }
 
 /* Header */
 header {
-   border-radius : 4px;
+    border-radius : 4px;
     background : #0098CC url(../images/hd.jpg) no-repeat top left;
     height : 200px;
     margin : 0 0 10px 0;
@@ -287,6 +288,16 @@ aside ul.aside-comments li div.left div {
 }
 aside ul.navi-tags li{padding-left:0px;background-image:none;}
 aside ul.navi-tags li img{ margin-bottom:3px;padding-right:6px;height:16px;width:16px;}
+
+#mostViewCountArticles li, #mostCommentArticles li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;   
+}
+
+#mostViewCountArticles a, #mostCommentArticles a {
+    white-space: nowrap;
+}
 /* Search Box */
 .s {
     border-radius : 4px;

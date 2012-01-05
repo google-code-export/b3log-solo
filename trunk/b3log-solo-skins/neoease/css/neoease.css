@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.3, Jan 4, 2011
+ * @version 1.0.1.3, Jan 5, 2012
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -404,6 +404,7 @@ textarea, input {
 .side .side-li li {
     overflow: hidden; 
     text-overflow: ellipsis; 
+    -o-text-overflow: ellipsis;   
     width: 268px;
 }
 

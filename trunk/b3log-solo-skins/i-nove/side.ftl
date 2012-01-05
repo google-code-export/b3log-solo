@@ -42,9 +42,10 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <sup>[${article.articleCommentCount}]</sup><a
-                    title="${article.articleTitle}"
-                    href="${article.articlePermalink}">${article.articleTitle}
+                <a title="${article.articleTitle}"
+                   href="${article.articlePermalink}">
+                    <sup>[${article.articleCommentCount}]</sup>
+                    ${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -57,8 +58,10 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <sup>[${article.articleViewCount}]</sup><a title="${article.articleTitle}"
-                        href="${article.articlePermalink}">${article.articleTitle}
+                <a title="${article.articleTitle}"
+                   href="${article.articlePermalink}">
+                    <sup>[${article.articleViewCount}]</sup>
+                    ${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -91,8 +94,7 @@
             <li>
                 <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                     <img alt="${link.linkTitle}" 
-                         src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
-                <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                         src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" />
                     ${link.linkTitle}
                 </a>
             </li>

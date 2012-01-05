@@ -184,6 +184,11 @@ h5 {
 .article-details-footer {
     margin: 36px 12px 0 0;
 }
+
+.article-details-footer .right a:hover {
+    text-decoration: none;
+}
+
 .article-relative {
     line-height: 20px;
     margin: 12px 0;

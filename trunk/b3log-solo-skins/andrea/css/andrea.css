@@ -3,7 +3,7 @@
  * skin andrea style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Dec 28, 2011
+ * @version 1.0.0.7, Jan 5, 2012
 */
 body {
     background-image: url("../images/bg-grey.jpg");
@@ -283,12 +283,12 @@ a:hover {
     border-bottom: 1px solid #93908A;
     padding: 4px 0px 1px 6px;
     margin-left: 0px;
-    white-space: nowrap;
     overflow: hidden;
-    height: 21px;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     color: #EAE7E0;
+    position: relative;
+    line-height: 21px;
 }
 
 .side-navi .item dd li:hover {
@@ -301,7 +301,7 @@ a:hover {
 }
 
 .side-navi .item dd li a {
-    display: block;
+    white-space: nowrap;
     color: #EAE7E0;
     text-decoration: none;
 }
@@ -309,9 +309,9 @@ a:hover {
 .side-navi .item .navi-tags img {
     cursor: pointer;
     height: 16px;
-    left: 0;
-    position: relative;
-    top: -17px;
+    left: 3px;
+    position: absolute;
+    top: 5px;
     width: 16px;
 }
 
@@ -320,8 +320,7 @@ a:hover {
 }
 
 #naviComments li a {
-    display: inline;
-    line-height: 19px;
+    white-space: normal;
 }
 #naviComments li br {
     display: none;
