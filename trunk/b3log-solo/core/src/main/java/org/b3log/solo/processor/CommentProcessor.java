@@ -63,7 +63,6 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -307,12 +306,8 @@ public final class CommentProcessor {
 
             LOGGER.log(Level.SEVERE, "Can not add comment on page", e);
 
-            try {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
-            } catch (final JSONException ex) {
-                throw new RuntimeException(ex);
-            }
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
     }
 
@@ -391,12 +386,8 @@ public final class CommentProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Can not add comment on article", e);
-            try {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
-            } catch (final JSONException ex) {
-                throw new RuntimeException(ex);
-            }
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
     }
 

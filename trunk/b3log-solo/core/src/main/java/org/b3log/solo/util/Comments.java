@@ -191,14 +191,10 @@ public final class Comments {
                                       + requestJSONObject.toString()
                                       + "] failed", e);
 
-            try {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
 
-                return ret;
-            } catch (final JSONException ex) {
-                throw new RuntimeException(ex);
-            }
+            return ret;
         }
     }
 

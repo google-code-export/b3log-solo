@@ -28,7 +28,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -101,27 +100,18 @@ public final class PluginMgmtService {
 
                     LOGGER.log(Level.SEVERE, "Set plugin status error", e);
 
-                    try {
-                        ret.put(Keys.STATUS_CODE, false);
-                        ret.put(Keys.MSG, langs.get("setFailLabel"));
+                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.MSG, langs.get("setFailLabel"));
 
-                        return ret;
-                    } catch (final JSONException ex) {
-                        throw new RuntimeException(
-                                "Set plugin status fatal error!");
-                    }
+                    return ret;
                 }
             }
         }
 
-        try {
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
+        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
 
-            return ret;
-        } catch (final JSONException ex) {
-            throw new RuntimeException("Set plugin status fatal error!");
-        }
+        return ret;
     }
 
     /**
