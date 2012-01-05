@@ -41,11 +41,13 @@
     <#if 0 != mostCommentArticles?size>
     <div>
         <h4>${mostCommentArticlesLabel}</h4>
-        <ul>
+        <ul class="side-li">
             <#list mostCommentArticles as article>
             <li>
-                <sup>[${article.articleCommentCount}]</sup>
-                <a title="${article.articleTitle}" href="${article.articlePermalink}">${article.articleTitle}</a>
+                <a title="${article.articleTitle}" href="${article.articlePermalink}">
+                    <sup>[${article.articleCommentCount}]</sup>
+                    ${article.articleTitle}
+                </a>
             </li>
             </#list>
         </ul>
@@ -54,11 +56,13 @@
     <#if 0 != mostViewCountArticles?size>
     <div>
         <h4>${mostViewCountArticlesLabel}</h4>
-        <ul>
+        <ul class="side-li">
             <#list mostViewCountArticles as article>
             <li>
-                <sup>[${article.articleViewCount}]</sup>
-                <a title="${article.articleTitle}" href="${article.articlePermalink}">${article.articleTitle}</a>
+                <a title="${article.articleTitle}" href="${article.articlePermalink}">
+                    <sup>[${article.articleViewCount}]</sup>
+                    ${article.articleTitle}
+                </a>
             </li>
             </#list>
         </ul>
