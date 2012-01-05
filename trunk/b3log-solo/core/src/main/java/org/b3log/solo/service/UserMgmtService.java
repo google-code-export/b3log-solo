@@ -26,14 +26,13 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Jan 5, 2011
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -72,7 +71,7 @@ public final class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
 
             if (null == oldUser) {
@@ -81,22 +80,22 @@ public final class UserMgmtService {
             }
 
             final String userNewEmail =
-                    requestJSONObject.getString(User.USER_EMAIL).
+                    requestJSONObject.optString(User.USER_EMAIL).
                     toLowerCase().trim();
             // Check email is whether duplicated
             final JSONObject mayBeAnother = userRepository.getByEmail(
                     userNewEmail);
             if (null != mayBeAnother
-                && !mayBeAnother.getString(Keys.OBJECT_ID).equals(oldUserId)) {
+                && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
                 throw new ServiceException(langPropsService.get(
                         "duplicatedEmailLabel"));
             }
 
             // Update
-            final String userName = requestJSONObject.getString(User.USER_NAME);
+            final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userPassword =
-                    requestJSONObject.getString(User.USER_PASSWORD);
+                    requestJSONObject.optString(User.USER_PASSWORD);
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
             oldUser.put(User.USER_PASSWORD, userPassword);
@@ -104,13 +103,6 @@ public final class UserMgmtService {
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();
-        } catch (final JSONException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
-            throw new ServiceException(e);
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -144,7 +136,7 @@ public final class UserMgmtService {
         try {
             final JSONObject user = new JSONObject();
             final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL).
+                    requestJSONObject.optString(User.USER_EMAIL).
                     trim().toLowerCase();
             final JSONObject duplicatedUser =
                     userRepository.getByEmail(userEmail);
@@ -157,11 +149,11 @@ public final class UserMgmtService {
                         "duplicatedEmailLabel"));
             }
 
-            final String userName = requestJSONObject.getString(User.USER_NAME);
+            final String userName = requestJSONObject.optString(User.USER_NAME);
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
             final String userPassword =
-                    requestJSONObject.getString(User.USER_PASSWORD);
+                    requestJSONObject.optString(User.USER_PASSWORD);
             user.put(User.USER_PASSWORD, userPassword);
             final String roleName = requestJSONObject.optString(
                     User.USER_ROLE, Role.DEFAULT_ROLE);
@@ -170,14 +162,7 @@ public final class UserMgmtService {
 
             transaction.commit();
 
-            return user.getString(Keys.OBJECT_ID);
-        } catch (final JSONException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
-            throw new ServiceException(e);
+            return user.optString(Keys.OBJECT_ID);
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -202,7 +187,7 @@ public final class UserMgmtService {
             userRepository.remove(userId);
 
             transaction.commit();
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
