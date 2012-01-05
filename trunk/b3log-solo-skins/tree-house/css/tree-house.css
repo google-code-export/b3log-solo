@@ -3,7 +3,7 @@
  * skin tree-house style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Oct 25, 2011
+ * @version 1.0.0.6, Jan 5, 2012
 */
 html {
     min-width: 948px;
@@ -170,7 +170,6 @@ h5 {
 }
 .article-body {
     margin: 0 12px 12px;
-    min-height: 176px;
 }
 .article-body a, .article-abstract a {
     color: #242323;
@@ -314,6 +313,7 @@ img.comment-picture {
     font-size: 12px;
     margin-left: 0;
     overflow: hidden;
+    position: relative;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     vertical-align: top;
@@ -358,13 +358,18 @@ img.comment-picture {
 #sideNavi .popTags li img {
     cursor: pointer;
     height: 16px;
-    left: -71px;
-    position: relative;
+    left: 19px;
+    position: absolute;
+    top: 7px;
     width: 16px;
 }
 #sideNavi .popTags li:hover a {
     padding-left: 46px;
     width: 137px;
+}
+
+#sideNavi .popTags li:hover img {
+    left: 25px;
 }
 #statistic {
     height: 138px;
