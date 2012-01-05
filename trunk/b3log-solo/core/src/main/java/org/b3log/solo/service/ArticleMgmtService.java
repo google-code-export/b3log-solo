@@ -75,7 +75,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 4, 2011
+ * @version 1.0.0.8, Jan 5, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -753,7 +753,8 @@ public final class ArticleMgmtService {
                     comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
-            if (Strings.isEmptyOrNull(Comment.COMMENT_ORIGINAL_COMMENT_NAME)) {
+            if (Strings.isEmptyOrNull(
+                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
