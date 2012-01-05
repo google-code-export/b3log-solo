@@ -27,7 +27,7 @@
         </div>
         <div class="article-comment">
             <a href="${article.articlePermalink}#comments">
-                ${commentLabel}（${article.articleCommentCount}）
+                ${commentLabel}(${article.articleCommentCount})
             </a>
         </div>
     </div>
