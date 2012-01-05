@@ -34,7 +34,6 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Users;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -114,11 +113,7 @@ public final class TagConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets tags failed", e);
 
-            try {
-                jsonObject.put(Keys.STATUS_CODE, false);
-            } catch (final JSONException ex) {
-                throw new IOException(ex);
-            }
+            jsonObject.put(Keys.STATUS_CODE, false);
         }
     }
 
@@ -180,11 +175,7 @@ public final class TagConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets unused tags failed", e);
 
-            try {
-                jsonObject.put(Keys.STATUS_CODE, false);
-            } catch (final JSONException ex) {
-                throw new IOException(ex);
-            }
+            jsonObject.put(Keys.STATUS_CODE, false);
         }
     }
 
@@ -229,11 +220,7 @@ public final class TagConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
 
-            try {
-                jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
-            } catch (final JSONException ex) {
-                throw new IOException(ex);
-            }
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
 }

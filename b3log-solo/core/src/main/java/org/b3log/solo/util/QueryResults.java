@@ -18,7 +18,6 @@ package org.b3log.solo.util;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -41,12 +40,7 @@ public final class QueryResults {
      * </pre>
      */
     public static JSONObject defaultResult() {
-        try {
-            return new JSONObject().put(Keys.STATUS_CODE, false);
-        } catch (final JSONException e) {
-            // Should never
-            throw new RuntimeException(e);
-        }
+        return new JSONObject().put(Keys.STATUS_CODE, false);
     }
 
     /**
@@ -63,20 +57,15 @@ public final class QueryResults {
      * </pre>
      */
     public static JSONObject defaultResults() {
-        try {
-            final JSONObject ret = new JSONObject();
-            final JSONObject pagination = new JSONObject();
-            ret.put(Pagination.PAGINATION, pagination);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
+        final JSONObject ret = new JSONObject();
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
 
-            final JSONArray results = new JSONArray();
-            ret.put(Keys.RESULTS, results);
+        final JSONArray results = new JSONArray();
+        ret.put(Keys.RESULTS, results);
 
-            return ret;
-        } catch (final JSONException e) {
-            // Should never
-            throw new RuntimeException(e);
-        }
+        return ret;
     }
 
     /**

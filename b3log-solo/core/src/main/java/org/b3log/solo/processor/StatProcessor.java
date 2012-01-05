@@ -40,7 +40,6 @@ import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -174,7 +173,7 @@ public final class StatProcessor {
                 final int viewCount = oldViewCount + hitCount;
 
                 article.put(Article.ARTICLE_VIEW_COUNT, viewCount);
-                
+
                 // Removes unused properties for legacy dirty data
                 // TODO: 88250, 041, post to community dirty data
                 article.remove(Common.POST_TO_COMMUNITY);
@@ -198,11 +197,6 @@ public final class StatProcessor {
                        "Synchronized statistic from cache to repository[statistic={0}]",
                        statistic);
         } catch (final RepositoryException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, "Updates statistic failed", e);
-        } catch (final JSONException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }

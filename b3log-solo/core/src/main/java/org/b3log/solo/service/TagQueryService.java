@@ -27,7 +27,6 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -85,9 +84,6 @@ public final class TagQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets an article failed", e);
             throw new ServiceException(e);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gets an article failed", e);
-            throw new ServiceException(e);
         }
     }
 
@@ -108,14 +104,10 @@ public final class TagQueryService {
             final Query query = new Query().setPageCount(1);
 
             final JSONObject result = tagRepository.get(query);
-            final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
+            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
 
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
-
-            throw new ServiceException(e);
-        } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Gets tags failed", e);
 
             throw new ServiceException(e);
