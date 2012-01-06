@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -84,10 +83,8 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
                 setPageCount(1);
         final JSONObject result = get(query);
 
-        List<JSONObject> ret = new ArrayList<JSONObject>();
         final JSONArray archiveDates = result.optJSONArray(Keys.RESULTS);
-
-        ret = CollectionUtils.jsonArrayToList(archiveDates);
+        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(archiveDates);
 
         removeForUnpublishedArticles(ret);
 
@@ -124,7 +121,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
 
     /**
      * Private constructor.
-     * 
+     *
      * @param name the specified name
      */
     private ArchiveDateRepositoryImpl(final String name) {
