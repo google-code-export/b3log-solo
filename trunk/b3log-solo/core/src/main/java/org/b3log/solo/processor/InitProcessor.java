@@ -30,12 +30,15 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Sessions;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.Filler;
@@ -47,7 +50,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 18, 2011
+ * @version 1.0.0.2, Jan 6, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -181,6 +184,18 @@ public final class InitProcessor {
                     AbstractAction.parseRequestJSONObject(request, response);
 
             initService.init(requestJSONObject, request, response);
+
+            // If initialized, login the admin
+            final JSONObject admin = new JSONObject();
+            admin.put(User.USER_NAME,
+                      requestJSONObject.getString(User.USER_NAME));
+            admin.put(User.USER_EMAIL,
+                      requestJSONObject.getString(User.USER_EMAIL));
+            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            admin.put(User.USER_PASSWORD,
+                      requestJSONObject.getString(User.USER_PASSWORD));
+
+            Sessions.login(request, response, admin);
 
             ret.put(Keys.STATUS_CODE, true);
 

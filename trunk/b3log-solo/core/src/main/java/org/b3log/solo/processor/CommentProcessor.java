@@ -517,7 +517,6 @@ public final class CommentProcessor {
         ret.put(Keys.OBJECT_ID, commentId);
 
         return ret;
-
     }
 
     /**

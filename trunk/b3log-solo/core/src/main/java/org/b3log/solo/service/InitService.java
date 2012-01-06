@@ -15,26 +15,27 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.solo.processor.CaptchaProcessor;
-import org.b3log.solo.processor.CommentProcessor;
-import org.b3log.solo.util.Users;
 import org.b3log.latke.service.ServiceException;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.util.Sessions;
+import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
@@ -52,12 +53,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.*;
+import org.b3log.solo.repository.impl.*;
+import org.b3log.solo.util.Comments;
 
 /**
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 29, 2011
+ * @version 1.0.0.5, Jan 6, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -73,11 +78,6 @@ public final class InitService {
     private StatisticRepository statisticRepository =
             StatisticRepositoryImpl.getInstance();
     /**
-     * Article management service.
-     */
-    private ArticleMgmtService articleMgmtService =
-            ArticleMgmtService.getInstance();
-    /**
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository =
@@ -87,13 +87,42 @@ public final class InitService {
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
-     * User utilities.
+     * Tag-Article repository.
      */
-    private Users users = Users.getInstance();
+    private TagArticleRepository tagArticleRepository =
+            TagArticleRepositoryImpl.getInstance();
+    /**
+     * Archive date repository.
+     */
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateRepositoryImpl.getInstance();
+    /**
+     * Archive date-Article repository.
+     */
+    private ArchiveDateArticleRepository archiveDateArticleRepository =
+            ArchiveDateArticleRepositoryImpl.getInstance();
+    /**
+     * Tag repository.
+     */
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleRepositoryImpl.getInstance();
+    /**
+     * Comment repository.
+     */
+    private static CommentRepository commentRepository =
+            CommentRepositoryImpl.getInstance();
     /**
      * Maximum count of initialization.
      */
     private static final int MAX_RETRIES_CNT = 3;
+    /**
+     * Initialized time zone id.
+     */
+    private static final String INIT_TIME_ZONE_ID = "Asia/Shanghai";
 
     /**
      * Initializes B3log Solo.
@@ -183,7 +212,7 @@ public final class InitService {
     }
 
     /**
-     * Publishes the first article "Hello World".
+     * Publishes the first article "Hello World" and the first comment.
      *
      * @param request the specified http servlet request
      * @throws Exception exception
@@ -210,31 +239,189 @@ public final class InitService {
         article.put(Article.ARTICLE_TAGS_REF, "B3log");
         article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
         article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
-        final JSONObject currentUser = users.getCurrentUser(request);
+        article.put(Article.ARTICLE_COMMENT_COUNT, 1);
+        article.put(Article.ARTICLE_VIEW_COUNT, 0);
+        final Date date = TimeZones.getTime(INIT_TIME_ZONE_ID);
+        article.put(Article.ARTICLE_CREATE_DATE, date);
+        article.put(Article.ARTICLE_UPDATE_DATE, date);
+        article.put(Article.ARTICLE_PUT_TOP, false);
+        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
         article.put(Article.ARTICLE_AUTHOR_EMAIL,
-                    currentUser.getString(User.USER_EMAIL));
+                    preferenceRepository.get(Preference.PREFERENCE).optString(
+                Preference.ADMIN_EMAIL));
 
-        final String articleId =
-                articleMgmtService.addArticleInternal(article);
+        final String articleId = addHelloWorldArticle(article);
 
-        final JSONObject requestJSONObject = new JSONObject();
-        final String captchaForInit = "captchaForInit";
-        request.getSession().setAttribute(CaptchaProcessor.CAPTCHA,
-                                          captchaForInit);
-        requestJSONObject.put(CaptchaProcessor.CAPTCHA, captchaForInit);
-        requestJSONObject.put(Keys.OBJECT_ID, articleId);
-        requestJSONObject.put(Comment.COMMENT_NAME, "88250");
-        requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");
-        requestJSONObject.put(Comment.COMMENT_URL, "http://88250.b3log.org");
-        requestJSONObject.put(
-                Comment.COMMENT_CONTENT,
+        final JSONObject comment = new JSONObject();
+        comment.put(Keys.OBJECT_ID, articleId);
+        comment.put(Comment.COMMENT_NAME, "88250");
+        comment.put(Comment.COMMENT_EMAIL, "dl88250@gmail.com");
+        comment.put(Comment.COMMENT_URL, "http://88250.b3log.org");
+        comment.put(Comment.COMMENT_CONTENT, StringEscapeUtils.escapeHtml(
                 "Hi, this is a comment. To delete a comment, just log in and "
                 + "view the post's comments. There you will have the option "
-                + "to delete them.");
+                + "to delete them."));
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL,
+                    "http://www.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=60&r=G");
+        comment.put(Comment.COMMENT_DATE, date);
+        comment.put(Comment.COMMENT_ON_ID, articleId);
+        comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
+        final String commentId = Ids.genTimeMillisId();
+        comment.put(Keys.OBJECT_ID, commentId);
+        final String commentSharpURL =
+                Comments.getCommentSharpURLForArticle(article, commentId);
+        comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
-        CommentProcessor.addArticleCommentInternal(requestJSONObject, request);
+        commentRepository.add(comment);
+
         LOGGER.info("Hello World!");
+    }
+
+    /**
+     * Adds the specified "Hello World" article.
+     * 
+     * @param article the specified "Hello World" article
+     * @return generated article id
+     * @throws RepositoryException repository exception
+     */
+    private String addHelloWorldArticle(final JSONObject article)
+            throws RepositoryException {
+        final String ret = Ids.genTimeMillisId();
+
+        try {
+            article.put(Keys.OBJECT_ID, ret);
+
+            // Step 1: Add tags
+            final String tagsString =
+                    article.optString(Article.ARTICLE_TAGS_REF);
+            final String[] tagTitles = tagsString.split(",");
+            final JSONArray tags = tag(tagTitles, article);
+            // Step 2: Add tag-article relations
+            addTagArticleRelation(tags, article);
+            // Step 3: Inc blog article and comment count statictis
+            final JSONObject statistic =
+                    statisticRepository.get(Statistic.STATISTIC);
+            statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
+            statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
+            statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
+            statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 1);
+            statisticRepository.update(Statistic.STATISTIC, statistic);
+            // Step 4: Add archive date-article relations
+            archiveDate(article);
+            // Step 5: Add article
+            articleRepository.add(article);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+
+            throw new RepositoryException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Archive the create date with the specified article.
+     *
+     * @param article the specified article, for example,
+     * <pre>
+     * {
+     *     ....,
+     *     "oId": "",
+     *     "articleCreateDate": java.util.Date,
+     *     ....
+     * }
+     * </pre>
+     * @throws RepositoryException repository exception
+     */
+    public void archiveDate(final JSONObject article)
+            throws RepositoryException {
+        final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
+        final String createDateString =
+                ArchiveDate.DATE_FORMAT.format(createDate);
+        final JSONObject archiveDate = new JSONObject();
+        try {
+            archiveDate.put(ArchiveDate.ARCHIVE_TIME,
+                            ArchiveDate.DATE_FORMAT.parse(createDateString).
+                    getTime());
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                            1);
+
+            archiveDateRepository.add(archiveDate);
+        } catch (final ParseException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+
+        final JSONObject archiveDateArticleRelation = new JSONObject();
+        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_"
+                                       + Keys.OBJECT_ID, archiveDate.optString(
+                Keys.OBJECT_ID));
+        archiveDateArticleRelation.put(Article.ARTICLE + "_"
+                                       + Keys.OBJECT_ID, article.optString(
+                Keys.OBJECT_ID));
+
+        archiveDateArticleRepository.add(archiveDateArticleRelation);
+    }
+
+    /**
+     * Adds relation of the specified tags and article.
+     *
+     * @param tags the specified tags
+     * @param article the specified article
+     * @throws RepositoryException repository exception
+     */
+    private void addTagArticleRelation(final JSONArray tags,
+                                       final JSONObject article)
+            throws RepositoryException {
+        for (int i = 0; i < tags.length(); i++) {
+            final JSONObject tag = tags.optJSONObject(i);
+            final JSONObject tagArticleRelation = new JSONObject();
+
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
+                                   tag.optString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                                   article.optString(Keys.OBJECT_ID));
+
+            tagArticleRepository.add(tagArticleRelation);
+        }
+    }
+
+    /**
+     * Tags the specified article with the specified tag titles.
+     *
+     * @param tagTitles the specified tag titles
+     * @param article the specified article
+     * @return an array of tags
+     * @throws RepositoryException repository exception
+     */
+    private JSONArray tag(final String[] tagTitles,
+                          final JSONObject article)
+            throws RepositoryException {
+        final JSONArray ret = new JSONArray();
+        for (int i = 0; i < tagTitles.length; i++) {
+            final String tagTitle = tagTitles[i].trim();
+            final JSONObject tag = new JSONObject();
+            LOGGER.log(Level.FINEST,
+                       "Found a new tag[title={0}] in article[title={1}]",
+                       new Object[]{
+                        tagTitle, article.optString(Article.ARTICLE_TITLE)});
+            tag.put(Tag.TAG_TITLE, tagTitle);
+            tag.put(Tag.TAG_REFERENCE_COUNT, 1);
+            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
+
+            final String tagId = tagRepository.add(tag);
+            tag.put(Keys.OBJECT_ID, tagId);
+
+            ret.put(tag);
+        }
+
+        return ret;
     }
 
     /**
@@ -280,8 +467,6 @@ public final class InitService {
         userRepository.add(admin);
 
         LOGGER.info("Initialized admin");
-
-        Sessions.login(request, response, admin);
     }
 
     /**
@@ -412,7 +597,7 @@ public final class InitService {
             throw new IllegalStateException(e);
         }
 
-        TimeZones.setTimeZone("Asia/Shanghai");
+        TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
         ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);
