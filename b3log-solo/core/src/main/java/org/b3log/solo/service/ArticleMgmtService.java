@@ -537,7 +537,6 @@ public final class ArticleMgmtService {
             LOGGER.log(Level.WARNING, "Adds an article event process failed", e);
         }
 
-
         return ret;
     }
 
