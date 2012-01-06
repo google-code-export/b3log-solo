@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Jan 6, 2012
  * @since 0.4.0
  */
 public final class UserQueryService {
@@ -60,7 +60,7 @@ public final class UserQueryService {
      *
      * @param email the specified email
      * @return user, returns {@code null} if not found
-     * @throws ServiceException 
+     * @throws ServiceException service exception
      */
     public JSONObject getUserByEmail(final String email) throws ServiceException {
         try {
@@ -104,39 +104,43 @@ public final class UserQueryService {
      */
     public JSONObject getUsers(final JSONObject requestJSONObject)
             throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(
+                Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(
+                Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(
+                Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize);
+
+        JSONObject result = null;
+
         try {
-            final JSONObject ret = new JSONObject();
-
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize);
-            final JSONObject result = userRepository.get(query);
-
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
-
-            final JSONObject pagination = new JSONObject();
-            ret.put(Pagination.PAGINATION, pagination);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize,
-                                       pageCount,
-                                       windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final JSONArray users = result.getJSONArray(Keys.RESULTS);
-            ret.put(User.USERS, users);
-
-            return ret;
-        } catch (final Exception e) {
+            result = userRepository.get(query);
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets users failed", e);
+
             throw new ServiceException(e);
         }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).
+                optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums =
+                Paginator.paginate(currentPageNum, pageSize,
+                                   pageCount,
+                                   windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        ret.put(User.USERS, users);
+
+        return ret;
     }
 
     /**
@@ -160,17 +164,19 @@ public final class UserQueryService {
             throws ServiceException {
         final JSONObject ret = new JSONObject();
 
+        JSONObject user = null;
         try {
-            final JSONObject user = userRepository.get(userId);
-            if (null == user) {
-                return null;
-            }
-
-            ret.put(User.USER, user);
-        } catch (final Exception e) {
+            user = userRepository.get(userId);
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets a user failed", e);
             throw new ServiceException(e);
         }
+
+        if (null == user) {
+            return null;
+        }
+
+        ret.put(User.USER, user);
 
         return ret;
     }
