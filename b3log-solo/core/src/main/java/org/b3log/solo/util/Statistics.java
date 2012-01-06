@@ -78,7 +78,7 @@ public final class Statistics {
      */
     public static void decOnlineVisitorCount() {
         --onlineVisitorCount;
-        
+
         if (0 > onlineVisitorCount) {
             onlineVisitorCount = 0;
         }
@@ -233,11 +233,9 @@ public final class Statistics {
     /**
      * Blog statistic article count +1.
      *
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void incBlogArticleCount()
-            throws JSONException, RepositoryException {
+    public void incBlogArticleCount() throws RepositoryException {
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
@@ -245,7 +243,7 @@ public final class Statistics {
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                      statistic.getInt(
+                      statistic.optInt(
                 Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
@@ -253,11 +251,10 @@ public final class Statistics {
     /**
      * Blog statistic published article count +1.
      *
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     public void incPublishedBlogArticleCount()
-            throws JSONException, RepositoryException {
+            throws RepositoryException {
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
@@ -265,7 +262,7 @@ public final class Statistics {
         }
 
         statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
-                      statistic.getInt(
+                      statistic.optInt(
                 Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }

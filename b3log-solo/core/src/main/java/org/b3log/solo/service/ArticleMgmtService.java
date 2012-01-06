@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.solo.util.Tags;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.b3log.solo.util.Articles;
@@ -27,11 +26,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -39,6 +36,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.util.Tags;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -65,7 +63,6 @@ import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,10 +130,6 @@ public final class ArticleMgmtService {
      */
     private Permalinks permalinks = Permalinks.getInstance();
     /**
-     * User utilities.
-     */
-    private Users users = Users.getInstance();
-    /**
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
@@ -201,9 +194,9 @@ public final class ArticleMgmtService {
 
     /**
      * Puts an article specified by the given article id to top or cancel top.
-     * 
+     *
      * @param articleId the given article id
-     * @param top the specified flag, {@code true} to top, {@code false} to 
+     * @param top the specified flag, {@code true} to top, {@code false} to
      * cancel top
      * @throws ServiceException service exception
      */
@@ -251,7 +244,7 @@ public final class ArticleMgmtService {
      *     }
      * }
      * </pre>
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public void updateArticle(final JSONObject requestJSONObject)
             throws ServiceException {
@@ -395,6 +388,7 @@ public final class ArticleMgmtService {
      * <pre>
      * {
      *     "article": {
+     *         "articleAuthorEmail": "",
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
@@ -406,12 +400,10 @@ public final class ArticleMgmtService {
      *     }
      * }
      * </pre>
-     * @param request the specified http servlet request
      * @return generated article id
      * @throws ServiceException service exception
      */
-    public String addArticle(final JSONObject requestJSONObject,
-                             final HttpServletRequest request)
+    public String addArticle(final JSONObject requestJSONObject)
             throws ServiceException {
         // TODO: add article args check
 
@@ -419,10 +411,6 @@ public final class ArticleMgmtService {
         try {
             final JSONObject article =
                     requestJSONObject.getJSONObject(Article.ARTICLE);
-
-            final JSONObject currentUser = users.getCurrentUser(request);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
-                    User.USER_EMAIL));
 
             final String ret = addArticleInternal(article);
 
@@ -446,20 +434,21 @@ public final class ArticleMgmtService {
 
     /**
      * Adds the specified article for internal invocation purposes.
-     * 
+     *
      * @param article the specified article
      * @return generated article id
      * @throws ServiceException service exception
      */
     public String addArticleInternal(final JSONObject article)
             throws ServiceException {
+        final String ret = Ids.genTimeMillisId();
+
         try {
-            final String ret = Ids.genTimeMillisId();
             article.put(Keys.OBJECT_ID, ret);
 
             // Step 1: Add tags
             final String tagsString =
-                    article.getString(Article.ARTICLE_TAGS_REF);
+                    article.optString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
             // Step 2; Set comment/view count to 0
@@ -468,20 +457,20 @@ public final class ArticleMgmtService {
             // Step 3: Set create/updat date
             final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
-                    preference.getString(Preference.TIME_ZONE_ID);
+                    preference.optString(Preference.TIME_ZONE_ID);
             final Date date = TimeZones.getTime(timeZoneId);
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 article.put(Article.ARTICLE_CREATE_DATE, date);
             }
             article.put(Article.ARTICLE_UPDATE_DATE,
-                        article.get(Article.ARTICLE_CREATE_DATE));
+                        article.opt(Article.ARTICLE_CREATE_DATE));
             // Step 4: Set put top to false
             article.put(Article.ARTICLE_PUT_TOP, false);
             // Step 5: Add tag-article relations
             addTagArticleRelation(tags, article);
             // Step 6: Inc blog article count statictis
             statistics.incBlogArticleCount();
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statistics.incPublishedBlogArticleCount();
             }
             // Step 7: Add archive date-article relations
@@ -516,7 +505,7 @@ public final class ArticleMgmtService {
             article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             // Step 10: Set had been published status
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 // Publish it directly
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
@@ -531,7 +520,7 @@ public final class ArticleMgmtService {
 
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 // Fire add article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(Article.ARTICLE, article);
@@ -540,20 +529,21 @@ public final class ArticleMgmtService {
             }
 
             article.remove(Common.POST_TO_COMMUNITY);
-
-            return ret;
-        } catch (final ServiceException e) {
-            throw e;
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Adds an article failed", e);
 
             throw new ServiceException(e);
+        } catch (final EventException e) {
+            LOGGER.log(Level.WARNING, "Adds an article event process failed", e);
         }
+
+
+        return ret;
     }
 
     /**
      * Removes the article specified by the given id.
-     * 
+     *
      * @param articleId the given id
      * @throws ServiceException service exception
      */
@@ -592,11 +582,11 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Updates the random values of articles fetched with the specified 
-     * update count.
-     * 
+     * Updates the random values of articles fetched with the specified update
+     * count.
+     *
      * @param updateCnt the specified update count
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public void updateArticlesRandomValue(final int updateCnt)
             throws ServiceException {
@@ -730,9 +720,9 @@ public final class ArticleMgmtService {
 
     /**
      * Processes comments for article update.
-     * 
+     *
      * @param article the specified article to update
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void processCommentsForArticleUpdate(final JSONObject article)
             throws Exception {
@@ -765,11 +755,9 @@ public final class ArticleMgmtService {
     /**
      * Processes tags for article update.
      *
-     * <ul>
-     *   <li>Un-tags old article, decrements tag reference count</li>
-     *   <li>Removes old article-tag relations</li>
-     *   <li>Saves new article-tag relations with tag reference count</li>
-     * </ul>
+     * <ul> <li>Un-tags old article, decrements tag reference count</li>
+     * <li>Removes old article-tag relations</li> <li>Saves new article-tag
+     * relations with tag reference count</li> </ul>
      *
      * @param oldArticle the specified old article
      * @param newArticle the specified new article
@@ -882,9 +870,7 @@ public final class ArticleMgmtService {
      * Removes tag-article relations by the specified article id and tag ids of
      * the relations to be removed.
      *
-     * <p>
-     * Removes all relations if not specified the tag ids.
-     * </p>
+     * <p> Removes all relations if not specified the tag ids. </p>
      *
      * @param articleId the specified article id
      * @param tagIds the specified tag ids of the relations to be removed
@@ -921,20 +907,19 @@ public final class ArticleMgmtService {
      *
      * @param tags the specified tags
      * @param article the specified article
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     private void addTagArticleRelation(final JSONArray tags,
                                        final JSONObject article)
-            throws JSONException, RepositoryException {
+            throws RepositoryException {
         for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
+            final JSONObject tag = tags.optJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
 
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.getString(Keys.OBJECT_ID));
+                                   tag.optString(Keys.OBJECT_ID));
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.getString(Keys.OBJECT_ID));
+                                   article.optString(Keys.OBJECT_ID));
 
             tagArticleRepository.add(tagArticleRelation);
         }
@@ -947,11 +932,10 @@ public final class ArticleMgmtService {
      * @param article the specified article
      * @return an array of tags
      * @throws RepositoryException repository exception
-     * @throws JSONException json exception
      */
     private JSONArray tag(final String[] tagTitles,
                           final JSONObject article)
-            throws RepositoryException, JSONException {
+            throws RepositoryException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
@@ -961,11 +945,11 @@ public final class ArticleMgmtService {
                 LOGGER.log(Level.FINEST,
                            "Found a new tag[title={0}] in article[title={1}]",
                            new Object[]{
-                            tagTitle, article.getString(Article.ARTICLE_TITLE)});
+                            tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-                if (article.getBoolean(
+                if (article.optBoolean(
                         Article.ARTICLE_IS_PUBLISHED)) { // Publish article directly
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
                 } else { // Save as draft
@@ -975,20 +959,20 @@ public final class ArticleMgmtService {
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
-                tagId = tag.getString(Keys.OBJECT_ID);
+                tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST,
                            "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
-                           new Object[]{tag.getString(Tag.TAG_TITLE),
-                                        tag.getString(Keys.OBJECT_ID),
-                                        article.getString(Article.ARTICLE_TITLE)});
+                           new Object[]{tag.optString(Tag.TAG_TITLE),
+                                        tag.optString(Keys.OBJECT_ID),
+                                        article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);
-                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+                final int refCnt = tag.optInt(Tag.TAG_REFERENCE_COUNT);
                 final int publishedRefCnt =
-                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+                        tag.optInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
                 tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                                publishedRefCnt + 1);
                 } else {
@@ -1007,8 +991,7 @@ public final class ArticleMgmtService {
     /**
      * Removes article comments by the specified article id.
      *
-     * <p>
-     * Removes related comments, sets article/blog comment statistic count.
+     * <p> Removes related comments, sets article/blog comment statistic count.
      * </p>
      *
      * @param articleId the specified article id
@@ -1053,7 +1036,7 @@ public final class ArticleMgmtService {
 
     /**
      * Archive the create date with the specified article.
-     * 
+     *
      * @param article the specified article, for example,
      * <pre>
      * {
@@ -1063,12 +1046,11 @@ public final class ArticleMgmtService {
      *     ....
      * }
      * </pre>
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     public void archiveDate(final JSONObject article)
-            throws JSONException, RepositoryException {
-        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+            throws RepositoryException {
+        final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
         final String createDateString =
                 ArchiveDate.DATE_FORMAT.format(createDate);
         JSONObject archiveDate = archiveDateRepository.getByArchiveDate(
@@ -1095,26 +1077,26 @@ public final class ArticleMgmtService {
                 CollectionUtils.jsonArrayToArray(archiveDate.names(),
                                                  String[].class));
         newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
-                           archiveDate.getInt(
+                           archiveDate.optInt(
                 ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+        if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDate.getInt(
+                               archiveDate.optInt(
                     ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         } else {
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDate.getInt(
+                               archiveDate.optInt(
                     ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT));
         }
-        archiveDateRepository.update(archiveDate.getString(Keys.OBJECT_ID),
+        archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID),
                                      newArchiveDate);
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
         archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_"
-                                       + Keys.OBJECT_ID, archiveDate.getString(
+                                       + Keys.OBJECT_ID, archiveDate.optString(
                 Keys.OBJECT_ID));
         archiveDateArticleRelation.put(Article.ARTICLE + "_"
-                                       + Keys.OBJECT_ID, article.getString(
+                                       + Keys.OBJECT_ID, article.optString(
                 Keys.OBJECT_ID));
 
         archiveDateArticleRepository.add(archiveDateArticleRelation);
@@ -1125,12 +1107,11 @@ public final class ArticleMgmtService {
      *
      * @param signId the specified sign id
      * @param articleId the specified article id
-     * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     public void addArticleSignRelation(final String signId,
                                        final String articleId)
-            throws JSONException, RepositoryException {
+            throws RepositoryException {
         final JSONObject articleSignRelation = new JSONObject();
 
         articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID,
@@ -1144,15 +1125,12 @@ public final class ArticleMgmtService {
     /**
      * Fills 'auto' properties for the specified article and old article.
      *
-     * <p>
-     * Some properties of an article are not been changed while article updating,
-     * these properties are called 'auto' properties.
-     * </p>
+     * <p> Some properties of an article are not been changed while article
+     * updating, these properties are called 'auto' properties. </p>
      *
-     * <p>
-     * The property(named {@value org.b3log.solo.model.Article#ARTICLE_RANDOM_DOUBLE})
-     * of the specified article will be regenerated.
-     * </p>
+     * <p> The property(named {@value
+     * org.b3log.solo.model.Article#ARTICLE_RANDOM_DOUBLE}) of the specified
+     * article will be regenerated. </p>
      *
      * @param oldArticle the specified old article
      * @param article the specified article
@@ -1177,15 +1155,15 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Gets article permalink for updating article with the specified old article,
-     * article, create date and status.
+     * Gets article permalink for updating article with the specified old
+     * article, article, create date and status.
      *
      * @param oldArticle the specified old article
      * @param article the specified article
      * @param createDate the specified create date
      * @return permalink
      * @throws ServiceException if invalid permalink occurs
-     * @throws JSONException json exception 
+     * @throws JSONException json exception
      */
     private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
                                                 final JSONObject article,
@@ -1219,8 +1197,8 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Decrements reference count of archive date of an published article specified
-     * by the given article id.
+     * Decrements reference count of archive date of an published article
+     * specified by the given article id.
      *
      * @param articleId the given article id
      * @throws JSONException json exception
@@ -1241,8 +1219,8 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Increments reference count of archive date of an published article specified
-     * by the given article id.
+     * Increments reference count of archive date of an published article
+     * specified by the given article id.
      *
      * @param articleId the given article id
      * @throws JSONException json exception

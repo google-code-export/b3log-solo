@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -105,11 +106,11 @@ public final class ArticleConsole {
      * }
      * </pre>
      * </p>
-     * 
+     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = ARTICLE_URI_PREFIX + "*",
                        method = HTTPRequestMethod.GET)
@@ -145,13 +146,13 @@ public final class ArticleConsole {
     /**
      * Gets articles(by crate date descending) by the specified request json
      * object.
-     * 
+     *
      * <p>
      * The request URI contains the pagination arguments. For example, the 
-     * request URI is /console/articles/status/published/1/10/20, means the 
+     * request URI is /console/articles/status/published/1/10/20, means the
      * current page is 1, the page size is 10, and the window size is 20.
      * </p>
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -174,11 +175,11 @@ public final class ArticleConsole {
      * }
      * </pre>, order by article update date and sticky(put top).
      * </p>
-     * 
+     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = ARTICLES_URI_PREFIX + "status/*"
                                + Requests.PAGINATION_PATH_PATTERN,
@@ -224,7 +225,7 @@ public final class ArticleConsole {
 
     /**
      * Removes an article by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -346,7 +347,7 @@ public final class ArticleConsole {
 
     /**
      * Cancels an top article by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -406,7 +407,7 @@ public final class ArticleConsole {
 
     /**
      * Puts an article to top by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -464,9 +465,9 @@ public final class ArticleConsole {
         }
     }
 
-    /** 
+    /**
      * Updates an article by the specified request json object.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -544,7 +545,7 @@ public final class ArticleConsole {
 
     /**
      * Adds an article with the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -555,7 +556,7 @@ public final class ArticleConsole {
      * }
      * </pre>
      * </p>
-     * 
+     *
      * @param request the specified http servlet request, for example,
      * <pre>
      * {
@@ -595,8 +596,15 @@ public final class ArticleConsole {
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(request, response);
 
+            final Users users = Users.getInstance();
+            final JSONObject currentUser = users.getCurrentUser(request);
+
+            requestJSONObject.getJSONObject(Article.ARTICLE).put(
+                    Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
+                    User.USER_EMAIL));
+
             final String articleId = articleMgmtService.addArticle(
-                    requestJSONObject, request);
+                    requestJSONObject);
 
             ret.put(Keys.OBJECT_ID, articleId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
