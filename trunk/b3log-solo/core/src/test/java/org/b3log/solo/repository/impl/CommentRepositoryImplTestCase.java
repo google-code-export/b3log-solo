@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 31, 2011
+ * @version 1.0.0.1, Jan 7, 2012
  */
 public class CommentRepositoryImplTestCase extends AbstractTestCase {
 
@@ -54,6 +54,7 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_SHARP_URL, "comment1 sharp url");
         comment.put(Comment.COMMENT_URL, "comment1 url");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, "comment1 thumbnail url");
 
         final Transaction transaction = commentRepository.beginTransaction();
         commentRepository.add(comment);
