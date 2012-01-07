@@ -15,13 +15,10 @@
  */
 package org.b3log.solo.service;
 
-import junit.framework.Assert;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.json.JSONObject;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import org.testng.Assert;
 
 /**
  * {@link InitService} test case.
@@ -29,7 +26,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 7, 2012
  */
-@Test(suiteName = "service")
+//@Test(suiteName = "service")
 public class InitServiceTestCase extends AbstractTestCase {
 
     /**
@@ -37,7 +34,7 @@ public class InitServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    //@Test
     public void init() throws Exception {
         final InitService initService = InitService.getInstance();
 
