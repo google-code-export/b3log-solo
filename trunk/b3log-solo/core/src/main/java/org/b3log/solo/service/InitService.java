@@ -23,8 +23,6 @@ import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
@@ -32,7 +30,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
@@ -153,13 +150,9 @@ public final class InitService {
      *     "userPassword": ""
      * }
      * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
      * @throws ServiceException service exception
      */
-    public void init(final JSONObject requestJSONObject,
-                     final HttpServletRequest request,
-                     final HttpServletResponse response)
+    public void init(final JSONObject requestJSONObject)
             throws ServiceException {
         if (SoloServletListener.isInited()) {
             return;
@@ -175,7 +168,7 @@ public final class InitService {
                     initStatistic();
                     initPreference(requestJSONObject);
                     initReplyNotificationTemplate();
-                    initAdmin(requestJSONObject, request, response);
+                    initAdmin(requestJSONObject);
                 }
 
                 transaction.commit();
@@ -200,7 +193,7 @@ public final class InitService {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            helloWorld(request);
+            helloWorld();
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -214,11 +207,9 @@ public final class InitService {
     /**
      * Publishes the first article "Hello World" and the first comment.
      *
-     * @param request the specified http servlet request
      * @throws Exception exception
      */
-    private void helloWorld(final HttpServletRequest request)
-            throws Exception {
+    private void helloWorld() throws Exception {
         final JSONObject article = new JSONObject();
 
         // XXX: no i18n
@@ -240,7 +231,7 @@ public final class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
+        // TODO: 88250, 041 article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final Date date = TimeZones.getTime(INIT_TIME_ZONE_ID);
@@ -436,33 +427,17 @@ public final class InitService {
      *     "userPassowrd": ""
      * }
      * </pre>
-     * @param request the specified request
-     * @param response the specified response
      * @throws Exception exception
      */
-    private void initAdmin(final JSONObject requestJSONObject,
-                           final HttpServletRequest request,
-                           final HttpServletResponse response) throws Exception {
+    private void initAdmin(final JSONObject requestJSONObject) throws Exception {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
-        final String userName = requestJSONObject.getString(User.USER_NAME);
-        final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
-        final String userPassword =
-                requestJSONObject.getString(User.USER_PASSWORD);
-
-        if (Strings.isEmptyOrNull(userName)
-            || Strings.isEmptyOrNull(userEmail)
-            || Strings.isEmptyOrNull(userPassword)
-            || !Strings.isEmail(userEmail)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        admin.put(User.USER_NAME, userName);
-        admin.put(User.USER_EMAIL, userEmail);
+        admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
+        admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD, userPassword);
+        admin.put(User.USER_PASSWORD,
+                  requestJSONObject.getString(User.USER_PASSWORD));
 
         userRepository.add(admin);
 
