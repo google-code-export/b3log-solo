@@ -238,7 +238,7 @@ public final class ArticleQueryService {
      *         "articleViewCount": int,
      *         "articleTags": "tag1, tag2, ....",
      *         "articlePutTop": boolean,
-     *         "articleIsPublished": boolean
+     *         "articleIsPublished": boolean // optional, default is true
      *      }, ....]
      * }
      * </pre>, order by article update date and sticky(put top).
