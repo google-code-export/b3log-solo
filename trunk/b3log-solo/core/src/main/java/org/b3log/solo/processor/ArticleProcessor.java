@@ -113,10 +113,6 @@ public final class ArticleProcessor {
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
-    /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =

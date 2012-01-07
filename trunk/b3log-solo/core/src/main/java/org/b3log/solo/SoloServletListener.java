@@ -223,8 +223,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 return;
             }
 
-            final Skins skins = Skins.getInstance();
-            skins.loadSkins(preference);
+            Skins.loadSkins(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

@@ -94,10 +94,6 @@ public final class TagProcessor {
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
-    /**
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
@@ -164,7 +160,7 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
@@ -319,7 +315,7 @@ public final class TagProcessor {
                 return;
             }
 
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);

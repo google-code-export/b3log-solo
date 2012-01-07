@@ -74,10 +74,6 @@ public final class PageProcessor {
      */
     private CommentQueryService commentQueryService =
             CommentQueryService.getInstance();
-    /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
 
     /**
      * Shows page with the specified context.
@@ -103,7 +99,7 @@ public final class PageProcessor {
                 return;
             }
 
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.getString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);

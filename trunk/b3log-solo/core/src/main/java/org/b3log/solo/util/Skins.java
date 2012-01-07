@@ -58,6 +58,12 @@ public final class Skins {
      */
     private static final Map<String, Map<String, String>> LANG_MAP =
             new HashMap<String, Map<String, String>>();
+    
+    /**
+     * Private default constructor.
+     */
+    private Skins() {
+    }
 
     /**
      * Fills the specified data model with the current skink's language 
@@ -317,43 +323,6 @@ public final class Skins {
                        e.getMessage());
 
             return null;
-        }
-    }
-
-    /**
-     * Gets the {@link Skins} singleton.
-     *
-     * @return the singleton
-     */
-    public static Skins getInstance() {
-        return SingletonHolder.SINGLETON;
-
-
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private Skins() {
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final Skins SINGLETON = new Skins();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
         }
     }
 }
