@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 29, 2011
  */
+@Test(suiteName = "repository")
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
 
     /**
