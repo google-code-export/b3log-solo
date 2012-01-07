@@ -16,8 +16,6 @@
 package org.b3log.solo;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalMailServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -66,7 +64,7 @@ public abstract class AbstractTestCase {
      * Local service test helper.
      */
     private final LocalServiceTestHelper localServiceTestHelper =
-            new LocalServiceTestHelper();
+            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
     /**
      * User repository.
      */
