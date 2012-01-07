@@ -90,7 +90,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "init")
     public void updateArticle() throws Exception {
         final ArticleMgmtService articleMgmtService =
                 ArticleMgmtService.getInstance();
@@ -132,7 +132,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "init")
     public void removeArticle() throws Exception {
         final ArticleMgmtService articleMgmtService =
                 ArticleMgmtService.getInstance();
@@ -196,7 +196,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "init")
     public void cancelPublishArticle() throws Exception {
         final ArticleMgmtService articleMgmtService =
                 ArticleMgmtService.getInstance();
