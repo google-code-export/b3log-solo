@@ -19,6 +19,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalMemcacheServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -141,6 +142,8 @@ public abstract class AbstractTestCase {
         localServiceTestHelper.setUp();
 
         Latkes.initRuntimeEnv();
+        final String webRoot = AbstractServletListener.getWebRoot();
+        System.out.println("Web Root[" + webRoot + "]");
 
         // Repositories
         userRepository = UserRepositoryImpl.getInstance();
