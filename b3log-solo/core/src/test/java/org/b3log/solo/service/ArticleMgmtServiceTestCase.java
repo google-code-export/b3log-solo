@@ -187,7 +187,53 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final String articleId = article.getString(Keys.OBJECT_ID);
         articleMgmtService.topArticle(articleId, true);
         articleMgmtService.topArticle(articleId, false);
-        
+
         // TODO: assertions
+    }
+
+    /**
+     * Cancel Publish Article.
+     * 
+     * @throws Exception exception
+     */
+    @Test
+    public void cancelPublishArticle() throws Exception {
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        final JSONObject article = new JSONObject();
+        requestJSONObject.put(Article.ARTICLE, article);
+
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_TITLE, "article4 title");
+        article.put(Article.ARTICLE_ABSTRACT, "article4 abstract");
+        article.put(Article.ARTICLE_CONTENT, "article4 content");
+        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
+        article.put(Article.ARTICLE_PERMALINK, "article4 permalink");
+        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Common.POST_TO_COMMUNITY, true);
+        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+
+        final String articleId =
+                articleMgmtService.addArticle(requestJSONObject);
+
+        Assert.assertNotNull(articleId);
+
+        final ArticleQueryService articleQueryService =
+                ArticleQueryService.getInstance();
+        final JSONObject paginationRequest =
+                Requests.buildPaginationRequest("1/10/20");
+        JSONArray articles =
+                articleQueryService.getArticles(paginationRequest).
+                optJSONArray(Article.ARTICLES);
+
+        int articleCount = articles.length();
+        Assert.assertNotEquals(articleCount, 0);
+
+        articleMgmtService.cancelPublishArticle(articleId);
+        articles = articleQueryService.getArticles(paginationRequest).
+                optJSONArray(Article.ARTICLES);
+        Assert.assertEquals(articles.length(), articleCount - 1);
     }
 }
