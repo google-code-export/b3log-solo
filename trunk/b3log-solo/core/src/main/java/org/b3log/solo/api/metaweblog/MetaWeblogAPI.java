@@ -71,7 +71,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 30, 2011
+ * @version 1.0.0.5, Jan 7, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -277,10 +277,10 @@ public final class MetaWeblogAPI {
                         append(true).append(
                         "</boolean></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
+            } else {
+                throw new UnsupportedOperationException("Unsupported method[name="
+                                                        + methodName + "]");
             }
-
-            throw new UnsupportedOperationException("Unsupported method[name="
-                                                    + methodName + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
