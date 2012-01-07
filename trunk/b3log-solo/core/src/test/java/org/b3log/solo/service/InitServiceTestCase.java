@@ -19,6 +19,8 @@ import junit.framework.Assert;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.json.JSONObject;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 /**
@@ -27,7 +29,26 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 7, 2012
  */
+@Test(suiteName = "service")
 public class InitServiceTestCase extends AbstractTestCase {
 
-   
+    /**
+     * Init.
+     * 
+     * @throws Exception exception
+     */
+    @Test
+    public void init() throws Exception {
+        final InitService initService = InitService.getInstance();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(User.USER_EMAIL, "test@b3log.org");
+        requestJSONObject.put(User.USER_NAME, "Admin");
+        requestJSONObject.put(User.USER_PASSWORD, "pass");
+
+        initService.init(requestJSONObject);
+
+        final UserQueryService userQueryService = UserQueryService.getInstance();
+        Assert.assertNotNull(userQueryService.getUserByEmail("test@b3log.org"));
+    }
 }
