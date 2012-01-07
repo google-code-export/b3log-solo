@@ -140,7 +140,6 @@ public abstract class AbstractTestCase {
         localServiceTestHelper.setUp();
 
         Latkes.initRuntimeEnv();
-        final String webRoot = AbstractServletListener.getWebRoot();
 
         // Repositories
         userRepository = UserRepositoryImpl.getInstance();
