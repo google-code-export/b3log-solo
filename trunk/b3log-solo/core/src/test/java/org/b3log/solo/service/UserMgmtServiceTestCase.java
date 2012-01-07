@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 31, 2011
  */
-@Test(suiteName="service")
+@Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
@@ -56,6 +56,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
+    @Test(dependsOnMethods = "addUser")
     public void updateUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
