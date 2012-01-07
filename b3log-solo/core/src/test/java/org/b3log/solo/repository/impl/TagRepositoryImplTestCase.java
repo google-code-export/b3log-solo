@@ -18,14 +18,12 @@ package org.b3log.solo.repository.impl;
 import java.util.List;
 import junit.framework.Assert;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
@@ -35,6 +33,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 30, 2011
  */
+@Test(suiteName = "repository")
 public class TagRepositoryImplTestCase extends AbstractTestCase {
 
     /**

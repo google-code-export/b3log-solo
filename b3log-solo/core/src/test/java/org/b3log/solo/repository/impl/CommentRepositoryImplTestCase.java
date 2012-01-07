@@ -17,12 +17,12 @@ package org.b3log.solo.repository.impl;
 
 import java.util.Date;
 import java.util.List;
-import junit.framework.Assert;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 7, 2012
  */
+@Test(suiteName = "repository")
 public class CommentRepositoryImplTestCase extends AbstractTestCase {
 
     /**
