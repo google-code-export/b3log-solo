@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Dec 29, 2011
+ * @version 1.0.2.5, Jan 7, 2012
  * @since 0.3.1
  */
 public final class Skins {
@@ -257,6 +257,12 @@ public final class Skins {
         });
 
         final Set<String> ret = new HashSet<String>();
+        if (null == skinDirs) {
+            LOGGER.severe("Skin directory is null");
+            
+            return ret;
+        }
+
         for (int i = 0; i < skinDirs.length; i++) {
             final File file = skinDirs[i];
             ret.add(file.getName());
