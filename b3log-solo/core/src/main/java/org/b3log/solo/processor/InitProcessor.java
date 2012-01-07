@@ -39,6 +39,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Sessions;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.Filler;
@@ -177,13 +178,29 @@ public final class InitProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = new JSONObject();
+        final JSONObject ret = QueryResults.defaultResult();
+        renderer.setJSONObject(ret);
 
         try {
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(request, response);
 
-            initService.init(requestJSONObject, request, response);
+            final String userName = requestJSONObject.optString(User.USER_NAME);
+            final String userEmail =
+                    requestJSONObject.optString(User.USER_EMAIL);
+            final String userPassword =
+                    requestJSONObject.optString(User.USER_PASSWORD);
+
+            if (Strings.isEmptyOrNull(userName)
+                || Strings.isEmptyOrNull(userEmail)
+                || Strings.isEmptyOrNull(userPassword)
+                || !Strings.isEmail(userEmail)) {
+                ret.put(Keys.MSG, "Init failed, please check your input");
+
+                return;
+            }
+
+            initService.init(requestJSONObject);
 
             // If initialized, login the admin
             final JSONObject admin = new JSONObject();
@@ -198,14 +215,10 @@ public final class InitProcessor {
             Sessions.login(request, response, admin);
 
             ret.put(Keys.STATUS_CODE, true);
-
-            renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
+            ret.put(Keys.MSG, e.getMessage());
         }
     }
 }
