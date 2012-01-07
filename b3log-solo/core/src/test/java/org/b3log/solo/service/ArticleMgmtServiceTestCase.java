@@ -27,8 +27,9 @@ import org.testng.annotations.Test;
  * {@link ArticleMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 6, 2012
+ * @version 1.0.0.1, Jan 7, 2012
  */
+@Test(dependsOnGroups = "init")
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
     /**
@@ -55,9 +56,9 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
 
-        // TODO: final String articleId =
-          //      articleMgmtService.addArticle(requestJSONObject);
+        final String articleId =
+                articleMgmtService.addArticle(requestJSONObject);
 
-        //Assert.assertNotNull(articleId);
+        Assert.assertNotNull(articleId);
     }
 }

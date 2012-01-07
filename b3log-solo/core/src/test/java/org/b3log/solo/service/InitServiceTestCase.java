@@ -25,8 +25,9 @@ import org.testng.annotations.Test;
  * {@link InitService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 6, 2012
+ * @version 1.0.0.1, Jan 7, 2012
  */
+@Test(groups = "init")
 public class InitServiceTestCase extends AbstractTestCase {
 
     /**
@@ -44,7 +45,7 @@ public class InitServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_PASSWORD, "pass");
 
         initService.init(requestJSONObject);
-        
+
         final UserQueryService userQueryService = UserQueryService.getInstance();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@b3log.org"));
     }
