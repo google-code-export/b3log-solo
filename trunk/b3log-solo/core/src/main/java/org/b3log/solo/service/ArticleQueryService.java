@@ -210,7 +210,7 @@ public final class ArticleQueryService {
      *
      * <p>
      * If the property "articleIsPublished" of the specified request json object
-     * is {@code true}, the returned articles all are unpublished, {@code false}
+     * is {@code true}, the returned articles all are published, {@code false}
      * otherwise.
      * </p>
      * 

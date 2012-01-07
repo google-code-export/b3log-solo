@@ -15,15 +15,15 @@
  */
 package org.b3log.solo.service;
 
-import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeGroups;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -45,14 +45,14 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final InitService initService = InitService.getInstance();
 
         final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@b3log.org");
+        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
 
         initService.init(requestJSONObject);
 
         final UserQueryService userQueryService = UserQueryService.getInstance();
-        Assert.assertNotNull(userQueryService.getUserByEmail("test@b3log.org"));
+        Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 
     /**
@@ -62,8 +62,8 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addArticle() throws Exception {
-        final ArticleMgmtService articleMgmtService = ArticleMgmtService.
-                getInstance();
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
 
         final JSONObject requestJSONObject = new JSONObject();
         final JSONObject article = new JSONObject();
@@ -83,5 +83,111 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
                 articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
+    }
+
+    /**
+     * Update Article.
+     * 
+     * @throws Exception exception
+     */
+    @Test
+    public void updateArticle() throws Exception {
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        final JSONObject article = new JSONObject();
+        requestJSONObject.put(Article.ARTICLE, article);
+
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_TITLE, "article2 title");
+        article.put(Article.ARTICLE_ABSTRACT, "article2 abstract");
+        article.put(Article.ARTICLE_CONTENT, "article2 content");
+        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
+        article.put(Article.ARTICLE_PERMALINK, "article2 permalink");
+        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Common.POST_TO_COMMUNITY, true);
+        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+
+        final String articleId =
+                articleMgmtService.addArticle(requestJSONObject);
+
+        Assert.assertNotNull(articleId);
+
+        article.put(Keys.OBJECT_ID, articleId);
+        article.put(Article.ARTICLE_TITLE, "updated article2 title");
+
+        articleMgmtService.updateArticle(requestJSONObject);
+
+        final ArticleQueryService articleQueryService =
+                ArticleQueryService.getInstance();
+        final JSONObject updated = articleQueryService.getArticleById(articleId);
+        Assert.assertNotNull(updated);
+        Assert.assertEquals(updated.getString(Article.ARTICLE_TITLE),
+                            "updated article2 title");
+    }
+
+    /**
+     * Remove Article.
+     * 
+     * @throws Exception exception
+     */
+    @Test
+    public void removeArticle() throws Exception {
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        final JSONObject article = new JSONObject();
+        requestJSONObject.put(Article.ARTICLE, article);
+
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_TITLE, "article3 title");
+        article.put(Article.ARTICLE_ABSTRACT, "article3 abstract");
+        article.put(Article.ARTICLE_CONTENT, "article3 content");
+        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
+        article.put(Article.ARTICLE_PERMALINK, "article3 permalink");
+        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Common.POST_TO_COMMUNITY, true);
+        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+
+        final String articleId =
+                articleMgmtService.addArticle(requestJSONObject);
+
+        Assert.assertNotNull(articleId);
+
+        articleMgmtService.removeArticle(articleId);
+
+        final ArticleQueryService articleQueryService =
+                ArticleQueryService.getInstance();
+        final JSONObject updated = articleQueryService.getArticleById(articleId);
+        Assert.assertNull(updated);
+    }
+
+    /**
+     * Top Article.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "addArticle")
+    public void topArticle() throws Exception {
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
+        final ArticleQueryService articleQueryService =
+                ArticleQueryService.getInstance();
+        final JSONObject paginationRequest =
+                Requests.buildPaginationRequest("1/10/20");
+        final JSONArray articles =
+                articleQueryService.getArticles(paginationRequest).
+                optJSONArray(Article.ARTICLES);
+
+        Assert.assertNotEquals(articles.length(), 0);
+        final JSONObject article = articles.getJSONObject(0);
+
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        articleMgmtService.topArticle(articleId, true);
+        articleMgmtService.topArticle(articleId, false);
+        
+        // TODO: assertions
     }
 }
