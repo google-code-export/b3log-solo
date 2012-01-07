@@ -111,7 +111,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
     public void getLogoutURL() {
         final UserQueryService userQueryService = getUserQueryService();
         final String logoutURL = userQueryService.getLogoutURL();
-
-        Assert.assertEquals(logoutURL, "/login?goto=/");
+        
+        Assert.assertEquals(logoutURL, "/logout?goto=/");
     }
 }
