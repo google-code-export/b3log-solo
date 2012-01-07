@@ -74,7 +74,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_NAME, "user2 new name");
 
         userMgmtService.updateUser(requestJSONObject);
-
+        
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
                 User.USER).getString(User.USER_NAME), "user2 new name");
     }
