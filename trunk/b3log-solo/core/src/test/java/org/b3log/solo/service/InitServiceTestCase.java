@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 7, 2012
  */
-@Test(groups = "init")
 public class InitServiceTestCase extends AbstractTestCase {
 
     /**
@@ -35,7 +34,7 @@ public class InitServiceTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    @Test(groups = "init")
     public void init() throws Exception {
         final InitService initService = InitService.getInstance();
 
