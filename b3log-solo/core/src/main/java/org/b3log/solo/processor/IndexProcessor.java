@@ -76,10 +76,6 @@ public final class IndexProcessor {
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
-    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -106,7 +102,7 @@ public final class IndexProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
@@ -194,7 +190,7 @@ public final class IndexProcessor {
             dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
                           topBarHTML);
             
-            skins.fillSkinLangs(
+            Skins.fillSkinLangs(
                     preference.optString(Preference.LOCALE_STRING),
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
