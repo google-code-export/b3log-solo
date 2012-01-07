@@ -723,7 +723,7 @@ public final class ArticleMgmtService {
      * @param article the specified article to update
      * @throws Exception exception
      */
-    public void processCommentsForArticleUpdate(final JSONObject article)
+    private void processCommentsForArticleUpdate(final JSONObject article)
             throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
 
@@ -762,7 +762,7 @@ public final class ArticleMgmtService {
      * @param newArticle the specified new article
      * @throws Exception exception
      */
-    public void processTagsForArticleUpdate(final JSONObject oldArticle,
+    private void processTagsForArticleUpdate(final JSONObject oldArticle,
                                             final JSONObject newArticle)
             throws Exception {
         // TODO: public -> private
@@ -1047,7 +1047,7 @@ public final class ArticleMgmtService {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    public void archiveDate(final JSONObject article)
+    private void archiveDate(final JSONObject article)
             throws RepositoryException {
         final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
         final String createDateString =
@@ -1108,7 +1108,7 @@ public final class ArticleMgmtService {
      * @param articleId the specified article id
      * @throws RepositoryException repository exception
      */
-    public void addArticleSignRelation(final String signId,
+    private void addArticleSignRelation(final String signId,
                                        final String articleId)
             throws RepositoryException {
         final JSONObject articleSignRelation = new JSONObject();
