@@ -143,7 +143,6 @@ public abstract class AbstractTestCase {
 
         Latkes.initRuntimeEnv();
         final String webRoot = AbstractServletListener.getWebRoot();
-        System.out.println("Web Root[" + webRoot + "]");
 
         // Repositories
         userRepository = UserRepositoryImpl.getInstance();
