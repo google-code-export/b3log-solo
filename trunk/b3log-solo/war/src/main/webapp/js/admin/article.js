@@ -461,18 +461,19 @@ admin.article = {
                 // General options
                 language: language,
                 mode : "exact",
-                elements : "articleContent, abstract",
+                elements : "articleContent",
                 theme : "advanced",
-                plugins : "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl",
+                plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
 
                 // Theme options
-                theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-                theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
+                theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,advhr,spellchecker,fullscreen,syntaxhl",
+                theme_advanced_buttons2 : "formatselect,forecolor,|,pastetext,pasteword,cleanup,charmap,|,outdent,indent,undo,redo,|,image,iespell,media,code,preview,",
                 theme_advanced_buttons3 : "",
                 theme_advanced_toolbar_location : "top",
                 theme_advanced_toolbar_align : "left",
                 theme_advanced_resizing : true,
-
+                theme_advanced_statusbar_location : "bottom",
+                
                 extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
                 valid_children : "+body[style]",
@@ -484,6 +485,22 @@ admin.article = {
                     }
                 }
             });
+            
+            tinyMCE.init({
+                // General options
+                language: language,
+                mode : "exact",
+                elements : "abstract",
+                theme : "advanced",
+
+                // Theme options
+                theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist",
+                theme_advanced_buttons2 : "",
+                theme_advanced_buttons3 : "",
+                theme_advanced_toolbar_location : "bottom",
+                theme_advanced_toolbar_align : "center"
+            });
+            
         } catch (e) {
             $("#tipMsg").text("TinyMCE load fail");
         }
