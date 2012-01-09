@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -48,7 +47,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 29, 2011
+ * @version 1.0.0.3, Jan 9, 2012
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -131,40 +130,6 @@ public final class PreferenceMgmtService {
             }
 
             LOGGER.log(Level.FINER, "Blog Host[{0}]", blogHost);
-
-            String domain = null;
-            final boolean hasPort = blogHost.contains(":");
-            if (hasPort) {
-                domain = blogHost.split(":")[0].trim();
-            } else {
-                domain = blogHost;
-            }
-
-            if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
-                if ("localhost".equals(domain)) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    throw new ServiceException(langPropsService.get(
-                            "canntBeLocalhostOnProductionLabel"));
-                }
-            }
-
-            String port = "80";
-            if (hasPort) {
-                port = blogHost.split(":")[1].trim();
-            }
-
-            if (!"localhost".equals(domain) && !"80".equals(port)) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                throw new ServiceException(langPropsService.get(
-                        "updatePreferenceFailLabel"));
-            }
-
             preference.put(BLOG_HOST, blogHost);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
