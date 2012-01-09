@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 17, 2011
+ * @version 1.0.1.0, Jan 8, 2012
  */
 
 /* page-list 相关操作 */
@@ -72,18 +72,20 @@ admin.pageList = {
                 mode : "exact",
                 elements : "pageContent",
                 theme : "advanced",
-                plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl,inlinepopups",
+                plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
 
                 // Theme options
-                theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-                theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
+                theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,advhr,spellchecker,fullscreen,syntaxhl",
+                theme_advanced_buttons2 : "formatselect,forecolor,|,pastetext,pasteword,cleanup,charmap,|,outdent,indent,undo,redo,|,image,iespell,media,code,preview,",
                 theme_advanced_buttons3 : "",
                 theme_advanced_toolbar_location : "top",
                 theme_advanced_toolbar_align : "left",
                 theme_advanced_resizing : true,
-
+                theme_advanced_statusbar_location : "bottom",
+                
                 extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
+                valid_children : "+body[style]",
                 relative_urls: false,
                 remove_script_host: false
             });

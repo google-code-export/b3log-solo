@@ -21,7 +21,7 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.png"/>
+                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">

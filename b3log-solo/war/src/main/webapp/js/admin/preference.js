@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Oct 29, 2011
+ * @version 1.0.1.0, Jan 9, 2012
  */
 
 /* preference 相关操作 */
@@ -43,6 +43,13 @@ admin.preference = {
                 }
                 
                 var preference = result.preference;
+                
+                // 线上环境严禁使用 localhost, 默认将其设为 host
+                if (preference.blogHost.indexOf("localhost") > -1 && Label.miniPostfix === ".min") {
+                    preference.blogHost = window.location.host;
+                    $("#tipMsg").text(Label.resetBlogHostLabel);
+                }
+                
                 $("#metaKeywords").val(preference.metaKeywords),
                 $("#metaDescription").val(preference.metaDescription),
                 $("#blogTitle").val(preference.blogTitle),
