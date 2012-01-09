@@ -42,7 +42,6 @@
         "linkTitleLabel": "${linkTitleLabel}",
         "urlLabel": "${urlLabel}",
         "addressEmptyLabel": "${addressEmptyLabel}",
-        "canntBeLocalhostOnProductionLabel": "${canntBeLocalhostOnProductionLabel}",
         "pluginNameLabel": "${pluginNameLabel}",
         "statusLabel": "${statusLabel}",
         "versionLabel": "${versionLabel}",
