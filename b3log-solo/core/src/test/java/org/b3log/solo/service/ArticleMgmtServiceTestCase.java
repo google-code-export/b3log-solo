@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Requests;
@@ -30,7 +31,7 @@ import org.testng.annotations.Test;
  * {@link ArticleMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 7, 2012
+ * @version 1.0.0.2, Jan 9, 2012
  */
 @Test(suiteName = "service")
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
@@ -235,5 +236,30 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         articles = articleQueryService.getArticles(paginationRequest).
                 optJSONArray(Article.ARTICLES);
         Assert.assertEquals(articles.length(), articleCount - 1);
+    }
+
+    /**
+     * Update Articles Random Value.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "addArticle")
+    public void updateArticlesRandomValue() throws Exception {
+        final ArticleMgmtService articleMgmtService =
+                ArticleMgmtService.getInstance();
+
+        final ArticleQueryService articleQueryService =
+                ArticleQueryService.getInstance();
+        List<JSONObject> articles = articleQueryService.getRecentArticles(10);
+        Assert.assertNotEquals(articles.size(), 0);
+
+        final JSONObject article = articles.get(0);
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        double randomValue =
+                article.getDouble(Article.ARTICLE_RANDOM_DOUBLE);
+        articleMgmtService.updateArticlesRandomValue(Integer.MAX_VALUE);
+
+        Assert.assertNotEquals(articleQueryService.getArticleById(articleId).
+                getDouble(Article.ARTICLE_RANDOM_DOUBLE), randomValue);
     }
 }
