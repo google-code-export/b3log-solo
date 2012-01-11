@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.0.8, Dec 28, 2011
+    Version: 2.0.0.9, Jan 11, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -275,7 +275,7 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2009, 2010, 2011</year>
+                        <year>2009, 2010, 2011, 2012</year>
                         <devTeam>B3log Team</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
