@@ -267,7 +267,7 @@ public final class ArticleQueryService {
                               FilterOperator.EQUAL,
                               articleIsPublished);
 
-            int articleCount = statistics.getPublishedBlogArticleCount();
+            int articleCount = statistics.getBlogArticleCount();
             if (!articleIsPublished) {
                 articleCount -= statistics.getPublishedBlogArticleCount();
             }
