@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 5, 2011
+ * @version 1.0.0.5, Jan 29, 2012
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -137,7 +137,9 @@ public final class PageMgmtService {
                             "duplicatedPermalinkLabel"));
                 }
             }
-            newPage.put(Page.PAGE_PERMALINK, permalink);
+
+            // TODO: SBC case
+            newPage.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
 
             if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) {  // The permalink has been updated
                 // Updates related comments' links
@@ -241,8 +243,8 @@ public final class PageMgmtService {
                         "duplicatedPermalinkLabel"));
             }
 
-
-            page.put(Page.PAGE_PERMALINK, permalink);
+            // TODO: SBC case
+            page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
 
             final String ret = pageRepository.add(page);
 

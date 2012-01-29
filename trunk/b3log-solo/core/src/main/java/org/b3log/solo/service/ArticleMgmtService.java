@@ -72,7 +72,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 5, 2011
+ * @version 1.0.0.9, Jan 29, 2012
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -476,26 +476,7 @@ public final class ArticleMgmtService {
             // Step 7: Add archive date-article relations
             archiveDate(article);
             // Step 8: Set permalink
-            String permalink = article.optString(Article.ARTICLE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
-                permalink = "/articles/" + PERMALINK_FORMAT.format(
-                        date) + "/" + ret + ".html";
-            }
-
-            if (!permalink.startsWith("/")) {
-                permalink = "/" + permalink;
-            }
-
-            if (Permalinks.invalidArticlePermalinkFormat(permalink)) {
-                throw new ServiceException(langPropsService.get(
-                        "invalidPermalinkFormatLabel"));
-            }
-
-            if (permalinks.exist(permalink)) {
-                throw new ServiceException(langPropsService.get(
-                        "duplicatedPermalinkLabel"));
-            }
-
+            final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article-sign relation
             final String signId =
@@ -763,7 +744,7 @@ public final class ArticleMgmtService {
      * @throws Exception exception
      */
     private void processTagsForArticleUpdate(final JSONObject oldArticle,
-                                            final JSONObject newArticle)
+                                             final JSONObject newArticle)
             throws Exception {
         // TODO: public -> private
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
@@ -1109,7 +1090,7 @@ public final class ArticleMgmtService {
      * @throws RepositoryException repository exception
      */
     private void addArticleSignRelation(final String signId,
-                                       final String articleId)
+                                        final String articleId)
             throws RepositoryException {
         final JSONObject articleSignRelation = new JSONObject();
 
@@ -1154,8 +1135,44 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Gets article permalink for updating article with the specified old
-     * article, article, create date and status.
+     * Gets article permalink for adding article with the specified 
+     * article.
+     *
+     * @param article the specified article
+     * @return permalink
+     * @throws ServiceException if invalid permalink occurs
+     */
+    private String getPermalinkForAddArticle(final JSONObject article)
+            throws ServiceException {
+        final Date date = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
+
+        String ret = article.optString(Article.ARTICLE_PERMALINK);
+        if (Strings.isEmptyOrNull(ret)) {
+            ret = "/articles/" + PERMALINK_FORMAT.format(
+                    date) + "/" + ret + ".html";
+        }
+
+        if (!ret.startsWith("/")) {
+            ret = "/" + ret;
+        }
+
+        if (Permalinks.invalidArticlePermalinkFormat(ret)) {
+            throw new ServiceException(langPropsService.get(
+                    "invalidPermalinkFormatLabel"));
+        }
+
+        if (permalinks.exist(ret)) {
+            throw new ServiceException(langPropsService.get(
+                    "duplicatedPermalinkLabel"));
+        }
+
+        // TODO: SBC case
+        return ret.replaceAll(" ", "-");
+    }
+
+    /**
+     * Gets article permalink for updating article with the specified 
+     * old article, article, create date.
      *
      * @param oldArticle the specified old article
      * @param article the specified article
@@ -1192,7 +1209,8 @@ public final class ArticleMgmtService {
             }
         }
 
-        return ret;
+        // TODO: SBC case
+        return ret.replaceAll(" ", "-");
     }
 
     /**
