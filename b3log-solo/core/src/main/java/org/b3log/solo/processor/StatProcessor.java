@@ -179,6 +179,7 @@ public final class StatProcessor {
                 article.remove(Common.POST_TO_COMMUNITY);
                 article.remove(Common.AUTHOR_ID);
                 article.remove("articleSign_oId");
+                article.remove("hasUpdated");
 
                 articleRepository.update(articleId, article);
 
