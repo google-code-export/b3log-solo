@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 22, 2011
+ * @version 1.0.1.7, Jan 20, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -178,8 +178,6 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                    
-                    that._removeDisabled();
                       
                     if (!result.sc) {
                         return;
@@ -195,6 +193,9 @@ admin.article = {
                     admin.article.isConfirm = false;
                     
                     $("#loadMsg").text("");
+                },
+                complete: function (jqXHR, textStatus){
+                    that._removeDisabled();
                 }
             });
         }
@@ -249,8 +250,6 @@ admin.article = {
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
                      
-                    that._removeDisabled();
-                     
                     if (!result.sc) {
                         return;
                     }
@@ -293,6 +292,9 @@ admin.article = {
                     admin.article.isConfirm = false;
                     
                     $("#loadMsg").text("");
+                },
+                complete: function (jqXHR, textStatus){
+                    that._removeDisabled();
                 }
             });
         }
@@ -548,8 +550,6 @@ admin.article = {
             type: "PUT",
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
-                
-                that._removeDisabled();
                      
                 if (!result.sc) {
                     return;
@@ -558,6 +558,9 @@ admin.article = {
                 admin.selectTab("article/draft-list");
                 admin.article.status.id = undefined;
                 admin.article.isConfirm = false;
+            },
+            complete: function (jqXHR, textStatus){
+                that._removeDisabled();
             }
         });
     },
