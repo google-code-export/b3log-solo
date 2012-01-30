@@ -20,7 +20,7 @@ appcfg.cmd update ${b3log-solo-x.x.x}
 }}}
 </ol>
 等部署完毕后，在浏览器中访问：[http://${application-id}.appspot.com] 进行初始化。
-
+----
 _注意_：
  * 如果你不能访问 [http://${application-id}.appspot.com] 说明你的网络受 [http://en.wikipedia.org/wiki/Golden_Shield_Project GFW] 限制，请绑定域名。（如果你不绑定自己的域名，那可以考虑[http://88250.b3log.org/apply-b3log-domain.html 使用免费的 b3log.org 二级域名]）
  * 初始化以前请确保数据存储中没有其他应用的数据（例如 Micolog）
