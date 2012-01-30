@@ -393,10 +393,10 @@ public final class ArticleMgmtService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "postToCommunity": boolean, // optional
-     *         "articleSign_oId": "" // optional
+     *         "articlePermalink": "", // optional
+     *         "postToCommunity": boolean, // optional, default is true
+     *         "articleSign_oId": "" // optional, default is "0"
      *     }
      * }
      * </pre>
