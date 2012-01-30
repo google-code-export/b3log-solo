@@ -136,7 +136,6 @@ public final class ArticleProcessor {
     public void getRandomArticles(final HTTPRequestContext context) {
         Stopwatchs.start("Get Random Articles");
 
-
         final JSONObject jsonObject = new JSONObject();
 
         try {
