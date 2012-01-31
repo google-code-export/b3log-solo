@@ -1149,7 +1149,7 @@ public final class ArticleMgmtService {
         String ret = article.optString(Article.ARTICLE_PERMALINK);
         if (Strings.isEmptyOrNull(ret)) {
             ret = "/articles/" + PERMALINK_FORMAT.format(
-                    date) + "/" + ret + ".html";
+                    date) + "/" + article.optString(Keys.OBJECT_ID) + ".html";
         }
 
         if (!ret.startsWith("/")) {
