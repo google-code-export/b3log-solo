@@ -143,6 +143,14 @@ public abstract class AbstractTestCase {
      * Page query service.
      */
     private PageQueryService pageQueryService;
+    /**
+     * Link management service.
+     */
+    private LinkMgmtService linkMgmtService;
+    /**
+     * Link query service.
+     */
+    private LinkQueryService linkQueryService;
 
     /**
      * Before class.
@@ -183,6 +191,8 @@ public abstract class AbstractTestCase {
         articleQueryService = ArticleQueryService.getInstance();
         pageMgmtService = PageMgmtService.getInstance();
         pageQueryService = PageQueryService.getInstance();
+        linkMgmtService = LinkMgmtService.getInstance();
+        linkQueryService = LinkQueryService.getInstance();
     }
 
     /**
@@ -378,5 +388,23 @@ public abstract class AbstractTestCase {
      */
     public PageQueryService getPageQueryService() {
         return pageQueryService;
+    }
+
+    /**
+     * Gets link management service.
+     * 
+     * @return link management service
+     */
+    public LinkMgmtService getLinkMgmtService() {
+        return linkMgmtService;
+    }
+
+    /**
+     * Gets link query service.
+     *
+     * @return link query service 
+     */
+    public LinkQueryService getLinkQueryService() {
+        return linkQueryService;
     }
 }
