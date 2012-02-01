@@ -71,7 +71,7 @@
         page.loadRandomArticles();
         </#if>
         <#if 0 != relevantArticlesDisplayCount>
-        page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
+        page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticles1Label}</h4>');
         </#if>
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
