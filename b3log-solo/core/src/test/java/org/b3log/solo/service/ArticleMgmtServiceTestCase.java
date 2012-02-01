@@ -86,6 +86,34 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
     }
 
     /**
+     * Add Article without permalink.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void addArticleWithoutPermalink() throws Exception {
+        final ArticleMgmtService articleMgmtService = getArticleMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        final JSONObject article = new JSONObject();
+        requestJSONObject.put(Article.ARTICLE, article);
+
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_TITLE, "article1 title");
+        article.put(Article.ARTICLE_ABSTRACT, "article1 abstract");
+        article.put(Article.ARTICLE_CONTENT, "article1 content");
+        article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
+        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Common.POST_TO_COMMUNITY, true);
+        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+
+        final String articleId =
+                articleMgmtService.addArticle(requestJSONObject);
+
+        Assert.assertNotNull(articleId);
+    }
+
+    /**
      * Update Article.
      * 
      * @throws Exception exception
