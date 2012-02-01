@@ -44,8 +44,7 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.service.UserMgmtService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -53,7 +52,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 31, 2011
+ * @version 1.0.0.2, Feb 1, 2012
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -117,6 +116,10 @@ public abstract class AbstractTestCase {
      */
     private StatisticRepository statisticRepository;
     /**
+     * Initialization service.
+     */
+    private InitService initService;
+    /**
      * User management service.
      */
     private UserMgmtService userMgmtService;
@@ -124,6 +127,22 @@ public abstract class AbstractTestCase {
      * User query service.
      */
     private UserQueryService userQueryService;
+    /**
+     * Article management service.
+     */
+    private ArticleMgmtService articleMgmtService;
+    /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService;
+    /**
+     * Page management service.
+     */
+    private PageMgmtService pageMgmtService;
+    /**
+     * Page query service.
+     */
+    private PageQueryService pageQueryService;
 
     /**
      * Before class.
@@ -157,8 +176,13 @@ public abstract class AbstractTestCase {
         statisticRepository = StatisticRepositoryImpl.getInstance();
 
         // Services
+        initService = InitService.getInstance();
         userMgmtService = UserMgmtService.getInstance();
         userQueryService = UserQueryService.getInstance();
+        articleMgmtService = ArticleMgmtService.getInstance();
+        articleQueryService = ArticleQueryService.getInstance();
+        pageMgmtService = PageMgmtService.getInstance();
+        pageQueryService = PageQueryService.getInstance();
     }
 
     /**
@@ -294,6 +318,15 @@ public abstract class AbstractTestCase {
     }
 
     /**
+     * Gets initialization service.
+     * 
+     * @return initialization service
+     */
+    public InitService getInitService() {
+        return initService;
+    }
+
+    /**
      * Gets user management service.
      * 
      * @return user management service
@@ -309,5 +342,41 @@ public abstract class AbstractTestCase {
      */
     public UserQueryService getUserQueryService() {
         return userQueryService;
+    }
+
+    /**
+     * Gets article management service.
+     * 
+     * @return article management service
+     */
+    public ArticleMgmtService getArticleMgmtService() {
+        return articleMgmtService;
+    }
+
+    /**
+     * Gets article query service.
+     * 
+     * @return article query service
+     */
+    public ArticleQueryService getArticleQueryService() {
+        return articleQueryService;
+    }
+
+    /**
+     * Gets page management service.
+     * 
+     * @return page management service
+     */
+    public PageMgmtService getPageMgmtService() {
+        return pageMgmtService;
+    }
+
+    /**
+     * Gets page query service.
+     * 
+     * @return page query service
+     */
+    public PageQueryService getPageQueryService() {
+        return pageQueryService;
     }
 }

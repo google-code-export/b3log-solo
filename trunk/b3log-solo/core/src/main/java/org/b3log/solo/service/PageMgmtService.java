@@ -269,11 +269,11 @@ public final class PageMgmtService {
     }
 
     /**
-     * Changes the order of a page specified by the given page id with the 
-     * specified direction.
+     * Changes the order of a page specified by the given page id with 
+     * the specified direction.
      *
      * @param pageId the given page id
-     * @param direction the specified direction
+     * @param direction the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
     public void changeOrder(final String pageId, final String direction)
