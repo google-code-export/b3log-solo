@@ -47,7 +47,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 9, 2012
+ * @version 1.0.0.4, Feb 1, 2012
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -212,33 +212,6 @@ public final class PreferenceMgmtService {
         }
 
         LOGGER.log(Level.FINER, "Updates preference successfully");
-    }
-
-    /**
-     * Gets the user preference.
-     * 
-     * <p>
-     *   <b>Note</b>: Invoking the method will not load skin.
-     * </p>
-     *
-     * @return user preference, returns {@code null} if not found
-     * @throws ServiceException if repository exception
-     */
-    public JSONObject getPreference() throws ServiceException {
-        try {
-            final JSONObject ret = preferenceRepository.get(
-                    Preference.PREFERENCE);
-            if (null == ret) {
-                LOGGER.log(Level.WARNING,
-                           "Can not load preference from datastore");
-                return null;
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new IllegalStateException(e);
-        }
     }
 
     /**
