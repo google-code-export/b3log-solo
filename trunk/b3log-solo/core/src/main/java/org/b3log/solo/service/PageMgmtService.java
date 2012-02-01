@@ -202,7 +202,7 @@ public final class PageMgmtService {
      *     }
      * }, see {@link Page} for more details
      * </pre>
-     * @return generated link id
+     * @return generated page id
      * @throws ServiceException if permalink format checks failed or persists
      * failed
      */
