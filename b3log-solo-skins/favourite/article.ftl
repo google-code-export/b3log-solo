@@ -123,7 +123,7 @@
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         page.loadRandomArticles();
-         page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
+         page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticles1Label}</h4>');
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
