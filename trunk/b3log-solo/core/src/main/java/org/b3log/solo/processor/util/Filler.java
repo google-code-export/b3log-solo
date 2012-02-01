@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.8, Dec 31, 2011
+ * @version 1.0.4.9, Feb 1, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -519,6 +519,12 @@ public final class Filler {
         Stopwatchs.start("Fill Header");
         try {
             LOGGER.fine("Filling header....");
+            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
+                          preference.getInt(
+                    Preference.ARTICLE_LIST_DISPLAY_COUNT));
+            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                          preference.getInt(
+                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING,
                           preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.BLOG_TITLE,

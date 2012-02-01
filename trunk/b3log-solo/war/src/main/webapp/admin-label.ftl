@@ -1,8 +1,8 @@
 <script type="text/javascript">
     var Label = {
         "userRole": "${userRole}",
-        "PAGE_SIZE": 18,
-        "WINDOW_SIZE": 10,
+        "PAGE_SIZE": "${articleListDisplayCount}",
+        "WINDOW_SIZE": "${articleListPaginationWindowSize}",
         "localeString": "${localeString}",
         "version": "${version}",
         "miniPostfix": "${miniPostfix}",
