@@ -36,7 +36,7 @@ public class InitServiceTestCase extends AbstractTestCase {
      */
     //@Test
     public void init() throws Exception {
-        final InitService initService = InitService.getInstance();
+        final InitService initService = getInitService();
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_EMAIL, "test@b3log.org");

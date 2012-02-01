@@ -20,7 +20,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Common;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -41,7 +40,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = InitService.getInstance();
+final InitService initService = getInitService();
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
