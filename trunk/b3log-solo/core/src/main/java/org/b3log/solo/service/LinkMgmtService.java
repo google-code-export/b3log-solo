@@ -115,7 +115,7 @@ public final class LinkMgmtService {
      * specified direction.
      *
      * @param linkId the given link id
-     * @param direction the specified direction
+     * @param direction the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
     public void changeOrder(final String linkId, final String direction)
@@ -171,7 +171,8 @@ public final class LinkMgmtService {
      * {
      *     "link": {
      *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "linkAddress": "",
+     *         "linkDescription": "" // optional
      *     }
      * }, see {@link Link} for more details
      * </pre>
