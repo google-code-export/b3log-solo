@@ -151,6 +151,14 @@ public abstract class AbstractTestCase {
      * Link query service.
      */
     private LinkQueryService linkQueryService;
+    /**
+     * Preference management service.
+     */
+    private PreferenceMgmtService preferenceMgmtService;
+    /**
+     * Preference query service.
+     */
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Before class.
@@ -193,6 +201,8 @@ public abstract class AbstractTestCase {
         pageQueryService = PageQueryService.getInstance();
         linkMgmtService = LinkMgmtService.getInstance();
         linkQueryService = LinkQueryService.getInstance();
+        preferenceMgmtService = PreferenceMgmtService.getInstance();
+        preferenceQueryService = PreferenceQueryService.getInstance();
     }
 
     /**
@@ -406,5 +416,23 @@ public abstract class AbstractTestCase {
      */
     public LinkQueryService getLinkQueryService() {
         return linkQueryService;
+    }
+    
+    /**
+     * Gets preference management service.
+     * 
+     * @return preference management service
+     */
+    public PreferenceMgmtService getPreferenceMgmtService() {
+        return preferenceMgmtService;
+    }
+    
+    /**
+     * Gets preference query service.
+     * 
+     * @return preference query service
+     */
+    public PreferenceQueryService getPreferenceQueryService() {
+        return preferenceQueryService;
     }
 }
