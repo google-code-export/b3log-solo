@@ -40,7 +40,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-final InitService initService = getInitService();
+        final InitService initService = getInitService();
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
@@ -129,6 +129,5 @@ final InitService initService = getInitService();
 
         Assert.assertNotNull(articleQueryService.getArticleContent(articleId));
     }
-    
-   // TODO: getByXXX
+    // TODO: getByXXX
 }
