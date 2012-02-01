@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 20, 2011
+ * @version 1.0.1.9, Feb 2, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -269,7 +269,11 @@ $.extend(Page.prototype, {
         $("#commentName").val(Cookie.readCookie("commentName"));
     },
 
-    loadRandomArticles: function () {
+    /*
+     * 加载随机文章
+     * @headtitle {string} 随机文章标题
+     */
+    loadRandomArticles: function (headTitle) {
         var randomArticles1Label = this.tips.randomArticles1Label;
         // getRandomArticles
         $.ajax({
@@ -288,8 +292,9 @@ $.extend(Page.prototype, {
                     var randomArticleLiHtml = "<li>" + "<a title='" + title + "' href='" + article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
-
-                var randomArticleListHtml = "<h4>" + randomArticles1Label + "</h4>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
+                
+                var titleHTML = headTitle ? headTitle : "<h4>" + randomArticles1Label + "</h4>";
+                var randomArticleListHtml = titleHTML + "<ul class='marginLeft12'>" + listHtml + "</ul>";
                 $("#randomArticles").append(randomArticleListHtml);
             }
         });
@@ -321,7 +326,7 @@ $.extend(Page.prototype, {
                         listHtml += articleLiHtml
                     }
                 
-                    var relevantArticleListHtml = "<h4>" + headTitle + "</h4>"
+                    var relevantArticleListHtml = headTitle 
                     + "<ul class='marginLeft12'>"
                     + listHtml + "</ul>";
                     $("#relevantArticles").append(relevantArticleListHtml);
@@ -331,7 +336,12 @@ $.extend(Page.prototype, {
         }
     },
     
-    loadExternalRelevantArticles: function (tags) {
+    /*
+     * 加载站外相关文章
+     * @tags {string} 文章 tags
+     * @headtitle {string} 站外相关文章标题
+     */
+    loadExternalRelevantArticles: function (tags, headtitle) {
         var tips = this.tips;
         try {
             $.ajax({
@@ -357,7 +367,8 @@ $.extend(Page.prototype, {
                         listHtml += articleLiHtml
                     }
                 
-                    var randomArticleListHtml = "<h4>" + tips.externalRelevantArticles1Label + "</h4>"
+                    var titleHTML = headtitle ? headtitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
+                    var randomArticleListHtml = titleHTML
                     + "<ul class='marginLeft12'>"
                     + listHtml + "</ul>";
                     $("#externalRelevantArticles").append(randomArticleListHtml);
@@ -381,7 +392,7 @@ $.extend(Page.prototype, {
         
         if (this.validateComment(state)) {
             $("#submitCommentButton" + state).attr("disabled", "disabled");
-            $("#commentErrorTip" + state).html(this.tips.loadingLabel);
+            $("#commentErrorTip" + state).show().html(this.tips.loadingLabel);
             
             var requestJSONObject = {
                 "oId": tips.oId,
@@ -514,15 +525,14 @@ $.extend(Page.prototype, {
     },
 
     addCommentAjax: function (commentHTML, state) {
-        if ($("#comments>div").first().length === 1) {
-            $("#comments>div").first().before(commentHTML);
+        if ($("#comments").children().length > 0) {
+            $($("#comments").children()[0]).before(commentHTML);
         } else {
             $("#comments").html(commentHTML);
         }
 
         if (state === "") {
-            $("#commentErrorTip").html("");
-            $("#commentErrorTip").hide();
+            $("#commentErrorTip").html("").hide();
             $("#comment").val("");
             $("#commentValidate").val("");
             $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
