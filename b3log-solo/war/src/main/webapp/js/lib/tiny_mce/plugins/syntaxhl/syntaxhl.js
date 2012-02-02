@@ -39,6 +39,7 @@ var SyntaxHLDialog = {
 
         if(pre != null) {
             f.syntaxhl_code.value = unescapeHtml(pre.innerHTML);
+            f.prettify_code.value = unescapeHtml(pre.innerHTML);
 
             // Parse parameters
             var classparts = ed.dom.getAttrib(pre, 'class').split(";");
@@ -138,15 +139,15 @@ var SyntaxHLDialog = {
                 type = parameters["brush"];
                 break;			
         }
-
+       
         f.syntaxhl_language.value = type;
 		
         f.syntaxhl_gutter.checked = !("gutter" in parameters && parameters["gutter"] == "false");
         f.syntaxhl_toolbar.checked = !("toolbar" in parameters && parameters["toolbar"] == "false");
         f.syntaxhl_autolinks.checked = !("auto-links" in parameters && parameters["auto-links"] == "false");
-        f.syntaxhl_htmlscript.checked =  ("html-script" in parameters && parameters["html-script"] == "true");
-        f.syntaxhl_ruler.checked =  ("ruler" in parameters && parameters["ruler"] == "true");
-        f.syntaxhl_wrap_lines.checked = !("wrap-lines" in parameters && parameters["wrap-lines"] == "false");
+        //f.syntaxhl_htmlscript.checked =  ("html-script" in parameters && parameters["html-script"] == "true");
+        //f.syntaxhl_ruler.checked =  ("ruler" in parameters && parameters["ruler"] == "true");
+        //f.syntaxhl_wrap_lines.checked = !("wrap-lines" in parameters && parameters["wrap-lines"] == "false");
         f.syntaxhl_light.checked =  ("light" in parameters && parameters["light"] == "true");
         f.syntaxhl_collapse.checked =  ("collapse" in parameters && parameters["collapse"] == "true");
 
@@ -158,41 +159,61 @@ var SyntaxHLDialog = {
         var f = document.forms[0], textarea_output, options = '';
 		
         var commands = new Array();
-        var attributes = new Array();
 
-        //If no code just return.
-        if(f.syntaxhl_code.value == '') {
-            tinyMCEPopup.close();
-            return false;
-        }
+        if (document.getElementById("general_tab").className === "current") {
+            //If no code just return.
+            if(f.syntaxhl_code.value == '') {
+                tinyMCEPopup.close();
+                return false;
+            }
+            
+            commands.push('brush: ' + f.syntaxhl_language.value);
 
-        commands.push('brush: ' + f.syntaxhl_language.value);
+            if(!f.syntaxhl_gutter.checked) commands.push('gutter: false');
+            if(!f.syntaxhl_toolbar.checked) commands.push('toolbar: false');
+            if(!f.syntaxhl_autolinks.checked) commands.push('auto-links: false');
+            //if( f.syntaxhl_htmlscript.checked) commands.push('html-script: true');
+            //if( f.syntaxhl_ruler.checked) commands.push('ruler: true');
+            //if(!f.syntaxhl_wrap_lines.checked) commands.push('wrap-lines: false');
+            if( f.syntaxhl_light.checked) commands.push('light: true');
+            if( f.syntaxhl_collapse.checked) commands.push('collapse: true');
 
-        if(!f.syntaxhl_gutter.checked) commands.push('gutter: false');
-        if(!f.syntaxhl_toolbar.checked) commands.push('toolbar: false');
-        if(!f.syntaxhl_autolinks.checked) commands.push('auto-links: false');
-        if( f.syntaxhl_htmlscript.checked) commands.push('html-script: true');
-        if( f.syntaxhl_ruler.checked) commands.push('ruler: true');
-        if(!f.syntaxhl_wrap_lines.checked) commands.push('wrap-lines: false');
-        if( f.syntaxhl_light.checked) commands.push('light: true');
-        if( f.syntaxhl_collapse.checked) commands.push('collapse: true');
-
-        if( f.syntaxhl_firstline.value != "1") commands.push('first-line: ' + f.syntaxhl_firstline.value);
-        if( f.syntaxhl_highlight.value != "") commands.push('highlight: ' + f.syntaxhl_highlight.value);
+            if( f.syntaxhl_firstline.value != "1") commands.push('first-line: ' + f.syntaxhl_firstline.value);
+            if( f.syntaxhl_highlight.value != "") commands.push('highlight: ' + f.syntaxhl_highlight.value);
 		
 
-        var pre = findPreTag(tinyMCEPopup.editor);
-        if(pre == null) {
-            textarea_output = '<pre class="' + commands.join("; ") + '">';
-            textarea_output +=  escapeHtml(f.syntaxhl_code.value);
-            textarea_output += '</pre> '; /* note space at the end, had a bug it was inserting twice? */
-            tinyMCEPopup.editor.execCommand('mceInsertContent', false, textarea_output);
-        } else {
-            pre.className = commands.join(";");
-            pre.innerHTML = escapeHtml(f.syntaxhl_code.value);
-        }
+            var pre = findPreTag(tinyMCEPopup.editor);
+            if(pre == null) {
+                textarea_output = '<pre class="' + commands.join("; ") + '">';
+                textarea_output +=  escapeHtml(f.syntaxhl_code.value);
+                textarea_output += '</pre> '; /* note space at the end, had a bug it was inserting twice? */
+                tinyMCEPopup.editor.execCommand('mceInsertContent', false, textarea_output);
+            } else {
+                pre.className = commands.join(";");
+                pre.innerHTML = escapeHtml(f.syntaxhl_code.value);
+            }
 
-        tinyMCEPopup.close();
+            tinyMCEPopup.close();
+        } else {
+            //If no code just return.
+            if(f.prettify_code.value == '') {
+                tinyMCEPopup.close();
+                return false;
+            }
+            
+            var pre = findPreTag(tinyMCEPopup.editor);
+            if(pre == null) {
+                textarea_output = '<pre class="prettyprint">';
+                textarea_output +=  escapeHtml(f.prettify_code.value);
+                textarea_output += '</pre> '; /* note space at the end, had a bug it was inserting twice? */
+                tinyMCEPopup.editor.execCommand('mceInsertContent', false, textarea_output);
+            } else {
+                pre.className = "prettyprint";
+                pre.innerHTML = escapeHtml(f.prettify_code.value);
+            }
+
+            tinyMCEPopup.close();
+        }
     }	
 };
 
