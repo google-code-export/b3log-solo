@@ -1,5 +1,6 @@
 #summary 版本更新
 === ver 0.4.0 ===
+ # 使用 SyntaxHighlighter 时，可通过在 macro-comments.ftl 中的 page.load({language: {SHTheme: "shCoreEclipse"}}) language.SHTheme 参数指定所加载的样式。默认为 shCoreEclipse, 可设置为 shCoreDefault, shCoreDjango, shCoreEmacs, shCoreFadeToGrey, shCoreMDUltra, shCoreMidnight, shCoreRDark.
  # jQuery 升级为 1.7，采用本地 js。修改 footer.ftl 如下：
 {{{
 <script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
