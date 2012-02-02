@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Feb 2, 2012
+ * @version 1.0.2.0, Feb 2, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -84,18 +84,17 @@ $.extend(Page.prototype, {
         }
     },
     
-    parseLanguage: function () {
-        var $pres = $(".article-body pre");
-        
-        if ($pres.length < 1) {
-            return;
-        }
-        
+    /*
+     * 加载 SyntaxHighlighter 
+     */
+    _loadSyntaxHighlighter: function (SHTheme) {
+        var cssName = SHTheme ? SHTheme : "shCoreEclipse";
         // load css
         if (document.createStyleSheet) {
-            document.createStyleSheet("/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css");
+            document.createStyleSheet("/js/lib/SyntaxHighlighter/styles/" + cssName + ".css");
         } else {
-            $("head").append($("<link rel='stylesheet' href='/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css' type='text/css' charset='utf-8' />"));
+            $("head").append($("<link rel='stylesheet' href='/js/lib/SyntaxHighlighter/styles/" 
+                + cssName + ".css' type='text/css' charset='utf-8' />"));
         } 
         
         // load js
@@ -106,11 +105,10 @@ $.extend(Page.prototype, {
             success: function() {
                 // load brush js
                 var languages = [];
-                $pres.each(function () {
-                    var className = this.className;
-                    if (className.indexOf("brush:") > -1) {
-                        languages.push(className.substr(7, className.length - 1));
-                    } 
+                $(".article-body pre").each(function () {
+                    var name = this.className.split(";")[0];
+                    var language = name.substr(7, name.length - 1);
+                    languages.push(language);
                 });
         
                 for (var i = 0; i < languages.length; i++) {
@@ -221,22 +219,64 @@ $.extend(Page.prototype, {
                 }
         
                 // code high lighter
-                SyntaxHighlighter.autoloader.apply(window, languages);
-                SyntaxHighlighter.config.tagName = "pre";
-                SyntaxHighlighter.config.stripBrs = true;
-                SyntaxHighlighter.defaults.toolbar = false;
+                SyntaxHighlighter.autoloader.apply(null, languages);
+                //SyntaxHighlighter.config.tagName = "pre";
+                //SyntaxHighlighter.config.stripBrs = true;
+                //SyntaxHighlighter.defaults.toolbar = false;
                 SyntaxHighlighter.all();
             }
-        });
+        });  
     },
     
-    load: function () {
+    /*
+     * 解析语法高亮
+     */
+    parseLanguage: function (obj) {
+        var isPrettify = false,
+        isSH = false;
+        
+        $(".article-body pre").each(function () {
+            if (this.className.indexOf("brush") > -1) {
+                isSH = true;
+            } 
+            
+            if (this.className.indexOf("prettyprint") > -1) {
+                isPrettify = true;
+            }
+        });
+        
+        
+        if (isSH) {
+            this._loadSyntaxHighlighter(obj ? (obj.SHTheme ? obj.SHTheme : undefined) : undefined);
+        }
+        
+        if (isPrettify) {            
+            // load css
+            if (document.createStyleSheet) {
+                document.createStyleSheet("/js/lib/google-code-prettify/prettify.css");
+            } else {
+                $("head").append($("<link rel='stylesheet' href='/js/lib/google-code-prettify/prettify.css' type='text/css' charset='utf-8' />"));
+            } 
+        
+            // load js
+            document.write("<script src=\"/js/lib/google-code-prettify/prettify.js\"><\/script>");
+            
+            // load function
+            
+            $(document).ready(function () {
+                prettyPrint();
+            });
+        }
+        
+    },
+    
+    load: function (obj) {
         var that = this;
         // emotions
-        this.insertEmotions();
+        that.insertEmotions();
         
         // language
-        this.parseLanguage();
+        that.parseLanguage(obj ? (obj.language ? obj.language : undefined) : undefined);
         
         // submit comment
         $("#commentValidate").keypress(function (event) {
@@ -321,14 +361,14 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
-                        +  title + "</a></li>"
+                            + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
+                            +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
                 
                     var relevantArticleListHtml = headTitle 
-                    + "<ul class='marginLeft12'>"
-                    + listHtml + "</ul>";
+                        + "<ul class='marginLeft12'>"
+                        + listHtml + "</ul>";
                     $("#relevantArticles").append(relevantArticleListHtml);
                 }
             });
@@ -346,11 +386,11 @@ $.extend(Page.prototype, {
         try {
             $.ajax({
                 url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-                + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
+                    + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
                 type: "GET",
                 dataType:"jsonp",
                 error: function(){
-                // alert("Error loading articles from Rhythm");
+                    // alert("Error loading articles from Rhythm");
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
@@ -362,20 +402,20 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
-                        +  title + "</a></li>"
+                            + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
+                            +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
                 
                     var titleHTML = headtitle ? headtitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
                     var randomArticleListHtml = titleHTML
-                    + "<ul class='marginLeft12'>"
-                    + listHtml + "</ul>";
+                        + "<ul class='marginLeft12'>"
+                        + listHtml + "</ul>";
                     $("#externalRelevantArticles").append(randomArticleListHtml);
                 }
             });
         } catch (e) {
-        // 忽略相关文章加载异常：load script error
+            // 忽略相关文章加载异常：load script error
         }
     },
     
@@ -427,7 +467,7 @@ $.extend(Page.prototype, {
                         result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
                     } else {
                         result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) + 
-                        '" target="_blank">' + $("#commentName" + state).val() + '</a>';
+                            '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                     }
                             
                     that.addCommentAjax(addComment(result, state), state);
@@ -488,7 +528,7 @@ $.extend(Page.prototype, {
                 }
             });
             $("#replyForm #captcha").attr("id", "captchaReply").
-            attr("src", "/captcha.do?" + new Date().getTime()).click(function () {
+                attr("src", "/captcha.do?" + new Date().getTime()).click(function () {
                 $(this).attr("src", "/captcha.do?code=" + Math.random());
             });
         

@@ -1,5 +1,5 @@
 tinyMCE.addI18n('en.syntaxhl_dlg',{
-	title : 'Insert code using SyntaxHighlighter',
+	title : 'Insert code',
 	highlight_options : 'Highlighter Options',
 	paste : 'Paste Code',
 	choose_lang : 'Choose Language',
