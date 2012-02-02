@@ -15,22 +15,20 @@
  */
 package org.b3log.solo.service;
 
-import java.util.List;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.model.Tag;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link TagQueryService} test case.
+ * {@link TagMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Feb 2, 2012
  */
 @Test(suiteName = "service")
-public class TagQueryServiceTestCase extends AbstractTestCase {
+public class TagMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
@@ -53,35 +51,16 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
     }
 
     /**
-     * Get Tags.
+     * Remove Unused Tags.
      * 
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void getTags() throws Exception {
-        final TagQueryService tagQueryService = getTagQueryService();
+    public void removeUnusedTags() throws Exception {
+        final TagMgmtService tagMgmtService = getTagMgmtService();
 
-        final List<JSONObject> tags = tagQueryService.getTags();
-        Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 1);
-        Assert.assertEquals(tags.get(0).getString(Tag.TAG_TITLE), "B3log");
-    }
+        tagMgmtService.removeUnusedTags();
 
-    /**
-     * Get Tag By Title.
-     * 
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void getTagByTitle() throws Exception {
-        final TagQueryService tagQueryService = getTagQueryService();
-        
-        final JSONObject result = tagQueryService.getTagByTitle("B3log");
-        Assert.assertNotNull(result);
-        
-        final JSONObject tag = result.getJSONObject(Tag.TAG);
-        Assert.assertNotNull(tag);
-        Assert.assertEquals(tag.getString(Tag.TAG_TITLE), "B3log");
-        
+        // TODO: assertions
     }
 }
