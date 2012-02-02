@@ -5,3 +5,4 @@ Disallow: /*.do
 Disallow: /login
 Disallow: /logout
 Disallow: /tags
+Disallow: /authors/*
