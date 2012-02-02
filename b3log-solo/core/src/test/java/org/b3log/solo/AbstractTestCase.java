@@ -163,6 +163,10 @@ public abstract class AbstractTestCase {
      * Tag query service.
      */
     private TagQueryService tagQueryService;
+    /**
+     * Tag management service.
+     */
+    private TagMgmtService tagMgmtService;
 
     /**
      * Before class.
@@ -208,6 +212,7 @@ public abstract class AbstractTestCase {
         preferenceMgmtService = PreferenceMgmtService.getInstance();
         preferenceQueryService = PreferenceQueryService.getInstance();
         tagQueryService = TagQueryService.getInstance();
+        tagMgmtService = TagMgmtService.getInstance();
     }
 
     /**
@@ -448,5 +453,14 @@ public abstract class AbstractTestCase {
      */
     public TagQueryService getTagQueryService() {
         return tagQueryService;
+    }
+    
+    /**
+     * Gets tag management service.
+     * 
+     * @return tag management service
+     */
+    public TagMgmtService getTagMgmtService() {
+        return tagMgmtService;
     }
 }
