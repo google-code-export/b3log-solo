@@ -52,7 +52,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 1, 2012
+ * @version 1.0.0.3, Feb 2, 2012
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -159,6 +159,10 @@ public abstract class AbstractTestCase {
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService;
+    /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService;
 
     /**
      * Before class.
@@ -203,6 +207,7 @@ public abstract class AbstractTestCase {
         linkQueryService = LinkQueryService.getInstance();
         preferenceMgmtService = PreferenceMgmtService.getInstance();
         preferenceQueryService = PreferenceQueryService.getInstance();
+        tagQueryService = TagQueryService.getInstance();
     }
 
     /**
@@ -417,7 +422,7 @@ public abstract class AbstractTestCase {
     public LinkQueryService getLinkQueryService() {
         return linkQueryService;
     }
-    
+
     /**
      * Gets preference management service.
      * 
@@ -426,7 +431,7 @@ public abstract class AbstractTestCase {
     public PreferenceMgmtService getPreferenceMgmtService() {
         return preferenceMgmtService;
     }
-    
+
     /**
      * Gets preference query service.
      * 
@@ -434,5 +439,14 @@ public abstract class AbstractTestCase {
      */
     public PreferenceQueryService getPreferenceQueryService() {
         return preferenceQueryService;
+    }
+
+    /**
+     * Gets tag query service.
+     * 
+     * @return tag query service
+     */
+    public TagQueryService getTagQueryService() {
+        return tagQueryService;
     }
 }
