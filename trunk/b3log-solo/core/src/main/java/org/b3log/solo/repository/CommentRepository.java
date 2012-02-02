@@ -40,7 +40,8 @@ public interface CommentRepository extends Repository {
             throws RepositoryException;
 
     /**
-     * Gets comments with the specified on id, current page number and page size.
+     * Gets comments with the specified on id, current page number and 
+     * page size.
      * 
      * @param onId the specified on id
      * @param currentPageNum the specified current page number
