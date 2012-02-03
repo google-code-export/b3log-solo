@@ -15,7 +15,7 @@
 ====`Eclipse`====
  * Eclipse : http://www.eclipse.org
 =====配置=====
- # 安装 Maven 的插件：The Maven Integration for Eclipse
+ # 安装 Maven 的插件。插件地址如下：
     m2eclipse Core Update Sites
      http://m2eclipse.sonatype.org/sites/m2e
        Maven Integration for Eclipse (Required)
