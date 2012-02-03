@@ -239,14 +239,33 @@ public final class CommentMgmtService {
     }
 
     /**
-     * Adds an article comment for internal calls.
+     * Adds an article comment with the specified request json object.
      * 
-     * @param requestJSONObject the specified request json object
-     * @return result
-     * @throws Exception exception
+     * @param requestJSONObject the specified request json object, for example, 
+     * <pre>
+     * {
+     *     "oId": "", // article id
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional
+     * }
+     * </pre>
+     * @return add result, for example,
+     * <pre>
+     * {
+     *     "oId": "", // generated comment id
+     *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
+     *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
+     *     "commentThumbnailURL": "",
+     *     "commentSharpURL": ""
+     * }
+     * </pre>
+     * @throws ServiceException service exception
      */
     public JSONObject addArticleComment(
-            final JSONObject requestJSONObject) throws Exception {
+            final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final Transaction transaction = commentRepository.beginTransaction();
@@ -317,7 +336,7 @@ public final class CommentMgmtService {
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentId = Ids.genTimeMillisId();
             comment.put(Keys.OBJECT_ID, commentId);
-
+            ret.put(Keys.OBJECT_ID, commentId);
             final String commentSharpURL =
                     Comments.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
@@ -344,14 +363,13 @@ public final class CommentMgmtService {
                     new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE,
                                           eventData));
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.OBJECT_ID, commentId);
-
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+
+            throw new ServiceException(e);
         }
 
         return ret;
