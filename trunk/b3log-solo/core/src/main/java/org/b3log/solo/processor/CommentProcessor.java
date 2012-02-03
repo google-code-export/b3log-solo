@@ -149,7 +149,6 @@ public final class CommentProcessor {
      */
     @RequestProcessing(value = {"/add-page-comment.do"},
                        method = HTTPRequestMethod.POST)
-    // TODO: encap txn
     public void addPageComment(final HTTPRequestContext context)
             throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
