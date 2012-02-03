@@ -21,6 +21,8 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Page;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -88,7 +90,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 
-        final JSONObject addResult = 
+        final JSONObject addResult =
                 commentMgmtService.addArticleComment(requestJSONObject);
         Assert.assertNotNull(addResult);
         Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
@@ -96,10 +98,87 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_THUMBNAIL_URL));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_SHARP_URL));
 
-        paginationRequest = Requests.buildPaginationRequest("1/10/20");
         result = commentQueryService.getComments(paginationRequest);
 
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(), 2);
+    }
+
+    /**
+     * Add Page Comment.
+     * 
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "addArticleComment")
+    public void addPageComment() throws Exception {
+        addPage();
+
+        final PageQueryService pageQueryService = getPageQueryService();
+
+        final JSONObject paginationRequest =
+                Requests.buildPaginationRequest("1/10/20");
+        JSONObject result = pageQueryService.getPages(paginationRequest);
+
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.getJSONArray(Page.PAGES).length(), 1);
+
+        final JSONArray pages = result.getJSONArray(Page.PAGES);
+
+        final CommentQueryService commentQueryService = getCommentQueryService();
+        result = commentQueryService.getComments(paginationRequest);
+
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(),
+                            2);  // 2 article comments
+
+        final CommentMgmtService commentMgmtService = getCommentMgmtService();
+        final JSONObject requestJSONObject = new JSONObject();
+
+        final String pageId = pages.getJSONObject(0).getString(Keys.OBJECT_ID);
+        requestJSONObject.put(Keys.OBJECT_ID, pageId);
+        requestJSONObject.put(Comment.COMMENT_NAME, "comment name");
+        requestJSONObject.put(Comment.COMMENT_EMAIL, "comment email");
+        requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
+        requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
+
+        final JSONObject addResult =
+                commentMgmtService.addPageComment(requestJSONObject);
+        Assert.assertNotNull(addResult);
+        Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
+        Assert.assertNotNull(addResult.getString(Comment.COMMENT_DATE));
+        Assert.assertNotNull(addResult.getString(Comment.COMMENT_THUMBNAIL_URL));
+        Assert.assertNotNull(addResult.getString(Comment.COMMENT_SHARP_URL));
+
+        result = commentQueryService.getComments(paginationRequest);
+
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(),
+                            3);  // 2 article comments + 1 page comment
+
+        final List<JSONObject> pageComments =
+                commentQueryService.getComments(pageId);
+        Assert.assertNotNull(pageComments);
+        Assert.assertEquals(pageComments.size(), 1);
+    }
+
+    /**
+     * Adds a page.
+     * 
+     * @throws Exception exception
+     */
+    private void addPage() throws Exception {
+        final PageMgmtService pageMgmtService = getPageMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        final JSONObject page = new JSONObject();
+        requestJSONObject.put(Page.PAGE, page);
+
+        page.put(Page.PAGE_CONTENT, "page1 content");
+        page.put(Page.PAGE_PERMALINK, "page1 permalink");
+        page.put(Page.PAGE_TITLE, "page1 title");
+
+        final String pageId = pageMgmtService.addPage(requestJSONObject);
+
+        Assert.assertNotNull(pageId);
     }
 }
