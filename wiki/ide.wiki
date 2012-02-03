@@ -17,12 +17,12 @@
  * Eclipse : http://www.eclipse.org
 =====配置=====
  # 安装 Maven 的插件：The Maven Integration for Eclipse
-m2eclipse Core Update Sites
-http://m2eclipse.sonatype.org/sites/m2e
+    m2eclipse Core Update Sites
+    http://m2eclipse.sonatype.org/sites/m2e
 
-m2eclipse Extras Update Sites
-http://m2eclipse.sonatype.org/sites/m2e-extras
-我刚入职宜搜 那里来的时间啊
+    m2eclipse Extras Update Sites
+    http://m2eclipse.sonatype.org/sites/m2e-extras
+
  # Window -> Preferences -> Maven -> installations -> Add，把 Maven 的路径添加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/b3log-solo
  # Win+R->cmd 进入命令行，进入项目所在目录（e.g: D: 回车；cd foldername 回车  etc...），你如果成功进入会发现 pom.xml，运行命令 mvn eclipse:eclipse，静静等待，Build 成功即可
