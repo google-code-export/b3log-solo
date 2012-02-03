@@ -30,5 +30,6 @@
  # 检出结束会发现项目上都有黑色的星号，这是因为生成了一些新文件，我们需要忽略它。Window -> Preferences -> Team -> Ignored Resources -> Add Patterns (星.project,星.classpath,星.settings)
  # 更新 GAE SDK等相关资源。右键 solo-gae 项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:run
- # 部署项目。run as maven build... --> Goals: gae:deploy
+ # 停止项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:stop
+ # 部署项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:deploy
  * （感谢tomaer的提供）
