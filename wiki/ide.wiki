@@ -24,7 +24,7 @@
        Maven SCM handler for Subclipse
  # Window -> Preferences -> Maven -> installations -> Add，把 Maven 的路径添加上
  # Window -> Show View -> Other -> SVN -> SVN资源库
- # SVN资源库 -> 右键 -> 新建 -> 资源库位置（ http://b3log-solo.googlecode.com/svn/trunk）
+ # SVN资源库 -> 右键 -> 新建 -> 资源库位置http://b3log-solo.googlecode.com/svn/trunk
  # 在b3log文件夹上面右键 -> Check out as Maven project...
  # 静静等待，这个过程教慢，请耐心等待...
  # 检出结束会发现项目上都有黑色的星号，这是因为生成了一些新文件，我们需要忽略它。Window -> Preferences -> Team -> Ignored Resources -> Add Patterns (星.project,星.classpath,星.settings)
