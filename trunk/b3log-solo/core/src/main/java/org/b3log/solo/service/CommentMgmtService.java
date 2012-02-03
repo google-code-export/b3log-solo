@@ -134,7 +134,8 @@ public final class CommentMgmtService {
     }
 
     /**
-     * Page comment count +1 for an page specified by the given page id.
+     * Page comment count +1 for an page specified by the given page 
+     * id.
      *
      * @param pageId the given page id
      * @throws JSONException json exception
@@ -151,7 +152,8 @@ public final class CommentMgmtService {
     }
 
     /**
-     * Article comment count -1 for an article specified by the given article id.
+     * Article comment count -1 for an article specified by the given 
+     * article id.
      *
      * @param articleId the given article id
      * @throws JSONException json exception
