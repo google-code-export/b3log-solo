@@ -15,7 +15,6 @@
 ====`Eclipse`====
  * Eclipse : http://www.eclipse.org
 =====配置=====
- *（感谢tomaer的提供）
  # 安装 Maven 的插件：The Maven Integration for Eclipse
     m2eclipse Core Update Sites
      http://m2eclipse.sonatype.org/sites/m2e
@@ -32,3 +31,4 @@
  # 更新 GAE SDK等相关资源。右键 solo-gae 项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:run
  # 部署项目。run as maven build... --> Goals: gae:deploy
+ * （感谢tomaer的提供）
