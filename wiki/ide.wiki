@@ -15,7 +15,7 @@
  # 部署项目，定制-> gae:deploy，按提示在控制台输入账号密码即可
 ====`Eclipse`====
  * Eclipse : http://www.eclipse.org
-=====配置=====
+=====配置=====（感谢tomaer的提供）
  # 安装 Maven 的插件：The Maven Integration for Eclipse
     m2eclipse Core Update Sites
     http://m2eclipse.sonatype.org/sites/m2e
