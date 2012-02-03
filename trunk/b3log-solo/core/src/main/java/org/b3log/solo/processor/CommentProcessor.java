@@ -186,7 +186,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can''t add comment[msg={0}]", jsonObject.
+            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.
                     optString(Keys.MSG));
             return;
         }
@@ -365,7 +365,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can''t add comment[msg={0}]", jsonObject.
+            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.
                     optString(Keys.MSG));
             return;
         }
