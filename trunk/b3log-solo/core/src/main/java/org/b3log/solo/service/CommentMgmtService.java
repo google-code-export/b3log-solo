@@ -15,22 +15,36 @@
  */
 package org.b3log.solo.service;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.b3log.latke.Keys;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Page;
+import org.b3log.latke.urlfetch.*;
+import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +52,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 28, 2011
+ * @version 1.0.0.2, Feb 3, 2012
  * @since 0.3.5
  */
 public final class CommentMgmtService {
@@ -67,6 +81,157 @@ public final class CommentMgmtService {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Preference query service.
+     */
+    private static PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
+     * Event manager.
+     */
+    private static EventManager eventManager = EventManager.getInstance();
+    /**
+     * Default user thumbnail.
+     */
+    private static final String DEFAULT_USER_THUMBNAIL =
+            "default-user-thumbnail.png";
+    /**
+     * URL fetch service.
+     */
+    private static URLFetchService urlFetchService =
+            URLFetchServiceFactory.getURLFetchService();
+
+    /**
+     * Adds page comment with the specified request json object.
+     * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "", // page id
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional
+     * }
+     * </pre>
+     * @return add result, for example,
+     * <pre>
+     * {
+     *     "oId": "", // generated comment id
+     *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
+     *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
+     *     "commentThumbnailURL": "",
+     *     "commentSharpURL": ""
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject addPageComment(final JSONObject requestJSONObject)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final Transaction transaction = commentRepository.beginTransaction();
+
+        try {
+            final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject page = pageRepository.get(pageId);
+            final String commentName =
+                    requestJSONObject.getString(Comment.COMMENT_NAME);
+            final String commentEmail =
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
+                    toLowerCase();
+            final String commentURL =
+                    requestJSONObject.optString(Comment.COMMENT_URL);
+            String commentContent =
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
+                    replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            commentContent = StringEscapeUtils.escapeHtml(commentContent);
+            final String originalCommentId = requestJSONObject.optString(
+                    Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            // Step 1: Add comment
+            final JSONObject comment = new JSONObject();
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
+
+            JSONObject originalComment = null;
+            comment.put(Comment.COMMENT_NAME, commentName);
+            comment.put(Comment.COMMENT_EMAIL, commentEmail);
+            comment.put(Comment.COMMENT_URL, commentURL);
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = TimeZones.getTime(timeZoneId);
+            comment.put(Comment.COMMENT_DATE, date);
+            ret.put(Comment.COMMENT_DATE,
+                    Comment.DATE_FORMAT.format(date));
+            if (!Strings.isEmptyOrNull(originalCommentId)) {
+                originalComment =
+                        commentRepository.get(originalCommentId);
+                if (null != originalComment) {
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
+                                originalCommentId);
+                    final String originalCommentName =
+                            originalComment.getString(Comment.COMMENT_NAME);
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                                originalCommentName);
+                    ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
+                } else {
+                    LOGGER.log(Level.WARNING,
+                               "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                               new String[]{originalCommentId, commentName,
+                                            commentContent});
+                }
+            }
+            setCommentThumbnailURL(comment);
+            ret.put(Comment.COMMENT_THUMBNAIL_URL,
+                    comment.getString(Comment.COMMENT_THUMBNAIL_URL));
+            // Sets comment on page....
+            comment.put(Comment.COMMENT_ON_ID, pageId);
+            comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
+            final String commentId = Ids.genTimeMillisId();
+            ret.put(Keys.OBJECT_ID, commentId);
+            // Save comment sharp URL
+            final String commentSharpURL =
+                    Comments.getCommentSharpURLForPage(page,
+                                                       commentId);
+            ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            comment.put(Keys.OBJECT_ID, commentId);
+            commentRepository.add(comment);
+            // Step 2: Update page comment count
+            incPageCommentCount(pageId);
+            // Step 3: Update blog statistic comment count
+            statistics.incBlogCommentCount();
+            statistics.incPublishedBlogCommentCount();
+            // Step 4: Send an email to admin
+            try {
+                Comments.sendNotificationMail(page, comment, originalComment,
+                                              preference);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARNING, "Send mail failed", e);
+            }
+            // Step 5: Fire add comment event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Comment.COMMENT, comment);
+            eventData.put(Page.PAGE, page);
+            eventManager.fireEventSynchronously(
+                    new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_PAGE,
+                                          eventData));
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
+            throw new ServiceException(e);
+        }
+
+        return ret;
+    }
 
     /**
      * Removes a comment of a page with the specified comment id.
@@ -189,6 +354,73 @@ public final class CommentMgmtService {
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
         newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt - 1);
         pageRepository.update(pageId, newPage);
+    }
+
+    /**
+     * Sets commenter thumbnail URL for the specified comment.
+     *
+     * @param comment the specified comment
+     * @throws Exception exception
+     */
+    public static void setCommentThumbnailURL(final JSONObject comment)
+            throws Exception {
+        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
+        final String id = commentEmail.split("@")[0];
+        final String domain = commentEmail.split("@")[1];
+        String thumbnailURL = null;
+
+        // Try to set thumbnail URL using Gravatar service
+        final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
+        final int size = 60;
+        final URL gravatarURL =
+                new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
+                        + size + "&r=G");
+
+        try {
+            final HTTPRequest request = new HTTPRequest();
+            request.setURL(gravatarURL);
+            final HTTPResponse response = urlFetchService.fetch(request);
+            final int statusCode = response.getResponseCode();
+
+            if (HttpServletResponse.SC_OK == statusCode) {
+                final List<HTTPHeader> headers = response.getHeaders();
+                boolean defaultFileLengthMatched = false;
+                for (final HTTPHeader httpHeader : headers) {
+                    if ("Content-Length".equalsIgnoreCase(httpHeader.getName())) {
+                        if (httpHeader.getValue().equals("2147")) {
+                            defaultFileLengthMatched = true;
+                        }
+                    }
+                }
+
+                if (!defaultFileLengthMatched) {
+                    thumbnailURL = "http://www.gravatar.com/avatar/"
+                                   + hashedEmail + "?s=" + size + "&r=G";
+                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
+                               thumbnailURL);
+
+                    return;
+                }
+            } else {
+                LOGGER.log(Level.WARNING,
+                           "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                           new Object[]{commentEmail, statusCode});
+            }
+        } catch (final IOException e) {
+            LOGGER.warning(e.getMessage());
+            LOGGER.log(Level.WARNING,
+                       "Can not fetch thumbnail from Gravatar[commentEmail={0}]",
+                       commentEmail);
+        }
+
+        if (null == thumbnailURL) {
+            LOGGER.log(Level.WARNING,
+                       "Not supported yet for comment thumbnail for email[{0}]",
+                       commentEmail);
+            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
+            comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+        }
     }
 
     /**
