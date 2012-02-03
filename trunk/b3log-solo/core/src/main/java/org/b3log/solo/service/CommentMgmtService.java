@@ -115,7 +115,7 @@ public final class CommentMgmtService {
      *     "oId": "", // page id
      *     "commentName": "",
      *     "commentEmail": "",
-     *     "commentURL": "",
+     *     "commentURL": "", // optional
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional
      * }
@@ -247,7 +247,7 @@ public final class CommentMgmtService {
      *     "oId": "", // article id
      *     "commentName": "",
      *     "commentEmail": "",
-     *     "commentURL": "",
+     *     "commentURL": "", // optional
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional
      * }

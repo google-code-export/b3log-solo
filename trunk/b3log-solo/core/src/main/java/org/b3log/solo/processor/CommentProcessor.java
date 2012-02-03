@@ -17,10 +17,6 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.CommentMgmtService;
-import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Comments;
 import org.json.JSONObject;
 
@@ -61,25 +54,6 @@ public final class CommentProcessor {
      */
     private static LangPropsService langPropsService =
             LangPropsService.getInstance();
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-    /**
-     * Article repository.
-     */
-    private static ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
-    /**
-     * Comment repository.
-     */
-    private static CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
-    /**
-     * Preference query service.
-     */
-    private static PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
     /**
      * Comment management service.
      */

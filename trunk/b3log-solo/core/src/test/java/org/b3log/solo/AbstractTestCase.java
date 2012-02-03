@@ -171,6 +171,10 @@ public abstract class AbstractTestCase {
      * Comment query service.
      */
     private CommentQueryService commentQueryService;
+    /**
+     * Comment management service.
+     */
+    private CommentMgmtService commentMgmtService;
 
     /**
      * Before class.
@@ -218,6 +222,7 @@ public abstract class AbstractTestCase {
         tagQueryService = TagQueryService.getInstance();
         tagMgmtService = TagMgmtService.getInstance();
         commentQueryService = CommentQueryService.getInstance();
+        commentMgmtService = CommentMgmtService.getInstance();
     }
 
     /**
@@ -476,5 +481,14 @@ public abstract class AbstractTestCase {
      */
     public CommentQueryService getCommentQueryService() {
         return commentQueryService;
+    }
+    
+    /**
+     * Gets comment management service.
+     * 
+     * @return comment management
+     */
+    public CommentMgmtService getCommentMgmtService() {
+        return commentMgmtService;
     }
 }
