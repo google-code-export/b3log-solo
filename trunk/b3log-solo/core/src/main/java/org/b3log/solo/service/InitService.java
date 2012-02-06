@@ -59,7 +59,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 6, 2012
+ * @version 1.0.0.6, Feb 6, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -193,7 +193,7 @@ public final class InitService {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            helloWorld();
+            你好世界();
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -209,7 +209,7 @@ public final class InitService {
      *
      * @throws Exception exception
      */
-    private void helloWorld() throws Exception {
+    private void 你好世界() throws Exception {
         final JSONObject article = new JSONObject();
 
         // XXX: no i18n
