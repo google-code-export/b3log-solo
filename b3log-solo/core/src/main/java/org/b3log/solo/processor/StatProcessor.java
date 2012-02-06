@@ -128,13 +128,13 @@ public final class StatProcessor {
         final Transaction transaction = statisticRepository.beginTransaction();
         transaction.clearQueryCache(false);
         try {
+            // For blog view counter
             statisticRepository.update(Statistic.STATISTIC, statistic);
 
             // For article view counter
             final Set<String> cachedPageKeys = PageCaches.getKeys();
             for (final String cachedPageKey : cachedPageKeys) {
-                final JSONObject cachedPage = PageCaches.get(cachedPageKey,
-                                                             false);
+                final JSONObject cachedPage = PageCaches.get(cachedPageKey);
                 if (null == cachedPage) {
                     PageCaches.remove(cachedPageKey);
                     continue;

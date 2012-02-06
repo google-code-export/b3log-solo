@@ -115,7 +115,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
         LOGGER.log(Level.FINEST, "After render....");
 
         try {
-            statistics.incBlogViewCount();
+            statistics.incBlogViewCount(context.getRequest());
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Incs blog view count failed", e);
         }
