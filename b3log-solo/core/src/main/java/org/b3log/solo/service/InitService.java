@@ -193,7 +193,7 @@ public final class InitService {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            你好世界();
+            helloWorld();
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -209,7 +209,7 @@ public final class InitService {
      *
      * @throws Exception exception
      */
-    private void 你好世界() throws Exception {
+    private void helloWorld() throws Exception {
         final JSONObject article = new JSONObject();
 
         // XXX: no i18n
