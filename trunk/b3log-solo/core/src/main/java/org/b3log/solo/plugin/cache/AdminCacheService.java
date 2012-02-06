@@ -220,7 +220,7 @@ public final class AdminCacheService {
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
 
-                JSONObject cachedPage = PageCaches.get(key, false);
+                JSONObject cachedPage = PageCaches.get(key);
 
                 if (null != cachedPage) {
                     // Do a copy for properties removing and retrieving

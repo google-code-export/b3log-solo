@@ -17,7 +17,9 @@ package org.b3log.solo.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
@@ -33,7 +35,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 26, 2011
+ * @version 1.0.1.7, Feb 6, 2012
  * @since 0.3.1
  */
 public final class Statistics {
@@ -201,13 +203,28 @@ public final class Statistics {
      * Blog statistic view count +1.
      * 
      * <p>
+     * If it is a search engine bot made the specified request, will NOT
+     * increment blog statistic view count.
+     * </p>
+     * 
+     * <p>
      * There is a cron job (/console/stat/viewcnt) to flush the blog view count 
      * from cache to datastore.
      * </p>
+     * @param request the specified request
      * @throws RepositoryException repository exception
      * @throws JSONException json exception 
+     * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest) 
      */
-    public void incBlogViewCount() throws RepositoryException, JSONException {
+    public void incBlogViewCount(final HttpServletRequest request)
+            throws RepositoryException, JSONException {
+        if (Requests.searchEngineBotRequest(request)) {
+            LOGGER.log(Level.FINER,
+                       "Request made from a search engine[User-Agent={0}], bypasses blog view count",
+                       request.getHeader("User-Agent"));
+            return;
+        }
+
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {

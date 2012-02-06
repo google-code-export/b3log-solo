@@ -113,8 +113,8 @@ public final class PageCacheFilter implements Filter {
             request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
         }
 
-        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey,
-                                                                  true);
+        final JSONObject cachedPageContentObject =
+                PageCaches.get(pageCacheKey, httpServletRequest);
 
         if (null == cachedPageContentObject) {
             LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]",
@@ -148,7 +148,7 @@ public final class PageCacheFilter implements Filter {
                        "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
 
-            statistics.incBlogViewCount();
+            statistics.incBlogViewCount((HttpServletRequest) request);
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(
