@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Oct 27, 2011
+ * @version 1.0.1.1, Jan 7, 2012
  */
 
 /* plugin-list 相关操作 */
@@ -70,6 +70,7 @@ admin.pluginList = {
         $.ajax({
             url: "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#loadMsg").text(result.msg);
@@ -114,6 +115,7 @@ admin.pluginList = {
         $.ajax({
             url: "/console/plugin/status/",
             type: "PUT",
+            cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 $("#loadMsg").text(result.msg);

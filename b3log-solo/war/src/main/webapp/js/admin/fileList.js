@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 29, 2011
+ * @version 1.0.1.0, Jan 7, 2012
  */
 
 /* file-list 相关操作 */
@@ -73,6 +73,7 @@ admin.fileList = {
         $.ajax({
             url: "/console/files/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#loadMsg").text(result.msg);
@@ -115,6 +116,7 @@ admin.fileList = {
             $.ajax({
                 url: "/console/file/" + id,
                 type: "DELETE",
+                cache: false,
                 success: function(result, textStatus){
                     $("#loadMsg").text(result.msg);
                     

@@ -20,6 +20,7 @@
             $.ajax({
                 url: "/console/plugins/admin-cache/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
                 type: "GET",
+                cache: false,
                 success: function(result, textStatus){
                     if (!result.sc) {
                         $("#tipMsg").text(result.msg);
@@ -55,6 +56,7 @@
             $.ajax({
                 url: "/console/plugins/admin-cache/enable/" + flag,
                 type: "PUT",
+                cache: false,
                 success: function(result, textStatus){
                     if (!result.sc) {
                         $("#tipMsg").text(result.msg);
@@ -81,6 +83,7 @@
             $.ajax({
                 url: "/console/plugins/admin-cache/status/",
                 type: "GET",
+                cache: false,
                 success: function(result, textStatus){
                     if (!result.sc) {
                         $("#tipMsg").text(result.msg);

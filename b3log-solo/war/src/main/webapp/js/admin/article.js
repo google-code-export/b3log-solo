@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 20, 2012
+ * @version 1.0.1.8, Feb 7, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -46,6 +46,7 @@ admin.article = {
         $.ajax({
             url: "/console/article/" + admin.article.status.id,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#tipMsg").text(result.msg);
@@ -117,6 +118,7 @@ admin.article = {
             $.ajax({
                 url: "/console/article/" + id,
                 type: "DELETE",
+                cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
                      
@@ -175,6 +177,7 @@ admin.article = {
             $.ajax({
                 url: "/console/article/",
                 type: "POST",
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
@@ -196,6 +199,10 @@ admin.article = {
                 },
                 complete: function (jqXHR, textStatus){
                     that._removeDisabled();
+                    if (jqXHR.status === 403) {
+                        $.get("/admin-index.do");
+                        that.add(articleIsPublished);
+                    }
                 }
             });
         }
@@ -246,6 +253,7 @@ admin.article = {
             $.ajax({
                 url: "/console/article/",
                 type: "PUT",
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
@@ -295,6 +303,10 @@ admin.article = {
                 },
                 complete: function (jqXHR, textStatus){
                     that._removeDisabled();
+                    if (jqXHR.status === 403) {
+                        $.get("/admin-index.do");
+                        that.update(articleIsPublished);
+                    }
                 }
             });
         }
@@ -377,6 +389,7 @@ admin.article = {
         $.ajax({
             url: "/console/signs/",
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     return;
@@ -411,6 +424,7 @@ admin.article = {
         $.ajax({ // Gets all tags
             url: "/console/tags",
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     return;
@@ -475,7 +489,7 @@ admin.article = {
                 theme_advanced_resizing : true,
                 theme_advanced_statusbar_location : "bottom",
                 
-                extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
+                extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align],link",
 
                 valid_children : "+body[style]",
                 relative_urls: false,
@@ -548,6 +562,7 @@ admin.article = {
         $.ajax({
             url: "/console/article/unpublish/" + admin.article.status.id,
             type: "PUT",
+            cache: false,
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                      
@@ -561,6 +576,10 @@ admin.article = {
             },
             complete: function (jqXHR, textStatus){
                 that._removeDisabled();
+                if (jqXHR.status === 403) {
+                    $.get("/admin-index.do");
+                    that.unPublish();
+                }
             }
         });
     },

@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Nov 8, 2011
+ * @version 1.0.1.5, Jan 7, 2012
  */
 var Util = {
     error: function () {
@@ -155,6 +155,7 @@ $.extend(Common.prototype, {
         $.ajax({
             type: "POST",
             url: "/clear-cache.do",
+            cache: false,
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function(result){

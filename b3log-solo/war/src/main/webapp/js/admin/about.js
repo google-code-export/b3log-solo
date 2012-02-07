@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 15, 2011
+ * @version 1.0.0.3, Jan 7, 2012
  */
 
 /* about 相关操作 */
@@ -27,6 +27,7 @@ admin.about = {
         $.ajax({
             url: "http://rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
+            cache: false,
             dataType:"jsonp",
             error: function() {
             // alert("Error loading articles from Rhythm");
