@@ -68,7 +68,7 @@
             
         </plugins>
         
-        <finalName>b3log-solo-lcocal</finalName>
+        <finalName>b3log-solo-local</finalName>
     </build>
 </project>
 
