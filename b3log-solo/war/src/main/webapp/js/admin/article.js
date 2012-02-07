@@ -527,15 +527,12 @@ admin.article = {
      * 验证发布文章字段的合法性
      */
     validate: function () {
-        var articleContent = "",
-        articleAbstract = "";
+        var articleContent = "";
             
         try {
             articleContent = tinyMCE.get('articleContent').getContent();
-            articleAbstract =  tinyMCE.get('abstract').getContent();
         } catch (e) {
             articleContent = $("#articleContent").val();
-            articleAbstract =  $("#abstract").val();
         }
         
         if ($("#title").val().replace(/\s/g, "") === "") {
@@ -546,8 +543,6 @@ admin.article = {
         } else if ($("#tag").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.tagsEmptyLabel);
             $("#tag").focus().val("");
-        } else if(articleAbstract.replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.abstractEmptyLabel);
         } else {
             return true;
         }
