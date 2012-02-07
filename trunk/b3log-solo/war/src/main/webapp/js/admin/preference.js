@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jan 9, 2012
+ * @version 1.0.1.1, Jan 7, 2012
  */
 
 /* preference 相关操作 */
@@ -34,6 +34,7 @@ admin.preference = {
         $.ajax({
             url: "/console/preference/",
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#tipMsg").text(result.msg);
@@ -169,6 +170,7 @@ admin.preference = {
         $.ajax({
             url: "/console/preference/",
             type: "PUT",
+            cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);

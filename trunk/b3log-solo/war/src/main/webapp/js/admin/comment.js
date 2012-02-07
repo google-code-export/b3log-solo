@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 29, 2011
+ * @version 1.0.0.5, Jan 7, 2012
  */
 
 admin.comment = { 
@@ -50,6 +50,7 @@ admin.comment = {
         $.ajax({
             url: "/console/comments/" + from + "/" + onId ,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#tipMsg").text(result.msg);
@@ -109,6 +110,7 @@ admin.comment = {
             $.ajax({
                 url: "/console/" + from + "/comment/" + id,
                 type: "DELETE",
+                cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
                      

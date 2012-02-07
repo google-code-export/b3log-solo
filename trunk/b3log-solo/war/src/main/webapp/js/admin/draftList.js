@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 29, 2011
+ * @version 1.0.1.0, Jan 7, 2012
  */
 
 /* draft-list 相关操作 */
@@ -71,6 +71,7 @@ admin.draftList = {
         $.ajax({
             url: "/console/articles/status/unpublished/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#tipMsg").text(result.msg);

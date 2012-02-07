@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Feb 2, 2012
+ * @version 1.0.2.1, Jan 7, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -361,14 +361,14 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                            + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
-                            +  title + "</a></li>"
+                        + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
+                        +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
                 
                     var relevantArticleListHtml = headTitle 
-                        + "<ul class='marginLeft12'>"
-                        + listHtml + "</ul>";
+                    + "<ul class='marginLeft12'>"
+                    + listHtml + "</ul>";
                     $("#relevantArticles").append(relevantArticleListHtml);
                 }
             });
@@ -386,11 +386,12 @@ $.extend(Page.prototype, {
         try {
             $.ajax({
                 url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-                    + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
+                + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
                 type: "GET",
+                cache: true,
                 dataType:"jsonp",
                 error: function(){
-                    // alert("Error loading articles from Rhythm");
+                // alert("Error loading articles from Rhythm");
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
@@ -402,20 +403,20 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                            + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
-                            +  title + "</a></li>"
+                        + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
+                        +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
                 
                     var titleHTML = headtitle ? headtitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
                     var randomArticleListHtml = titleHTML
-                        + "<ul class='marginLeft12'>"
-                        + listHtml + "</ul>";
+                    + "<ul class='marginLeft12'>"
+                    + listHtml + "</ul>";
                     $("#externalRelevantArticles").append(randomArticleListHtml);
                 }
             });
         } catch (e) {
-            // 忽略相关文章加载异常：load script error
+        // 忽略相关文章加载异常：load script error
         }
     },
     
@@ -449,6 +450,7 @@ $.extend(Page.prototype, {
             $.ajax({
                 type: "POST",
                 url: "/add-" + type + "-comment.do",
+                cache: false,
                 contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
                 success: function(result){
@@ -467,7 +469,7 @@ $.extend(Page.prototype, {
                         result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
                     } else {
                         result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) + 
-                            '" target="_blank">' + $("#commentName" + state).val() + '</a>';
+                        '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                     }
                             
                     that.addCommentAjax(addComment(result, state), state);
@@ -528,7 +530,7 @@ $.extend(Page.prototype, {
                 }
             });
             $("#replyForm #captcha").attr("id", "captchaReply").
-                attr("src", "/captcha.do?" + new Date().getTime()).click(function () {
+            attr("src", "/captcha.do?" + new Date().getTime()).click(function () {
                 $(this).attr("src", "/captcha.do?code=" + Math.random());
             });
         

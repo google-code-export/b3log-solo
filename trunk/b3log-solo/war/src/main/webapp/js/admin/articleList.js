@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 29, 2011
+ * @version 1.0.0.9, Jan 7, 2012
  */
 
 /* article-list 相关操作 */
@@ -71,6 +71,7 @@ admin.articleList = {
         $.ajax({
             url: "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#tipMsg").text(result.msg);
@@ -113,37 +114,29 @@ admin.articleList = {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         
-        var $it = $(it);
+        var $it = $(it),
+        ajaxUrl = "canceltop",
+        tip = Label.putTopLabel;
         
         if ($it.html() === Label.putTopLabel) {
-            $.ajax({
-                url: "/console/article/puttop/" + id,
-                type: "PUT",
-                success: function(result, textStatus){
-                    $("#tipMsg").text(result.msg);
-                     
-                    if (!result.sc) {
-                        return;
-                    }
-                    
-                    $it.html(Label.cancelPutTopLabel);
-                }
-            });
-        } else {
-            $.ajax({
-                url: "/console/article/canceltop/" + id,
-                type: "PUT",
-                success: function(result, textStatus){
-                    $("#tipMsg").text(result.msg);
-                     
-                    if (!result.sc) {
-                        return;
-                    }
-                    
-                    $it.html(Label.putTopLabel);
-                }
-            });
+            ajaxUrl = "puttop";
+            tip = Label.cancelPutTopLabel;
         }
+        
+        $.ajax({
+            url: "/console/article/" + ajaxUrl + "/" + id,
+            type: "PUT",
+            cache: false,
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                     
+                if (!result.sc) {
+                    return;
+                }
+                    
+                $it.html(tip);
+            }
+        });
     }
 };
 

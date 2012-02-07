@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 24, 2011
+ * @version 1.0.0.6, Jan 7, 2012
  */
 
 /* oterhs 相关操作 */
@@ -32,6 +32,7 @@ admin.others = {
         $.ajax({
             url: "/console/reply/notification/template",
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                      
@@ -56,6 +57,7 @@ admin.others = {
         $.ajax({
             url: "/console/tag/unused",
             type: "DELETE",
+            cache: false,
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);                
             }
@@ -64,11 +66,13 @@ admin.others = {
     
     /*
      * 获取未使用的标签。
+     * XXX: Not used this function yet.
      */
     getUnusedTags: function () {
         $.ajax({
             url: "/console/tag/unused",
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     return;
@@ -78,8 +82,6 @@ admin.others = {
                 if (0 === unusedTags.length) {
                     return;
                 }
-
-            // XXX: Not used this function yet.
             }
         });
     },
@@ -101,6 +103,7 @@ admin.others = {
         $.ajax({
             url: "/console/reply/notification/template",
             type: "PUT",
+            cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);

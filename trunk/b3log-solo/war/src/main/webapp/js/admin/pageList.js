@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jan 8, 2012
+ * @version 1.0.1.1, Jan 7, 2012
  */
 
 /* page-list 相关操作 */
@@ -104,6 +104,7 @@ admin.pageList = {
         $.ajax({
             url: "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     $("#loadMsg").text(result.msg);
@@ -165,6 +166,7 @@ admin.pageList = {
         $.ajax({
             url: "/console/page/" + id,
             type: "GET",
+            cache: false,
             success: function(result, textStatus){
                 if (!result.sc) {
                     return;
@@ -201,6 +203,7 @@ admin.pageList = {
             $.ajax({
                 url: "/console/page/" + id,
                 type: "DELETE",
+                cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
                      
@@ -253,6 +256,7 @@ admin.pageList = {
             $.ajax({
                 url: "/console/page/",
                 type: "POST",
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
@@ -319,6 +323,7 @@ admin.pageList = {
             $.ajax({
                 url: "/console/page/",
                 type: "PUT",
+            cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
@@ -335,8 +340,8 @@ admin.pageList = {
                     } catch (e) {
                         $("#pageContent").val("");
                     }
-                    $("#pagePermalink").val("");
                     
+                    $("#pagePermalink").val("");
                     $("#loadMsg").text("");
                 }
             });
@@ -391,6 +396,7 @@ admin.pageList = {
         $.ajax({
             url: "/console/page/order/",
             type: "PUT",
+            cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
