@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.1.0, Jan 30, 2012
+    Version: 2.0.1.1, Feb 7, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -40,7 +40,7 @@
         <freemarker-gae.version>2.3.18</freemarker-gae.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <jsoup.version>1.5.2</jsoup.version>
-        <gae.version>1.6.1.1</gae.version>
+        <gae.version>1.6.2.1</gae.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
