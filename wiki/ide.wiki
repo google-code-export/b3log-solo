@@ -24,7 +24,8 @@
  # 在b3log文件夹上面右键 -> Check out as Maven project...
  # 静静等待，这个过程较慢，请淡定...
  # 检出结束会发现项目上都有黑色的星号，这是因为生成了一些新文件，我们需要忽略它。Window -> Preferences -> Team -> Ignored Resources -> Add Patterns (星.project，星.classpath，星.settings)
- # 更新资源。右键 solo-gae 项目，run as maven build... --> Goals: gae:unpack
- # 运行项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:run
- # 停止项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:stop
- # 部署项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:deploy
+ # 在根项目上进行构建（mvn install）。右键 solo 项目,run as maven install
+ # 更新资源。右键 solo-gae 项目,run as maven build... --> Goals: gae:unpack
+ # 运行项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:run
+ # 停止项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:stop
+ # 部署项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:deploy
