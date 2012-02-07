@@ -18,14 +18,18 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jan 7, 2012
+ * @version 1.0.2.2, Jan 7, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
     this.tips = tips;
 };
 
-$.extend(Page.prototype, {    
+$.extend(Page.prototype, {   
+    /*
+     * @description 评论时点击表情，在评论内容中插入相关代码
+     * @param {String} name 用于区别回复评论还是对文章的评论
+     */
     insertEmotions:  function (name) {
         if (name === undefined) {
             name = "";
@@ -51,6 +55,10 @@ $.extend(Page.prototype, {
         });
     },
 
+    /*
+     * @description 评论校验
+     * @param {String} state 用于区别回复评论还是对文章的评论
+     */
     validateComment: function (state) {
         var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
         commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
@@ -76,6 +84,10 @@ $.extend(Page.prototype, {
         return false;
     },
     
+    /*
+     * @description 把评论中的标识替换为图片
+     * @param {Dom} selector
+     */
     replaceCommentsEm: function (selector) {
         var $commentContents = $(selector);
         for (var i = 0; i < $commentContents.length; i++) {
@@ -85,10 +97,131 @@ $.extend(Page.prototype, {
     },
     
     /*
-     * 加载 SyntaxHighlighter 
+     * @description 初始化 SyantaxHighlighter
+     * @param {Array} languages 需要加载的语言 
+     */
+    _initSyntaxHighlighter: function (languages) {
+        // load brush js
+        for (var i = 0; i < languages.length; i++) {
+            switch (languages[i]) {
+                case "groovy":
+                    languages[i] =  'groovy				/js/lib/SyntaxHighlighter/scripts/shBrushGroovy.js';
+                    break;
+                case "java":
+                    languages[i] =  'java				/js/lib/SyntaxHighlighter/scripts/shBrushJava.js';
+                    break;
+                case "php":
+                    languages[i] =  'php				/js/lib/SyntaxHighlighter/scripts/shBrushPhp.js';
+                    break;
+                case "scala":
+                    languages[i] =  'scala				/js/lib/SyntaxHighlighter/scripts/shBrushScala.js';
+                    break;
+                case "sql":
+                    languages[i] =  'sql				/js/lib/SyntaxHighlighter/scripts/shBrushSql.js';
+                    break;
+                case "applescript":
+                    languages[i] =  'applescript			/js/lib/SyntaxHighlighter/scripts/shBrushAppleScript.js';
+                    break;
+                case "as3": 
+                case "actionscript3":
+                    languages[i] =  'actionscript3 as3                  /js/lib/SyntaxHighlighter/scripts/shBrushAS3.js';
+                    break;
+                case "bash":
+                case "shell":
+                    languages[i] =  'bash shell                         /js/lib/SyntaxHighlighter/scripts/shBrushBash.js';
+                    break;
+                case "coldfusion":
+                case "cf":
+                    languages[i] =  'coldfusion cf			/js/lib/SyntaxHighlighter/scripts/shBrushColdFusion.js';
+                    break;
+                case "c#":
+                case "c-sharp":
+                case "csharp":
+                    languages[i] =  'c# c-sharp csharp                  /js/lib/SyntaxHighlighter/scripts/shBrushCSharp.js';
+                    break;
+                case "cpp":
+                case "c":
+                    languages[i] =  'cpp c				/js/lib/SyntaxHighlighter/scripts/shBrushCpp.js';
+                    break;	
+                case "css":
+                    languages[i] =  "css				/js/lib/SyntaxHighlighter/scripts/shBrushCss.js";
+                    break;
+                case "delphi":
+                case "pascal":
+                    languages[i] =  'delphi pascal			/js/lib/SyntaxHighlighter/scripts/shBrushDelphi.js';
+                    break;			
+                case "diff":
+                case "patch":
+                case "pas":
+                    languages[i] =  'diff patch pas			/js/lib/SyntaxHighlighter/scripts/shBrushDiff.js';
+                    break;			
+                case "erl":
+                case "erlang":
+                    languages[i] =  'erl erlang                         /js/lib/SyntaxHighlighter/scripts/shBrushErlang.js';
+                    break;			
+                case "js":
+                case "jscript":
+                case "javascript":
+                    languages[i] =  'js jscript javascript              /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js';
+                    break;			
+                case "jfx":
+                case "javafx":
+                    languages[i] =  'jfx javafx                 	/js/lib/SyntaxHighlighter/scripts/shBrushJavaFX.js';
+                    break;			
+                case "perl":
+                case "pl":
+                    languages[i] =  'perl pl                    	/js/lib/SyntaxHighlighter/scripts/shBrushPerl.js';
+                    break;			
+                case "plain":
+                case "text":
+                    languages[i] =  'text plain                 	/js/lib/SyntaxHighlighter/scripts/shBrushPlain.js';
+                    break;			
+                case "ps":
+                case "powershell":
+                    languages[i] =  'ps powershell                      /js/lib/SyntaxHighlighter/scripts/shBrushPowerShell.js';
+                    break;			
+                case "py":
+                case "python":
+                    languages[i] =  'py python                          /js/lib/SyntaxHighlighter/scripts/shBrushPython.js';
+                    break;			
+                case "rails":
+                case "ror":
+                case "ruby":
+                case "rb":
+                    languages[i] =  'ruby rails ror rb          	/js/lib/SyntaxHighlighter/scripts/shBrushRuby.js';
+                    break;	
+                case "sass":
+                case "scss":
+                    languages[i] =  'sass scss                  	/js/lib/SyntaxHighlighter/scripts/shBrushSass.js';
+                    break;
+                case "vb":
+                case "vbnet":
+                    languages[i] =  'vb vbnet                   	/js/lib/SyntaxHighlighter/scripts/shBrushVb.js';
+                    break;			
+                case "xml":
+                case "xhtml":
+                case "xslt": 
+                case "html":
+                    languages[i] =  'xml xhtml xslt html                /js/lib/SyntaxHighlighter/scripts/shBrushXml.js';
+                    break;	
+                default:
+                    break;
+            }
+        }
+        
+        // code high lighter
+        SyntaxHighlighter.autoloader.apply(null, languages);
+        SyntaxHighlighter.config.stripBrs = true;
+        SyntaxHighlighter.all();  
+    },
+    
+    /*
+     * @description 加载 SyntaxHighlighter 
+     * @param {String} SHTheme SyntaxHighLighter 样式
      */
     _loadSyntaxHighlighter: function (SHTheme) {
-        var cssName = SHTheme ? SHTheme : "shCoreEclipse";
+        var cssName = SHTheme ? SHTheme : "shCoreEclipse",
+        that = this;
         // load css
         if (document.createStyleSheet) {
             document.createStyleSheet("/js/lib/SyntaxHighlighter/styles/" + cssName + ".css");
@@ -103,133 +236,43 @@ $.extend(Page.prototype, {
             dataType: "script",
             cache: true,
             success: function() {
-                // load brush js
-                var languages = [];
+                // get brush settings
+                var languages = [],
+                isScrip = false;
                 $(".article-body pre").each(function () {
                     var name = this.className.split(";")[0];
                     var language = name.substr(7, name.length - 1);
+                    
+                    if (this.className.indexOf("html-script: true") > -1 && 
+                        (language !== "xml" && language !== "xhtml" && 
+                            language !== "xslt" && language != "html")) {
+                        isScrip = true;
+                    }
+                    
                     languages.push(language);
                 });
-        
-                for (var i = 0; i < languages.length; i++) {
-                    switch (languages[i]) {
-                        case "groovy":
-                            languages[i] =  'groovy				/js/lib/SyntaxHighlighter/scripts/shBrushGroovy.js';
-                            break;
-                        case "java":
-                            languages[i] =  'java				/js/lib/SyntaxHighlighter/scripts/shBrushJava.js';
-                            break;
-                        case "php":
-                            languages[i] =  'php				/js/lib/SyntaxHighlighter/scripts/shBrushPhp.js';
-                            break;
-                        case "scala":
-                            languages[i] =  'scala				/js/lib/SyntaxHighlighter/scripts/shBrushScala.js';
-                            break;
-                        case "sql":
-                            languages[i] =  'sql				/js/lib/SyntaxHighlighter/scripts/shBrushSql.js';
-                            break;
-                        case "applescript":
-                            languages[i] =  'applescript			/js/lib/SyntaxHighlighter/scripts/shBrushAppleScript.js';
-                            break;
-                        case "as3": 
-                        case "actionscript3":
-                            languages[i] =  'actionscript3 as3                  /js/lib/SyntaxHighlighter/scripts/shBrushAS3.js';
-                            break;
-                        case "bash":
-                        case "shell":
-                            languages[i] =  'bash shell                         /js/lib/SyntaxHighlighter/scripts/shBrushBash.js';
-                            break;
-                        case "coldfusion":
-                        case "cf":
-                            languages[i] =  'coldfusion cf			/js/lib/SyntaxHighlighter/scripts/shBrushColdFusion.js';
-                            break;
-                        case "c#":
-                        case "c-sharp":
-                        case "csharp":
-                            languages[i] =  'c# c-sharp csharp                  /js/lib/SyntaxHighlighter/scripts/shBrushCSharp.js';
-                            break;
-                        case "cpp":
-                        case "c":
-                            languages[i] =  'cpp c				/js/lib/SyntaxHighlighter/scripts/shBrushCpp.js';
-                            break;	
-                        case "css":
-                            languages[i] =  "css				/js/lib/SyntaxHighlighter/scripts/shBrushCss.js";
-                            break;
-                        case "delphi":
-                        case "pascal":
-                            languages[i] =  'delphi pascal			/js/lib/SyntaxHighlighter/scripts/shBrushDelphi.js';
-                            break;			
-                        case "diff":
-                        case "patch":
-                        case "pas":
-                            languages[i] =  'diff patch pas			/js/lib/SyntaxHighlighter/scripts/shBrushDiff.js';
-                            break;			
-                        case "erl":
-                        case "erlang":
-                            languages[i] =  'erl erlang                         /js/lib/SyntaxHighlighter/scripts/shBrushErlang.js';
-                            break;			
-                        case "js":
-                        case "jscript":
-                        case "javascript":
-                            languages[i] =  'js jscript javascript              /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js';
-                            break;			
-                        case "jfx":
-                        case "javafx":
-                            languages[i] =  'jfx javafx                 	/js/lib/SyntaxHighlighter/scripts/shBrushJavaFX.js';
-                            break;			
-                        case "perl":
-                        case "pl":
-                            languages[i] =  'perl pl                    	/js/lib/SyntaxHighlighter/scripts/shBrushPerl.js';
-                            break;			
-                        case "plain":
-                        case "text":
-                            languages[i] =  'text plain                 	/js/lib/SyntaxHighlighter/scripts/shBrushPlain.js';
-                            break;			
-                        case "ps":
-                        case "powershell":
-                            languages[i] =  'ps powershell                      /js/lib/SyntaxHighlighter/scripts/shBrushPowerShell.js';
-                            break;			
-                        case "py":
-                        case "python":
-                            languages[i] =  'py python                          /js/lib/SyntaxHighlighter/scripts/shBrushPython.js';
-                            break;			
-                        case "rails":
-                        case "ror":
-                        case "ruby":
-                        case "rb":
-                            languages[i] =  'ruby rails ror rb          	/js/lib/SyntaxHighlighter/scripts/shBrushRuby.js';
-                            break;	
-                        case "sass":
-                        case "scss":
-                            languages[i] =  'sass scss                  	/js/lib/SyntaxHighlighter/scripts/shBrushSass.js';
-                            break;
-                        case "vb":
-                        case "vbnet":
-                            languages[i] =  'vb vbnet                   	/js/lib/SyntaxHighlighter/scripts/shBrushVb.js';
-                            break;			
-                        case "xml":
-                        case "xhtml":
-                        case "xslt": 
-                        case "html":
-                            languages[i] =  'xml xhtml xslt html               /js/lib/SyntaxHighlighter/scripts/shBrushXml.js';
-                            break;	
-                        default:
-                            break;
-                    }
+                
+                // when html-script is true, need shBrushXml.js
+                if (isScrip) {
+                    $.ajax({
+                        url: "/js/lib/SyntaxHighlighter/scripts/shBrushXml.js",
+                        dataType: "script",
+                        cache: true,
+                        success: function() {
+                            that._initSyntaxHighlighter(languages);
+                        }
+                    });
+                } else {
+                    that._initSyntaxHighlighter(languages);
                 }
-        
-                // code high lighter
-                SyntaxHighlighter.autoloader.apply(null, languages);
-                //SyntaxHighlighter.config.tagName = "pre";
-                //SyntaxHighlighter.config.stripBrs = true;
-                //SyntaxHighlighter.defaults.toolbar = false;
-                SyntaxHighlighter.all();
             }
         });  
     },
     
     /*
-     * 解析语法高亮
+     * @description 解析语法高亮
+     * @param {Obj} obj 语法高亮配置参数
+     * @param {Obj} obj.SHTheme 语法高亮 SyntaxHighLighter 样式
      */
     parseLanguage: function (obj) {
         var isPrettify = false,
@@ -270,6 +313,11 @@ $.extend(Page.prototype, {
         
     },
     
+    /*
+     * @description 文章/自定义页面加载
+     * @param {Obj} obj 配置设定
+     * @param {Obj} obj.language 代码高亮配置
+     */
     load: function (obj) {
         var that = this;
         // emotions
@@ -310,8 +358,8 @@ $.extend(Page.prototype, {
     },
 
     /*
-     * 加载随机文章
-     * @headtitle {string} 随机文章标题
+     * @description 加载随机文章
+     * @param {String} headTitle 随机文章标题
      */
     loadRandomArticles: function (headTitle) {
         var randomArticles1Label = this.tips.randomArticles1Label;
@@ -341,9 +389,9 @@ $.extend(Page.prototype, {
     },
     
     /*
-     * 加载相关文章
-     * @id {string} 文章 id
-     * @headtitle {string} 相关文章标题
+     * @description 加载相关文章
+     * @param {String} id 文章 id
+     * @param {String} headTitle 相关文章标题
      */
     loadRelevantArticles: function (id, headTitle) {
         try {
@@ -377,11 +425,11 @@ $.extend(Page.prototype, {
     },
     
     /*
-     * 加载站外相关文章
-     * @tags {string} 文章 tags
-     * @headtitle {string} 站外相关文章标题
+     * @description 加载站外相关文章
+     * @param {String} tags 文章 tags
+     * @param {String} headTitle 站外相关文章标题
      */
-    loadExternalRelevantArticles: function (tags, headtitle) {
+    loadExternalRelevantArticles: function (tags, headTitle) {
         var tips = this.tips;
         try {
             $.ajax({
@@ -408,7 +456,7 @@ $.extend(Page.prototype, {
                         listHtml += articleLiHtml
                     }
                 
-                    var titleHTML = headtitle ? headtitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
+                    var titleHTML = headTitle ? headTitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
                     var randomArticleListHtml = titleHTML
                     + "<ul class='marginLeft12'>"
                     + listHtml + "</ul>";
@@ -420,6 +468,11 @@ $.extend(Page.prototype, {
         }
     },
     
+    /*
+     * @description 提交评论
+     * @param {String} commentId 回复评论时的评论 id
+     * @param {String} state 区分回复文章还是回复评论的标识
+     */
     submitComment: function (commentId, state) {
         if (!state) {
             state = '';
@@ -485,6 +538,12 @@ $.extend(Page.prototype, {
         }
     },
     
+    /*
+     * @description 添加回复评论表单
+     * @param {String} id 被回复的评论 id
+     * @param {String} commentFormHTML 评论表单HTML
+     * @param {String} endHTML 判断该表单使用 table 还是 div 标签，然后进行构造
+     */
     addReplyForm: function (id, commentFormHTML, endHTML) {
         var that = this;
         if (id === this.currentCommentId) {
@@ -550,10 +609,20 @@ $.extend(Page.prototype, {
         this.currentCommentId = id;
     },
 
+    /* 
+     * @description 隐藏回复评论的浮出层
+     * @parma {String} id 被回复的评论 id
+     */
     hideComment: function (id) {
         $("#commentRef" + id).hide();
     },
     
+    /* 
+     * @description 显示回复评论的浮出层
+     * @parma {Dom} it 触发事件的 dom
+     * @param {string} id 被回复的评论 id
+     * @param {Int} top it top 位置相对浮出层的高度
+     */
     showComment: function (it, id, top) {
         if ( $("#commentRef" + id).length > 0) {
             $("#commentRef" + id).show();
@@ -562,10 +631,15 @@ $.extend(Page.prototype, {
             $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
             $refComment.find("#replyForm").remove();
             $("#comments").append($refComment);
+            $("#commentRef" + id).css("top", ($(it).position().top + top) + "px");
         }
-        $("#commentRef" + id).css("top", ($(it).position().top + top) + "px");
     },
 
+    /* 
+     * @description 回复不刷新，将回复内容异步添加到评论列表中
+     * @parma {String} commentHTML 回复内容 HTML
+     * @param {String} state 用于区分评论文章还是回复评论
+     */
     addCommentAjax: function (commentHTML, state) {
         if ($("#comments").children().length > 0) {
             $($("#comments").children()[0]).before(commentHTML);

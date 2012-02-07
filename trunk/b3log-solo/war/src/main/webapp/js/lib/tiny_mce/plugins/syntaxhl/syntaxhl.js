@@ -145,7 +145,7 @@ var SyntaxHLDialog = {
         f.syntaxhl_gutter.checked = !("gutter" in parameters && parameters["gutter"] == "false");
         f.syntaxhl_toolbar.checked = !("toolbar" in parameters && parameters["toolbar"] == "false");
         f.syntaxhl_autolinks.checked = !("auto-links" in parameters && parameters["auto-links"] == "false");
-        //f.syntaxhl_htmlscript.checked =  ("html-script" in parameters && parameters["html-script"] == "true");
+        f.syntaxhl_htmlscript.checked =  ("html-script" in parameters && parameters["html-script"] == "true");
         //f.syntaxhl_ruler.checked =  ("ruler" in parameters && parameters["ruler"] == "true");
         //f.syntaxhl_wrap_lines.checked = !("wrap-lines" in parameters && parameters["wrap-lines"] == "false");
         f.syntaxhl_light.checked =  ("light" in parameters && parameters["light"] == "true");
@@ -172,7 +172,7 @@ var SyntaxHLDialog = {
             if(!f.syntaxhl_gutter.checked) commands.push('gutter: false');
             if(!f.syntaxhl_toolbar.checked) commands.push('toolbar: false');
             if(!f.syntaxhl_autolinks.checked) commands.push('auto-links: false');
-            //if( f.syntaxhl_htmlscript.checked) commands.push('html-script: true');
+            if( f.syntaxhl_htmlscript.checked) commands.push('html-script: true');
             //if( f.syntaxhl_ruler.checked) commands.push('ruler: true');
             //if(!f.syntaxhl_wrap_lines.checked) commands.push('wrap-lines: false');
             if( f.syntaxhl_light.checked) commands.push('light: true');
