@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -47,7 +46,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -235,11 +233,9 @@ public final class LoginProcessor {
      * 
      * @param request the specified request
      * @param response the specified response
-     * @throws RepositoryException repository exception 
      */
     public static void tryLogInWithCookie(final HttpServletRequest request,
-                                          final HttpServletResponse response)
-            throws RepositoryException {
+                                          final HttpServletResponse response) {
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return;
@@ -270,10 +266,12 @@ public final class LoginProcessor {
                             cookieJSONObject.optString(User.USER_PASSWORD);
                     if (MD5.hash(userPassword).equals(hashPassword)) {
                         Sessions.login(request, response, user);
+                        LOGGER.log(Level.INFO,
+                                   "Logged in with cookie[email={0}]", userEmail);
                     }
                 }
             }
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.WARNING,
                        "Parses cookie failed, clears the cookie[name=b3log-latke]",
                        e);

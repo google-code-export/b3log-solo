@@ -18,6 +18,7 @@ package org.b3log.solo.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
@@ -28,6 +29,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.processor.LoginProcessor;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 10, 2011
+ * @version 1.0.1.3, Feb 7, 2012
  * @since 0.3.1
  */
 public final class Users {
@@ -122,14 +124,22 @@ public final class Users {
     }
 
     /**
-     * Checks whether the current request is made by logged in user(including
-     * default user and administrator lists in <i>users</i>).
+     * Checks whether the current request is made by a logged in user
+     * (including default user and administrator lists in <i>users</i>).
+     * 
+     * <p>
+     * Invokes this method will try to login with cookie first.
+     * </p>
      *
      * @param request the specified request
+     * @param response the specified response
      * @return {@code true} if the current request is made by logged in user,
      * returns {@code false} otherwise
      */
-    public boolean isLoggedIn(final HttpServletRequest request) {
+    public boolean isLoggedIn(final HttpServletRequest request,
+                              final HttpServletResponse response) {
+        LoginProcessor.tryLogInWithCookie(request, response);
+        
         final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             return false;
