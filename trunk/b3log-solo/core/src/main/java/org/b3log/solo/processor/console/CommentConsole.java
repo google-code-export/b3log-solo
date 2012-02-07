@@ -101,7 +101,7 @@ public final class CommentConsole {
                                   final HttpServletResponse response,
                                   final HTTPRequestContext context)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -152,7 +152,7 @@ public final class CommentConsole {
                                      final HttpServletResponse response,
                                      final HTTPRequestContext context)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -223,7 +223,7 @@ public final class CommentConsole {
     public void getComments(final HttpServletRequest request,
                             final HttpServletResponse response,
                             final HTTPRequestContext context) throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -287,7 +287,7 @@ public final class CommentConsole {
                                    final HttpServletRequest request,
                                    final HttpServletResponse response)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -352,7 +352,7 @@ public final class CommentConsole {
                                 final HttpServletRequest request,
                                 final HttpServletResponse response)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

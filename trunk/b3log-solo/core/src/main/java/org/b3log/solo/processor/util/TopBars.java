@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
@@ -138,9 +137,6 @@ public final class TopBars {
 
             return stringWriter.toString();
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
-            throw new ServiceException(e);
-        } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final IOException e) {

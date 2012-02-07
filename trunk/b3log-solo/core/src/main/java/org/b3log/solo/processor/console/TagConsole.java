@@ -94,7 +94,7 @@ public final class TagConsole {
                         final HttpServletResponse response,
                         final HTTPRequestContext context)
             throws IOException {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -144,7 +144,7 @@ public final class TagConsole {
                               final HttpServletResponse response,
                               final HTTPRequestContext context)
             throws IOException {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;

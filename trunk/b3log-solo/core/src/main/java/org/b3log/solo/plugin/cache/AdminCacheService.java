@@ -170,7 +170,7 @@ public final class AdminCacheService {
                          final HttpServletResponse response,
                          final HTTPRequestContext context)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

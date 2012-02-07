@@ -112,7 +112,7 @@ public final class FileConsole {
                          final HttpServletResponse response,
                          final HTTPRequestContext context)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -166,7 +166,7 @@ public final class FileConsole {
                            final HttpServletResponse response,
                            final HTTPRequestContext context)
             throws Exception {
-        if (!userUtils.isLoggedIn(request)) {
+        if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
