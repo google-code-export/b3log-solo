@@ -13,10 +13,10 @@
 ||6||Solo 0.3.0 发布||D, V||2011-08-25||2011-08-25||2011-08-21||<font color='green'>已完成</font>|| ||
 ||7||Latke <font color='grey'>Local</font> URLFetch Service||Y||2011-08-07||2011-10-01||2011-09-30||<font color='green'>已完成</font>|| ||
 ||8||Latke <font color='grey'>Local</font> User Service||D||2011-08-07||2011-10-15||2011-09-30||<font color='green'>已完成</font>|| ||
-||9||用户 FAQ||L||2011-06-11||2011-08-07|| || <font color='red'>未开始</font>|| ||
+||9||用户 FAQ||J||2011-06-11||2011-08-07||2011-08-07|| <font color='green'>已完成</font>||还需要持续补充||
 ||10||Index 修改与发布||L||2011-08-07||2011-08-25|| ||<font color='blue'>10%</font>|| ||
 ||11||Latke <font color='grey'>Local</font> (MySQL) Repository||Y, D||2011-12-15||2012-02-19|| ||<font color='blue'>10%</font>|| ||
-||12||开发 FAQ||J||2011-06-11||2011-07-15||2011-07-15||<font color='green'>已完成</font>||还需要持续补充||
+||12||开发 FAQ||L||2011-06-11||2011-07-15||2011-07-15||<font color='green'>已完成</font>||还需要持续补充||
 ||13||入伙文档||J||2011-06-11||2011-07-01||2011-07-01||<font color='green'>已完成</font>|| ||
 ||14||Latke <font color='grey'>Local</font> Mail Service||J||2011-08-07||2011-10-01||2011-09-30||<font color='green'>已完成</font>|| || 
 ||15||Solo Issue 流程文档|| || || || || || ||
