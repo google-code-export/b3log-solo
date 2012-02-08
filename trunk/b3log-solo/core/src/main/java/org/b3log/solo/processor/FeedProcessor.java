@@ -36,6 +36,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.AtomRenderer;
 import org.b3log.latke.servlet.renderer.RssRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -62,7 +63,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Dec 29, 2011
+ * @version 1.1.0.6, Feb 7, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -206,10 +207,11 @@ public final class FeedProcessor {
      * Tag articles Atom output.
      * 
      * @param context the specified context
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/tag-articles-feed.do"},
                        method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesAtom(final HTTPRequestContext context) {
+    public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
 
@@ -217,6 +219,12 @@ public final class FeedProcessor {
         final HttpServletResponse response = context.getResponse();
 
         final String queryString = request.getQueryString();
+
+        if (Strings.isEmptyOrNull(queryString)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         final String oIdMap = queryString.split("&")[0];
         final String tagId = oIdMap.split("=")[1];
 
@@ -451,10 +459,11 @@ public final class FeedProcessor {
      * Tag articles RSS output.
      * 
      * @param context the specified context
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/tag-articles-rss.do"},
                        method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesRSS(final HTTPRequestContext context) {
+    public void tagArticlesRSS(final HTTPRequestContext context) throws IOException {
         final HttpServletResponse response = context.getResponse();
         final HttpServletRequest request = context.getRequest();
 
@@ -462,6 +471,11 @@ public final class FeedProcessor {
         context.setRenderer(renderer);
 
         final String queryString = request.getQueryString();
+        if (Strings.isEmptyOrNull(queryString)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         final String oIdMap = queryString.split("&")[0];
         final String tagId = oIdMap.split("=")[1];
 
