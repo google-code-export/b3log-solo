@@ -178,6 +178,7 @@ public final class StatProcessor {
                 // TODO: 88250, 041, post to community dirty data
                 article.remove(Common.POST_TO_COMMUNITY);
                 article.remove(Common.AUTHOR_ID);
+                article.remove(Common.AUTHOR_NAME);
                 article.remove("articleSign_oId");
                 article.remove("hasUpdated");
 
