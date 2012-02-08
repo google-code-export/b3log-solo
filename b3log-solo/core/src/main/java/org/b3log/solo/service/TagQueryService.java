@@ -96,7 +96,7 @@ public final class TagQueryService {
      *     {"tagTitle": "", "tagReferenceCount": int, ....},
      *     ....
      * ]
-     * </pre>
+     * </pre>, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags() throws ServiceException {

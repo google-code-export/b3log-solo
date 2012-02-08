@@ -49,8 +49,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
             Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
 
     @Override
-    public JSONObject getByArchiveDate(final String archiveDate)
-            throws RepositoryException {
+    public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
         long time = 0L;
         try {
             time = ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime();
@@ -62,8 +61,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
         }
 
         final Query query = new Query();
-        query.addFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time).
-                setPageCount(1);
+        query.addFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -78,9 +76,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getArchiveDates() throws RepositoryException {
         final org.b3log.latke.repository.Query query =
-                new Query().addSort(
-                ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).
-                setPageCount(1);
+                new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
         final JSONObject result = get(query);
 
         final JSONArray archiveDates = result.optJSONArray(Keys.RESULTS);
@@ -103,8 +99,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
         final Iterator<JSONObject> iterator = archiveDates.iterator();
         while (iterator.hasNext()) {
             final JSONObject archiveDate = iterator.next();
-            if (0 == archiveDate.optInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
+            if (0 == archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
                 iterator.remove();
             }
         }

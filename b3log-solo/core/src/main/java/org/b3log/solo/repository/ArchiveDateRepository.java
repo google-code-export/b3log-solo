@@ -31,12 +31,11 @@ public interface ArchiveDateRepository extends Repository {
     /**
      * Gets an archive date by the specified archive date string.
      *
-     * @param archiveDate the specified archive date stirng(yyyy/MM)
+     * @param archiveDate the specified archive date stirng (yyyy/MM)
      * @return an archive date, {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getByArchiveDate(final String archiveDate)
-            throws RepositoryException;
+    JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException;
 
     /**
      * Gets archive dates.

@@ -19,9 +19,6 @@ import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Statistics;
-import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Dates;
@@ -65,12 +62,13 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.solo.service.ArchiveDateQueryService;
 
 /**
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.3, Dec 16, 2011
+ * @version 1.1.1.4, Feb 7, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -104,19 +102,14 @@ public final class ArticleProcessor {
      */
     private Articles articleUtils = Articles.getInstance();
     /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
-    /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Archive date repository.
+     * Archive date query service.
      */
-    private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateRepositoryImpl.getInstance();
+    private ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
     /**
      * User query service.
      */
@@ -190,8 +183,7 @@ public final class ArticleProcessor {
 
         final List<JSONObject> relevantArticles =
                 articleQueryService.getRelevantArticles(article,
-                                                        preferenceQueryService.
-                getPreference());
+                                                        preferenceQueryService.getPreference());
         final JSONObject jsonObject = new JSONObject();
 
         try {
@@ -316,8 +308,7 @@ public final class ArticleProcessor {
                                                                   currentPageNum,
                                                                   pageSize);
             final List<JSONObject> articles =
-                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                    getJSONArray(Keys.RESULTS));
+                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -374,10 +365,8 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+                                    final HttpServletRequest request, final HttpServletResponse response) {
+        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("archive-articles.ftl");
@@ -395,36 +384,27 @@ public final class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.FINER,
-                       "Request archive date[string={0}, currentPageNum={1}]",
+            LOGGER.log(Level.FINER, "Request archive date[string={0}, currentPageNum={1}]",
                        new Object[]{archiveDateString, currentPageNum});
-
-            final JSONObject archiveDate =
-                    archiveDateRepository.getByArchiveDate(archiveDateString);
-            if (null == archiveDate) {
-                LOGGER.log(Level.WARNING,
-                           "Can not find articles for the specified "
-                           + "archive date[string={0}]",
-                           archiveDate);
+            final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
+            if (null == result) {
+                LOGGER.log(Level.WARNING, "Can not find articles for the specified archive date[string={0}]", archiveDateString);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
+            final JSONObject archiveDate = result.getJSONObject(ArchiveDate.ARCHIVE_DATE);
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(
-                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
 
-            final int articleCount = archiveDate.getInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
-            final int pageCount = (int) Math.ceil((double) articleCount
-                                                  / (double) pageSize);
+            final int articleCount = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
-            final List<JSONObject> articles =
-                    articleQueryService.getArticlesByArchiveDate(archiveDateId,
-                                                                 currentPageNum,
-                                                                 pageSize);
+            final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId,
+                                                                                           currentPageNum,
+                                                                                           pageSize);
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -434,14 +414,12 @@ public final class ArticleProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author =
-                            articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
                     filler.setArticlesExProperties(articles, author, preference);
                 }
             }
@@ -450,27 +428,22 @@ public final class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                                dataModel);
 
-            final String cachedTitle =
-                    prepareShowArchiveArticles(preference, dataModel, articles,
-                                               currentPageNum,
-                                               pageCount, archiveDateString,
-                                               archiveDate);
+            final String cachedTitle = prepareShowArchiveArticles(preference, dataModel, articles,
+                                                                  currentPageNum,
+                                                                  pageCount, archiveDateString,
+                                                                  archiveDate);
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
             request.setAttribute(CACHED_OID, archiveDateId);
-            request.setAttribute(CACHED_TITLE,
-                                 cachedTitle + "  [" + langs.get("pageNumLabel")
-                                 + "=" + currentPageNum + "]");
+            request.setAttribute(CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
             request.setAttribute(CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -645,8 +618,7 @@ public final class ArticleProcessor {
      * can not convert to an number
      */
     private static int getArchiveCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring("/archives/yyyy/MM/".
-                length());
+        final String pageNumString = requestURI.substring("/archives/yyyy/MM/".length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }
