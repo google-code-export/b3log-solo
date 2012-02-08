@@ -40,13 +40,11 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test
     public void add() throws Exception {
-        final ArchiveDateRepository archiveDateRepository =
-                getArchiveDateRepository();
+        final ArchiveDateRepository archiveDateRepository = getArchiveDateRepository();
 
         final JSONObject archiveDate = new JSONObject();
 
-        archiveDate.put(ArchiveDate.ARCHIVE_TIME,
-                        ArchiveDate.DATE_FORMAT.parse("2011/12").getTime());
+        archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse("2011/12").getTime());
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
@@ -54,8 +52,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
         archiveDateRepository.add(archiveDate);
         transaction.commit();
 
-        final List<JSONObject> archiveDates =
-                archiveDateRepository.getArchiveDates();
+        final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
         Assert.assertNotNull(archiveDates);
         Assert.assertEquals(archiveDates.size(), 1);
     }
@@ -67,11 +64,9 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "add")
     public void getByArchiveDate() throws Exception {
-        final ArchiveDateRepository archiveDateRepository =
-                getArchiveDateRepository();
+        final ArchiveDateRepository archiveDateRepository = getArchiveDateRepository();
 
-        final JSONObject archiveDate =
-                archiveDateRepository.getByArchiveDate("2011/12");
+        final JSONObject archiveDate = archiveDateRepository.getByArchiveDate("2011/12");
         Assert.assertNotNull(archiveDate);
     }
 }

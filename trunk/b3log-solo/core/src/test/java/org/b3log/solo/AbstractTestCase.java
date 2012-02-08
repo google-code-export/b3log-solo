@@ -52,7 +52,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Feb 2, 2012
+ * @version 1.0.0.4, Feb 7, 2012
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -175,6 +175,10 @@ public abstract class AbstractTestCase {
      * Comment management service.
      */
     private CommentMgmtService commentMgmtService;
+    /**
+     * Archive date query service.
+     */
+    private ArchiveDateQueryService archiveDateQueryService;
 
     /**
      * Before class.
@@ -223,6 +227,7 @@ public abstract class AbstractTestCase {
         tagMgmtService = TagMgmtService.getInstance();
         commentQueryService = CommentQueryService.getInstance();
         commentMgmtService = CommentMgmtService.getInstance();
+        archiveDateQueryService = ArchiveDateQueryService.getInstance();
     }
 
     /**
@@ -464,7 +469,7 @@ public abstract class AbstractTestCase {
     public TagQueryService getTagQueryService() {
         return tagQueryService;
     }
-    
+
     /**
      * Gets tag management service.
      * 
@@ -473,7 +478,7 @@ public abstract class AbstractTestCase {
     public TagMgmtService getTagMgmtService() {
         return tagMgmtService;
     }
-    
+
     /**
      * Gets comment query service.
      * 
@@ -482,13 +487,22 @@ public abstract class AbstractTestCase {
     public CommentQueryService getCommentQueryService() {
         return commentQueryService;
     }
-    
+
     /**
      * Gets comment management service.
      * 
-     * @return comment management
+     * @return comment management service
      */
     public CommentMgmtService getCommentMgmtService() {
         return commentMgmtService;
+    }
+
+    /**
+     * Gets archive date query service.
+     * 
+     * @return archive date query service
+     */
+    public ArchiveDateQueryService getArchiveDateQueryService() {
+        return archiveDateQueryService;
     }
 }
