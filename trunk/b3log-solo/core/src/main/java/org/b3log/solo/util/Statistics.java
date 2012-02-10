@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Feb 6, 2012
+ * @version 1.0.1.8, Feb 10, 2012
  * @since 0.3.1
  */
 public final class Statistics {
@@ -73,6 +73,7 @@ public final class Statistics {
      */
     public static void incOnlineVisitorCount() {
         ++onlineVisitorCount;
+        LOGGER.log(Level.INFO, "Inced online visitor count [{0}]", onlineVisitorCount);
     }
 
     /**
@@ -84,6 +85,8 @@ public final class Statistics {
         if (0 > onlineVisitorCount) {
             onlineVisitorCount = 0;
         }
+
+        LOGGER.log(Level.INFO, "Deced online visitor count [{0}]", onlineVisitorCount);
     }
 
     /**
