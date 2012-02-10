@@ -29,3 +29,10 @@
  # 运行项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:run
  # 停止项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:stop
  # 部署项目。右键 solo-gae 项目,run as maven build... --> Goals: gae:deploy
+
+====`IntelliJ IDEA Ultimate Edition`====
+ * IntelliJ IDEA : http://www.jetbrains.com/idea/
+=====配置=====
+ # VCS -> Checkout from Version Control -> Subversion 然后点击黄色“+”把http://b3log-solo.googlecode.com/svn/trunk/b3log-solo 填入 Repository URL 
+ # 或者将已迁出的项目导入到 IntellJ， File -> New Project -> Import project from external model -> Maven 然后选择项目的根目录填入 Root directory
+ # 选择右侧 Maven Projects 标签 -> B3log Solo (GAE) -> Plugins -> gae 可以看到所有的 Goals，选择需要的双击即可运行
