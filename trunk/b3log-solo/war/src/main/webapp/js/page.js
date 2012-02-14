@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jan 7, 2012
+ * @version 1.0.2.3, Feb 14, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -625,7 +625,8 @@ $.extend(Page.prototype, {
      */
     showComment: function (it, id, top) {
         if ( $("#commentRef" + id).length > 0) {
-            $("#commentRef" + id).show();
+            // 此处重复设置 top 是由于评论为异步，原有回复评论的显示位置应往下移动
+            $("#commentRef" + id).show().css("top", ($(it).position().top + top) + "px");
         } else {
             var $refComment = $("#" + id).clone();
             $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
