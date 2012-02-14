@@ -68,7 +68,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.4, Feb 7, 2012
+ * @version 1.1.1.5, Feb 14, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -244,12 +244,10 @@ public final class ArticleProcessor {
      * @throws JSONException json exception 
      */
     @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
-    public void showAuthorArticles(final HTTPRequestContext context,
-                                   final HttpServletRequest request,
+    public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request,
                                    final HttpServletResponse response)
             throws IOException, JSONException {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("author-articles.ftl");
@@ -259,21 +257,19 @@ public final class ArticleProcessor {
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }
+
             final String authorId = getAuthorId(requestURI);
 
-            LOGGER.log(Level.FINER,
-                       "Request author articles[requestURI={0}, authorId={1}]",
+            LOGGER.log(Level.FINER, "Request author articles[requestURI={0}, authorId={1}]",
                        new Object[]{requestURI, authorId});
 
-            final int currentPageNum = getAuthorCurrentPageNum(requestURI,
-                                                               authorId);
+            final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
-            LOGGER.log(Level.FINER,
-                       "Request author articles[authorId={0}, currentPageNum={1}]",
+            LOGGER.log(Level.FINER, "Request author articles[authorId={0}, currentPageNum={1}]",
                        new Object[]{authorId, currentPageNum});
 
             final JSONObject preference = preferenceQueryService.getPreference();
@@ -282,33 +278,24 @@ public final class ArticleProcessor {
                 return;
             }
 
-            final int pageSize = preference.getInt(
-                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(
-                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             JSONObject result = userQueryService.getUser(authorId);
             final JSONObject author = result.getJSONObject(User.USER);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.AUTHOR_ARTICLES));
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES));
             request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(
-                    CACHED_TITLE,
-                    langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
-                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + langs.get("authorLabel") + "=" + author.getString(
-                    User.USER_NAME) + "]");
+            request.setAttribute(CACHED_TITLE,
+                                 langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                                 + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                                 + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
             request.setAttribute(CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
-            result = articleQueryService.getArticlesByAuthorEmail(authorEmail,
-                                                                  currentPageNum,
-                                                                  pageSize);
-            final List<JSONObject> articles =
-                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            result = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -321,19 +308,13 @@ public final class ArticleProcessor {
             filler.setArticlesExProperties(articles, author, preference);
 
             if (preference.optBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
-            final int pageCount = result.optJSONObject(
-                    Pagination.PAGINATION).optInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             prepareShowAuthorArticles(pageNums, dataModel, pageCount,
@@ -341,10 +322,8 @@ public final class ArticleProcessor {
                                       preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
