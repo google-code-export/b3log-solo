@@ -1,5 +1,5 @@
 #summary 非官方文档
 
- * Ansen：[http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log部署至GAE服务器图文教程之Windows篇]
+ * Ansen：[http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log 部署至 GAE 服务器图文教程之 Windows 篇]
  * Vanessa：[http://vanessa.b3log.org/b3log-skin B3log 皮肤介绍]
  * 浪漫满屋：[http://www.lazydaisy.me/articles/2012/02/14/1329183044407.html 今天，你的网站被墙了吗？（Godaddy、DNSPod 图文配置教程]
