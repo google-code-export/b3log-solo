@@ -11,7 +11,10 @@
 ----
 ==`上传时出现 javax.net.ssl.SSLHandshakeException`==
 上传时出现报错：
-javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException: No name matching appengine.google.com found
+{{{
+javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException:
+No name matching appengine.google.com found
+}}}
 可能是您修改了 hosts 文件，导致 HTTPS 认证失败，请尝试：
  # 使用非安全方式上传，增加参数如：appcfg *--insecure* update xxxxx
  # 删除 appengine.google.com 的 hosts 配置，尝试以其他方式（例如[https://code.google.com/appengine/docs/java/tools/uploadinganapp.html#Using_an_HTTP_Proxy 代理方式]）进行上传
