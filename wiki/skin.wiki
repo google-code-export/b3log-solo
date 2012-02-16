@@ -8,3 +8,5 @@ Let's kill IE 6/7。因此不打算对 IE 6/7 进行支持，如果您正在使�
 皮肤介绍、预览请参见 [http://vanessa.b3log.org/b3log-skin B3log 皮肤简介]。
 
 其他热心网友自己制作的皮肤，请看这里：[https://code.google.com/p/b3log-solo/wiki/thirdparty_skins 非官方皮肤]
+----
+_注意_：您可以移除不需要的皮肤，只要移除 skins 目录下不需要的皮肤目录就可以了。 但 classic、mobile 两个皮肤必须保留，否则将不能正常启动。
