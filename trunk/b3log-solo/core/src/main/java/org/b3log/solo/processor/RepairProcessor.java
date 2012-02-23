@@ -17,6 +17,7 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
@@ -29,6 +30,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.Repositories;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -67,7 +69,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Dec 13, 2011
+ * @version 1.1.0.3, Feb 21, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -76,18 +78,15 @@ public final class RepairProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(RepairProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Mail service.
      */
-    private static final MailService MAIL_SVC =
-            MailServiceFactory.getMailService();
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
     /**
      * Tag repository.
      */
@@ -95,18 +94,66 @@ public final class RepairProcessor {
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
+    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+
+    /**
+     * Removes unused properties of each article.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/fix/normalization/articles/properties", method = HTTPRequestMethod.POST)
+    public void removeUnusedArticleProperties(final HTTPRequestContext context) {
+        LOGGER.log(Level.INFO, "Processes remove unused article properties");
+
+        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+        context.setRenderer(renderer);
+
+        Transaction transaction = null;
+        try {
+            final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+            if (articles.length() <= 0) {
+                renderer.setContent("No unused article properties");
+                return;
+            }
+
+            transaction = statisticRepository.beginTransaction();
+
+            final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+                final JSONArray names = article.names();
+                final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
+
+                if (nameSet.removeAll(keyNames)) {
+                    for (final String unusedName : nameSet) {
+                        article.remove(unusedName);
+                    }
+
+                    articleRepository.update(article.getString(Keys.OBJECT_ID), article);
+                    LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]",
+                               new Object[]{article.getString(Keys.OBJECT_ID), nameSet});
+                }
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (null != transaction && transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
+        }
+
+    }
 
     /**
      * Restores the statistics.
@@ -122,8 +169,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/fix/restore-stat.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/fix/restore-stat.do"}, method = HTTPRequestMethod.GET)
     public void restoreStat(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
@@ -132,8 +178,7 @@ public final class RepairProcessor {
         try {
             PageCaches.removeAll(); // Clears all first
 
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
+            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
             if (null == statistic) {
                 LOGGER.log(Level.WARNING, "Statistic is null");
                 return;
@@ -155,8 +200,7 @@ public final class RepairProcessor {
 
             if (!statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
                 statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                              statistic.getInt(
-                        Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
+                              statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
             }
 
             transaction = statisticRepository.beginTransaction();
@@ -171,8 +215,7 @@ public final class RepairProcessor {
             }
 
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            renderer.setContent("Restores statistics failed, error msg["
-                                + e.getMessage() + "]");
+            renderer.setContent("Restores statistics failed, error msg[" + e.getMessage() + "]");
         }
     }
 

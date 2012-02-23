@@ -22,6 +22,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ import org.testng.annotations.Test;
  * {@link UserRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 29, 2011
+ * @version 1.0.0.1, Feb 21, 2012
  */
 @Test(suiteName = "repository")
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
@@ -45,17 +46,19 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
     @Test
     public void test() throws Exception {
         final UserRepository userRepository = getUserRepository();
-        
+
         final JSONObject another = new JSONObject();
         another.put(User.USER_NAME, "test1");
         another.put(User.USER_EMAIL, "test1@gmail.com");
         another.put(User.USER_PASSWORD, "pass1");
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
+        another.put(UserExt.USER_ARTICLE_COUNT, 0);
+        another.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
         Transaction transaction = userRepository.beginTransaction();
         userRepository.add(another);
         transaction.commit();
-        
+
         Assert.assertNull(userRepository.getAdmin());
 
         JSONObject admin = new JSONObject();
@@ -63,11 +66,13 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         admin.put(User.USER_EMAIL, "test@gmail.com");
         admin.put(User.USER_PASSWORD, "pass");
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+        admin.put(UserExt.USER_ARTICLE_COUNT, 0);
+        admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
         transaction = userRepository.beginTransaction();
         userRepository.add(admin);
         transaction.commit();
-        
+
         Assert.assertTrue(userRepository.isAdminEmail("test@gmail.com"));
         Assert.assertFalse(userRepository.isAdminEmail("notFound@gmail.com"));
 

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link UserMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 31, 2011
+ * @version 1.0.0.1, Feb 23, 2012
  */
 @Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {

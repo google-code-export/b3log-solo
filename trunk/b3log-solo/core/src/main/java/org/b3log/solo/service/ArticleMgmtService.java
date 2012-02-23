@@ -38,13 +38,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -67,12 +61,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.b3log.solo.model.Article.*;
+import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 
 /**
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 29, 2012
+ * @version 1.0.1.1, Feb 23, 2012
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -80,13 +76,15 @@ public final class ArticleMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArticleMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
@@ -94,33 +92,27 @@ public final class ArticleMgmtService {
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateRepositoryImpl.getInstance();
+    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository =
-            ArchiveDateArticleRepositoryImpl.getInstance();
+    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
+    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
+    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
     /**
      * Article-Sign repository.
      */
-    private ArticleSignRepository articleSignRepository =
-            ArticleSignRepositoryImpl.getInstance();
+    private ArticleSignRepository articleSignRepository = ArticleSignRepositoryImpl.getInstance();
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Statistic utilities.
      */
@@ -148,8 +140,7 @@ public final class ArticleMgmtService {
     /**
      * Permalink date format(yyyy/MM/dd).
      */
-    public static final DateFormat PERMALINK_FORMAT =
-            new SimpleDateFormat("yyyy/MM/dd");
+    public static final DateFormat PERMALINK_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * Cancels publish an article by the specified article id.
@@ -157,28 +148,23 @@ public final class ArticleMgmtService {
      * @param articleId the specified article id
      * @throws ServiceException service exception
      */
-    public void cancelPublishArticle(final String articleId)
-            throws ServiceException {
-        final Transaction transaction =
-                articleRepository.beginTransaction();
+    public void cancelPublishArticle(final String articleId) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
         try {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagUtils.decTagPublishedRefCount(articleId);
             decArchiveDatePublishedRefCount(articleId);
 
-            // Removes unused properties for legacy dirty data
-            // TODO: 88250, 041, post to community dirty data
-            article.remove(Common.POST_TO_COMMUNITY);
-
             articleRepository.update(articleId, article);
             statistics.decPublishedBlogArticleCount();
-            final int blogCmtCnt =
-                    statistics.getPublishedBlogCommentCount();
-            final int articleCmtCnt =
-                    article.getInt(ARTICLE_COMMENT_COUNT);
-            statistics.setPublishedBlogCommentCount(
-                    blogCmtCnt - articleCmtCnt);
+            final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+            final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
+            statistics.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
+
+            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -200,17 +186,11 @@ public final class ArticleMgmtService {
      * cancel top
      * @throws ServiceException service exception
      */
-    public void topArticle(final String articleId, final boolean top)
-            throws ServiceException {
-        final Transaction transaction =
-                articleRepository.beginTransaction();
+    public void topArticle(final String articleId, final boolean top) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
         try {
             final JSONObject topArticle = articleRepository.get(articleId);
             topArticle.put(ARTICLE_PUT_TOP, top);
-
-            // Removes unused properties for legacy dirty data
-            // TODO: 88250, 041, post to community dirty data
-            topArticle.remove(Common.POST_TO_COMMUNITY);
 
             articleRepository.update(articleId, topArticle);
 
@@ -220,8 +200,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top",
-                       articleId);
+            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top", articleId);
             throw new ServiceException(e);
         }
     }
@@ -246,8 +225,7 @@ public final class ArticleMgmtService {
      * </pre>
      * @throws ServiceException service exception
      */
-    public void updateArticle(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final Transaction transaction = articleRepository.beginTransaction();
@@ -258,14 +236,12 @@ public final class ArticleMgmtService {
             // Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
             final String permalink = getPermalinkForUpdateArticle(
-                    oldArticle, article, (Date) oldArticle.get(
-                    ARTICLE_CREATE_DATE));
+                    oldArticle, article, (Date) oldArticle.get(ARTICLE_CREATE_DATE));
             article.put(ARTICLE_PERMALINK, permalink);
 
             processTagsForArticleUpdate(oldArticle, article);
 
-            if (!oldArticle.getString(Article.ARTICLE_PERMALINK).
-                    equals(permalink)) { // The permalink has been updated
+            if (!oldArticle.getString(Article.ARTICLE_PERMALINK).equals(permalink)) { // The permalink has been updated
                 // Updates related comments' links
                 processCommentsForArticleUpdate(article);
             }
@@ -275,8 +251,7 @@ public final class ArticleMgmtService {
             // Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId =
-                    preference.getString(Preference.TIME_ZONE_ID);
+            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
             final Date date = TimeZones.getTime(timeZoneId);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleUtils.hadBeenPublished(oldArticle)) {
@@ -305,23 +280,20 @@ public final class ArticleMgmtService {
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
                 statistics.incPublishedBlogArticleCount();
-                final int blogCmtCnt =
-                        statistics.getPublishedBlogCommentCount();
-                final int articleCmtCnt =
-                        article.getInt(ARTICLE_COMMENT_COUNT);
-                statistics.setPublishedBlogCommentCount(
-                        blogCmtCnt + articleCmtCnt);
+                final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+                final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
+                statistics.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
+
+                final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+                author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
+                userRepository.update(author.optString(Keys.OBJECT_ID), author);
             }
             // Add article-sign relation
-            final String signId =
-                    article.optString(Article.ARTICLE_SIGN_REF + "_"
-                                      + Keys.OBJECT_ID);
+            final String signId = article.optString(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             if (!Strings.isEmptyOrNull(signId)) {
-                final JSONObject articleSignRelation =
-                        articleSignRepository.getByArticleId(articleId);
+                final JSONObject articleSignRelation = articleSignRepository.getByArticleId(articleId);
                 if (null != articleSignRelation) {
-                    articleSignRepository.remove(
-                            articleSignRelation.getString(Keys.OBJECT_ID));
+                    articleSignRepository.remove(articleSignRelation.getString(Keys.OBJECT_ID));
                 }
                 addArticleSignRelation(signId, articleId);
             }
@@ -331,10 +303,6 @@ public final class ArticleMgmtService {
             }
 
             // Update
-
-            // Removes unused properties for legacy dirty data
-            // TODO: 88250, 041, post to community dirty data
-            article.remove(Common.POST_TO_COMMUNITY);
             articleRepository.update(articleId, article);
 
             if (publishNewArticle) {
@@ -343,9 +311,7 @@ public final class ArticleMgmtService {
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
                 try {
-                    eventManager.fireEventSynchronously(
-                            new Event<JSONObject>(EventTypes.ADD_ARTICLE,
-                                                  eventData));
+                    eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
                 } catch (final EventException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
@@ -355,9 +321,7 @@ public final class ArticleMgmtService {
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
                 try {
-                    eventManager.fireEventSynchronously(
-                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
-                                                  eventData));
+                    eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
                 } catch (final EventException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
@@ -403,14 +367,12 @@ public final class ArticleMgmtService {
      * @return generated article id
      * @throws ServiceException service exception
      */
-    public String addArticle(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public String addArticle(final JSONObject requestJSONObject) throws ServiceException {
         // TODO: add article args check
 
         final Transaction transaction = articleRepository.beginTransaction();
         try {
-            final JSONObject article =
-                    requestJSONObject.getJSONObject(Article.ARTICLE);
+            final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
 
             final String ret = addArticleInternal(article);
 
@@ -439,16 +401,14 @@ public final class ArticleMgmtService {
      * @return generated article id
      * @throws ServiceException service exception
      */
-    public String addArticleInternal(final JSONObject article)
-            throws ServiceException {
+    public String addArticleInternal(final JSONObject article) throws ServiceException {
         final String ret = Ids.genTimeMillisId();
 
         try {
             article.put(Keys.OBJECT_ID, ret);
 
             // Step 1: Add tags
-            final String tagsString =
-                    article.optString(Article.ARTICLE_TAGS_REF);
+            final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
             // Step 2; Set comment/view count to 0
@@ -456,14 +416,12 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId =
-                    preference.optString(Preference.TIME_ZONE_ID);
+            final String timeZoneId = preference.optString(Preference.TIME_ZONE_ID);
             final Date date = TimeZones.getTime(timeZoneId);
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 article.put(Article.ARTICLE_CREATE_DATE, date);
             }
-            article.put(Article.ARTICLE_UPDATE_DATE,
-                        article.opt(Article.ARTICLE_CREATE_DATE));
+            article.put(Article.ARTICLE_UPDATE_DATE, article.opt(Article.ARTICLE_CREATE_DATE));
             // Step 4: Set put top to false
             article.put(Article.ARTICLE_PUT_TOP, false);
             // Step 5: Add tag-article relations
@@ -479,9 +437,7 @@ public final class ArticleMgmtService {
             final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article-sign relation
-            final String signId =
-                    article.optString(Article.ARTICLE_SIGN_REF + "_"
-                                      + Keys.OBJECT_ID, "0");
+            final String signId = article.optString(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
             addArticleSignRelation(signId, ret);
             article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             // Step 10: Set had been published status
@@ -493,10 +449,17 @@ public final class ArticleMgmtService {
             // Step 11: Set random double
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             // Step 12: Set post to community
-            final boolean postToCommunity =
-                    article.optBoolean(Common.POST_TO_COMMUNITY, true);
+            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-            // Step 13: Add article
+            // Setp 13: Update user article statistic
+            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            final int userArticleCnt = author.optInt(UserExt.USER_ARTICLE_COUNT);
+            author.put(UserExt.USER_ARTICLE_COUNT, userArticleCnt + 1);
+            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
+            }
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
+            // Step 14: Add article
             articleRepository.add(article);
 
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
@@ -505,8 +468,7 @@ public final class ArticleMgmtService {
                 // Fire add article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(Article.ARTICLE, article);
-                eventManager.fireEventSynchronously(
-                        new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             }
 
             article.remove(Common.POST_TO_COMMUNITY);
@@ -539,13 +501,18 @@ public final class ArticleMgmtService {
             removeArticleComments(articleId);
 
             final JSONObject article = articleRepository.get(articleId);
+
             articleRepository.remove(articleId);
 
             statistics.decBlogArticleCount();
-
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
+
+            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
+            author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -553,8 +520,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId
-                                     + "] failed", e);
+            LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
@@ -573,18 +539,12 @@ public final class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
         transaction.clearQueryCache(false);
         try {
-            final List<JSONObject> randomArticles =
-                    articleRepository.getRandomly(updateCnt);
+            final List<JSONObject> randomArticles = articleRepository.getRandomly(updateCnt);
 
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-                // Removes unused properties for legacy dirty data
-                // TODO: 88250, 041, post to community dirty data
-                article.remove(Common.POST_TO_COMMUNITY);
-
-                articleRepository.update(article.getString(Keys.OBJECT_ID),
-                                         article);
+                articleRepository.update(article.getString(Keys.OBJECT_ID), article);
             }
 
             transaction.commit();
@@ -609,19 +569,16 @@ public final class ArticleMgmtService {
     private void decTagRefCount(final String articleId)
             throws ServiceException {
         try {
-            final List<JSONObject> tags =
-                    tagRepository.getByArticleId(articleId);
+            final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
             final JSONObject article = articleRepository.get(articleId);
 
             for (final JSONObject tag : tags) {
                 final String tagId = tag.getString(Keys.OBJECT_ID);
                 final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
                 tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-                final int publishedRefCnt =
-                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+                final int publishedRefCnt = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt
-                                                               - 1);
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
                 } else {
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
                 }
@@ -630,19 +587,14 @@ public final class ArticleMgmtService {
                            "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[oId={3}]",
                            new Object[]{tag.getString(Tag.TAG_TITLE),
                                         tag.getInt(Tag.TAG_REFERENCE_COUNT),
-                                        tag.getInt(
-                            Tag.TAG_PUBLISHED_REFERENCE_COUNT),
-                                        articleId});
+                                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT), articleId});
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Decs tag references count of article[id"
-                                     + articleId + "] failed", e);
+            LOGGER.log(Level.SEVERE, "Decs tag references count of article[id" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.FINER,
-                   "Deced all tag reference count of article[oId={0}]",
-                   articleId);
+        LOGGER.log(Level.FINER, "Deced all tag reference count of article[oId={0}]", articleId);
     }
 
     /**
@@ -657,16 +609,11 @@ public final class ArticleMgmtService {
             final JSONObject archiveDateArticleRelation =
                     archiveDateArticleRepository.getByArticleId(articleId);
             final String archiveDateId =
-                    archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
-                                                         + "_" + Keys.OBJECT_ID);
-            final JSONObject archiveDate = archiveDateRepository.get(
-                    archiveDateId);
-            int archiveDateArticleCnt =
-                    archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
+                    archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
+            final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
+            int archiveDateArticleCnt = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
             --archiveDateArticleCnt;
-            int archiveDatePublishedArticleCnt =
-                    archiveDate.getInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            int archiveDatePublishedArticleCnt = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
             final JSONObject article = articleRepository.get(articleId);
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 --archiveDatePublishedArticleCnt;
@@ -675,24 +622,16 @@ public final class ArticleMgmtService {
             if (0 == archiveDateArticleCnt) {
                 archiveDateRepository.remove(archiveDateId);
             } else {
-                final JSONObject newArchiveDate = new JSONObject(
-                        archiveDate,
-                        CollectionUtils.jsonArrayToArray(archiveDate.names(),
-                                                         String[].class));
-                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
-                                   archiveDateArticleCnt);
-                newArchiveDate.put(
-                        ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                        archiveDatePublishedArticleCnt);
+                final JSONObject newArchiveDate = new JSONObject(archiveDate,
+                                                                 CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
+                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDateArticleCnt);
+                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDatePublishedArticleCnt);
                 archiveDateRepository.update(archiveDateId, newArchiveDate);
             }
 
-            archiveDateArticleRepository.remove(archiveDateArticleRelation.
-                    getString(
-                    Keys.OBJECT_ID));
+            archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Unarchive date for article[id="
-                                     + articleId + "] failed", e);
+            LOGGER.log(Level.SEVERE, "Unarchive date for article[id=" + articleId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -704,27 +643,22 @@ public final class ArticleMgmtService {
      * @param article the specified article to update
      * @throws Exception exception
      */
-    private void processCommentsForArticleUpdate(final JSONObject article)
-            throws Exception {
+    private void processCommentsForArticleUpdate(final JSONObject article) throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
 
-        final List<JSONObject> comments =
-                commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
+        final List<JSONObject> comments = commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
 
         for (final JSONObject comment : comments) {
             final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL =
-                    Comments.getCommentSharpURLForArticle(article, commentId);
+            final String sharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
             // TODO: 88250, 041, original comment id and name default value
-            if (Strings.isEmptyOrNull(
-                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
-            if (Strings.isEmptyOrNull(
-                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
@@ -743,13 +677,10 @@ public final class ArticleMgmtService {
      * @param newArticle the specified new article
      * @throws Exception exception
      */
-    private void processTagsForArticleUpdate(final JSONObject oldArticle,
-                                             final JSONObject newArticle)
-            throws Exception {
+    private void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle) throws Exception {
         // TODO: public -> private
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
-        final List<JSONObject> oldTags =
-                tagRepository.getByArticleId(oldArticleId);
+        final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         final String tagsString = newArticle.getString(Article.ARTICLE_TAGS_REF);
         String[] tagStrings = tagsString.split(",");
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
@@ -769,8 +700,7 @@ public final class ArticleMgmtService {
         for (final JSONObject newTag : newTags) {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.FINER, "Tag need to add[title={0}]",
-                           newTagTitle);
+                LOGGER.log(Level.FINER, "Tag need to add[title={0}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             } else {
                 tagsUnchanged.add(newTag);
@@ -792,18 +722,15 @@ public final class ArticleMgmtService {
             if (null == tagId) {
                 continue; // Unchanged tag always exist id
             }
-            final int publishedRefCnt =
-                    tagUnchanged.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int publishedRefCnt = tagUnchanged.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 if (!newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                                     publishedRefCnt - 1);
+                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
                     tagRepository.update(tagId, tagUnchanged);
                 }
             } else {
                 if (newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                                     publishedRefCnt + 1);
+                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt + 1);
                     tagRepository.update(tagId, tagUnchanged);
                 }
             }
@@ -813,11 +740,9 @@ public final class ArticleMgmtService {
             final String tagId = tagDropped.getString(Keys.OBJECT_ID);
             final int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_COUNT);
             tagDropped.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-            final int publishedRefCnt =
-                    tagDropped.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int publishedRefCnt = tagDropped.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                tagDropped.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                               publishedRefCnt - 1);
+                tagDropped.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
             }
 
             tagRepository.update(tagId, tagDropped);
@@ -830,10 +755,9 @@ public final class ArticleMgmtService {
             tagIdsDropped[i] = id;
         }
 
-        removeTagArticleRelations(
-                oldArticleId, 0 == tagIdsDropped.length
-                              ? new String[]{"l0y0l"}
-                              : tagIdsDropped);
+        removeTagArticleRelations(oldArticleId, 0 == tagIdsDropped.length
+                                                ? new String[]{"l0y0l"}
+                                                : tagIdsDropped);
 
         tagStrings = new String[tagsNeedToAdd.size()];
         for (int i = 0; i < tagStrings.length; i++) {
@@ -857,25 +781,19 @@ public final class ArticleMgmtService {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    private void removeTagArticleRelations(final String articleId,
-                                           final String... tagIds)
+    private void removeTagArticleRelations(final String articleId, final String... tagIds)
             throws JSONException, RepositoryException {
         final List<String> tagIdList = Arrays.asList(tagIds);
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
+        final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
         for (int i = 0; i < tagArticleRelations.size(); i++) {
-            final JSONObject tagArticleRelation =
-                    tagArticleRelations.get(i);
+            final JSONObject tagArticleRelation = tagArticleRelations.get(i);
             String relationId = null;
             if (tagIdList.isEmpty()) { // Removes all if un-specified
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
             } else {
-                if (tagIdList.contains(
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID))) {
-                    relationId =
-                            tagArticleRelation.getString(Keys.OBJECT_ID);
+                if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
+                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                     tagArticleRepository.remove(relationId);
                 }
             }
@@ -889,17 +807,13 @@ public final class ArticleMgmtService {
      * @param article the specified article
      * @throws RepositoryException repository exception
      */
-    private void addTagArticleRelation(final JSONArray tags,
-                                       final JSONObject article)
-            throws RepositoryException {
+    private void addTagArticleRelation(final JSONArray tags, final JSONObject article) throws RepositoryException {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.optJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
 
-            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.optString(Keys.OBJECT_ID));
-            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.optString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
 
             tagArticleRepository.add(tagArticleRelation);
         }
@@ -913,24 +827,19 @@ public final class ArticleMgmtService {
      * @return an array of tags
      * @throws RepositoryException repository exception
      */
-    private JSONArray tag(final String[] tagTitles,
-                          final JSONObject article)
-            throws RepositoryException {
+    private JSONArray tag(final String[] tagTitles, final JSONObject article) throws RepositoryException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId = null;
             if (null == tag) {
-                LOGGER.log(Level.FINEST,
-                           "Found a new tag[title={0}] in article[title={1}]",
-                           new Object[]{
-                            tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-                if (article.optBoolean(
-                        Article.ARTICLE_IS_PUBLISHED)) { // Publish article directly
+                if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Publish article directly
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
                 } else { // Save as draft
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 0);
@@ -940,8 +849,7 @@ public final class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.FINEST,
-                           "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
+                LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
                            new Object[]{tag.optString(Tag.TAG_TITLE),
                                         tag.optString(Keys.OBJECT_ID),
                                         article.optString(Article.ARTICLE_TITLE)});
@@ -949,15 +857,12 @@ public final class ArticleMgmtService {
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);
                 final int refCnt = tag.optInt(Tag.TAG_REFERENCE_COUNT);
-                final int publishedRefCnt =
-                        tag.optInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+                final int publishedRefCnt = tag.optInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
                 tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
                 if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                               publishedRefCnt + 1);
+                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt + 1);
                 } else {
-                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                               publishedRefCnt);
+                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
                 }
                 tagRepository.update(tagId, tagTmp);
             }
@@ -978,8 +883,7 @@ public final class ArticleMgmtService {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    private void removeArticleComments(final String articleId)
-            throws JSONException, RepositoryException {
+    private void removeArticleComments(final String articleId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(articleId);
         int blogCommentCount = statistics.getBlogCommentCount();
         blogCommentCount -= removedCnt;
@@ -987,8 +891,7 @@ public final class ArticleMgmtService {
 
         final JSONObject article = articleRepository.get(articleId);
         if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount =
-                    statistics.getPublishedBlogCommentCount();
+            int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
             publishedBlogCommentCount -= removedCnt;
             statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
         }
@@ -1002,9 +905,7 @@ public final class ArticleMgmtService {
      * @return {@code true} if it exists, {@code false} otherwise
      * @throws JSONException json exception
      */
-    private static boolean tagExists(final String tagTitle,
-                                     final List<JSONObject> tags)
-            throws JSONException {
+    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
         for (final JSONObject tag : tags) {
             if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
                 return true;
@@ -1028,22 +929,16 @@ public final class ArticleMgmtService {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    private void archiveDate(final JSONObject article)
-            throws RepositoryException {
+    private void archiveDate(final JSONObject article) throws RepositoryException {
         final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString =
-                ArchiveDate.DATE_FORMAT.format(createDate);
-        JSONObject archiveDate = archiveDateRepository.getByArchiveDate(
-                createDateString);
+        final String createDateString = ArchiveDate.DATE_FORMAT.format(createDate);
+        JSONObject archiveDate = archiveDateRepository.getByArchiveDate(createDateString);
         if (null == archiveDate) {
             archiveDate = new JSONObject();
             try {
-                archiveDate.put(ArchiveDate.ARCHIVE_TIME,
-                                ArchiveDate.DATE_FORMAT.parse(createDateString).
-                        getTime());
+                archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse(createDateString).getTime());
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                                0);
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
@@ -1052,32 +947,18 @@ public final class ArticleMgmtService {
             }
         }
 
-        final JSONObject newArchiveDate = new JSONObject(
-                archiveDate,
-                CollectionUtils.jsonArrayToArray(archiveDate.names(),
-                                                 String[].class));
-        newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
-                           archiveDate.optInt(
-                ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
+        final JSONObject newArchiveDate = new JSONObject(archiveDate,
+                                                         CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
+        newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
         if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDate.optInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
-        } else {
-            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDate.optInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT));
+                               archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         }
-        archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID),
-                                     newArchiveDate);
+        archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID), newArchiveDate);
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
-        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_"
-                                       + Keys.OBJECT_ID, archiveDate.optString(
-                Keys.OBJECT_ID));
-        archiveDateArticleRelation.put(Article.ARTICLE + "_"
-                                       + Keys.OBJECT_ID, article.optString(
-                Keys.OBJECT_ID));
+        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
+        archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
 
         archiveDateArticleRepository.add(archiveDateArticleRelation);
     }
@@ -1089,15 +970,11 @@ public final class ArticleMgmtService {
      * @param articleId the specified article id
      * @throws RepositoryException repository exception
      */
-    private void addArticleSignRelation(final String signId,
-                                        final String articleId)
-            throws RepositoryException {
+    private void addArticleSignRelation(final String signId, final String articleId) throws RepositoryException {
         final JSONObject articleSignRelation = new JSONObject();
 
-        articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                                signId);
-        articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                articleId);
+        articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID, signId);
+        articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, articleId);
 
         articleSignRepository.add(articleSignRelation);
     }
@@ -1116,21 +993,14 @@ public final class ArticleMgmtService {
      * @param article the specified article
      * @throws JSONException json exception
      */
-    private void fillAutoProperties(final JSONObject oldArticle,
-                                    final JSONObject article) throws
-            JSONException {
-
-        final Date createDate =
-                (Date) oldArticle.get(ARTICLE_CREATE_DATE);
+    private void fillAutoProperties(final JSONObject oldArticle, final JSONObject article) throws JSONException {
+        final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
         article.put(ARTICLE_CREATE_DATE, createDate);
-        article.put(ARTICLE_COMMENT_COUNT,
-                    oldArticle.getInt(ARTICLE_COMMENT_COUNT));
+        article.put(ARTICLE_COMMENT_COUNT, oldArticle.getInt(ARTICLE_COMMENT_COUNT));
         article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
-        article.put(ARTICLE_HAD_BEEN_PUBLISHED,
-                    oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
-        article.put(ARTICLE_AUTHOR_EMAIL,
-                    oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+        article.put(ARTICLE_HAD_BEEN_PUBLISHED, oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
+        article.put(ARTICLE_AUTHOR_EMAIL, oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
     }
 
@@ -1142,14 +1012,12 @@ public final class ArticleMgmtService {
      * @return permalink
      * @throws ServiceException if invalid permalink occurs
      */
-    private String getPermalinkForAddArticle(final JSONObject article)
-            throws ServiceException {
+    private String getPermalinkForAddArticle(final JSONObject article) throws ServiceException {
         final Date date = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
 
         String ret = article.optString(Article.ARTICLE_PERMALINK);
         if (Strings.isEmptyOrNull(ret)) {
-            ret = "/articles/" + PERMALINK_FORMAT.format(
-                    date) + "/" + article.optString(Keys.OBJECT_ID) + ".html";
+            ret = "/articles/" + PERMALINK_FORMAT.format(date) + "/" + article.optString(Keys.OBJECT_ID) + ".html";
         }
 
         if (!ret.startsWith("/")) {
@@ -1157,13 +1025,11 @@ public final class ArticleMgmtService {
         }
 
         if (Permalinks.invalidArticlePermalinkFormat(ret)) {
-            throw new ServiceException(langPropsService.get(
-                    "invalidPermalinkFormatLabel"));
+            throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
         }
 
         if (permalinks.exist(ret)) {
-            throw new ServiceException(langPropsService.get(
-                    "duplicatedPermalinkLabel"));
+            throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
         }
 
         // TODO: SBC case
@@ -1181,17 +1047,14 @@ public final class ArticleMgmtService {
      * @throws ServiceException if invalid permalink occurs
      * @throws JSONException json exception
      */
-    private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
-                                                final JSONObject article,
-                                                final Date createDate)
+    private String getPermalinkForUpdateArticle(final JSONObject oldArticle, final JSONObject article, final Date createDate)
             throws ServiceException, JSONException {
         final String articleId = article.getString(Keys.OBJECT_ID);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
         final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
         if (!oldPermalink.equals(ret)) {
             if (Strings.isEmptyOrNull(ret)) {
-                ret = "/articles/" + PERMALINK_FORMAT.format(
-                        createDate) + "/" + articleId + ".html";
+                ret = "/articles/" + PERMALINK_FORMAT.format(createDate) + "/" + articleId + ".html";
             }
 
             if (!ret.startsWith("/")) {
@@ -1199,13 +1062,11 @@ public final class ArticleMgmtService {
             }
 
             if (Permalinks.invalidArticlePermalinkFormat(ret)) {
-                throw new ServiceException(langPropsService.get(
-                        "invalidPermalinkFormatLabel"));
+                throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
             }
 
             if (!oldPermalink.equals(ret) && permalinks.exist(ret)) {
-                throw new ServiceException(langPropsService.get(
-                        "duplicatedPermalinkLabel"));
+                throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
         }
 
@@ -1223,15 +1084,12 @@ public final class ArticleMgmtService {
      */
     private void decArchiveDatePublishedRefCount(final String articleId)
             throws JSONException, RepositoryException {
-        final JSONObject archiveDateArticleRelation =
-                archiveDateArticleRepository.getByArticleId(articleId);
+        final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
         final String archiveDateId =
-                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
-                                                     + "_" + Keys.OBJECT_ID);
+                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
         final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                        archiveDate.getInt(
-                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
+                        archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
         archiveDateRepository.update(archiveDateId, archiveDate);
     }
 
@@ -1245,15 +1103,11 @@ public final class ArticleMgmtService {
      */
     private void incArchiveDatePublishedRefCount(final String articleId)
             throws JSONException, RepositoryException {
-        final JSONObject archiveDateArticleRelation =
-                archiveDateArticleRepository.getByArticleId(articleId);
-        final String archiveDateId =
-                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
-                                                     + "_" + Keys.OBJECT_ID);
+        final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
+        final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
         final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                        archiveDate.getInt(
-                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+                        archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         archiveDateRepository.update(archiveDateId, archiveDate);
     }
 
