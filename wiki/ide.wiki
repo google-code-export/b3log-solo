@@ -3,6 +3,8 @@
 ===IDE===
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
 
+[https://code.google.com/p/b3log-solo/source/browse 在线浏览代码]
+
 ====`NetBeans`_（<font color='red'>推荐的</font>）_====
  * `NetBeans`:  http://netbeans.org/downloads/index.html
 =====配置=====
