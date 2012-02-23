@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Feb 21, 2012
+ * @version 1.1.0.7, Feb 23, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,8 +99,7 @@ public final class UpgradeProcessor {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject preference =
-                    preferenceRepository.get(Preference.PREFERENCE);
+            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) { // Not init yet
                 LOGGER.log(Level.INFO, "Not init yet");
                 renderer.setContent("Not init yet");
@@ -205,10 +204,10 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
-            throw new Exception("Upgrade fail from version 030 to version 031");
+            throw new Exception("Upgrade fail from version 040 to version 041");
         }
 
-        LOGGER.info("Upgraded from version 030 to version 031 successfully :-)");
+        LOGGER.info("Upgraded from version 040 to version 041 successfully :-)");
     }
 
     /**
