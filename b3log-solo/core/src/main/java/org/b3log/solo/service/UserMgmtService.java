@@ -24,6 +24,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 5, 2011
+ * @version 1.0.0.2, Feb 23, 2011
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -66,8 +67,7 @@ public final class UserMgmtService {
      * </pre>
      * @throws ServiceException service exception
      */
-    public void updateUser(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
@@ -75,27 +75,20 @@ public final class UserMgmtService {
             final JSONObject oldUser = userRepository.get(oldUserId);
 
             if (null == oldUser) {
-                throw new ServiceException(langPropsService.get(
-                        "updateFailLabel"));
+                throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
 
-            final String userNewEmail =
-                    requestJSONObject.optString(User.USER_EMAIL).
-                    toLowerCase().trim();
+            final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
             // Check email is whether duplicated
-            final JSONObject mayBeAnother = userRepository.getByEmail(
-                    userNewEmail);
-            if (null != mayBeAnother
-                && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
+            final JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
+            if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
-                throw new ServiceException(langPropsService.get(
-                        "duplicatedEmailLabel"));
+                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
             // Update
             final String userName = requestJSONObject.optString(User.USER_NAME);
-            final String userPassword =
-                    requestJSONObject.optString(User.USER_PASSWORD);
+            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
             oldUser.put(User.USER_PASSWORD, userPassword);
@@ -129,35 +122,32 @@ public final class UserMgmtService {
      * @return generated user id
      * @throws ServiceException service exception
      */
-    public String addUser(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public String addUser(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
             final JSONObject user = new JSONObject();
-            final String userEmail =
-                    requestJSONObject.optString(User.USER_EMAIL).
+            final String userEmail = requestJSONObject.optString(User.USER_EMAIL).
                     trim().toLowerCase();
-            final JSONObject duplicatedUser =
-                    userRepository.getByEmail(userEmail);
+            final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
             if (null != duplicatedUser) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
 
-                throw new ServiceException(langPropsService.get(
-                        "duplicatedEmailLabel"));
+                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
-            final String userPassword =
-                    requestJSONObject.optString(User.USER_PASSWORD);
+            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
             user.put(User.USER_PASSWORD, userPassword);
-            final String roleName = requestJSONObject.optString(
-                    User.USER_ROLE, Role.DEFAULT_ROLE);
+            final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
             user.put(User.USER_ROLE, roleName);
+            user.put(UserExt.USER_ARTICLE_COUNT, 0);
+            user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+
             userRepository.add(user);
 
             transaction.commit();
@@ -179,8 +169,7 @@ public final class UserMgmtService {
      * @param userId the given user id
      * @throws ServiceException service exception
      */
-    public void removeUser(final String userId)
-            throws ServiceException {
+    public void removeUser(final String userId) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
@@ -192,8 +181,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a user[id=" + userId + "] failed",
-                       e);
+            LOGGER.log(Level.SEVERE, "Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }

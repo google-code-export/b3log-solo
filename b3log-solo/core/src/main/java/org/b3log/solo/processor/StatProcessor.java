@@ -32,7 +32,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
@@ -173,14 +172,6 @@ public final class StatProcessor {
                 final int viewCount = oldViewCount + hitCount;
 
                 article.put(Article.ARTICLE_VIEW_COUNT, viewCount);
-
-                // Removes unused properties for legacy dirty data
-                // TODO: 88250, 041, post to community dirty data
-                article.remove(Common.POST_TO_COMMUNITY);
-                article.remove(Common.AUTHOR_ID);
-                article.remove(Common.AUTHOR_NAME);
-                article.remove("articleSign_oId");
-                article.remove("hasUpdated");
 
                 articleRepository.update(articleId, article);
 

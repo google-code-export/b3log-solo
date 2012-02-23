@@ -29,7 +29,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleRepository;
@@ -127,14 +126,9 @@ public final class Articles {
     public void incArticleCommentCount(final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle =
-                new JSONObject(article, JSONObject.getNames(article));
+        final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
-
-        // Removes unused properties for legacy dirty data
-        // TODO: 88250, 041, post to community dirty data
-        newArticle.remove(Common.POST_TO_COMMUNITY);
 
         articleRepository.update(articleId, newArticle);
     }

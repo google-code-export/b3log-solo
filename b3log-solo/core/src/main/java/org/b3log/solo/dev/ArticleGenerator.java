@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Generates some dummy articles for development testing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 30, 2012
+ * @version 1.0.0.1, Feb 23, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -56,45 +56,37 @@ public final class ArticleGenerator {
      * @param response the specified response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/dev/articles/gen/*",
-                       method = HTTPRequestMethod.GET)
-    public void genArticles(final HTTPRequestContext context,
-                            final HttpServletRequest request,
-                            final HttpServletResponse response)
+    @RequestProcessing(value = "/dev/articles/gen/*", method = HTTPRequestMethod.GET)
+    public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
-            LOGGER.log(Level.WARNING, "Article generation just for development mode, "
-                                      + "current runtime mode is [{0}]",
+            LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                        Latkes.getRuntimeMode());
             response.sendRedirect("/");
-            
+
             return;
         }
 
         Stopwatchs.start("Gen Articles");
 
         final String requestURI = request.getRequestURI();
-        final int num = Integer.valueOf(requestURI.substring(
-                "/dev/articles/gen/".length()));
+        final int num = Integer.valueOf(requestURI.substring("/dev/articles/gen/".length()));
 
         try {
-            final ArticleMgmtService articleMgmtService =
-                    ArticleMgmtService.getInstance();
+            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
 
             for (int i = 0; i < num; i++) {
                 final JSONObject article = new JSONObject();
 
                 // XXX: http://en.wikipedia.org/wiki/Markov_chain
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
-                article.put(Article.ARTICLE_ABSTRACT, "article" + i
-                                                      + " abstract");
+                article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
                 article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@b3log.or");
+                article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@b3log.org");
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
                 article.put(Article.ARTICLE_CONTENT, "article content");
-                article.put(Article.ARTICLE_PERMALINK, "article" + i
-                                                       + " permalink");
+                article.put(Article.ARTICLE_PERMALINK, "article" + i + " permalink");
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
                 article.put(Article.ARTICLE_IS_PUBLISHED, true);
                 article.put(Article.ARTICLE_PUT_TOP, false);
@@ -102,8 +94,7 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_UPDATE_DATE, new Date());
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-                articleMgmtService.addArticle(new JSONObject().put(
-                        Article.ARTICLE, article));
+                articleMgmtService.addArticle(new JSONObject().put(Article.ARTICLE, article));
             }
 
         } catch (final Exception e) {

@@ -62,13 +62,14 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.solo.model.*;
 import org.b3log.solo.service.ArchiveDateQueryService;
 
 /**
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.5, Feb 14, 2012
+ * @version 1.1.1.6, Feb 21, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -155,19 +156,13 @@ public final class ArticleProcessor {
      * @param response the specified response
      * @throws Exception exception 
      */
-    @RequestProcessing(value = {"/article/id/*/relevant/articles"},
-                       method = HTTPRequestMethod.GET)
-    public void getRelevantArticles(final HTTPRequestContext context,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+    @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
+    public void getRelevantArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         Stopwatchs.start("Get Relevant Articles");
         final String requestURI = request.getRequestURI();
 
-        final String articleId =
-                StringUtils.substringBetween(requestURI,
-                                             "/article/id/",
-                                             "/relevant/articles");
+        final String articleId = StringUtils.substringBetween(requestURI, "/article/id/", "/relevant/articles");
         if (Strings.isEmptyOrNull(articleId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -182,8 +177,7 @@ public final class ArticleProcessor {
         }
 
         final List<JSONObject> relevantArticles =
-                articleQueryService.getRelevantArticles(article,
-                                                        preferenceQueryService.getPreference());
+                articleQueryService.getRelevantArticles(article, preferenceQueryService.getPreference());
         final JSONObject jsonObject = new JSONObject();
 
         try {
@@ -205,10 +199,8 @@ public final class ArticleProcessor {
      * @param context the specified context
      * @param request the specified request 
      */
-    @RequestProcessing(value = {"/get-article-content"},
-                       method = HTTPRequestMethod.GET)
-    public void getArticleContent(final HTTPRequestContext context,
-                                  final HttpServletRequest request) {
+    @RequestProcessing(value = "/get-article-content", method = HTTPRequestMethod.GET)
+    public void getArticleContent(final HTTPRequestContext context, final HttpServletRequest request) {
         // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
@@ -244,8 +236,7 @@ public final class ArticleProcessor {
      * @throws JSONException json exception 
      */
     @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
-    public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request,
-                                   final HttpServletResponse response)
+    public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, JSONException {
         final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
@@ -313,13 +304,13 @@ public final class ArticleProcessor {
                 Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
-            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
+
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
-            prepareShowAuthorArticles(pageNums, dataModel, pageCount,
-                                      currentPageNum, articles, author,
-                                      preference);
+            prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author, preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
@@ -628,12 +619,9 @@ public final class ArticleProcessor {
      */
     private static int getAuthorCurrentPageNum(final String requestURI,
                                                final String authorId) {
-//        final String pageNumString =
-//                requestURI.substring(("/authors/" + authorId + "/").length());
-//
-//        return Requests.getCurrentPageNum(pageNumString);
-        return 1; // TODO: 88250, 041 to fix, upgrades user model by adding two 
-        // properties (published article count & article count)
+        final String pageNumString = requestURI.substring(("/authors/" + authorId + "/").length());
+
+        return Requests.getCurrentPageNum(pageNumString);
     }
 
     /**
@@ -669,14 +657,13 @@ public final class ArticleProcessor {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    private void prepareShowAuthorArticles(
-            final List<Integer> pageNums,
-            final Map<String, Object> dataModel,
-            final int pageCount,
-            final int currentPageNum,
-            final List<JSONObject> articles,
-            final JSONObject author,
-            final JSONObject preference) throws ServiceException {
+    private void prepareShowAuthorArticles(final List<Integer> pageNums,
+                                           final Map<String, Object> dataModel,
+                                           final int pageCount,
+                                           final int currentPageNum,
+                                           final List<JSONObject> articles,
+                                           final JSONObject author,
+                                           final JSONObject preference) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
                           pageNums.get(0));

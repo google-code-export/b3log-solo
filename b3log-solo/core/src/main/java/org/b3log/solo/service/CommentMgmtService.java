@@ -469,14 +469,9 @@ public final class CommentMgmtService {
     private void decArticleCommentCount(final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle =
-                new JSONObject(article, JSONObject.getNames(article));
+        final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
-
-        // Removes unused properties for legacy dirty data
-        // TODO: 88250, 041, post to community dirty data
-        newArticle.remove(Common.POST_TO_COMMUNITY);
 
         articleRepository.update(articleId, newArticle);
     }

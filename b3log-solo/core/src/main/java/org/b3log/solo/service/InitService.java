@@ -32,12 +32,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.model.Statistic;
+import org.b3log.solo.model.*;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -50,7 +45,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.b3log.solo.model.Preference.*;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.repository.impl.*;
 import org.b3log.solo.util.Comments;
@@ -59,7 +53,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 6, 2012
+ * @version 1.0.0.7, Feb 21, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -67,18 +61,15 @@ public final class InitService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(InitService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InitService.class.getName());
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository =
-            PreferenceRepositoryImpl.getInstance();
+    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
     /**
      * User repository.
      */
@@ -86,18 +77,15 @@ public final class InitService {
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
+    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateRepositoryImpl.getInstance();
+    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository =
-            ArchiveDateArticleRepositoryImpl.getInstance();
+    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
@@ -105,13 +93,11 @@ public final class InitService {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Comment repository.
      */
-    private static CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
+    private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
     /**
      * Maximum count of initialization.
      */
@@ -162,8 +148,7 @@ public final class InitService {
         while (true) {
             final Transaction transaction = userRepository.beginTransaction();
             try {
-                final JSONObject statistic =
-                        statisticRepository.get(Statistic.STATISTIC);
+                final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
                 if (null == statistic) {
                     initStatistic();
                     initPreference(requestJSONObject);
@@ -239,10 +224,8 @@ public final class InitService {
         article.put(Article.ARTICLE_UPDATE_DATE, date);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
         article.put(Article.ARTICLE_AUTHOR_EMAIL,
-                    preferenceRepository.get(Preference.PREFERENCE).optString(
-                Preference.ADMIN_EMAIL));
+                    preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
 
         final String articleId = addHelloWorldArticle(article);
 
@@ -280,23 +263,20 @@ public final class InitService {
      * @return generated article id
      * @throws RepositoryException repository exception
      */
-    private String addHelloWorldArticle(final JSONObject article)
-            throws RepositoryException {
+    private String addHelloWorldArticle(final JSONObject article) throws RepositoryException {
         final String ret = Ids.genTimeMillisId();
 
         try {
             article.put(Keys.OBJECT_ID, ret);
 
             // Step 1: Add tags
-            final String tagsString =
-                    article.optString(Article.ARTICLE_TAGS_REF);
+            final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
             // Step 2: Add tag-article relations
             addTagArticleRelation(tags, article);
             // Step 3: Inc blog article and comment count statictis
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
+            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
             statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 1);
             statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 1);
             statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 1);
@@ -306,6 +286,11 @@ public final class InitService {
             archiveDate(article);
             // Step 5: Add article
             articleRepository.add(article);
+            // Step 6: Update admin user for article statistic
+            final JSONObject admin = userRepository.getAdmin();
+            admin.put(UserExt.USER_ARTICLE_COUNT, 1);
+            admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 1);
+            userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Adds an article failed", e);
 
@@ -391,17 +376,14 @@ public final class InitService {
      * @return an array of tags
      * @throws RepositoryException repository exception
      */
-    private JSONArray tag(final String[] tagTitles,
-                          final JSONObject article)
+    private JSONArray tag(final String[] tagTitles, final JSONObject article)
             throws RepositoryException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             final JSONObject tag = new JSONObject();
-            LOGGER.log(Level.FINEST,
-                       "Found a new tag[title={0}] in article[title={1}]",
-                       new Object[]{
-                        tagTitle, article.optString(Article.ARTICLE_TITLE)});
+            LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                       new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
             tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
@@ -436,8 +418,9 @@ public final class InitService {
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD,
-                  requestJSONObject.getString(User.USER_PASSWORD));
+        admin.put(User.USER_PASSWORD, requestJSONObject.getString(User.USER_PASSWORD));
+        admin.put(UserExt.USER_ARTICLE_COUNT, 0);
+        admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
         userRepository.add(admin);
 
@@ -473,15 +456,12 @@ public final class InitService {
      * 
      * @throws Exception exception
      */
-    private void initReplyNotificationTemplate()
-            throws Exception {
+    private void initReplyNotificationTemplate() throws Exception {
         LOGGER.info("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate =
-                new JSONObject(
-                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
-        replyNotificationTemplate.put(Keys.OBJECT_ID,
-                                      Preference.REPLY_NOTIFICATION_TEMPLATE);
+                new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
 
         preferenceRepository.add(replyNotificationTemplate);
 

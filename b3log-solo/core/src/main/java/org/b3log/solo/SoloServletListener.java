@@ -68,8 +68,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(SoloServletListener.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SoloServletListener.class.getName());
     /**
      * JSONO print indent factor.
      */
@@ -77,8 +76,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Rhythm address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS =
-            "http://b3log-rhythm.appspot.com:80";
+    public static final String B3LOG_RHYTHM_ADDRESS = "http://b3log-rhythm.appspot.com:80";
     /**
      * Task queue service.
      */
@@ -87,7 +85,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-    
+
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
@@ -187,7 +185,7 @@ public final class SoloServletListener extends AbstractServletListener {
                    new Object[]{Strings.LINE_SEPARATOR,
                                 Stopwatchs.getTimingStat()});
         Stopwatchs.release();
-        
+
         super.requestDestroyed(servletRequestEvent);
     }
 
