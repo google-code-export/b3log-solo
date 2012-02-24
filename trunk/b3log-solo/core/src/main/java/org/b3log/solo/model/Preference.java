@@ -335,8 +335,7 @@ public final class Preference {
                                               "Your comment on post[<a href='${postLink}'>"
                                               + "${postTitle}</a>] received an reply: <p>${replier}"
                                               + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
-                DEFAULT_REPLY_NOTIFICATION_TEMPLATE = 
-                        replyNotificationTemplate.toString();
+                DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
             } catch (final Exception e) {
                 LOGGER.log(Level.SEVERE, "Creates sign error!", e);
                 throw new IllegalStateException(e);

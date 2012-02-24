@@ -29,18 +29,12 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.mail.MailService.Message;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Repositories;
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Statistic;
-import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -48,7 +42,6 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
@@ -69,7 +62,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Feb 21, 2012
+ * @version 1.1.0.4, Feb 23, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -124,11 +117,20 @@ public final class RepairProcessor {
                 return;
             }
 
+            final ArticleSignRepositoryImpl articleSignRepository = ArticleSignRepositoryImpl.getInstance();
+
             transaction = statisticRepository.beginTransaction();
 
             final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
+
+                // TODO: 045 to remove ---- START ----
+                final JSONObject articleSignRel = articleSignRepository.getByArticleId(article.optString(Keys.OBJECT_ID));
+                final String signId = articleSignRel.getString("sign_oId");
+                article.put(Article.ARTICLE_SIGN_ID, signId);
+                // 045 to remove ---- END ----
+
                 final JSONArray names = article.names();
                 final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
 
@@ -152,7 +154,6 @@ public final class RepairProcessor {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
         }
-
     }
 
     /**
@@ -169,7 +170,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/fix/restore-stat.do"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/fix/restore-stat.do", method = HTTPRequestMethod.GET)
     public void restoreStat(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
@@ -193,14 +194,11 @@ public final class RepairProcessor {
             }
 
             if (!statistic.has(Statistic.STATISTIC_BLOG_COMMENT_COUNT)) {
-                statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
-                              statistic.getInt(
-                        Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+                statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
             }
 
             if (!statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
-                statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                              statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
+                statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
             }
 
             transaction = statisticRepository.beginTransaction();
@@ -224,16 +222,14 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/fix/restore-signs.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/fix/restore-signs.do", method = HTTPRequestMethod.GET)
     public void restoreSigns(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String originalSigns =
-                    preference.getString(Preference.SIGNS);
+            final String originalSigns = preference.getString(Preference.SIGNS);
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
             PreferenceMgmtService.getInstance().updatePreference(preference);
@@ -243,16 +239,13 @@ public final class RepairProcessor {
             msg.setFrom(preference.getString(Preference.ADMIN_EMAIL));
             msg.addRecipient("DL88250@gmail.com");
             msg.setSubject("Restore signs");
-            msg.setHtmlBody(originalSigns + "<p>Admin email: "
-                            + preference.getString(Preference.ADMIN_EMAIL)
-                            + "</p>");
+            msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Preference.ADMIN_EMAIL) + "</p>");
 
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            renderer.setContent("Restores signs failed, error msg["
-                                + e.getMessage() + "]");
+            renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
         }
     }
 
@@ -261,8 +254,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/fix/tag-article-counter-repair.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HTTPRequestMethod.GET)
     public void repairTagArticleCounter(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
@@ -271,24 +263,18 @@ public final class RepairProcessor {
         try {
             final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
-            final List<JSONObject> tags =
-                    CollectionUtils.jsonArrayToList(tagArray);
+            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(tagArray);
             for (final JSONObject tag : tags) {
                 final String tagId = tag.getString(Keys.OBJECT_ID);
-                final JSONObject tagArticleResult =
-                        tagArticleRepository.getByTagId(tagId, 1,
-                                                        Integer.MAX_VALUE);
-                final JSONArray tagArticles =
-                        tagArticleResult.getJSONArray(Keys.RESULTS);
+                final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, Integer.MAX_VALUE);
+                final JSONArray tagArticles = tagArticleResult.getJSONArray(Keys.RESULTS);
                 final int tagRefCnt = tagArticles.length();
                 int publishedTagRefCnt = 0;
                 for (int i = 0; i < tagRefCnt; i++) {
                     final JSONObject tagArticle = tagArticles.getJSONObject(i);
-                    final String articleId = tagArticle.getString(
-                            Article.ARTICLE + "_" + Keys.OBJECT_ID);
+                    final String articleId = tagArticle.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
                     final JSONObject article = articleRepository.get(articleId);
-                    final boolean isPublished =
-                            article.getBoolean(Article.ARTICLE_IS_PUBLISHED);
+                    final boolean isPublished = article.getBoolean(Article.ARTICLE_IS_PUBLISHED);
                     if (isPublished) {
                         publishedTagRefCnt++;
                     }
@@ -299,10 +285,8 @@ public final class RepairProcessor {
 
                 tagRepository.update(tagId, tag);
 
-                LOGGER.log(Level.INFO,
-                           "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
-                           new Object[]{tag.getString(Tag.TAG_TITLE),
-                                        tagRefCnt, publishedTagRefCnt});
+                LOGGER.log(Level.INFO, "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
+                           new Object[]{tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt});
             }
 
             transaction.commit();
@@ -314,8 +298,7 @@ public final class RepairProcessor {
             }
 
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            renderer.setContent("Repairs failed, error msg[" + e.getMessage()
-                                + "]");
+            renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
         }
     }
 
@@ -324,8 +307,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/rm-all-data.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.GET)
     public void removeAllDataGET(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
@@ -334,16 +316,14 @@ public final class RepairProcessor {
             final StringBuilder htmlBuilder = new StringBuilder();
             htmlBuilder.append("<html><head><title>WARNING!</title>");
             htmlBuilder.append("<script type='text/javascript'");
-            htmlBuilder.append(
-                    "src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js'");
+            htmlBuilder.append("src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js'");
             htmlBuilder.append("></script></head><body>");
             htmlBuilder.append("<button id='ok' onclick='remove()'>");
             htmlBuilder.append("Continue to delete ALL DATA</button></body>");
             htmlBuilder.append("<script type='text/javascript'>");
             htmlBuilder.append("function remove() {");
             htmlBuilder.append("$.ajax({type: 'POST',url: '/rm-all-data.do',");
-            htmlBuilder.append(
-                    "dataType: 'text/html',success: function(result){");
+            htmlBuilder.append("dataType: 'text/html',success: function(result){");
             htmlBuilder.append("$('html').html(result);}});}</script></html>");
 
             renderer.setContent(htmlBuilder.toString());
@@ -351,8 +331,7 @@ public final class RepairProcessor {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -440,8 +419,7 @@ public final class RepairProcessor {
      * @throws ExecutionException execution exception
      * @throws InterruptedException interrupted exception
      */
-    private void remove(final Repository repository)
-            throws ExecutionException, InterruptedException {
+    private void remove(final Repository repository) throws ExecutionException, InterruptedException {
         final long startTime = System.currentTimeMillis();
         final long step = 20000;
 
@@ -467,6 +445,81 @@ public final class RepairProcessor {
 
             LOGGER.log(Level.SEVERE, "Removes all data in repository[name="
                                      + repository.getName() + "] failed", e);
+        }
+    }
+}
+
+/**
+ * Article-Sign relation repository.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.3, Dec 31, 2011
+ * @since 0.3.1
+ */
+// TODO: 045 to remove this class!
+final class ArticleSignRepositoryImpl extends AbstractRepository {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleSignRepositoryImpl.class.getName());
+
+    /**
+     * Get an Article-Sign relation by the specified article id.
+     * 
+     * @param articleId the specified article id
+     * @return an article-Sign relation, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    public JSONObject getByArticleId(final String articleId) throws RepositoryException {
+        final Query query = new Query().addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    /**
+     * Gets the {@link ArticleSignRepositoryImpl} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArticleSignRepositoryImpl getInstance() {
+        return ArticleSignRepositoryImpl.SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private constructor.
+     * 
+     * @param name the specified name
+     */
+    private ArticleSignRepositoryImpl(final String name) {
+        super(name);
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArticleSignRepositoryImpl SINGLETON = new ArticleSignRepositoryImpl(Article.ARTICLE + "_" + Sign.SIGN);
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

@@ -140,7 +140,7 @@ public final class ArticleQueryService {
      *             "oId": "",
      *             "tagTitle": ""
      *         }, ....],
-     *         "articleSign_oId": "",
+     *         "articleSignId": "",
      *         "signs": [{
      *             "oId": "",
      *             "signHTML": ""
@@ -150,8 +150,7 @@ public final class ArticleQueryService {
      * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getArticle(final String articleId)
-            throws ServiceException {
+    public JSONObject getArticle(final String articleId) throws ServiceException {
         try {
             final JSONObject ret = new JSONObject();
 
@@ -164,13 +163,10 @@ public final class ArticleQueryService {
             ret.put(ARTICLE, article);
 
             final JSONArray tags = new JSONArray();
-            final List<JSONObject> tagArticleRelations =
-                    tagArticleRepository.getByArticleId(articleId);
+            final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
             for (int i = 0; i < tagArticleRelations.size(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.get(i);
-                final String tagId = tagArticleRelation.getString(
-                        Tag.TAG + "_" + Keys.OBJECT_ID);
+                final JSONObject tagArticleRelation = tagArticleRelations.get(i);
+                final String tagId = tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
 
                 tags.put(tag);
@@ -178,13 +174,7 @@ public final class ArticleQueryService {
             article.put(ARTICLE_TAGS_REF, tags);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String signId = articleUtils.getSign(
-                    articleId, preference).getString(Keys.OBJECT_ID);
-            article.put(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, signId);
-
-            final JSONArray signs =
-                    new JSONArray(preference.getString(Preference.SIGNS));
-            article.put(Sign.SIGNS, signs);
+            article.put(Sign.SIGNS, new JSONArray(preference.getString(Preference.SIGNS)));
 
             // Remove unused properties
             article.remove(ARTICLE_AUTHOR_EMAIL);

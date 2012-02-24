@@ -216,7 +216,7 @@ public final class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        // TODO: 88250, 041 article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final Date date = TimeZones.getTime(INIT_TIME_ZONE_ID);

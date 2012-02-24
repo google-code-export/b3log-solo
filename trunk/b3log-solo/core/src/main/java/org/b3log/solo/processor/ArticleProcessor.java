@@ -69,7 +69,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.6, Feb 21, 2012
+ * @version 1.1.1.7, Feb 24, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -78,18 +78,15 @@ public final class ArticleProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArticleProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService =
-            ArticleQueryService.getInstance();
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService =
-            CommentQueryService.getInstance();
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
      * Filler.
      */
@@ -105,8 +102,7 @@ public final class ArticleProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Archive date query service.
      */
@@ -125,16 +121,14 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/get-random-articles.do"},
-                       method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/get-random-articles.do", method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) {
         Stopwatchs.start("Get Random Articles");
 
         final JSONObject jsonObject = new JSONObject();
 
         try {
-            final List<JSONObject> randomArticles =
-                    getRandomArticles(preferenceQueryService.getPreference());
+            final List<JSONObject> randomArticles = getRandomArticles(preferenceQueryService.getPreference());
 
             jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
 
@@ -176,8 +170,7 @@ public final class ArticleProcessor {
             return;
         }
 
-        final List<JSONObject> relevantArticles =
-                articleQueryService.getRelevantArticles(article, preferenceQueryService.getPreference());
+        final List<JSONObject> relevantArticles = articleQueryService.getRelevantArticles(article, preferenceQueryService.getPreference());
         final JSONObject jsonObject = new JSONObject();
 
         try {
@@ -235,7 +228,7 @@ public final class ArticleProcessor {
      * @throws IOException io exception
      * @throws JSONException json exception 
      */
-    @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, JSONException {
         final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
@@ -333,7 +326,7 @@ public final class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response 
      */
-    @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
                                     final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
@@ -432,8 +425,7 @@ public final class ArticleProcessor {
      * 
      * @param request the specified request
      */
-    @RequestProcessing(value = {"/article-random-double-gen.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/article-random-double-gen.do", method = HTTPRequestMethod.GET)
     public void updateArticlesRandomValue(final HttpServletRequest request) {
         // Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and 
         // cron.xml for more details.
@@ -457,10 +449,9 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/article"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("article.ftl");
@@ -475,13 +466,11 @@ public final class ArticleProcessor {
                 return;
             }
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
 
-            final JSONObject article =
-                    (JSONObject) request.getAttribute(Article.ARTICLE);
+            final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
             if (null == article) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -500,13 +489,10 @@ public final class ArticleProcessor {
             }
 
             request.setAttribute(CACHED_OID, articleId);
-            request.setAttribute(CACHED_TITLE,
-                                 article.getString(Article.ARTICLE_TITLE));
-            request.setAttribute(CACHED_LINK,
-                                 article.getString(Article.ARTICLE_PERMALINK));
+            request.setAttribute(CACHED_TITLE, article.getString(Article.ARTICLE_TITLE));
+            request.setAttribute(CACHED_LINK, article.getString(Article.ARTICLE_PERMALINK));
 
-            LOGGER.log(Level.FINEST, "Article[title={0}]",
-                       article.getString(Article.ARTICLE_TITLE));
+            LOGGER.log(Level.FINEST, "Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.getString(
@@ -532,10 +518,9 @@ public final class ArticleProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                                dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -557,14 +542,11 @@ public final class ArticleProcessor {
      * @see Comparators#ARTICLE_UPDATE_DATE_COMPARATOR
      * @see Comparators#ARTICLE_CREATE_DATE_COMPARATOR
      */
-    private void sort(final JSONObject preference,
-                      final List<JSONObject> articles) throws JSONException {
+    private void sort(final JSONObject preference, final List<JSONObject> articles) throws JSONException {
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            Collections.sort(articles,
-                             Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+            Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
         } else {
-            Collections.sort(articles,
-                             Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
         }
     }
 
@@ -617,8 +599,7 @@ public final class ArticleProcessor {
      * @param authorId the specified author id
      * @return page number
      */
-    private static int getAuthorCurrentPageNum(final String requestURI,
-                                               final String authorId) {
+    private static int getAuthorCurrentPageNum(final String requestURI, final String authorId) {
         final String pageNumString = requestURI.substring(("/authors/" + authorId + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
@@ -632,10 +613,8 @@ public final class ArticleProcessor {
      */
     private List<JSONObject> getRandomArticles(final JSONObject preference) {
         try {
-            final int displayCnt =
-                    preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
-            final List<JSONObject> ret =
-                    articleQueryService.getArticlesRandomly(displayCnt);
+            final int displayCnt = preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+            final List<JSONObject> ret = articleQueryService.getArticlesRandomly(displayCnt);
 
             return ret;
         } catch (final Exception e) {
@@ -665,25 +644,20 @@ public final class ArticleProcessor {
                                            final JSONObject author,
                                            final JSONObject preference) throws ServiceException {
         if (0 != pageNums.size()) {
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
-                          pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                          pageNums.get(pageNums.size() - 1));
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-        final String previousPageNum =
-                Integer.toString(currentPageNum > 1 ? currentPageNum - 1
-                                 : 0);
+        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
                       "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
         } else {
-            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                               + 1);
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum + 1);
         }
 
         dataModel.put(Article.ARTICLES, articles);
@@ -710,38 +684,31 @@ public final class ArticleProcessor {
      * @return page title for caching
      * @throws Exception  exception
      */
-    private String prepareShowArchiveArticles(
-            final JSONObject preference,
-            final Map<String, Object> dataModel,
-            final List<JSONObject> articles,
-            final int currentPageNum,
-            final int pageCount,
-            final String archiveDateString,
-            final JSONObject archiveDate) throws Exception {
-        final int pageSize = preference.getInt(
-                Preference.ARTICLE_LIST_DISPLAY_COUNT);
-        final int windowSize = preference.getInt(
-                Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+    private String prepareShowArchiveArticles(final JSONObject preference,
+                                              final Map<String, Object> dataModel,
+                                              final List<JSONObject> articles,
+                                              final int currentPageNum,
+                                              final int pageCount,
+                                              final String archiveDateString,
+                                              final JSONObject archiveDate) throws Exception {
+        final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-        final List<Integer> pageNums =
-                Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                   windowSize);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                                          windowSize);
 
         dataModel.put(Article.ARTICLES, articles);
-        final String previousPageNum =
-                Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
                       "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
         } else {
-            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM,
-                          currentPageNum + 1);
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum + 1);
         }
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                      pageNums.get(pageNums.size() - 1));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.PATH, "/archives/" + archiveDateString);
@@ -754,12 +721,10 @@ public final class ArticleProcessor {
         final String year = dateStrings[0];
         final String month = dateStrings[1];
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
-        final String language = Locales.getLanguage(
-                preference.getString(Preference.LOCALE_STRING));
+        final String language = Locales.getLanguage(preference.getString(Preference.LOCALE_STRING));
         String ret = null;
         if ("en".equals(language)) {
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                            Dates.EN_MONTHS.get(month));
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, Dates.EN_MONTHS.get(month));
             ret = Dates.EN_MONTHS.get(month) + " " + year;
         } else {
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
@@ -779,43 +744,33 @@ public final class ArticleProcessor {
      * @param article the specified article
      * @throws Exception exception
      */
-    private void prepareShowArticle(final JSONObject preference,
-                                    final Map<String, Object> dataModel,
-                                    final JSONObject article)
+    private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
             throws Exception {
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
 
         Stopwatchs.start("Get Article Sign");
         LOGGER.finer("Getting article sign....");
-        article.put(Article.ARTICLE_SIGN_REF,
-                    articleUtils.getSign(articleId, preference));
+        article.put(Common.ARTICLE_SIGN, articleUtils.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference));
         LOGGER.finer("Got article sign");
         Stopwatchs.end();
 
         Stopwatchs.start("Get Next Article");
         LOGGER.finer("Getting the next article....");
-        final JSONObject nextArticle =
-                articleQueryService.getNextArticle(articleId);
+        final JSONObject nextArticle = articleQueryService.getNextArticle(articleId);
         if (null != nextArticle) {
-            dataModel.put(Common.NEXT_ARTICLE_PERMALINK,
-                          nextArticle.getString(Article.ARTICLE_PERMALINK));
-            dataModel.put(Common.NEXT_ARTICLE_TITLE,
-                          nextArticle.getString(Article.ARTICLE_TITLE));
+            dataModel.put(Common.NEXT_ARTICLE_PERMALINK, nextArticle.getString(Article.ARTICLE_PERMALINK));
+            dataModel.put(Common.NEXT_ARTICLE_TITLE, nextArticle.getString(Article.ARTICLE_TITLE));
             LOGGER.finer("Got the next article");
         }
         Stopwatchs.end();
 
         Stopwatchs.start("Get Previous Article");
         LOGGER.finer("Getting the previous article....");
-        final JSONObject previousArticle =
-                articleQueryService.getPreviousArticle(articleId);
+        final JSONObject previousArticle = articleQueryService.getPreviousArticle(articleId);
         if (null != previousArticle) {
-            dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                          previousArticle.getString(
-                    Article.ARTICLE_PERMALINK));
-            dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
-                          previousArticle.getString(Article.ARTICLE_TITLE));
+            dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK, previousArticle.getString(Article.ARTICLE_PERMALINK));
+            dataModel.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticle.getString(Article.ARTICLE_TITLE));
             LOGGER.finer("Got the previous article");
         }
         Stopwatchs.end();
@@ -824,8 +779,7 @@ public final class ArticleProcessor {
         LOGGER.finer("Getting article's comments....");
         final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         if (0 != cmtCount) {
-            final List<JSONObject> articleComments =
-                    commentQueryService.getComments(articleId);
+            final List<JSONObject> articleComments = commentQueryService.getComments(articleId);
             dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
         } else {
             dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
@@ -834,8 +788,7 @@ public final class ArticleProcessor {
         Stopwatchs.end();
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                      preference.getInt(
-                Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+                      preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
                       preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,

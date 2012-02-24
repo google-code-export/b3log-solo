@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 28, 2011
+ * @version 1.0.1.3, Feb 23, 2012
  * @since 0.3.1
  */
 public final class Article {
@@ -73,9 +73,9 @@ public final class Article {
      */
     public static final String ARTICLE_COMMENTS_REF = "articleComments";
     /**
-     * Key of sign.
+     * Key of sign id.
      */
-    public static final String ARTICLE_SIGN_REF = "articleSign";
+    public static final String ARTICLE_SIGN_ID = "articleSignId";
     /**
      * Key of permalink.
      */

@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 30, 2011
+ * @version 1.0.0.1, Feb 24, 2012
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -62,6 +62,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CREATE_DATE, new Date());
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -118,6 +119,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CREATE_DATE, new Date());
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -172,6 +174,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CREATE_DATE, new Date());
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -220,6 +223,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CREATE_DATE, new Date());
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -308,7 +312,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
                 articleRepository.getByPermalink("article permalink4");
         Assert.assertNotNull(notPublished);
         Assert.assertFalse(notPublished.getBoolean(Article.ARTICLE_IS_PUBLISHED));
-        
+
         Assert.assertFalse(articleRepository.isPublished("not found"));
     }
 }

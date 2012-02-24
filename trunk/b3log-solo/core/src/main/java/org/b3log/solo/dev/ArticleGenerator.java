@@ -25,11 +25,13 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
@@ -74,6 +76,9 @@ public final class ArticleGenerator {
 
         try {
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+            final UserQueryService userQueryService = UserQueryService.getInstance();
+            final JSONObject admin = userQueryService.getAdmin();
+            final String authorEmail = admin.optString(User.USER_EMAIL);
 
             for (int i = 0; i < num; i++) {
                 final JSONObject article = new JSONObject();
@@ -82,7 +87,7 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
                 article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
                 article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@b3log.org");
+                article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
                 article.put(Article.ARTICLE_CONTENT, "article content");

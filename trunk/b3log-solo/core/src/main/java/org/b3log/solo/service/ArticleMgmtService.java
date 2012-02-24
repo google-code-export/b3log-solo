@@ -42,14 +42,12 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -105,10 +103,6 @@ public final class ArticleMgmtService {
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
-    /**
-     * Article-Sign repository.
-     */
-    private ArticleSignRepository articleSignRepository = ArticleSignRepositoryImpl.getInstance();
     /**
      * Preference query service.
      */
@@ -219,7 +213,7 @@ public final class ArticleMgmtService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSign_oId": ""
+     *         "articleSignId": ""
      *     }
      * }
      * </pre>
@@ -288,16 +282,7 @@ public final class ArticleMgmtService {
                 author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
                 userRepository.update(author.optString(Keys.OBJECT_ID), author);
             }
-            // Add article-sign relation
-            final String signId = article.optString(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            if (!Strings.isEmptyOrNull(signId)) {
-                final JSONObject articleSignRelation = articleSignRepository.getByArticleId(articleId);
-                if (null != articleSignRelation) {
-                    articleSignRepository.remove(articleSignRelation.getString(Keys.OBJECT_ID));
-                }
-                addArticleSignRelation(signId, articleId);
-            }
-            article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+
             if (publishNewArticle) {
                 incArchiveDatePublishedRefCount(articleId);
             }
@@ -360,7 +345,7 @@ public final class ArticleMgmtService {
      *         "articleIsPublished": boolean,
      *         "articlePermalink": "", // optional
      *         "postToCommunity": boolean, // optional, default is true
-     *         "articleSign_oId": "" // optional, default is "0"
+     *         "articleSignId": "" // optional, default is "0"
      *     }
      * }
      * </pre>
@@ -436,10 +421,9 @@ public final class ArticleMgmtService {
             // Step 8: Set permalink
             final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
-            // Step 9: Add article-sign relation
-            final String signId = article.optString(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
-            addArticleSignRelation(signId, ret);
-            article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            // Step 9: Add article sign id
+            final String signId = article.optString(Article.ARTICLE_SIGN_ID, "0");
+            article.put(Article.ARTICLE_SIGN_ID, signId);
             // Step 10: Set had been published status
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
@@ -961,22 +945,6 @@ public final class ArticleMgmtService {
         archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
 
         archiveDateArticleRepository.add(archiveDateArticleRelation);
-    }
-
-    /**
-     * Adds relation of the specified article and sign.
-     *
-     * @param signId the specified sign id
-     * @param articleId the specified article id
-     * @throws RepositoryException repository exception
-     */
-    private void addArticleSignRelation(final String signId, final String articleId) throws RepositoryException {
-        final JSONObject articleSignRelation = new JSONObject();
-
-        articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID, signId);
-        articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, articleId);
-
-        articleSignRepository.add(articleSignRelation);
     }
 
     /**
