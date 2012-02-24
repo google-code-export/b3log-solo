@@ -31,7 +31,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
-import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Strings;
