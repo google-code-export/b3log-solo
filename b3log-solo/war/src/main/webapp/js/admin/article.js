@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Feb 7, 2012
+ * @version 1.0.2.0, Feb 23, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -512,8 +512,8 @@ admin.article = {
                 theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist",
                 theme_advanced_buttons2 : "",
                 theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_location : "bottom",
-                theme_advanced_toolbar_align : "center",
+                theme_advanced_toolbar_location : "top",
+                theme_advanced_toolbar_align : "left",
                 
                 valid_children : "+body[style]"
             });

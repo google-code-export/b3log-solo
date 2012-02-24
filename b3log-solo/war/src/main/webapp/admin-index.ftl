@@ -83,7 +83,7 @@
                             </li>
                             <li>
                                 <div id="tabs_page-list">
-                                    <a href="#tools/page-list">${pageMgmtLabel}</a>
+                                    <a href="#tools/page-list">${navMgmtLabel}</a>
                                 </div>
                             </li>
                             <li>
