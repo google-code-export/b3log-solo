@@ -4,7 +4,7 @@
 
 <ol>
 <li>文章生成，/dev/articles/gen/${num}</li>
-${num} 是需要生成文章的数量，比如浏览器直接访问  /dev/articles/gen/100，就会生成 100 篇文章。
+${num} 是需要生成文章的数量，比如浏览器直接访问  /dev/articles/gen/100，就会生成 100 篇文章（作者全为管理员）。
 </ol>
 
 ----
