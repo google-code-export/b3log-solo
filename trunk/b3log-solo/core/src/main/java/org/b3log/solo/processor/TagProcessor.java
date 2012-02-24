@@ -17,6 +17,7 @@ package org.b3log.solo.processor;
 
 import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.processor.util.Filler;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.json.JSONException;
 import org.b3log.latke.service.ServiceException;
@@ -28,7 +29,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import java.net.URLDecoder;
 import java.util.Collections;
-import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
