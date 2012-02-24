@@ -30,12 +30,9 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +42,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Nov 5, 2011
+ * @version 1.0.2.7, Feb 24, 2012
  * @since 0.3.1
  */
 public final class Articles {
@@ -53,18 +50,11 @@ public final class Articles {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Articles.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Articles.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
-    /**
-     * Article-Sign repository.
-     */
-    private ArticleSignRepository articleSignRepository =
-            ArticleSignRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * User repository.
      */
@@ -123,8 +113,7 @@ public final class Articles {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void incArticleCommentCount(final String articleId)
-            throws JSONException, RepositoryException {
+    public void incArticleCommentCount(final String articleId) throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
@@ -134,43 +123,35 @@ public final class Articles {
     }
 
     /**
-     * Gets sign id of an article specified by the article id.
+     * Gets the sign of an article specified by the sign id.
      *
-     * @param articleId the specified article id
+     * @param signId the specified article id
      * @param preference the specified preference
-     * @return article sign, returns the default sign(which oId is "1") if not
-     * found
+     * @return article sign, returns the default sign (which oId is "1") if not found
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    public JSONObject getSign(final String articleId,
-                              final JSONObject preference)
-            throws JSONException, RepositoryException {
-        final JSONArray signs = new JSONArray(
-                preference.getString(Preference.SIGNS));
+    public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException, RepositoryException {
+        final JSONArray signs = new JSONArray(preference.getString(Preference.SIGNS));
 
-        final JSONObject relation =
-                articleSignRepository.getByArticleId(articleId);
-        if (null == relation) {
-            for (int i = 0; i < signs.length(); i++) {
-                final JSONObject ret = signs.getJSONObject(i);
-                if ("1".equals(ret.getString(Keys.OBJECT_ID))) {
-                    LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
-                               ret);
-                    return ret;
-                }
-            }
-        }
-
+        JSONObject defaultSign = null;
         for (int i = 0; i < signs.length(); i++) {
             final JSONObject ret = signs.getJSONObject(i);
-            if (relation.getString(Sign.SIGN + "_" + Keys.OBJECT_ID).
-                    equals(ret.getString(Keys.OBJECT_ID))) {
+            if (signId.equals(ret.optString(Keys.OBJECT_ID))) {
                 return ret;
+            }
+
+            if ("1".equals(ret.optString(Keys.OBJECT_ID))) {
+                defaultSign = ret;
             }
         }
 
-        throw new IllegalStateException("Can't load article sign!");
+        LOGGER.log(Level.WARNING, "Can not find the sign[id={0}], returns a default sign[id=1]", signId);
+        if (null == defaultSign) {
+            throw new IllegalStateException("Can not find the default sign which id equals to 1");
+        }
+
+        return defaultSign;
     }
 
     /**

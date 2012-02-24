@@ -97,7 +97,7 @@ public final class ArticleConsole {
      *         "oId": "",
      *         "tagTitle": ""
      *     }, ....],
-     *     "articleSign_oId": "",
+     *     "articleSignId": "",
      *     "signs": [{
      *         "oId": "",
      *         "signHTML": ""
@@ -112,11 +112,8 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.GET)
-    public void getArticle(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -127,8 +124,7 @@ public final class ArticleConsole {
         context.setRenderer(renderer);
 
         try {
-            final String articleId = request.getRequestURI().substring(
-                    ARTICLE_URI_PREFIX.length());
+            final String articleId = request.getRequestURI().substring(ARTICLE_URI_PREFIX.length());
 
             final JSONObject result = articleQueryService.getArticle(articleId);
 
@@ -490,18 +486,15 @@ public final class ArticleConsole {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSign_oId": "" // optional
+     *         "articleSignId": "" // optional
      *     }
      * }
      * </pre>
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void updateArticle(final HTTPRequestContext context,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -514,11 +507,9 @@ public final class ArticleConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
-            final JSONObject article =
-                    requestJSONObject.getJSONObject(Article.ARTICLE);
+            final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
 
             renderer.setJSONObject(ret);
@@ -528,6 +519,11 @@ public final class ArticleConsole {
                 ret.put(Keys.STATUS_CODE, false);
 
                 return;
+            }
+            
+            // The article to update has no sign
+            if (!article.has(Article.ARTICLE_SIGN_ID)) {
+                article.put(Article.ARTICLE_SIGN_ID, "0");
             }
 
             articleMgmtService.updateArticle(requestJSONObject);
@@ -568,7 +564,7 @@ public final class ArticleConsole {
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "postToCommunity": boolean,
-     *         "articleSign_oId": "" // optional
+     *         "articleSignId": "" // optional
      *     }
      * }
      * </pre>
@@ -576,11 +572,8 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX,
-                       method = HTTPRequestMethod.POST)
-    public void addArticle(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX, method = HTTPRequestMethod.POST)
+    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -593,18 +586,15 @@ public final class ArticleConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             final Users users = Users.getInstance();
             final JSONObject currentUser = users.getCurrentUser(request);
 
-            requestJSONObject.getJSONObject(Article.ARTICLE).put(
-                    Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
-                    User.USER_EMAIL));
+            requestJSONObject.getJSONObject(Article.ARTICLE).
+                    put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
 
-            final String articleId = articleMgmtService.addArticle(
-                    requestJSONObject);
+            final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
             ret.put(Keys.OBJECT_ID, articleId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));

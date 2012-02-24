@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 6, 2012
+ * @version 1.0.0.2, Feb 24, 2012
  * @since 0.4.0
  */
 public final class UserQueryService {
@@ -44,8 +44,7 @@ public final class UserQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(UserQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
     /**
      * User service.
      */
@@ -54,6 +53,21 @@ public final class UserQueryService {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
+    /**
+     * Gets the administrator.
+     * 
+     * @return administrator, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getAdmin() throws ServiceException {
+        try {
+            return userRepository.getAdmin();
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets admin failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets a user by the specified email.
@@ -66,8 +80,7 @@ public final class UserQueryService {
         try {
             return userRepository.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets user by email[" + email + "] failed",
-                       e);
+            LOGGER.log(Level.SEVERE, "Gets user by email[" + email + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -102,18 +115,13 @@ public final class UserQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getUsers(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public JSONObject getUsers(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
-        final int currentPageNum = requestJSONObject.optInt(
-                Pagination.PAGINATION_CURRENT_PAGE_NUM);
-        final int pageSize = requestJSONObject.optInt(
-                Pagination.PAGINATION_PAGE_SIZE);
-        final int windowSize = requestJSONObject.optInt(
-                Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).
-                setPageSize(pageSize);
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
         JSONObject result = null;
 
@@ -130,10 +138,7 @@ public final class UserQueryService {
 
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
-        final List<Integer> pageNums =
-                Paginator.paginate(currentPageNum, pageSize,
-                                   pageCount,
-                                   windowSize);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -160,8 +165,7 @@ public final class UserQueryService {
      * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getUser(final String userId)
-            throws ServiceException {
+    public JSONObject getUser(final String userId) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         JSONObject user = null;

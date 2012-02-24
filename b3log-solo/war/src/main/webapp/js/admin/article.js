@@ -89,7 +89,7 @@ admin.article = {
                 // signs
                 var signs = result.article.signs;
                 $(".signs button").each(function (i) {
-                    if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
+                    if (parseInt(result.article.articleSignId) === parseInt(signs[i].oId)) {
                         $("#articleSign" + signs[i].oId).addClass("selected");
                     } else {
                         $("#articleSign" + signs[i].oId).removeClass("selected");
@@ -169,7 +169,7 @@ admin.article = {
                     "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
-                    "articleSign_oId": signId,
+                    "articleSignId": signId,
                     "postToCommunity": $("#postToCommunity").prop("checked")
                 }
             };
@@ -246,7 +246,7 @@ admin.article = {
                     "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
-                    "articleSign_oId": signId
+                    "articleSignId": signId
                 }
             };
             

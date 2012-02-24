@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.3, Dec 26, 2011
+ * @version 1.0.4.4, Feb 23, 2012
  * @since 0.3.1
  */
 public final class Common {
@@ -36,13 +36,11 @@ public final class Common {
     /**
      * Most comment count articles.
      */
-    public static final String MOST_COMMENT_ARTICLES =
-            "mostCommentArticles";
+    public static final String MOST_COMMENT_ARTICLES = "mostCommentArticles";
     /**
      * Most view count articles.
      */
-    public static final String MOST_VIEW_COUNT_ARTICLES =
-            "mostViewCountArticles";
+    public static final String MOST_VIEW_COUNT_ARTICLES = "mostViewCountArticles";
     /**
      * Recent articles.
      */
@@ -54,8 +52,7 @@ public final class Common {
     /**
      * Previous article permalink.
      */
-    public static final String PREVIOUS_ARTICLE_PERMALINK =
-            "previousArticlePermalink";
+    public static final String PREVIOUS_ARTICLE_PERMALINK = "previousArticlePermalink";
     /**
      * Next article permalink.
      */
@@ -139,8 +136,7 @@ public final class Common {
     /**
      * Key of enabled multiple user support.
      */
-    public static final String ENABLED_MULTIPLE_USER_SUPPORT =
-            "enabledMultipleUserSupport";
+    public static final String ENABLED_MULTIPLE_USER_SUPPORT = "enabledMultipleUserSupport";
     /**
      * Key of is logged in.
      */
@@ -216,27 +212,27 @@ public final class Common {
     /**
      * Key of top bar replacement flag.
      */
-    public static final String TOP_BAR_REPLACEMENT_FLAG_KEY =
-            "topBarReplacement";
+    public static final String TOP_BAR_REPLACEMENT_FLAG_KEY = "topBarReplacement";
     /**
      * Top bar replacement flag.
      */
-    public static final String TOP_BAR_REPLACEMENT_FLAG =
-            "#B3logSolo#topBarReplacement#B3logSolo#";
+    public static final String TOP_BAR_REPLACEMENT_FLAG = "#B3logSolo#topBarReplacement#B3logSolo#";
     /**
      * Key of unused tags.
      */
     public static final String UNUSED_TAGS = "unusedTags";
-    
     /**
      * Key of go to.
      */
     public static final String GOTO = "to";
-    
     /**
      * Key of online visitor count.
      */
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
+    /**
+     * Key of article sign.
+     */
+    public static final String ARTICLE_SIGN = "articleSign";
 
     /**
      * Private default constructor.

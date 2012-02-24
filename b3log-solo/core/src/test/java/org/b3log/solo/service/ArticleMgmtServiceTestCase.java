@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * {@link ArticleMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 9, 2012
+ * @version 1.0.0.3, Feb 24, 2012
  */
 @Test(suiteName = "service")
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
@@ -77,10 +77,9 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_PERMALINK, "article1 permalink");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
-        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
-        final String articleId =
-                articleMgmtService.addArticle(requestJSONObject);
+        final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
     }
@@ -105,7 +104,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
-        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final String articleId =
                 articleMgmtService.addArticle(requestJSONObject);
@@ -134,7 +133,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_PERMALINK, "article2 permalink");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
-        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final String articleId =
                 articleMgmtService.addArticle(requestJSONObject);
@@ -175,7 +174,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_PERMALINK, "article3 permalink");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
-        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final String articleId =
                 articleMgmtService.addArticle(requestJSONObject);
@@ -237,7 +236,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_PERMALINK, "article4 permalink");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
-        article.put(Article.ARTICLE_SIGN_REF + '_' + Keys.OBJECT_ID, "1");
+        article.put(Article.ARTICLE_SIGN_ID, "1");
 
         final String articleId =
                 articleMgmtService.addArticle(requestJSONObject);
