@@ -8,6 +8,6 @@
 <li>标签-文章计数不正确</li>
 修复标签-文章计数：`/fix/tag-article-counter-repair.do`。
 <li>签名档配置问题</li>
-将签名档恢复为默认的空内容：`/fix/restore-signs.do`。<br/>
+将签名档恢复为默认的空内容：`/fix/restore-signs.do`。
 _注意_：使用这个修复功能，会自动发送原签名档内容到开发人员邮件。
 </ul>
