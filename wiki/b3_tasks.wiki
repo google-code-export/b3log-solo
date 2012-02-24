@@ -27,4 +27,4 @@
 ||20||Symphony 0.2.0<font color='brown'>（已暂停）</font>||D, V||2011-11-01||2012-02-19|| ||<font color='blue'>10%</font>||主要是重写皮肤||
 ||21||Solo 0.4.0 发布||D, V||2012-02-19||2012-02-19|| || || ||
 ||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27||2011-11-27||<font color='green'>已完成</font>|| ||
-||23||Latke <font color='grey'>Local</font> Task Queue Service ||Y||2012-03-01||2012-03-15||||<font color='blue'>0%</font>|| ||
+||23||Latke <font color='grey'>Local</font> Task Queue Service ||Y||2012-03-01||2012-03-15|| ||<font color='blue'>0%</font>|| ||
