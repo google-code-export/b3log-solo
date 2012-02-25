@@ -128,7 +128,6 @@ public final class StatProcessor {
             for (final String cachedPageKey : cachedPageKeys) {
                 final JSONObject cachedPage = PageCaches.get(cachedPageKey);
                 if (null == cachedPage) {
-                    PageCaches.remove(cachedPageKey);
                     continue;
                 }
 
