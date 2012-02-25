@@ -22,7 +22,6 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.PluginRepository;
@@ -35,7 +34,6 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
@@ -103,10 +101,6 @@ public abstract class AbstractTestCase {
      * Plugin repository.
      */
     private PluginRepository pluginRepository;
-    /**
-     * File repository.
-     */
-    private FileRepository fileRepository;
     /**
      * Preference repository.
      */
@@ -207,7 +201,6 @@ public abstract class AbstractTestCase {
         archiveDateArticleRepository =
                 ArchiveDateArticleRepositoryImpl.getInstance();
         pluginRepository = PluginRepositoryImpl.getInstance();
-        fileRepository = FileRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
 
@@ -333,15 +326,6 @@ public abstract class AbstractTestCase {
      */
     public PluginRepository getPluginRepository() {
         return pluginRepository;
-    }
-
-    /**
-     * Gets file repository.
-     * 
-     * @return file repository
-     */
-    public FileRepository getFileRepository() {
-        return fileRepository;
     }
 
     /**
