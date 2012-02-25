@@ -101,7 +101,10 @@ public final class PageConsole {
      *         "pageContent": "",
      *         "pageOrder": int,
      *         "pageCommentCount": int,
-     *         "pagePermalink": ""
+     *         "pagePermalink": "",
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
+     *         "pageOpenTarget": ""
      *     }
      * }, see {@link org.b3log.solo.model.Page} for more details
      * </pre>
@@ -209,7 +212,10 @@ public final class PageConsole {
      *     "page": {
      *         "pageTitle": "",
      *         "pageContent": "",
-     *         "pagePermalink": "" // optional
+     *         "pagePermalink": "" // optional,
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
+     *         "pageOpenTarget": ""
      *     }
      * }, see {@link org.b3log.solo.model.Page} for more details
      * </pre>

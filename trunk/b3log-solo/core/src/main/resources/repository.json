@@ -565,6 +565,11 @@
         {
             "name": "articleCommentable",
             "type": "boolean"
+        },
+        {
+            "name": "articleViewPwd",
+            "type": "String",
+            "legnth": 255
         }
         ]
     }

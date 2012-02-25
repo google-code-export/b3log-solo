@@ -130,6 +130,7 @@ public final class RepairProcessor {
                 final String signId = articleSignRel.getString("sign_oId");
                 article.put(Article.ARTICLE_SIGN_ID, signId);
                 article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
                 // 045 to remove ---- END ----
 
                 final JSONArray names = article.names();

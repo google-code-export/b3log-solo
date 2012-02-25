@@ -104,6 +104,10 @@ public final class Article {
      * Key of comment-able.
      */
     public static final String ARTICLE_COMMENTABLE = "articleCommentable";
+    /**
+     * Key of view password.
+     */
+    public static final String ARTICLE_VIEW_PWD = "articleViewPwd";
 
     /**
      * Private default constructor.

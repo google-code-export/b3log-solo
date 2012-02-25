@@ -79,6 +79,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -107,6 +108,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -136,6 +138,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -175,6 +178,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -197,8 +201,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
-        final JSONArray articles = articleQueryService.getArticles(paginationRequest).
-                optJSONArray(Article.ARTICLES);
+        final JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
 
         Assert.assertNotEquals(articles.length(), 0);
         final JSONObject article = articles.getJSONObject(0);
@@ -233,6 +236,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -240,8 +244,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
         final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
-        JSONArray articles = articleQueryService.getArticles(paginationRequest).
-                optJSONArray(Article.ARTICLES);
+        JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
 
         int articleCount = articles.length();
         Assert.assertNotEquals(articleCount, 0);

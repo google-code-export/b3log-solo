@@ -64,6 +64,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -117,6 +118,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -165,6 +167,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -211,6 +214,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -219,16 +223,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(2);
         Assert.assertNotNull(mostViewCountArticles);
         Assert.assertEquals(mostViewCountArticles.size(), 2);
-        Assert.assertEquals(mostViewCountArticles.get(0).
-                getInt(Article.ARTICLE_VIEW_COUNT), 2);
-        Assert.assertEquals(mostViewCountArticles.get(1).
-                getInt(Article.ARTICLE_VIEW_COUNT), 1);
+        Assert.assertEquals(mostViewCountArticles.get(0).getInt(Article.ARTICLE_VIEW_COUNT), 2);
+        Assert.assertEquals(mostViewCountArticles.get(1).getInt(Article.ARTICLE_VIEW_COUNT), 1);
 
         mostViewCountArticles = articleRepository.getMostViewCountArticles(1);
         Assert.assertNotNull(mostViewCountArticles);
         Assert.assertEquals(mostViewCountArticles.size(), 1);
-        Assert.assertEquals(mostViewCountArticles.get(0).
-                getInt(Article.ARTICLE_VIEW_COUNT), 2);
+        Assert.assertEquals(mostViewCountArticles.get(0).getInt(Article.ARTICLE_VIEW_COUNT), 2);
 
     }
 
@@ -269,8 +270,6 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(recentArticles.get(0).getString(Article.ARTICLE_TITLE), "article title3");
         Assert.assertEquals(recentArticles.get(1).getString(Article.ARTICLE_TITLE), "article title2");
         Assert.assertEquals(recentArticles.get(2).getString(Article.ARTICLE_TITLE), "article title1");
-
-
     }
 
     /**
@@ -286,8 +285,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNotNull(all);
 
         final JSONObject article = all.getJSONObject(0);
-        Assert.assertTrue(articleRepository.isPublished(
-                article.getString(Keys.OBJECT_ID)));
+        Assert.assertTrue(articleRepository.isPublished(article.getString(Keys.OBJECT_ID)));
 
         final JSONObject notPublished = articleRepository.getByPermalink("article permalink4");
         Assert.assertNotNull(notPublished);
