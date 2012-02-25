@@ -64,8 +64,7 @@ public final class StatProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(StatProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatProcessor.class.getName());
     /**
      * Request statistics URI.
      */
@@ -73,13 +72,11 @@ public final class StatProcessor {
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Language service.
      */
@@ -90,8 +87,7 @@ public final class StatProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = STAT_REQUEST_URI,
-                       method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = STAT_REQUEST_URI, method = HTTPRequestMethod.POST)
     public void statRequest(final HTTPRequestContext context) {
         Stopwatchs.start("Inc Request Stat.");
 
@@ -107,19 +103,16 @@ public final class StatProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/stat/viewcnt",
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/stat/viewcnt", method = HTTPRequestMethod.GET)
     public void viewCounter(final HTTPRequestContext context) {
         LOGGER.log(Level.INFO, "Sync statistic from memcache to repository");
 
         context.setRenderer(new DoNothingRenderer());
 
-        final JSONObject statistic =
-                (JSONObject) statisticRepository.getCache().
+        final JSONObject statistic = (JSONObject) statisticRepository.getCache().
                 get(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
         if (null == statistic) {
-            LOGGER.log(Level.INFO,
-                       "Not found statistic in memcache, ignores sync");
+            LOGGER.log(Level.INFO, "Not found statistic in memcache, ignores sync");
 
             return;
         }
@@ -139,36 +132,29 @@ public final class StatProcessor {
                     continue;
                 }
 
-                final Map<String, String> langs =
-                        langPropsService.getAll(Latkes.getLocale());
-                if (!cachedPage.optString(
-                        AbstractCacheablePageAction.CACHED_TYPE).
+                final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+                if (!cachedPage.optString(AbstractCacheablePageAction.CACHED_TYPE).
                         equals(langs.get(PageTypes.ARTICLE))) { // Cached is not an article page
                     continue;
                 }
 
-                final int hitCount =
-                        cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
+                final int hitCount = cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
                 if (2 > hitCount) {
                     // Skips for view count tiny-changes, reduces Datastore Write Quota for Solo GAE version
                     continue;
                 }
 
-                final String articleId = cachedPage.optString(
-                        AbstractCacheablePageAction.CACHED_OID);
+                final String articleId = cachedPage.optString(AbstractCacheablePageAction.CACHED_OID);
 
-                LOGGER.log(Level.FINER,
-                           "Updating article[id={0}, title={1}] view count",
-                           new Object[]{articleId, cachedPage.optString(
-                            AbstractCacheablePageAction.CACHED_TITLE)});
+                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
+                           new Object[]{articleId, cachedPage.optString(AbstractCacheablePageAction.CACHED_TITLE)});
 
                 final JSONObject article = articleRepository.get(articleId);
                 if (null == article) {
                     continue;
                 }
 
-                final int oldViewCount = article.optInt(
-                        Article.ARTICLE_VIEW_COUNT);
+                final int oldViewCount = article.optInt(Article.ARTICLE_VIEW_COUNT);
                 final int viewCount = oldViewCount + hitCount;
 
                 article.put(Article.ARTICLE_VIEW_COUNT, viewCount);
@@ -177,22 +163,19 @@ public final class StatProcessor {
 
                 cachedPage.put(PageCaches.CACHED_HIT_COUNT, 0);
 
-                LOGGER.log(Level.FINER,
-                           "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
+                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
                            new Object[]{articleId, cachedPage.optString(
-                            AbstractCacheablePageAction.CACHED_TITLE),
-                                        oldViewCount, viewCount});
+                            AbstractCacheablePageAction.CACHED_TITLE), oldViewCount, viewCount});
             }
 
             transaction.commit();
 
-            LOGGER.log(Level.INFO,
-                       "Synchronized statistic from cache to repository[statistic={0}]",
-                       statistic);
+            LOGGER.log(Level.INFO, "Synchronized statistic from cache to repository[statistic={0}]", statistic);
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+
             LOGGER.log(Level.SEVERE, "Updates statistic failed", e);
         }
     }
