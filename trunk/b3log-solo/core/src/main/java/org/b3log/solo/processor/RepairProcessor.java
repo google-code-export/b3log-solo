@@ -129,6 +129,7 @@ public final class RepairProcessor {
                 final JSONObject articleSignRel = articleSignRepository.getByArticleId(article.optString(Keys.OBJECT_ID));
                 final String signId = articleSignRel.getString("sign_oId");
                 article.put(Article.ARTICLE_SIGN_ID, signId);
+                article.put(Article.ARTICLE_COMMENTABLE, true);
                 // 045 to remove ---- END ----
 
                 final JSONArray names = article.names();

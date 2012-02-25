@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * {@link CommentMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Feb 3, 2012
+ * @version 1.0.0.1, Feb 25, 2012
  */
 @Test(suiteName = "service")
 public class CommentMgmtServiceTestCase extends AbstractTestCase {
@@ -63,19 +63,15 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
-        final ArticleQueryService articleQueryService =
-                ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
 
-        final List<JSONObject> articles = articleQueryService.getRecentArticles(
-                10);
+        final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
 
         final CommentQueryService commentQueryService = getCommentQueryService();
-        JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
-        JSONObject result =
-                commentQueryService.getComments(paginationRequest);
+        JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        JSONObject result = commentQueryService.getComments(paginationRequest);
 
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(), 1);
@@ -90,8 +86,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 
-        final JSONObject addResult =
-                commentMgmtService.addArticleComment(requestJSONObject);
+        final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
         Assert.assertNotNull(addResult);
         Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_DATE));
@@ -115,8 +110,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
 
         final PageQueryService pageQueryService = getPageQueryService();
 
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
         JSONObject result = pageQueryService.getPages(paginationRequest);
 
         Assert.assertNotNull(result);
@@ -141,8 +135,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 
-        final JSONObject addResult =
-                commentMgmtService.addPageComment(requestJSONObject);
+        final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
         Assert.assertNotNull(addResult);
         Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_DATE));
@@ -155,8 +148,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(),
                             3);  // 2 article comments + 1 page comment
 
-        final List<JSONObject> pageComments =
-                commentQueryService.getComments(pageId);
+        final List<JSONObject> pageComments = commentQueryService.getComments(pageId);
         Assert.assertNotNull(pageComments);
         Assert.assertEquals(pageComments.size(), 1);
     }
@@ -176,6 +168,9 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_CONTENT, "page1 content");
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "page");
+        page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
 

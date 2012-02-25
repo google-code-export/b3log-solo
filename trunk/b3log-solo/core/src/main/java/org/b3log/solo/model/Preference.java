@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Oct 31, 2011
+ * @version 1.1.0.3, Feb 25, 2012
  * @since 0.3.1
  */
 public final class Preference {
@@ -45,53 +45,43 @@ public final class Preference {
     /**
      * Relevant articles display count.
      */
-    public static final String RELEVANT_ARTICLES_DISPLAY_CNT =
-            "relevantArticlesDisplayCount";
+    public static final String RELEVANT_ARTICLES_DISPLAY_CNT = "relevantArticlesDisplayCount";
     /**
      * Random articles display count.
      */
-    public static final String RANDOM_ARTICLES_DISPLAY_CNT =
-            "randomArticlesDisplayCount";
+    public static final String RANDOM_ARTICLES_DISPLAY_CNT = "randomArticlesDisplayCount";
     /**
      * External relevant articles display count.
      */
-    public static final String EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT =
-            "externalRelevantArticlesDisplayCount";
+    public static final String EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT = "externalRelevantArticlesDisplayCount";
     /**
      * Recent article display count.
      */
-    public static final String RECENT_ARTICLE_DISPLAY_CNT =
-            "recentArticleDisplayCount";
+    public static final String RECENT_ARTICLE_DISPLAY_CNT = "recentArticleDisplayCount";
     /**
      * Recent comment display count.
      */
-    public static final String RECENT_COMMENT_DISPLAY_CNT =
-            "recentCommentDisplayCount";
+    public static final String RECENT_COMMENT_DISPLAY_CNT = "recentCommentDisplayCount";
     /**
      * Most used tag display count.
      */
-    public static final String MOST_USED_TAG_DISPLAY_CNT =
-            "mostUsedTagDisplayCount";
+    public static final String MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
     /**
      * Most comment article display count.
      */
-    public static final String MOST_COMMENT_ARTICLE_DISPLAY_CNT =
-            "mostCommentArticleDisplayCount";
+    public static final String MOST_COMMENT_ARTICLE_DISPLAY_CNT = "mostCommentArticleDisplayCount";
     /**
      * Most view article display count.
      */
-    public static final String MOST_VIEW_ARTICLE_DISPLAY_CNT =
-            "mostViewArticleDisplayCount";
+    public static final String MOST_VIEW_ARTICLE_DISPLAY_CNT = "mostViewArticleDisplayCount";
     /**
      * Article list display count.
      */
-    public static final String ARTICLE_LIST_DISPLAY_COUNT =
-            "articleListDisplayCount";
+    public static final String ARTICLE_LIST_DISPLAY_COUNT = "articleListDisplayCount";
     /**
      * Article list pagination window size.
      */
-    public static final String ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
-            "articleListPaginationWindowSize";
+    public static final String ARTICLE_LIST_PAGINATION_WINDOW_SIZE = "articleListPaginationWindowSize";
     /**
      * Blog host.
      */
@@ -119,18 +109,15 @@ public final class Preference {
     /**
      * Key of meta keywords.
      */
-    public static final String META_KEYWORDS =
-            "metaKeywords";
+    public static final String META_KEYWORDS = "metaKeywords";
     /**
      * Key of meta description.
      */
-    public static final String META_DESCRIPTION =
-            "metaDescription";
+    public static final String META_DESCRIPTION = "metaDescription";
     /**
      * Key of article update hint flag.
      */
-    public static final String ENABLE_ARTICLE_UPDATE_HINT =
-            "enableArticleUpdateHint";
+    public static final String ENABLE_ARTICLE_UPDATE_HINT = "enableArticleUpdateHint";
     /**
      * Key of signs.
      */
@@ -146,8 +133,7 @@ public final class Preference {
     /**
      * Key of allow visit draft via permalink.
      */
-    public static final String ALLOW_VISIT_DRAFT_VIA_PERMALINK =
-            "allowVisitDraftViaPermalink";
+    public static final String ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
     /**
      * Key of version.
      */
@@ -159,8 +145,11 @@ public final class Preference {
     /**
      * Key of reply notification template.
      */
-    public static final String REPLY_NOTIFICATION_TEMPLATE =
-            "replyNotificationTemplate";
+    public static final String REPLY_NOTIFICATION_TEMPLATE = "replyNotificationTemplate";
+    /**
+     * Key of article/page comment-able.
+     */
+    public static final String COMMENTABLE = "commentable";
 
     /**
      * Private default constructor.
@@ -172,7 +161,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.4, Dec 15, 2011
+     * @version 1.1.0.5, Feb 25, 2012
      * @since 0.3.1
      */
     public static final class Default {
@@ -180,8 +169,7 @@ public final class Preference {
         /**
          * Logger.
          */
-        private static final Logger LOGGER =
-                Logger.getLogger(Default.class.getName());
+        private static final Logger LOGGER = Logger.getLogger(Default.class.getName());
         /**
          * Default recent article display count.
          */
@@ -201,8 +189,7 @@ public final class Preference {
         /**
          * Default article list pagination window size.
          */
-        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
-                15;
+        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = 15;
         /**
          * Default most comment article display count.
          */
@@ -240,23 +227,19 @@ public final class Preference {
         /**
          * Default enable post to Tencent microblog.
          */
-        public static final boolean DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG =
-                false;
+        public static final boolean DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG = false;
         /**
          * Default notice board.
          */
-        public static final String DEFAULT_NOTICE_BOARD =
-                "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+        public static final String DEFAULT_NOTICE_BOARD = "Open Source, Open Mind, <br/>Open Sight, Open Future!";
         /**
          * Default meta keywords..
          */
-        public static final String DEFAULT_META_KEYWORDS =
-                "GAE 博客,GAE blog,b3log";
+        public static final String DEFAULT_META_KEYWORDS = "GAE 博客,GAE blog,b3log";
         /**
          * Default meta description..
          */
-        public static final String DEFAULT_META_DESCRIPTION =
-                "An open source blog based on GAE Java. GAE Java 开源博客";
+        public static final String DEFAULT_META_DESCRIPTION = "An open source blog based on GAE Java. GAE Java 开源博客";
         /**
          * Default HTML head to append.
          */
@@ -272,8 +255,7 @@ public final class Preference {
         /**
          * Default external relevant articles display count.
          */
-        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT =
-                5;
+        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
         /**
          * Most view articles display count.
          */
@@ -289,8 +271,11 @@ public final class Preference {
         /**
          * Default allow visit draft via permalink.
          */
-        public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK =
-                false;
+        public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = false;
+        /**
+         * Default allow comment article/page.
+         */
+        public static final boolean DEFAULT_COMMENTABLE = true;
         /**
          * Default administrator's password.
          */
@@ -298,8 +283,7 @@ public final class Preference {
         /**
          * Default article list display style.
          */
-        public static final String DEFAULT_ARTICLE_LIST_STYLE =
-                "titleAndAbstract";
+        public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
         /**
          * Default key of solo.
          */
@@ -327,8 +311,7 @@ public final class Preference {
                 DEFAULT_SIGNS = signs.toString();
 
                 final JSONObject replyNotificationTemplate = new JSONObject();
-                replyNotificationTemplate.put(Keys.OBJECT_ID,
-                                              Preference.REPLY_NOTIFICATION_TEMPLATE);
+                replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
                 replyNotificationTemplate.put("subject",
                                               "${blogTitle}: New reply of your comment");
                 replyNotificationTemplate.put("body",

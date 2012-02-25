@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link PageQueryService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Feb 1, 2012
+ * @version 1.0.0.1, Feb 25, 2012
  */
 @Test(suiteName = "service")
 public class PageQueryServiceTestCase extends AbstractTestCase {
@@ -68,6 +68,9 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_CONTENT, "page1 content");
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "page");
+        page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
 
@@ -83,8 +86,7 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
     public void getPages() throws Exception {
         final PageQueryService pageQueryService = getPageQueryService();
 
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
         final JSONObject result = pageQueryService.getPages(paginationRequest);
 
         Assert.assertNotNull(result);

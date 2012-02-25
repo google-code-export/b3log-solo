@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 29, 2012
+ * @version 1.0.0.6, Feb 25, 2012
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -49,8 +49,7 @@ public final class PageMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class.getName());
     /**
      * Page repository.
      */
@@ -58,8 +57,7 @@ public final class PageMgmtService {
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
+    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
     /**
      * Statistic utilities.
      */
@@ -85,23 +83,23 @@ public final class PageMgmtService {
      *         "pageContent": "",
      *         "pageOrder": int,
      *         "pageCommentCount": int,
-     *         "pagePermalink": ""
+     *         "pagePermalink": "",
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
+     *         "pageOpenTarget": ""
      *     }
      * }, see {@link Page} for more details
      * </pre>
      * @throws ServiceException service exception
      */
-    public void updatePage(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public void updatePage(final JSONObject requestJSONObject) throws ServiceException {
 
         final Transaction transaction = pageRepository.beginTransaction();
         try {
-            final JSONObject page =
-                    requestJSONObject.getJSONObject(Page.PAGE);
+            final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
             final String pageId = page.getString(Keys.OBJECT_ID);
             final JSONObject oldPage = pageRepository.get(pageId);
-            final JSONObject newPage =
-                    new JSONObject(page, JSONObject.getNames(page));
+            final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
@@ -122,10 +120,8 @@ public final class PageMgmtService {
                         transaction.rollback();
                     }
 
-                    throw new ServiceException(langPropsService.get(
-                            "invalidPermalinkFormatLabel"));
+                    throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                 }
-
 
                 if (!oldPermalink.equals(permalink)
                     && permalinks.exist(permalink)) {
@@ -133,8 +129,7 @@ public final class PageMgmtService {
                         transaction.rollback();
                     }
 
-                    throw new ServiceException(langPropsService.get(
-                            "duplicatedPermalinkLabel"));
+                    throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
                 }
             }
 
@@ -167,8 +162,7 @@ public final class PageMgmtService {
      * @param pageId the given page id
      * @throws ServiceException service exception
      */
-    public void removePage(final String pageId)
-            throws ServiceException {
+    public void removePage(final String pageId) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
         try {
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
@@ -182,8 +176,7 @@ public final class PageMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a page[id=" + pageId + "] failed",
-                       e);
+            LOGGER.log(Level.SEVERE, "Removes a page[id=" + pageId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -198,6 +191,9 @@ public final class PageMgmtService {
      *     "page": {
      *         "pageTitle": "",
      *         "pageContent": "",
+     *         "pageOpenTarget": "",
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
      *         "pagePermalink": "" // optional
      *     }
      * }, see {@link Page} for more details
@@ -206,12 +202,10 @@ public final class PageMgmtService {
      * @throws ServiceException if permalink format checks failed or persists
      * failed
      */
-    public String addPage(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public String addPage(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
         try {
-            final JSONObject page =
-                    requestJSONObject.getJSONObject(Page.PAGE);
+            final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
             page.put(Page.PAGE_COMMENT_COUNT, 0);
             final int maxOrder = pageRepository.getMaxOrder();
             page.put(Page.PAGE_ORDER, maxOrder + 1);
@@ -230,8 +224,7 @@ public final class PageMgmtService {
                     transaction.rollback();
                 }
 
-                throw new ServiceException(langPropsService.get(
-                        "invalidPermalinkFormatLabel"));
+                throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
             }
 
             if (permalinks.exist(permalink)) {
@@ -239,8 +232,7 @@ public final class PageMgmtService {
                     transaction.rollback();
                 }
 
-                throw new ServiceException(langPropsService.get(
-                        "duplicatedPermalinkLabel"));
+                throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
 
             // TODO: SBC case
