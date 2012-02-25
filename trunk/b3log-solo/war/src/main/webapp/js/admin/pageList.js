@@ -284,7 +284,7 @@ admin.pageList = {
             }
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
-            if (pageContent.replace(/\s/g, "") === "") {
+            if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
             
@@ -311,6 +311,7 @@ admin.pageList = {
                         return;
                     }
                     
+                    admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
                     $("#pageCommentable").prop("cheked", false);
@@ -360,7 +361,7 @@ admin.pageList = {
             }
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
-            if (pageContent.replace(/\s/g, "") === "") {
+            if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
             
@@ -389,6 +390,7 @@ admin.pageList = {
                         $("#loadMsg").text("");
                         return;
                     }
+                    admin.pageList.id = "";
                     
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     $("#pageTitle").val("");
