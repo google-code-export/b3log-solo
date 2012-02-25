@@ -48,8 +48,7 @@ public final class PluginConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PluginConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
     /**
      * User utilities.
      */
@@ -57,13 +56,11 @@ public final class PluginConsole {
     /**
      * Plugin query service.
      */
-    private PluginQueryService pluginQueryService =
-            PluginQueryService.getInstance();
+    private PluginQueryService pluginQueryService = PluginQueryService.getInstance();
     /**
      * Plugin management service.
      */
-    private PluginMgmtService pluginMgmtService =
-            PluginMgmtService.getInstance();
+    private PluginMgmtService pluginMgmtService = PluginMgmtService.getInstance();
     /**
      * Plugins URI prefix.
      */
@@ -95,11 +92,8 @@ public final class PluginConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PLUGIN_URI_PREFIX + "status/",
-                       method = HTTPRequestMethod.PUT)
-    public void setPluginStatus(final HttpServletRequest request,
-                                final HttpServletResponse response,
-                                final HTTPRequestContext context)
+    @RequestProcessing(value = PLUGIN_URI_PREFIX + "status/", method = HTTPRequestMethod.PUT)
+    public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -109,14 +103,12 @@ public final class PluginConsole {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject requestJSONObject =
-                AbstractAction.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
 
-        final JSONObject result = pluginMgmtService.setPluginStatus(pluginId,
-                                                                    status);
+        final JSONObject result = pluginMgmtService.setPluginStatus(pluginId, status);
 
         renderer.setJSONObject(result);
     }
@@ -155,12 +147,8 @@ public final class PluginConsole {
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = PLUGINS_URI_PREFIX
-                               + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
-    public void getPlugins(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = PLUGINS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    public void getPlugins(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -172,14 +160,11 @@ public final class PluginConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path =
-                    requestURI.substring(PLUGINS_URI_PREFIX.length());
+            final String path = requestURI.substring(PLUGINS_URI_PREFIX.length());
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result = pluginQueryService.getPlugins(
-                    requestJSONObject);
+            final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);
 
             renderer.setJSONObject(result);
 
