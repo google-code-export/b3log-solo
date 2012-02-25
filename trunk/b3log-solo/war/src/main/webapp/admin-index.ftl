@@ -77,11 +77,6 @@
                                 </div>
                             </li>
                             <li>
-                                <div id="tabs_file-list">
-                                    <a href="#tools/file-list">${fileListLabel}</a>
-                                </div>
-                            </li>
-                            <li>
                                 <div id="tabs_page-list">
                                     <a href="#tools/page-list">${navMgmtLabel}</a>
                                 </div>
@@ -125,7 +120,6 @@
                 <div id="tabsPanel_link-list" class="none"></div>
                 <div id="tabsPanel_preference" class="none"></div>
                 <div id="tabsPanel_page-list" class="none"></div>
-                <div id="tabsPanel_file-list" class="none"></div>
                 <div id="tabsPanel_others" class="none"></div>
                 <div id="tabsPanel_user-list" class="none"></div>
                 <div id="tabsPanel_comment-list" class="none"></div>
@@ -147,7 +141,6 @@
         <script type="text/javascript" src="/js/admin/comment.js"></script>
         <script type="text/javascript" src="/js/admin/articleList.js"></script>
         <script type="text/javascript" src="/js/admin/draftList.js"></script>
-        <script type="text/javascript" src="/js/admin/fileList.js"></script>
         <script type="text/javascript" src="/js/admin/pageList.js"></script>
         <script type="text/javascript" src="/js/admin/others.js"></script>
         <script type="text/javascript" src="/js/admin/linkList.js"></script>
