@@ -42,8 +42,7 @@ public final class LinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(LinkQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkQueryService.class.getName());
     /**
      * Link repository.
      */
@@ -78,29 +77,21 @@ public final class LinkQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getLinks(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public JSONObject getLinks(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        
+
         try {
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
+            final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).
-                    addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
+                    setPageSize(pageSize).addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
             final JSONObject result = linkRepository.get(query);
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject pagination = new JSONObject();
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -133,8 +124,7 @@ public final class LinkQueryService {
      * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getLink(final String linkId)
-            throws ServiceException {
+    public JSONObject getLink(final String linkId) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         try {
