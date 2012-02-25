@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 7, 2012
+ * @version 1.0.0.6, Feb 25, 2012
  */
 
 /* oterhs 相关操作 */
@@ -35,8 +35,8 @@ admin.others = {
             cache: false,
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
-                     
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -74,7 +74,9 @@ admin.others = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -108,10 +110,6 @@ admin.others = {
             success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 $("#loadMsg").text("");
-
-                if (!result.sc) {
-                    return;
-                }
             }
         });     
     }

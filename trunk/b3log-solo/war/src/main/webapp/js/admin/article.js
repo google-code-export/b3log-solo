@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Feb 23, 2012
+ * @version 1.0.2.1, Feb 25, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -48,9 +48,9 @@ admin.article = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#tipMsg").text(result.msg);
-                    
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -97,8 +97,6 @@ admin.article = {
                 });
 
                 admin.article.setStatus();
-                $("#tipMsg").text(Label.getSuccLabel);
-                
                 $("#loadMsg").text("");
             }
         });
@@ -121,8 +119,8 @@ admin.article = {
                 cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -181,8 +179,8 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                      
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -257,8 +255,8 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -391,7 +389,9 @@ admin.article = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
                     
@@ -426,7 +426,9 @@ admin.article = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
            
@@ -562,8 +564,8 @@ admin.article = {
             cache: false,
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
-                     
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
                     
