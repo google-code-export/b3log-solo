@@ -49,8 +49,7 @@ public final class PageConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageConsole.class.getName());
     /**
      * User utilities.
      */
@@ -74,8 +73,7 @@ public final class PageConsole {
     /**
      * Page order URI prefix.
      */
-    private static final String PAGE_ORDER_URI_PREFIX = PAGE_URI_PREFIX
-                                                        + "order/";
+    private static final String PAGE_ORDER_URI_PREFIX = PAGE_URI_PREFIX + "order/";
     /**
      * Language service.
      */
@@ -111,11 +109,8 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void updatePage(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = PAGE_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -128,8 +123,7 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             pageMgmtService.updatePage(requestJSONObject);
 
@@ -164,11 +158,8 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removePage(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = PAGE_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -182,8 +173,7 @@ public final class PageConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String pageId =
-                    request.getRequestURI().substring(PAGE_URI_PREFIX.length());
+            final String pageId = request.getRequestURI().substring(PAGE_URI_PREFIX.length());
 
             pageMgmtService.removePage(pageId);
 
@@ -226,11 +216,8 @@ public final class PageConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX,
-                       method = HTTPRequestMethod.POST)
-    public void addPage(final HTTPRequestContext context,
-                        final HttpServletRequest request,
-                        final HttpServletResponse response)
+    @RequestProcessing(value = PAGE_URI_PREFIX, method = HTTPRequestMethod.POST)
+    public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -243,8 +230,7 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             final String pageId = pageMgmtService.addPage(requestJSONObject);
 
@@ -286,11 +272,8 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = PAGE_ORDER_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HttpServletRequest request,
-                            final HttpServletResponse response,
-                            final HTTPRequestContext context)
+    @RequestProcessing(value = PAGE_ORDER_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -303,12 +286,9 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
-            final String linkId =
-                    requestJSONObject.getString(Keys.OBJECT_ID);
-            final String direction =
-                    requestJSONObject.getString(Common.DIRECTION);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final String direction = requestJSONObject.getString(Common.DIRECTION);
 
             pageMgmtService.changeOrder(linkId, direction);
 
@@ -350,11 +330,8 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.GET)
-    public void getPage(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
+    @RequestProcessing(value = PAGE_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -366,8 +343,7 @@ public final class PageConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String pageId =
-                    requestURI.substring(PAGE_URI_PREFIX.length());
+            final String pageId = requestURI.substring(PAGE_URI_PREFIX.length());
 
             final JSONObject result = pageQueryService.getPage(pageId);
 
@@ -418,12 +394,8 @@ public final class PageConsole {
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = PAGES_URI_PREFIX
-                               + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
-    public void getPages(final HttpServletRequest request,
-                         final HttpServletResponse response,
-                         final HTTPRequestContext context)
+    @RequestProcessing(value = PAGES_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -435,14 +407,11 @@ public final class PageConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path =
-                    requestURI.substring(PAGES_URI_PREFIX.length());
+            final String path = requestURI.substring(PAGES_URI_PREFIX.length());
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result = pageQueryService.getPages(
-                    requestJSONObject);
+            final JSONObject result = pageQueryService.getPages(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
