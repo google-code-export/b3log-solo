@@ -177,12 +177,8 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLES_URI_PREFIX + "status/*"
-                               + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
-    public void getArticles(final HttpServletRequest request,
-                            final HttpServletResponse response,
-                            final HTTPRequestContext context)
+    @RequestProcessing(value = ARTICLES_URI_PREFIX + "status/*" + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -193,20 +189,16 @@ public final class ArticleConsole {
         context.setRenderer(renderer);
 
         try {
-            String path =
-                    request.getRequestURI().substring((ARTICLES_URI_PREFIX
-                                                       + "status/").length());
+            String path = request.getRequestURI().substring((ARTICLES_URI_PREFIX + "status/").length());
             final String status = StringUtils.substringBefore(path, "/");
             path = path.substring((status + "/").length());
 
             final boolean published = "published".equals(status) ? true : false;
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
 
-            final JSONObject result =
-                    articleQueryService.getArticles(requestJSONObject);
+            final JSONObject result = articleQueryService.getArticles(requestJSONObject);
 
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
@@ -237,11 +229,8 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removeArticle(final HTTPRequestContext context,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -255,9 +244,7 @@ public final class ArticleConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId =
-                    request.getRequestURI().substring(
-                    ARTICLE_URI_PREFIX.length());
+            final String articleId = request.getRequestURI().substring(ARTICLE_URI_PREFIX.length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -298,11 +285,8 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "unpublish/*",
-                       method = HTTPRequestMethod.PUT)
-    public void cancelPublishArticle(final HTTPRequestContext context,
-                                     final HttpServletRequest request,
-                                     final HttpServletResponse response)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "unpublish/*", method = HTTPRequestMethod.PUT)
+    public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -316,9 +300,7 @@ public final class ArticleConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId =
-                    request.getRequestURI().substring((ARTICLE_URI_PREFIX
-                                                       + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "canceltop/").length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -359,11 +341,8 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "canceltop/*",
-                       method = HTTPRequestMethod.PUT)
-    public void cancelTopArticle(final HTTPRequestContext context,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "canceltop/*", method = HTTPRequestMethod.PUT)
+    public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -384,9 +363,7 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId =
-                    request.getRequestURI().substring((ARTICLE_URI_PREFIX
-                                                       + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "canceltop/").length());
             articleMgmtService.topArticle(articleId, false);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -419,11 +396,8 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "puttop/*",
-                       method = HTTPRequestMethod.PUT)
-    public void putTopArticle(final HTTPRequestContext context,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "puttop/*", method = HTTPRequestMethod.PUT)
+    public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -444,9 +418,7 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId =
-                    request.getRequestURI().substring((ARTICLE_URI_PREFIX
-                                                       + "puttop/").length());
+            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "puttop/").length());
             articleMgmtService.topArticle(articleId, true);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -486,7 +458,9 @@ public final class ArticleConsole {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSignId": "" // optional
+     *         "articleSignId": "" // optional,
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
      *     }
      * }
      * </pre>
@@ -520,7 +494,7 @@ public final class ArticleConsole {
 
                 return;
             }
-            
+
             // The article to update has no sign
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
                 article.put(Article.ARTICLE_SIGN_ID, "0");
@@ -564,7 +538,9 @@ public final class ArticleConsole {
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "postToCommunity": boolean,
-     *         "articleSignId": "" // optional
+     *         "articleSignId": "" // optional,
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
      *     }
      * }
      * </pre>

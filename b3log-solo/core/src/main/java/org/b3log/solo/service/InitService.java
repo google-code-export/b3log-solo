@@ -222,6 +222,7 @@ public final class InitService {
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_AUTHOR_EMAIL, preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
         article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_VIEW_PWD, "");
 
         final String articleId = addHelloWorldArticle(article);
 

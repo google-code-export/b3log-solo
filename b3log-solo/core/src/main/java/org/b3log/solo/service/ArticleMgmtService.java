@@ -213,7 +213,9 @@ public final class ArticleMgmtService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSignId": ""
+     *         "articleSignId": "",
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
      *     }
      * }
      * </pre>
@@ -267,9 +269,8 @@ public final class ArticleMgmtService {
                 }
             }
 
-            final boolean publishNewArticle =
-                    !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
-                    && article.getBoolean(ARTICLE_IS_PUBLISHED);
+            final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
+                                              && article.getBoolean(ARTICLE_IS_PUBLISHED);
             // Set statistic
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
@@ -345,7 +346,9 @@ public final class ArticleMgmtService {
      *         "articleIsPublished": boolean,
      *         "articlePermalink": "", // optional
      *         "postToCommunity": boolean, // optional, default is true
-     *         "articleSignId": "" // optional, default is "0"
+     *         "articleSignId": "" // optional, default is "0",
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
      *     }
      * }
      * </pre>
