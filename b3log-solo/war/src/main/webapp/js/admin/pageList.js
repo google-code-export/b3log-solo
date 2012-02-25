@@ -30,6 +30,7 @@ admin.pageList = {
         currentPage: 1
     },
     id: "",
+    type: "link",
     
     /* 
      * 初始化 table, pagination, comments dialog
@@ -54,7 +55,12 @@ admin.pageList = {
             style: "padding-left: 12px;",
             text: Label.openMethodLabel,
             index: "pageTarget",
-            width: 180
+            width: 120
+        }, {
+            style: "padding-left: 12px;",
+            text: Label.typeLabel,
+            index: "pageType",
+            width: 80
         }, {
             text: Label.commentLabel,
             index: "comments",
@@ -96,6 +102,25 @@ admin.pageList = {
         } catch (e) {
             $("#tipMsg").text("TinyMCE load fail");
         }
+        
+        // select type
+        $(".fn-type").click(function () {
+            var $it = $(this);
+            if ($it.hasClass("selected")) {
+                return;
+            }
+            
+            $(".fn-type").removeClass("selected");
+            $it.addClass("selected");
+              
+            admin.pageList.type = $it.data("type");
+            
+            if (admin.pageList.type === "page") {
+                $("#pagePagePanel").slideDown();
+            } else {
+                $("#pagePagePanel").slideUp();
+            }
+        });
     },
 
     /* 
@@ -147,6 +172,7 @@ admin.pageList = {
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                     + pages[i].pagePermalink + "</a>";
                     pageData[i].pageTarget = pages[i].pageOpenTarget;
+                    pageData[i].pageType = pages[i].pageType ;
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
@@ -182,14 +208,20 @@ admin.pageList = {
                 
                 admin.pageList.id = id;
                 
+                $("#pageTitle").val(result.page.pageTitle);
+                $("#pagePermalink").val(result.page.pagePermalink);
+                $("#pageTarget").val(result.page.pageOpenTarget);
+                if (result.page.pageType === "page") {
+                    $($(".fn-type").get(1)).click();
+                } else {
+                    $($(".fn-type").get(0)).click();
+                }
+                $("#pageCommentable").prop("checked", result.page.pageCommentable);
                 try {
                     tinyMCE.get('pageContent').setContent(result.page.pageContent);
                 } catch (e) {
                     $("#pageContent").val(result.page.pageContent);
                 }
-                
-                $("#pagePermalink").val(result.page.pagePermalink);
-                $("#pageTitle").val(result.page.pageTitle);
                 
                 $("#loadMsg").text("");
             }
@@ -251,13 +283,10 @@ admin.pageList = {
                 pageContent = $("#pageContent").val();
             }
             
-            var pageType = "page",
-            pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
+            var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (pageContent.replace(/\s/g, "") === "") {
-                pageType = "link";
                 pagePermalink = Util.proessURL(pagePermalink);
             }
-            
             
             var requestJSONObject = {
                 "page": {
@@ -265,7 +294,7 @@ admin.pageList = {
                     "pageContent": pageContent,
                     "pagePermalink": pagePermalink,
                     "pageCommentable": $("#pageCommentable").prop("checked"),
-                    "pageType": pageType,
+                    "pageType": admin.pageList.type,
                     "pageOpenTarget": $("#pageTarget").val()
                 }
             };
@@ -282,9 +311,11 @@ admin.pageList = {
                         return;
                     }
                     
-                    admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
+                    $("#pageCommentable").prop("cheked", false);
+                    $("#pageTarget").val("_self");
+                    $($(".fn-type").get(0)).click();
                     
                     try {
                         if (tinyMCE.get("pageContent")) {
@@ -314,7 +345,7 @@ admin.pageList = {
     },
     
     /*
-     * 跟新自定义页面
+     * 更新自定义页面
      */
     update: function () {
         if (this.validate()) {
@@ -328,12 +359,21 @@ admin.pageList = {
                 pageContent = $("#pageContent").val();
             }
             
+            var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
+            if (pageContent.replace(/\s/g, "") === "") {
+                pagePermalink = Util.proessURL(pagePermalink);
+            }
+            
+            
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "oId": this.id,
                     "pageContent": pageContent,
-                    "pagePermalink": $("#pagePermalink").val()
+                    "pagePermalink": pagePermalink,
+                    "pageCommentable": $("#pageCommentable").prop("checked"),
+                    "pageType": admin.pageList.type,
+                    "pageOpenTarget": $("#pageTarget").val()
                 }
             };
             
@@ -347,16 +387,15 @@ admin.pageList = {
                      
                     if (!result.sc) {
                         $("#loadMsg").text("");
-                        $("#pagePermalink").focus("");
                         return;
                     }
                     
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
-                    admin.pageList.id = "";
                     $("#pageTitle").val("");
                     $("#pagePermalink").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
+                    $($(".fn-type").get(0)).click();
                     try {
                         tinyMCE.get('pageContent').setContent("");
                     } catch (e) {
