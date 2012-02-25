@@ -16,7 +16,6 @@
         "upToDateLabel": "${upToDateLabel}",
         "commentContentLabel": "${commentContentLabel}",
         "loadingLabel": "${loadingLabel}",
-        "getSuccLabel": "${getSuccLabel}",
         "noCommentLabel": "${noCommentLabel}",
         "confirmRemoveLabel": "${confirmRemoveLabel}",
         "removeLabel": "${removeLabel}",
@@ -74,7 +73,8 @@
         "editorLeaveLabel": "${editorLeaveLabel}",
         "editorPostLabel": "${editorPostLabel}",
         "enableLabel": "${enableLabel}",
-        "disableLabel": "${disableLabel}"
+        "disableLabel": "${disableLabel}",
+        "linkOrContentEmptyLabel": "${linkOrContentEmptyLabel}"
     };    
     admin.init();
 </script>

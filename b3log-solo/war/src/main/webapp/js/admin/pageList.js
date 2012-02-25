@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 7, 2012
+ * @version 1.0.1.2, Feb 25, 2012
  */
 
 /* page-list 相关操作 */
@@ -106,9 +106,9 @@ admin.pageList = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#loadMsg").text(result.msg);
-                    
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -168,7 +168,9 @@ admin.pageList = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -182,8 +184,6 @@ admin.pageList = {
                 
                 $("#pagePermalink").val(result.page.pagePermalink);
                 $("#pageTitle").val(result.page.pageTitle);
-                
-                $("#tipMsg").text(result.msg);
                 
                 $("#loadMsg").text("");
             }
@@ -206,8 +206,8 @@ admin.pageList = {
                 cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -245,11 +245,19 @@ admin.pageList = {
                 pageContent = $("#pageContent").val();
             }
             
+            var pageType = "page";
+            if (pageContent.replace(/\s/g, "") === "") {
+                pageType = "link";
+            }
+            
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "pageContent": pageContent,
-                    "pagePermalink": $("#pagePermalink").val()
+                    "pagePermalink": $("#pagePermalink").val(),
+                    "pageCommentable": $("#pageCommentable").prop("checked"),
+                    "pageType": pageType,
+                    "pageOpenTarget": $("#pageTarget").val()
                 }
             };
             
@@ -260,8 +268,8 @@ admin.pageList = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -323,25 +331,29 @@ admin.pageList = {
             $.ajax({
                 url: "/console/page/",
                 type: "PUT",
-            cache: false,
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
                      
                     if (!result.sc) {
+                        $("#loadMsg").text("");
+                        $("#pagePermalink").focus("");
                         return;
                     }
                     
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     admin.pageList.id = "";
                     $("#pageTitle").val("");
+                    $("#pagePermalink").val("");
+                    $("#pageCommentable").prop("cheked", false);
+                    $("#pageTarget").val("_self");
                     try {
                         tinyMCE.get('pageContent').setContent("");
                     } catch (e) {
                         $("#pageContent").val("");
                     }
                     
-                    $("#pagePermalink").val("");
                     $("#loadMsg").text("");
                 }
             });
@@ -362,8 +374,9 @@ admin.pageList = {
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#pageTitle").focus();
-        } else if (pageContent.replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.contentEmptyLabel);
+        } else if (pageContent.replace(/\s/g, "") === "" &&
+            $("#pagePermalink").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text(Label.linkOrContentEmptyLabel);
         } else {
             return true;
         }

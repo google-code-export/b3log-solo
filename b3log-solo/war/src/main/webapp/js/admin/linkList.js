@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jan 7, 2012
+ * @version 1.0.1.1, Feb 25, 2012
  */
 
 /* link-list 相关操作 */
@@ -85,9 +85,9 @@ admin.linkList = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#tipMsg").text(result.msg);
-                    
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -151,12 +151,12 @@ admin.linkList = {
             $.ajax({
                 url: "/console/link/",
                 type: "POST",
-            cache: false,
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -193,9 +193,9 @@ admin.linkList = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#tipMsg").text(result.msg);
-                     
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -229,13 +229,13 @@ admin.linkList = {
             $.ajax({
                 url: "/console/link/",
                 type: "PUT",
-            cache: false,
+                cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     $("#updateLink").dialog("close");
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
@@ -260,11 +260,11 @@ admin.linkList = {
             $.ajax({
                 url: "/console/link/" + id,
                 type: "DELETE",
-            cache: false,
+                cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     

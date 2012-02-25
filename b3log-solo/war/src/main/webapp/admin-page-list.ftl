@@ -15,8 +15,10 @@
         <input id="pagePermalink" type="text"/>
     </div>
     <div>
+        <label>${commentable1Label}</label>
+        <input type="checkbox" id="pageCommentable" checked="checked" />&nbsp;&nbsp;&nbsp;&nbsp;
         <label>${openMethod1Label}</label>
-        <select>
+        <select id="pageTarget">
             <option value="_self">${targetSelfLabel}</option>
             <option value="_blank">${targetBlankLabel}</option>
             <option value="_parent">${targetParentLabel}</option>

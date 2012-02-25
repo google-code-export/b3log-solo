@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 7, 2012
+ * @version 1.0.1.2, Feb 25, 2012
  */
 
 /* comment-list 相关操作 */
@@ -65,9 +65,9 @@ admin.commentList = {
             type: "GET",
             cache: false,
             success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#tipMsg").text(result.msg);
-                    
+                    $("#loadMsg").text("");
                     return;
                 }
                 
@@ -91,7 +91,7 @@ admin.commentList = {
                     comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
                 
                     commentsData[i].title = "<img class='small-head' src='" + 
-                        comments[i].commentThumbnailURL + "'/>";
+                    comments[i].commentThumbnailURL + "'/>";
                     if ("http://" === comments[i].commentURL) {
                         commentsData[i].title += comments[i].commentName;
                     } else {
@@ -124,11 +124,11 @@ admin.commentList = {
             $.ajax({
                 url: "/console/" + type.toLowerCase() + "/comment/" + id,
                 type: "DELETE",
-            cache: false,
+                cache: false,
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
-                     
                     if (!result.sc) {
+                        $("#loadMsg").text("");
                         return;
                     }
                     
