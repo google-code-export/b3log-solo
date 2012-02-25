@@ -55,6 +55,10 @@ public final class UpgradeProcessor {
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
+     * Page repository.
+     */
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
@@ -132,6 +136,7 @@ public final class UpgradeProcessor {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
+            // Submits a task to process articles
             final Queue queue = taskQueueService.getQueue("fix-queue");
             final Task task = new Task();
             task.setURL("/fix/normalization/articles/properties");
@@ -141,6 +146,7 @@ public final class UpgradeProcessor {
 
             // Do not care article properties fix task, keep going upgrade
 
+            // Upgrades user models
             final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
             LOGGER.log(Level.INFO, "Users[length={0}]", users.length());
             for (int i = 0; i < users.length(); i++) {
@@ -161,6 +167,21 @@ public final class UpgradeProcessor {
                 userRepository.update(user.getString(Keys.OBJECT_ID), user);
             }
 
+            // Upgrades page models
+            final JSONArray pages = pageRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+            LOGGER.log(Level.INFO, "Pages[length={0}]", pages.length());
+            for (int i = 0; i < pages.length(); i++) {
+                final JSONObject page = pages.getJSONObject(i);
+                page.put(Page.PAGE_COMMENTABLE, true);
+                page.put(Page.PAGE_OPEN_TARGET, "_self");
+                page.put(Page.PAGE_TYPE, "page");
+
+                LOGGER.log(Level.INFO, "Upgraded page[id={0}, title={1}]",
+                           new Object[]{page.getString(Keys.OBJECT_ID), page.getString(Page.PAGE_TITLE)});
+                pageRepository.update(page.getString(Keys.OBJECT_ID), page);
+            }
+
+            // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
             preference.put(Preference.VERSION, "0.4.1");
             preferenceRepository.update(Preference.PREFERENCE, preference);

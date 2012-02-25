@@ -61,10 +61,8 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getRecentArticles() throws Exception {
-        final ArticleQueryService articleQueryService =
-                ArticleQueryService.getInstance();
-        final List<JSONObject> articles = articleQueryService.getRecentArticles(
-                10);
+        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
     }
@@ -76,10 +74,8 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticle() throws Exception {
-        final ArticleQueryService articleQueryService =
-                ArticleQueryService.getInstance();
-        final List<JSONObject> articles = articleQueryService.getRecentArticles(
-                10);
+        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
 
@@ -97,10 +93,8 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticleById() throws Exception {
-        final ArticleQueryService articleQueryService =
-                ArticleQueryService.getInstance();
-        final List<JSONObject> articles = articleQueryService.getRecentArticles(
-                10);
+        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
 
@@ -118,8 +112,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticleContent() throws Exception {
-        final ArticleQueryService articleQueryService =
-                ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
 
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
@@ -174,7 +167,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
                 articleQueryService.getArticlesByArchiveDate(archiveDate.getString(Keys.OBJECT_ID), 1, Integer.MAX_VALUE);
         Assert.assertNotNull(articles);
         Assert.assertEquals(articles.size(), 1);
-        
+
         articles = articleQueryService.getArticlesByArchiveDate("not found", 1, Integer.MAX_VALUE);
         Assert.assertNotNull(articles);
         Assert.assertTrue(articles.isEmpty());

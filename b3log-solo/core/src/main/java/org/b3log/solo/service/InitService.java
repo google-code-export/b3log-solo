@@ -53,7 +53,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Feb 21, 2012
+ * @version 1.0.0.8, Feb 25, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -138,8 +138,7 @@ public final class InitService {
      * </pre>
      * @throws ServiceException service exception
      */
-    public void init(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public void init(final JSONObject requestJSONObject) throws ServiceException {
         if (SoloServletListener.isInited()) {
             return;
         }
@@ -161,14 +160,12 @@ public final class InitService {
             } catch (final Exception e) {
                 if (0 == retries) {
                     LOGGER.log(Level.SEVERE, "Initialize B3log Solo error", e);
-                    throw new ServiceException("Initailize B3log Solo error: "
-                                               + e.getMessage());
+                    throw new ServiceException("Initailize B3log Solo error: " + e.getMessage());
                 }
 
                 // Allow retry to occur
                 --retries;
-                LOGGER.log(Level.WARNING,
-                           "Retrying to init B3log Solo[retries={0}]", retries);
+                LOGGER.log(Level.WARNING, "Retrying to init B3log Solo[retries={0}]", retries);
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -199,17 +196,16 @@ public final class InitService {
 
         // XXX: no i18n
         article.put(Article.ARTICLE_TITLE, "Hello World!");
-        final String content =
-                "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
-                + "href=\"http://b3log-solo.googlecode.com\">"
-                + "<span style=\"color: orange;\">B</span>"
-                + "<span style=\"font-size: 9px; color: blue;\">"
-                + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
-                + "<span style=\"color: red;\">O</span>"
-                + "<span style=\"color: blue;\">G</span> "
-                + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
-                + "</a>. This is your first post. Edit or delete it, "
-                + "then start blogging!";
+        final String content = "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
+                               + "href=\"http://b3log-solo.googlecode.com\">"
+                               + "<span style=\"color: orange;\">B</span>"
+                               + "<span style=\"font-size: 9px; color: blue;\">"
+                               + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
+                               + "<span style=\"color: red;\">O</span>"
+                               + "<span style=\"color: blue;\">G</span> "
+                               + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
+                               + "</a>. This is your first post. Edit or delete it, "
+                               + "then start blogging!";
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
         article.put(Article.ARTICLE_TAGS_REF, "B3log");
@@ -224,8 +220,8 @@ public final class InitService {
         article.put(Article.ARTICLE_UPDATE_DATE, date);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_AUTHOR_EMAIL,
-                    preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final String articleId = addHelloWorldArticle(article);
 
@@ -240,15 +236,13 @@ public final class InitService {
                 + "to delete them."));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL,
-                    "http://www.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=60&r=G");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, "http://www.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=60&r=G");
         comment.put(Comment.COMMENT_DATE, date);
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
         final String commentId = Ids.genTimeMillisId();
         comment.put(Keys.OBJECT_ID, commentId);
-        final String commentSharpURL =
-                Comments.getCommentSharpURLForArticle(article, commentId);
+        final String commentSharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);
@@ -314,19 +308,14 @@ public final class InitService {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    public void archiveDate(final JSONObject article)
-            throws RepositoryException {
+    public void archiveDate(final JSONObject article) throws RepositoryException {
         final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString =
-                ArchiveDate.DATE_FORMAT.format(createDate);
+        final String createDateString = ArchiveDate.DATE_FORMAT.format(createDate);
         final JSONObject archiveDate = new JSONObject();
         try {
-            archiveDate.put(ArchiveDate.ARCHIVE_TIME,
-                            ArchiveDate.DATE_FORMAT.parse(createDateString).
-                    getTime());
+            archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse(createDateString).getTime());
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                            1);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
             archiveDateRepository.add(archiveDate);
         } catch (final ParseException e) {
@@ -335,12 +324,8 @@ public final class InitService {
         }
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
-        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_"
-                                       + Keys.OBJECT_ID, archiveDate.optString(
-                Keys.OBJECT_ID));
-        archiveDateArticleRelation.put(Article.ARTICLE + "_"
-                                       + Keys.OBJECT_ID, article.optString(
-                Keys.OBJECT_ID));
+        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
+        archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
 
         archiveDateArticleRepository.add(archiveDateArticleRelation);
     }
@@ -352,17 +337,13 @@ public final class InitService {
      * @param article the specified article
      * @throws RepositoryException repository exception
      */
-    private void addTagArticleRelation(final JSONArray tags,
-                                       final JSONObject article)
-            throws RepositoryException {
+    private void addTagArticleRelation(final JSONArray tags, final JSONObject article) throws RepositoryException {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.optJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
 
-            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.optString(Keys.OBJECT_ID));
-            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.optString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
 
             tagArticleRepository.add(tagArticleRelation);
         }
@@ -376,8 +357,7 @@ public final class InitService {
      * @return an array of tags
      * @throws RepositoryException repository exception
      */
-    private JSONArray tag(final String[] tagTitles, final JSONObject article)
-            throws RepositoryException {
+    private JSONArray tag(final String[] tagTitles, final JSONObject article) throws RepositoryException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
@@ -434,8 +414,7 @@ public final class InitService {
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    private JSONObject initStatistic() throws RepositoryException,
-                                              JSONException {
+    private JSONObject initStatistic() throws RepositoryException, JSONException {
         LOGGER.info("Initializing statistic....");
         final JSONObject ret = new JSONObject();
         ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
@@ -482,43 +461,30 @@ public final class InitService {
         final JSONObject ret = new JSONObject();
 
         ret.put(NOTICE_BOARD, Default.DEFAULT_NOTICE_BOARD);
-        ret.put(META_DESCRIPTION,
-                Default.DEFAULT_META_DESCRIPTION);
+        ret.put(META_DESCRIPTION, Default.DEFAULT_META_DESCRIPTION);
         ret.put(META_KEYWORDS, Default.DEFAULT_META_KEYWORDS);
         ret.put(HTML_HEAD, Default.DEFAULT_HTML_HEAD);
-        ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
-                Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
-                Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
-                Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
-        ret.put(ARTICLE_LIST_DISPLAY_COUNT,
-                Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
-        ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-        ret.put(MOST_USED_TAG_DISPLAY_CNT,
-                Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
-        ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
-        ret.put(RECENT_ARTICLE_DISPLAY_CNT,
-                Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
-        ret.put(RECENT_COMMENT_DISPLAY_CNT,
-                Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+        ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT, Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT, Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
+        ret.put(ARTICLE_LIST_DISPLAY_COUNT, Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+        ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE, Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        ret.put(MOST_USED_TAG_DISPLAY_CNT, Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+        ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT, Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+        ret.put(RECENT_ARTICLE_DISPLAY_CNT, Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+        ret.put(RECENT_COMMENT_DISPLAY_CNT, Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
         ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST);
-        final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
-        ret.put(ADMIN_EMAIL, userEmail);
+        ret.put(ADMIN_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
-        ret.put(ENABLE_ARTICLE_UPDATE_HINT,
-                Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+        ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
         ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
-        ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK,
-                Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        ret.put(COMMENTABLE, Default.DEFAULT_COMMENTABLE);
         ret.put(VERSION, SoloServletListener.VERSION);
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
         ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
@@ -544,8 +510,7 @@ public final class InitService {
 
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + Skin.SKINS + "/"
-                                    + skinDirName;
+            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Loads skins error!", e);

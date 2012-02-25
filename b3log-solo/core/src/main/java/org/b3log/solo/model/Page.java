@@ -19,7 +19,8 @@ package org.b3log.solo.model;
  * This class defines all page model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 15, 2010
+ * @version 1.0.0.4, Feb 25, 2012
+ * @since 0.3.1
  */
 public final class Page {
 
@@ -55,6 +56,45 @@ public final class Page {
      * Key of comments.
      */
     public static final String PAGE_COMMENTS_REF = "pageComments";
+    /**
+     * Key of comment-able.
+     */
+    public static final String PAGE_COMMENTABLE = "pageCommentable";
+    /**
+     * Key of page type.
+     * 
+     * <p>
+     * Available values:
+     *   <ul>
+     *     <li>link</li>
+     *     No contents (pageContent), if users clicked, just jump to the given address specified by the permalink.
+     *     <li>page</li>
+     *     A normal customized page.
+     *   </ul>
+     * </p>
+     */
+    public static final String PAGE_TYPE = "pageType";
+    /**
+     * Key of open target.
+     * 
+     * <p>
+     * Available values: 
+     *   <ul>
+     *     <li>_blank</li>
+     *     Opens the linked document in a new window or tab.
+     *     <li>_self</li>
+     *     Opens the linked document in the same frame as it was clicked (this is default).
+     *     <li>_parent</li>
+     *     Opens the linked document in the parent frame.
+     *     <li>_top</li>
+     *     Opens the linked document in the full body of the window.
+     *     <li><i>frame name</i></li>
+     *     Opens the linked document in a named frame.
+     *   </ul>
+     * See <a href="http://www.w3schools.com/tags/att_a_target.asp">here</a> for more details.
+     * </p>
+     */
+    public static final String PAGE_OPEN_TARGET = "pageOpenTarget";
 
     /**
      * Private default constructor.

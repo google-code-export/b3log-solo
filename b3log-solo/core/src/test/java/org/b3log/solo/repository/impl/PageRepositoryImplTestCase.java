@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * {@link PageRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 31, 2011
+ * @version 1.0.0.1, Feb 25, 2012
  */
 @Test(suiteName = "repository")
 public class PageRepositoryImplTestCase extends AbstractTestCase {
@@ -52,6 +52,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_ORDER, 0);
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "page");
+        page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -71,8 +74,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
     public void getByPermalink() throws Exception {
         final PageRepository pageRepository = getPageRepository();
 
-        final JSONObject page1 =
-                pageRepository.getByPermalink("page1 permalink");
+        final JSONObject page1 = pageRepository.getByPermalink("page1 permalink");
         Assert.assertNotNull(page1);
         Assert.assertEquals(page1.getString(Page.PAGE_TITLE), "page1 title");
 
@@ -95,6 +97,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_ORDER, 1);
         page.put(Page.PAGE_PERMALINK, "page2 permalink");
         page.put(Page.PAGE_TITLE, "page2 title");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "page");
+        page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -120,6 +125,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_ORDER, 2);
         page.put(Page.PAGE_PERMALINK, "page3 permalink");
         page.put(Page.PAGE_TITLE, "page3 title");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "page");
+        page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -140,7 +148,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject notFound =
                 pageRepository.getUpper(page1.getString(Keys.OBJECT_ID));
         Assert.assertNull(notFound);
-        
+
         Assert.assertNull(pageRepository.getUpper("not found"));
         Assert.assertNull(pageRepository.getUnder("not found"));
     }
@@ -157,7 +165,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject page1 = pageRepository.getByOrder(0);
         Assert.assertNotNull(page1);
         Assert.assertEquals(page1.getString(Page.PAGE_TITLE), "page1 title");
-        
+
         Assert.assertNull(pageRepository.getByOrder(Integer.MIN_VALUE));
     }
 }

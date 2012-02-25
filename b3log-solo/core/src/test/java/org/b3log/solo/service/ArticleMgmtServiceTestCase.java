@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * {@link ArticleMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Feb 24, 2012
+ * @version 1.0.0.4, Feb 25, 2012
  */
 @Test(suiteName = "service")
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
@@ -78,6 +78,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -105,9 +106,9 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
-        final String articleId =
-                articleMgmtService.addArticle(requestJSONObject);
+        final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
     }
@@ -134,9 +135,9 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
-        final String articleId =
-                articleMgmtService.addArticle(requestJSONObject);
+        final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
 
@@ -145,12 +146,10 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
 
         articleMgmtService.updateArticle(requestJSONObject);
 
-        final ArticleQueryService articleQueryService =
-                getArticleQueryService();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject updated = articleQueryService.getArticleById(articleId);
         Assert.assertNotNull(updated);
-        Assert.assertEquals(updated.getString(Article.ARTICLE_TITLE),
-                            "updated article2 title");
+        Assert.assertEquals(updated.getString(Article.ARTICLE_TITLE), "updated article2 title");
     }
 
     /**
@@ -175,16 +174,15 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
-        final String articleId =
-                articleMgmtService.addArticle(requestJSONObject);
+        final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
 
         articleMgmtService.removeArticle(articleId);
 
-        final ArticleQueryService articleQueryService =
-                getArticleQueryService();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final JSONObject updated = articleQueryService.getArticleById(articleId);
         Assert.assertNull(updated);
     }
@@ -197,12 +195,9 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "addArticle")
     public void topArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
-        final ArticleQueryService articleQueryService =
-                getArticleQueryService();
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
-        final JSONArray articles =
-                articleQueryService.getArticles(paginationRequest).
+        final ArticleQueryService articleQueryService = getArticleQueryService();
+        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONArray articles = articleQueryService.getArticles(paginationRequest).
                 optJSONArray(Article.ARTICLES);
 
         Assert.assertNotEquals(articles.length(), 0);
@@ -237,26 +232,22 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
-        final String articleId =
-                articleMgmtService.addArticle(requestJSONObject);
+        final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
         Assert.assertNotNull(articleId);
 
-        final ArticleQueryService articleQueryService =
-                getArticleQueryService();
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
-        JSONArray articles =
-                articleQueryService.getArticles(paginationRequest).
+        final ArticleQueryService articleQueryService = getArticleQueryService();
+        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        JSONArray articles = articleQueryService.getArticles(paginationRequest).
                 optJSONArray(Article.ARTICLES);
 
         int articleCount = articles.length();
         Assert.assertNotEquals(articleCount, 0);
 
         articleMgmtService.cancelPublishArticle(articleId);
-        articles = articleQueryService.getArticles(paginationRequest).
-                optJSONArray(Article.ARTICLES);
+        articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
         Assert.assertEquals(articles.length(), articleCount - 1);
     }
 
@@ -268,16 +259,14 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "addArticle")
     public void updateArticlesRandomValue() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
-        final ArticleQueryService articleQueryService =
-                getArticleQueryService();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
 
         List<JSONObject> articles = articleQueryService.getRecentArticles(10);
         Assert.assertNotEquals(articles.size(), 0);
 
         final JSONObject article = articles.get(0);
         final String articleId = article.getString(Keys.OBJECT_ID);
-        double randomValue =
-                article.getDouble(Article.ARTICLE_RANDOM_DOUBLE);
+        double randomValue = article.getDouble(Article.ARTICLE_RANDOM_DOUBLE);
         articleMgmtService.updateArticlesRandomValue(Integer.MAX_VALUE);
 
         //Assert.assertNotEquals(articleQueryService.getArticleById(articleId).

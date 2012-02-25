@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 24, 2012
+ * @version 1.0.0.2, Feb 25, 2012
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -63,15 +63,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
         transaction.commit();
 
-        final JSONArray results =
-                articleRepository.getByAuthorEmail("test@gmail.com", 1,
-                                                   Integer.MAX_VALUE).
-                getJSONArray(Keys.RESULTS);
+        final JSONArray results = articleRepository.getByAuthorEmail("test@gmail.com", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
 
         Assert.assertEquals(results.length(), 1);
     }
@@ -81,15 +79,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      * 
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add"})
+    @Test(dependsOnMethods = "add")
     public void getByPermalink() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
-        final JSONObject article = articleRepository.getByPermalink(
-                "article permalink1");
+        final JSONObject article = articleRepository.getByPermalink("article permalink1");
 
         Assert.assertNotNull(article);
-        Assert.assertEquals(article.getString(Article.ARTICLE_TITLE),
-                            "article title1");
+        Assert.assertEquals(article.getString(Article.ARTICLE_TITLE), "article title1");
 
         Assert.assertNull(articleRepository.getByPermalink("not found"));
     }
@@ -120,6 +116,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -127,26 +124,18 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         Assert.assertEquals(articleRepository.count(), 2);
 
-        JSONObject previousArticle =
-                articleRepository.getPreviousArticle(article.getString(
-                Keys.OBJECT_ID));
+        JSONObject previousArticle = articleRepository.getPreviousArticle(article.getString(Keys.OBJECT_ID));
 
         Assert.assertNotNull(previousArticle);
-        Assert.assertEquals(previousArticle.getString(Article.ARTICLE_TITLE),
-                            "article title1");
-        Assert.assertEquals(previousArticle.getString(Article.ARTICLE_PERMALINK),
-                            "article permalink1");
+        Assert.assertEquals(previousArticle.getString(Article.ARTICLE_TITLE), "article title1");
+        Assert.assertEquals(previousArticle.getString(Article.ARTICLE_PERMALINK), "article permalink1");
         Assert.assertNull(previousArticle.opt(Keys.OBJECT_ID));
 
-        previousArticle = articleRepository.getByPermalink(
-                previousArticle.getString(Article.ARTICLE_PERMALINK));
+        previousArticle = articleRepository.getByPermalink(previousArticle.getString(Article.ARTICLE_PERMALINK));
 
-        final JSONObject nextArticle =
-                articleRepository.getNextArticle(previousArticle.getString(
-                Keys.OBJECT_ID));
+        final JSONObject nextArticle = articleRepository.getNextArticle(previousArticle.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(previousArticle);
-        Assert.assertEquals(nextArticle.getString(Article.ARTICLE_TITLE),
-                            "article title2");
+        Assert.assertEquals(nextArticle.getString(Article.ARTICLE_TITLE), "article title2");
     }
 
     /**
@@ -175,25 +164,22 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
         transaction.commit();
 
-        List<JSONObject> mostCommentArticles =
-                articleRepository.getMostCommentArticles(2);
+        List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(2);
         Assert.assertNotNull(mostCommentArticles);
         Assert.assertEquals(mostCommentArticles.size(), 2);
-        Assert.assertEquals(mostCommentArticles.get(0).
-                getInt(Article.ARTICLE_COMMENT_COUNT), 2);
-        Assert.assertEquals(mostCommentArticles.get(1).
-                getInt(Article.ARTICLE_COMMENT_COUNT), 1);
+        Assert.assertEquals(mostCommentArticles.get(0).getInt(Article.ARTICLE_COMMENT_COUNT), 2);
+        Assert.assertEquals(mostCommentArticles.get(1).getInt(Article.ARTICLE_COMMENT_COUNT), 1);
 
         mostCommentArticles = articleRepository.getMostCommentArticles(1);
         Assert.assertNotNull(mostCommentArticles);
         Assert.assertEquals(mostCommentArticles.size(), 1);
-        Assert.assertEquals(mostCommentArticles.get(0).
-                getInt(Article.ARTICLE_COMMENT_COUNT), 2);
+        Assert.assertEquals(mostCommentArticles.get(0).getInt(Article.ARTICLE_COMMENT_COUNT), 2);
     }
 
     /**
@@ -224,13 +210,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_UPDATE_DATE, new Date());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
+        article.put(Article.ARTICLE_COMMENTABLE, true);
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
         transaction.commit();
 
-        List<JSONObject> mostViewCountArticles =
-                articleRepository.getMostViewCountArticles(2);
+        List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(2);
         Assert.assertNotNull(mostViewCountArticles);
         Assert.assertEquals(mostViewCountArticles.size(), 2);
         Assert.assertEquals(mostViewCountArticles.get(0).
@@ -238,8 +224,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(mostViewCountArticles.get(1).
                 getInt(Article.ARTICLE_VIEW_COUNT), 1);
 
-        mostViewCountArticles =
-                articleRepository.getMostViewCountArticles(1);
+        mostViewCountArticles = articleRepository.getMostViewCountArticles(1);
         Assert.assertNotNull(mostViewCountArticles);
         Assert.assertEquals(mostViewCountArticles.size(), 1);
         Assert.assertEquals(mostViewCountArticles.get(0).
@@ -281,12 +266,9 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNotNull(recentArticles);
         Assert.assertEquals(recentArticles.size(), 3);
 
-        Assert.assertEquals(recentArticles.get(0).getString(
-                Article.ARTICLE_TITLE), "article title3");
-        Assert.assertEquals(recentArticles.get(1).getString(
-                Article.ARTICLE_TITLE), "article title2");
-        Assert.assertEquals(recentArticles.get(2).getString(
-                Article.ARTICLE_TITLE), "article title1");
+        Assert.assertEquals(recentArticles.get(0).getString(Article.ARTICLE_TITLE), "article title3");
+        Assert.assertEquals(recentArticles.get(1).getString(Article.ARTICLE_TITLE), "article title2");
+        Assert.assertEquals(recentArticles.get(2).getString(Article.ARTICLE_TITLE), "article title1");
 
 
     }
@@ -300,16 +282,14 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
     public void isPublished() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
-        final JSONArray all =
-                articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+        final JSONArray all = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
         Assert.assertNotNull(all);
 
         final JSONObject article = all.getJSONObject(0);
         Assert.assertTrue(articleRepository.isPublished(
                 article.getString(Keys.OBJECT_ID)));
 
-        final JSONObject notPublished =
-                articleRepository.getByPermalink("article permalink4");
+        final JSONObject notPublished = articleRepository.getByPermalink("article permalink4");
         Assert.assertNotNull(notPublished);
         Assert.assertFalse(notPublished.getBoolean(Article.ARTICLE_IS_PUBLISHED));
 
