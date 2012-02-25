@@ -74,7 +74,8 @@
         "editorPostLabel": "${editorPostLabel}",
         "enableLabel": "${enableLabel}",
         "disableLabel": "${disableLabel}",
-        "linkOrContentEmptyLabel": "${linkOrContentEmptyLabel}"
+        "linkOrContentEmptyLabel": "${linkOrContentEmptyLabel}",
+        "openMethodLabel": "${openMethodLabel}"
     };    
     admin.init();
 </script>

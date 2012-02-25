@@ -51,6 +51,11 @@ admin.pageList = {
             index: "pagePermalink",
             minWidth: 300
         }, {
+            style: "padding-left: 12px;",
+            text: Label.openMethodLabel,
+            index: "pageTarget",
+            width: 180
+        }, {
             text: Label.commentLabel,
             index: "comments",
             width: 80,
@@ -141,6 +146,7 @@ admin.pageList = {
                     pages[i].pageTitle + "</a>";
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                     + pages[i].pagePermalink + "</a>";
+                    pageData[i].pageTarget = pages[i].pageOpenTarget;
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
@@ -245,16 +251,19 @@ admin.pageList = {
                 pageContent = $("#pageContent").val();
             }
             
-            var pageType = "page";
+            var pageType = "page",
+            pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (pageContent.replace(/\s/g, "") === "") {
                 pageType = "link";
+                pagePermalink = Util.proessURL(pagePermalink);
             }
+            
             
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "pageContent": pageContent,
-                    "pagePermalink": $("#pagePermalink").val(),
+                    "pagePermalink": pagePermalink,
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": pageType,
                     "pageOpenTarget": $("#pageTarget").val()
