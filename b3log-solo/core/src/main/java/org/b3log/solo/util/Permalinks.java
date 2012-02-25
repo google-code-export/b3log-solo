@@ -38,18 +38,15 @@ public final class Permalinks {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Permalinks.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Permalinks.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
-    private PageRepository pageRepository =
-            PageRepositoryImpl.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Reserved permalinks.
      */
@@ -114,10 +111,8 @@ public final class Permalinks {
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
      */
-    public static boolean matchDefaultArticlePermalinkFormat(
-            final String permalink) {
-        final Pattern pattern = Pattern.compile(
-                "/articles/\\d{4}/\\d{2}/\\d{2}/\\d+\\.html");
+    public static boolean matchDefaultArticlePermalinkFormat(final String permalink) {
+        final Pattern pattern = Pattern.compile("/articles/\\d{4}/\\d{2}/\\d{2}/\\d+\\.html");
         final Matcher matcher = pattern.matcher(permalink);
 
         return matcher.matches();
@@ -130,10 +125,8 @@ public final class Permalinks {
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
      */
-    public static boolean matchDefaultPagePermalinkFormat(
-            final String permalink) {
-        final Pattern pattern = Pattern.compile(
-                "/pages/\\d+\\.html");
+    public static boolean matchDefaultPagePermalinkFormat(final String permalink) {
+        final Pattern pattern = Pattern.compile("/pages/\\d+\\.html");
         final Matcher matcher = pattern.matcher(permalink);
 
         return matcher.matches();
@@ -149,8 +142,7 @@ public final class Permalinks {
      * @return {@code true} if invalid, returns {@code false} otherwise 
      */
     public static boolean invalidPermalinkFormat(final String permalink) {
-        return invalidArticlePermalinkFormat(permalink)
-               && invalidPagePermalinkFormat(permalink);
+        return invalidArticlePermalinkFormat(permalink) && invalidPagePermalinkFormat(permalink);
     }
 
     /**
@@ -264,9 +256,7 @@ public final class Permalinks {
                    || null != pageRepository.getByPermalink(permalink)
                    || permalink.endsWith(".ftl");
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Determines whether the permalink["
-                                     + permalink
-                                     + "] exists failed, returns true", e);
+            LOGGER.log(Level.SEVERE, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
 
             return true;
         }
