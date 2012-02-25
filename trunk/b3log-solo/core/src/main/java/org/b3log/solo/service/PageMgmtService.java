@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
@@ -31,6 +32,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Comments;
+import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +62,14 @@ public final class PageMgmtService {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Permalink utilities.
+     */
+    private Permalinks permalinks = Permalinks.getInstance();
 
     /**
      * Updates a page by the specified request json object.
@@ -96,8 +106,33 @@ public final class PageMgmtService {
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
-            if (!oldPermalink.equals(permalink) && Strings.isEmptyOrNull(permalink)) {
-                permalink = "/pages/" + pageId + ".html";
+            if (!oldPermalink.equals(permalink)) {
+                if (Strings.isEmptyOrNull(permalink)) {
+                    permalink = "/pages/" + pageId + ".html";
+                }
+
+                if (Page.PAGE.equals(page.getString(Page.PAGE_TYPE))) {
+                    if (!permalink.startsWith("/")) {
+                        permalink = "/" + permalink;
+                    }
+
+                    if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                        if (transaction.isActive()) {
+                            transaction.rollback();
+                        }
+
+                        throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+                    }
+
+                    if (!oldPermalink.equals(permalink)
+                        && permalinks.exist(permalink)) {
+                        if (transaction.isActive()) {
+                            transaction.rollback();
+                        }
+
+                        throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
+                    }
+                }
             }
 
             // TODO: SBC case
@@ -180,6 +215,28 @@ public final class PageMgmtService {
             String permalink = page.optString(Page.PAGE_PERMALINK);
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
+            }
+
+            if (Page.PAGE.equals(page.getString(Page.PAGE_TYPE))) {
+                if (!permalink.startsWith("/")) {
+                    permalink = "/" + permalink;
+                }
+
+                if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+                }
+
+                if (permalinks.exist(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
+                }
             }
 
             // TODO: SBC case
