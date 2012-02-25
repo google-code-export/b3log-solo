@@ -69,13 +69,14 @@
         "enabledLabel": "${enabledLabel}",
         "disabledLabel": "${disabledLabel}",
         "signIsNullLabel": "${signIsNullLabel}",
-        "noDataLable": "${noDataLable}",
+        "noDataLabel": "${noDataLabel}",
         "editorLeaveLabel": "${editorLeaveLabel}",
         "editorPostLabel": "${editorPostLabel}",
         "enableLabel": "${enableLabel}",
         "disableLabel": "${disableLabel}",
         "linkOrContentEmptyLabel": "${linkOrContentEmptyLabel}",
-        "openMethodLabel": "${openMethodLabel}"
+        "openMethodLabel": "${openMethodLabel}",
+        "typeLabel": "${typeLabel}"
     };    
     admin.init();
 </script>

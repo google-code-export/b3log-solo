@@ -27,6 +27,12 @@ a:active {
 a:hover {
     color: #D54121;
 }
+
+button.selected {
+    background-color: #ECECEC;
+    background-image: none;
+    color: #555555;
+}
 /* end reset */
 
 /* start ico */
@@ -332,11 +338,6 @@ button#submitArticle {
 }
 .signs button {
     margin: 0 12px;
-}
-.signs button.selected {
-    background-color: #ECECEC;
-    background-image: none;
-    color: #555555;
 }
 /* end preference */
 
