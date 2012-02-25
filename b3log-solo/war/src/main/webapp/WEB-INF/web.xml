@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.4.1, Feb 13, 2012
+    Version: 1.0.4.2, Feb 25, 2012
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -39,7 +39,6 @@
         <url-pattern>/admin-comment-list.do</url-pattern>
         <url-pattern>/admin-link-list.do</url-pattern>
         <url-pattern>/admin-preference.do</url-pattern>
-        <url-pattern>/admin-file-list.do</url-pattern>
         <url-pattern>/admin-page-list.do</url-pattern>
         <url-pattern>/admin-others.do</url-pattern>
         <url-pattern>/admin-draft-list.do</url-pattern>
@@ -119,7 +118,6 @@
         <url-pattern>/admin-comment-list.do</url-pattern>
         <url-pattern>/admin-link-list.do</url-pattern>
         <url-pattern>/admin-preference.do</url-pattern>
-        <url-pattern>/admin-file-list.do</url-pattern>
         <url-pattern>/admin-page-list.do</url-pattern>
         <url-pattern>/admin-others.do</url-pattern>
         <url-pattern>/admin-draft-list.do</url-pattern>
@@ -127,14 +125,6 @@
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-main.do</url-pattern>
         <url-pattern>/admin-about.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>DataStoreFileAccessServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.file.DataStoreFileAccessServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DataStoreFileAccessServlet</servlet-name>
-        <url-pattern>/datastore-file-access.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
