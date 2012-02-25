@@ -97,15 +97,13 @@ public final class SoloServletListener extends AbstractServletListener {
 
         if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()
             && RuntimeDatabase.SLEEPYCAT == Latkes.getRuntimeDatabase()) {
-            final String repositoryPath = ResourceBundle.getBundle("local").
-                    getString("repositoryPath");
+            final String repositoryPath = ResourceBundle.getBundle("local").getString("repositoryPath");
 
             Latkes.setRepositoryPath(repositoryPath);
             LOGGER.log(Level.INFO, "Sets repository[path={0}]", repositoryPath);
         }
 
-        final PreferenceRepository preferenceRepository =
-                PreferenceRepositoryImpl.getInstance();
+        final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
 
         final Transaction transaction = preferenceRepository.beginTransaction();
 
@@ -133,9 +131,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                   new Object[]{Strings.LINE_SEPARATOR,
-                                Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -157,8 +153,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
-        final HttpServletRequest servletRequest =
-                (HttpServletRequest) servletRequestEvent.getServletRequest();
+        final HttpServletRequest servletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         final String requestURI = servletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
@@ -181,9 +176,7 @@ public final class SoloServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Stopwatchs.end();
 
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
-                   new Object[]{Strings.LINE_SEPARATOR,
-                                Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         Stopwatchs.release();
 
         super.requestDestroyed(servletRequestEvent);
@@ -209,15 +202,13 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.info("Loading preference....");
 
-        final PreferenceRepository preferenceRepository =
-                PreferenceRepositoryImpl.getInstance();
+        final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
         JSONObject preference = null;
 
         try {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
-                LOGGER.log(Level.WARNING,
-                           "Can't not init default skin, please init B3log Solo first");
+                LOGGER.log(Level.WARNING, "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
@@ -239,8 +230,7 @@ public final class SoloServletListener extends AbstractServletListener {
     // XXX: to find a better way (isInited)?
     public static boolean isInited() {
         try {
-            final JSONObject admin =
-                    UserRepositoryImpl.getInstance().getAdmin();
+            final JSONObject admin = UserRepositoryImpl.getInstance().getAdmin();
 
             return null != admin;
         } catch (final RepositoryException e) {
@@ -262,8 +252,7 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
             eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
-            eventManager.registerListener(
-                    new UpdateArticleGoogleBlogSearchPinger());
+            eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
@@ -284,10 +273,8 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         try {
-            final PreferenceRepository preferenceRepository =
-                    PreferenceRepositoryImpl.getInstance();
-            final JSONObject preference =
-                    preferenceRepository.get(Preference.PREFERENCE);
+            final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {  // Did not initialize yet
                 return;
             }
@@ -296,15 +283,12 @@ public final class SoloServletListener extends AbstractServletListener {
 
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
 
-            if (desiredView == null && !Requests.mobileRequest(
-                    httpServletRequest)
+            if (desiredView == null && !Requests.mobileRequest(httpServletRequest)
                 || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = "mobile";
-                LOGGER.log(Level.FINER,
-                           "The request [URI={0}] comes frome mobile device",
-                           requestURI);
+                LOGGER.log(Level.FINER, "The request [URI={0}] comes frome mobile device", requestURI);
             }
 
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
