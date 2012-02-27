@@ -45,13 +45,11 @@ public final class InitCheckFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(InitCheckFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -67,12 +65,9 @@ public final class InitCheckFilter implements Filter {
      * @throws ServletException servlet exception
      */
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain) throws IOException,
-                                                         ServletException {
-        final HttpServletRequest httpServletRequest =
-                (HttpServletRequest) request;
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
 
@@ -95,12 +90,10 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            LOGGER.finer(
-                    "Try to get preference to confirm whether the preference exixts");
+            LOGGER.finer("Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                LOGGER.log(Level.WARNING,
-                           "B3log Solo has not been initialized, so redirects to /init");
+                LOGGER.log(Level.WARNING, "B3log Solo has not been initialized, so redirects to /init");
 
                 final HTTPRequestContext context = new HTTPRequestContext();
                 context.setRequest((HttpServletRequest) request);
