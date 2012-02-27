@@ -52,13 +52,11 @@ public final class PermalinkFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PermalinkFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
@@ -78,12 +76,9 @@ public final class PermalinkFilter implements Filter {
      * @throws ServletException servlet exception
      */
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain) throws IOException,
-                                                         ServletException {
-        final HttpServletRequest httpServletRequest =
-                (HttpServletRequest) request;
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
@@ -104,18 +99,14 @@ public final class PermalinkFilter implements Filter {
             }
 
             if (null == page && null == article) {
-                LOGGER.log(Level.FINER,
-                           "Not found article/page with permalink[{0}]",
-                           requestURI);
+                LOGGER.log(Level.FINER, "Not found article/page with permalink[{0}]", requestURI);
                 chain.doFilter(request, response);
 
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Processes article permalink filter failed",
-                       e);
-            ((HttpServletResponse) response).sendError(
-                    HttpServletResponse.SC_NOT_FOUND);
+            LOGGER.log(Level.SEVERE, "Processes article permalink filter failed", e);
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -135,9 +126,8 @@ public final class PermalinkFilter implements Filter {
      * @throws IOException io exception
      * @see HTTPRequestDispatcher#dispatch(org.b3log.latke.servlet.HTTPRequestContext) 
      */
-    private void dispatchToArticleOrPageProcessor(
-            final ServletRequest request, final ServletResponse response,
-            final JSONObject article, final JSONObject page) 
+    private void dispatchToArticleOrPageProcessor(final ServletRequest request, final ServletResponse response,
+                                                  final JSONObject article, final JSONObject page)
             throws ServletException, IOException {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);

@@ -74,16 +74,12 @@ public final class PageCacheFilter implements Filter {
      * @throws ServletException servlet exception
      */
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain) throws IOException,
-                                                         ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
         final long startTimeMillis = System.currentTimeMillis();
-        request.setAttribute(AbstractCacheablePageAction.START_TIME_MILLIS,
-                             startTimeMillis);
+        request.setAttribute(AbstractCacheablePageAction.START_TIME_MILLIS, startTimeMillis);
 
-        final HttpServletRequest httpServletRequest =
-                (HttpServletRequest) request;
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
@@ -105,47 +101,33 @@ public final class PageCacheFilter implements Filter {
 
         String pageCacheKey = null;
         final String queryString = httpServletRequest.getQueryString();
-        pageCacheKey =
-                (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
+        pageCacheKey = (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
         if (Strings.isEmptyOrNull(pageCacheKey)) {
-            pageCacheKey = PageCaches.getPageCacheKey(requestURI,
-                                                      queryString);
+            pageCacheKey = PageCaches.getPageCacheKey(requestURI, queryString);
             request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
         }
 
-        final JSONObject cachedPageContentObject =
-                PageCaches.get(pageCacheKey, httpServletRequest);
+        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey, httpServletRequest);
 
         if (null == cachedPageContentObject) {
-            LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]",
-                       requestURI);
+            LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]", requestURI);
             chain.doFilter(request, response);
 
             return;
         }
 
         try {
-            LOGGER.log(Level.FINEST,
-                       "Writes resposne for page[pageCacheKey={0}] from cache",
-                       pageCacheKey);
+            LOGGER.log(Level.FINEST, "Writes resposne for page[pageCacheKey={0}] from cache", pageCacheKey);
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
-            String cachedPageContent =
-                    cachedPageContentObject.getString(
-                    AbstractCacheablePageAction.CACHED_CONTENT);
-            final String topBarHTML =
-                    TopBars.getTopBarHTML((HttpServletRequest) request,
-                                          (HttpServletResponse) response);
-            cachedPageContent = cachedPageContent.replace(
-                    Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
+            String cachedPageContent = cachedPageContentObject.getString(AbstractCacheablePageAction.CACHED_CONTENT);
+            final String topBarHTML = TopBars.getTopBarHTML((HttpServletRequest) request, (HttpServletResponse) response);
+            cachedPageContent = cachedPageContent.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
 
-            final String cachedType = cachedPageContentObject.optString(
-                    AbstractCacheablePageAction.CACHED_TYPE);
-            final String cachedTitle = cachedPageContentObject.getString(
-                    AbstractCacheablePageAction.CACHED_TITLE);
-            LOGGER.log(Level.FINEST,
-                       "Cached value[key={0}, type={1}, title={2}]",
+            final String cachedType = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_TYPE);
+            final String cachedTitle = cachedPageContentObject.getString(AbstractCacheablePageAction.CACHED_TITLE);
+            LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
 
             statistics.incBlogViewCount((HttpServletRequest) request);
@@ -153,9 +135,8 @@ public final class PageCacheFilter implements Filter {
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(
                     endimeMillis, "yyyy/MM/dd HH:mm:ss");
-            final String msg = String.format(
-                    "<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
-                    endimeMillis - startTimeMillis, dateString);
+            final String msg = String.format("<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
+                                             endimeMillis - startTimeMillis, dateString);
             LOGGER.finer(msg);
             cachedPageContent += Strings.LINE_SEPARATOR + msg;
             writer.write(cachedPageContent);
