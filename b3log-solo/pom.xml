@@ -37,6 +37,9 @@
         <org.b3log.latke-repository-sleepycat.version>
             0.5.0-SNAPSHOT
         </org.b3log.latke-repository-sleepycat.version>
+        <org.b3log.latke-repository-mysql.version>
+            0.5.0-SNAPSHOT
+        </org.b3log.latke-repository-mysql.version>
         <freemarker-gae.version>2.3.18</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
         <gae.version>1.6.2.1</gae.version>
@@ -190,6 +193,12 @@
                 <groupId>org.b3log</groupId>
                 <artifactId>latke-repository-sleepycat</artifactId>
                 <version>${org.b3log.latke-repository-sleepycat.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke-repository-mysql</artifactId>
+                <version>${org.b3log.latke-repository-mysql.version}</version>
             </dependency>
 
             <dependency>
