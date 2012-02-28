@@ -85,8 +85,7 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
-                && "/init".equals(requestURI)) {
+            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && "/init".equals(requestURI)) {
                 // Do initailization
                 chain.doFilter(request, response);
 

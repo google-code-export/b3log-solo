@@ -36,13 +36,11 @@ public final class PreferenceQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PreferenceQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PreferenceQueryService.class.getName());
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository =
-            PreferenceRepositoryImpl.getInstance();
+    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
 
     /**
      * Gets the reply notification template.
@@ -52,11 +50,9 @@ public final class PreferenceQueryService {
      */
     public JSONObject getReplyNotificationTemplate() throws ServiceException {
         try {
-            return preferenceRepository.get(
-                    Preference.REPLY_NOTIFICATION_TEMPLATE);
+            return preferenceRepository.get(Preference.REPLY_NOTIFICATION_TEMPLATE);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE,
-                       "Updates reply notification template failed", e);
+            LOGGER.log(Level.SEVERE, "Updates reply notification template failed", e);
             throw new ServiceException(e);
         }
     }
@@ -73,11 +69,9 @@ public final class PreferenceQueryService {
      */
     public JSONObject getPreference() throws ServiceException {
         try {
-            final JSONObject ret = preferenceRepository.get(
-                    Preference.PREFERENCE);
+            final JSONObject ret = preferenceRepository.get(Preference.PREFERENCE);
             if (null == ret) {
-                LOGGER.log(Level.WARNING,
-                           "Can not load preference from datastore");
+                LOGGER.log(Level.WARNING, "Can not load preference from datastore");
                 return null;
             }
 
