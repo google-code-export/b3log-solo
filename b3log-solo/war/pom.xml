@@ -24,7 +24,7 @@
 
     <modules>
         <module>gae</module>
-        <module>local</module>
+        <module>sleepycat</module>
         <module>mysql</module>
     </modules>
 
