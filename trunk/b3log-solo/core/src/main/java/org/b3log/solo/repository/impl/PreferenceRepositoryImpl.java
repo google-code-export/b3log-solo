@@ -26,17 +26,15 @@ import org.json.JSONObject;
  * Preference repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 15, 2011
+ * @version 1.0.0.3, Feb 28, 2012
  * @since 0.3.1
  */
-public final class PreferenceRepositoryImpl extends AbstractRepository
-        implements PreferenceRepository {
+public final class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PreferenceRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PreferenceRepositoryImpl.class.getName());
 
     /**
      * {@inheritDoc}
