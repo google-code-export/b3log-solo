@@ -22,7 +22,9 @@
         <version>0.4.0</version>
     </parent>
     
-    <properties></properties>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
 
     <dependencies>
         <dependency>
