@@ -9,11 +9,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.b3log</groupId>
-    <artifactId>solo-local</artifactId>
+    <artifactId>solo-sleepycat</artifactId>
     <packaging>war</packaging>
-    <name>B3log Solo (Local)</name>
+    <name>B3log Solo (Sleepycat)</name>
     <description>
-        B3log Solo standard Servlet container war.
+        B3log Solo (Sleepycat) standard Servlet container war.
     </description>
 
     <parent>
@@ -68,7 +68,7 @@
             
         </plugins>
         
-        <finalName>b3log-solo-local</finalName>
+        <finalName>b3log-solo-sleepycat</finalName>
     </build>
 </project>
 
