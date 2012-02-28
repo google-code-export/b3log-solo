@@ -119,7 +119,6 @@ public final class SoloServletListener extends AbstractServletListener {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         PluginManager.getInstance().load();

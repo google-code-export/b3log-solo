@@ -60,8 +60,7 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
      * </p>
      */
     @Override
-    public void update(final String id, final JSONObject jsonObject)
-            throws RepositoryException {
+    public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
         getUnderlyingRepository().update(id, jsonObject);
     }
 
@@ -94,8 +93,7 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
         /**
          * Singleton.
          */
-        private static final PreferenceRepositoryImpl SINGLETON =
-                new PreferenceRepositoryImpl(Preference.PREFERENCE);
+        private static final PreferenceRepositoryImpl SINGLETON = new PreferenceRepositoryImpl(Preference.PREFERENCE);
 
         /**
          * Private default constructor.

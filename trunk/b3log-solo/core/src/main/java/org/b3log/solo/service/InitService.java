@@ -20,15 +20,20 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -53,7 +58,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Feb 25, 2012
+ * @version 1.0.0.9, Feb 28, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -141,6 +146,16 @@ public final class InitService {
     public void init(final JSONObject requestJSONObject) throws ServiceException {
         if (SoloServletListener.isInited()) {
             return;
+        }
+
+        if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
+            LOGGER.log(Level.INFO, "B3log Solo is running on [Local] environment, database [{0}], creates all tables",
+                       Latkes.getRuntimeDatabase());
+            final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
+            for (final CreateTableResult createTableResult : createTableResults) {
+                LOGGER.log(Level.INFO, "Create table result[tableName={0}, isSuccess={1}]",
+                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+            }
         }
 
         int retries = MAX_RETRIES_CNT;
