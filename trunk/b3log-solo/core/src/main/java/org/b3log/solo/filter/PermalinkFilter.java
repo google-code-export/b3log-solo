@@ -82,8 +82,7 @@ public final class PermalinkFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
-        if (Permalinks.invalidPermalinkFormat(requestURI)
-            || Skips.isStatic(requestURI)) {
+        if (Permalinks.invalidPermalinkFormat(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 

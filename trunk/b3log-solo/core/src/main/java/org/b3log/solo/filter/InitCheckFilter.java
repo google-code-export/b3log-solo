@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
+import org.b3log.latke.util.StaticResources;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
@@ -72,8 +73,10 @@ public final class InitCheckFilter implements Filter {
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
 
         try {
-            if (Skips.isStatic(requestURI)) {
+            if (StaticResources.isStatic(requestURI)) {
                 chain.doFilter(request, response);
+
+                return;
             }
 
             if (SoloServletListener.isInited()) {
