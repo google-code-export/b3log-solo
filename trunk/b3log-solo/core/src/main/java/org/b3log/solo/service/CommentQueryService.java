@@ -188,34 +188,20 @@ public final class CommentQueryService {
      * @return a list of comments, returns an empty list if not found
      * @throws ServiceException repository exception
      */
-    public List<JSONObject> getComments(final String onId)
-            throws ServiceException {
+    public List<JSONObject> getComments(final String onId) throws ServiceException {
         try {
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-            final List<JSONObject> comments =
-                    commentRepository.getComments(onId, 1,
-                                                  Integer.MAX_VALUE);
+            final List<JSONObject> comments = commentRepository.getComments(onId, 1, Integer.MAX_VALUE);
             for (final JSONObject comment : comments) {
-                final String content =
-                        comment.getString(Comment.COMMENT_CONTENT).
-                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                final String content = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
-
-                comment.put(Comment.COMMENT_TIME,
-                            ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
-
-                comment.put(Comment.COMMENT_NAME,
-                            StringEscapeUtils.escapeHtml(comment.getString(
-                        Comment.COMMENT_NAME)));
-                comment.put(Comment.COMMENT_URL,
-                            StringEscapeUtils.escapeHtml(comment.getString(
-                        Comment.COMMENT_URL)));
-
+                comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+                comment.put(Comment.COMMENT_NAME, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_NAME)));
+                comment.put(Comment.COMMENT_URL, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_URL)));
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
-                if (!Strings.isEmptyOrNull(
-                        comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+                if (!Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply
                     comment.put(Common.IS_REPLY, true);
                 }
