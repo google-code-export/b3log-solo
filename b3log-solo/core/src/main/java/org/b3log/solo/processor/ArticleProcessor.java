@@ -479,10 +479,8 @@ public final class ArticleProcessor {
             articleId = article.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
 
-            final boolean allowVisitDraftViaPermalink = preference.getBoolean(
-                    Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)
-                && !allowVisitDraftViaPermalink) {
+            final boolean allowVisitDraftViaPermalink = preference.getBoolean(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+            if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED) && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
@@ -495,8 +493,7 @@ public final class ArticleProcessor {
             LOGGER.log(Level.FINEST, "Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
 
             // For <meta name="description" content="${article.articleAbstract}"/>
-            final String metaDescription = Jsoup.parse(article.getString(
-                    Article.ARTICLE_ABSTRACT)).text();
+            final String metaDescription = Jsoup.parse(article.getString(Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
