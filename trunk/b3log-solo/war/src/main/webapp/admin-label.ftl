@@ -69,7 +69,6 @@
         "enabledLabel": "${enabledLabel}",
         "disabledLabel": "${disabledLabel}",
         "signIsNullLabel": "${signIsNullLabel}",
-        "noDataLabel": "${noDataLabel}",
         "editorLeaveLabel": "${editorLeaveLabel}",
         "editorPostLabel": "${editorPostLabel}",
         "enableLabel": "${enableLabel}",
