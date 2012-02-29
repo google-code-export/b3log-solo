@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.0.4, Feb 28, 2012",
+    "version": "1.0.0.5, Feb 29, 2012",
     "authors": ["Liang Ding"],
     "since": "0.4.0",
     
@@ -223,160 +223,194 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "adminEmail",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "allowVisitDraftViaPermalink",
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
         },
         {
             "name": "commentable",
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
         },
         {
             "name": "articleListDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "relevantArticlesDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "articleListPaginationWindowSize",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "articleListStyle",
             "type": "String",
-            "length": 20
+            "length": 20,
+            "nullable": true
         },
         {
             "name": "blogHost",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "blogSubtitle",
             "type": "String",
-            "length": 512
+            "length": 512,
+            "nullable": true
         },
         {
             "name": "blogTitle",
             "type": "String",
-            "length": 512
+            "length": 512,
+            "nullable": true
         },
         {
             "name": "enableArticleUpdateHint",
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
         },
         {
             "name": "externalRelevantArticlesDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "htmlHead",
             "type": "String",
-            "length": 2048
+            "length": 2048,
+            "nullable": true
         },
         {
             "name": "keyOfSolo",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "localeString",
             "type": "String",
-            "length": 20
+            "length": 20,
+            "nullable": true
         },
         {
             "name": "metaDescription",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "metaKeywords",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "mostCommentArticleDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "mostUsedTagDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "mostViewArticleDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "noticeBoard",
             "type": "String",
-            "length": 10240
+            "length": 10240,
+            "nullable": true
         },
         {
             "name": "pageCacheEnabled",
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
         },
         {
             "name": "randomArticlesDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "recentCommentDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "recentArticleDisplayCount",
-            "type": "int"
+            "type": "int",
+            "nullable": true
         },
         {
             "name": "signs",
             "type": "String",
-            "length": 10240
+            "length": 10240,
+            "nullable": true
         },
         {
             "name": "skinDirName",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "skinName",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "skins",
             "type": "String",
-            "length": 10240
+            "length": 10240,
+            "nullable": true
         },
         {
             "name": "timeZoneId",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "version",
             "type": "String",
-            "length": 10
+            "length": 10,
+            "nullable": true
         },
         {
             "name": "body",
             "description": "Comment email template",
             "type": "String",
-            "length": 10240
+            "length": 10240,
+            "nullable": true
         },
         {
             "name": "subject",
             "description": "Comment email template subject",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         }
         ]
     },
@@ -551,11 +585,11 @@
         },
         {
             "name": "articleCreateDate",
-            "type": "long"
+            "type": "Date"
         },
         {
             "name": "articleUpdateDate",
-            "type": "long"
+            "type": "Date"
         },
         {
             "name": "articleRandomDouble",
