@@ -233,8 +233,8 @@ public final class MetaWeblogAPI {
                 addArticle(article);
 
                 final StringBuilder stringBuilder =
-                        new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").append(article.
-                        getString(Keys.OBJECT_ID)).append("</string></value></param></params></methodResponse>");
+                        new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").
+                        append(article.getString(Keys.OBJECT_ID)).append("</string></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
                 final String postId = params.getJSONObject(INDEX_POST_ID).
