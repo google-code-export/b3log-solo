@@ -62,7 +62,7 @@
         },
         {
             "name": "commentDate",
-            "type": "long"
+            "type": "Date"
         },
         {
             "name": "commentEmail",
