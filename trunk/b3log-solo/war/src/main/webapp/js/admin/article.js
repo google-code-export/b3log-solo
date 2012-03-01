@@ -249,7 +249,8 @@ admin.article = {
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSignId": signId,
-                    "articleCommentable": $("#articleCommentable").prop("checked")
+                    "articleCommentable": $("#articleCommentable").prop("checked"),
+                    "articleViewPwd": ""
                 }
             };
             
