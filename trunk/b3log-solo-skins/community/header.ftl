@@ -39,7 +39,7 @@
                     <ul class="sub-tabs none">
                         <#list pageNavigations as page>
                         <li class="sub-tab">
-                            <a href="${page.pagePermalink}">${page.pageTitle}</a>
+                            <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
                         </li>
                         </#list>
                     </ul>

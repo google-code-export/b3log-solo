@@ -17,7 +17,7 @@
             <div class="article-body marginBottom40">
                 ${page.pageContent}
             </div>
-            <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
+            <@comments commentList=pageComments article=page></@comments>
         </div>
         <div>
             <#include "side.ftl">

@@ -88,7 +88,7 @@
                                 <div id="externalRelevantArticles" class="article-relative"></div>
                             </div>
                             <div class="line right"></div>
-                            <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+                            <@comments commentList=articleComments article=article></@comments>
                         </div>
                         <div class="left side">
                             <#include "side.ftl">

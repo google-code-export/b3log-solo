@@ -14,7 +14,7 @@
             <div class="post article-body">
                 ${page.pageContent}
             </div>
-            <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
+            <@comments commentList=pageComments article=page></@comments>
         </div>
         <#include "footer.ftl">
         <@comment_script oId=page.oId></@comment_script>

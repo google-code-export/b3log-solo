@@ -1,4 +1,4 @@
-<#macro comments commentList permalink>
+<#macro comments commentList article>
 <div id="comments">
     <#list commentList as comment>
     <div id="${comment.oId}">
@@ -12,7 +12,7 @@
                 </#if>
                 <#if comment.isReply>
                 @
-                <a href="${permalink}#${comment.commentOriginalCommentId}"
+                <a href="${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 11);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">
                     ${comment.commentOriginalCommentName}</a>
@@ -23,14 +23,17 @@
                 ${comment.commentContent}
             </div>
             <div class="clear"></div>
+            <#if article.commentable>
             <div class="reply">
                 <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
             </div>
+            </#if>
         </div>
         <div class="clear"></div>
     </div>
     </#list>
 </div>
+<#if article.commentable>
 <div class="comment-title">
     ${postCommentsLabel}
 </div>
@@ -127,6 +130,7 @@
         </tr>
     </tbody>
 </table>
+</#if>
 </#macro>
 
 <#macro comment_script oId>

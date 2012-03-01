@@ -62,7 +62,7 @@
                     <li class="noborder"><a href="http://reddit.com/submit?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
                 </ul>
             </div>
-            <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+            <@comments commentList=articleComments article=article></@comments>
         </div>
         <#include "footer.ftl">    
         <@comment_script oId=article.oId>

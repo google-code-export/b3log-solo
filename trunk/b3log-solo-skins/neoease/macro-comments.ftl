@@ -1,4 +1,4 @@
-<#macro comments commentList permalink>
+<#macro comments commentList article>
 <div class="share">
     <a class="share-comment" href="#commentForm">
         ${commentList?size}&nbsp;&nbsp;${commentLabel}
@@ -18,16 +18,18 @@
                 <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                 </#if>
                 <#if comment.isReply>&nbsp;@
-                <a href="${permalink}#${comment.commentOriginalCommentId}"
+                <a href="${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 20);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if>
             </div>
+            <#if article.commentable>
             <div class="right">
                 <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                 &nbsp;|&nbsp;
                 ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
             </div>
+            </#if>
             <span class="clear"></span>
             <div class="article-body">${comment.commentContent}</div>
         </div>
@@ -35,6 +37,7 @@
     </div>
     </#list>
 </div>
+<#if article.commentable>
 <div class="form">
     <h4>${postCommentsLabel}</h4>
     <table id="commentForm">
@@ -98,6 +101,7 @@
         </tbody>
     </table>
 </div>
+</#if>
 </#macro>
 
 <#macro comment_script oId>

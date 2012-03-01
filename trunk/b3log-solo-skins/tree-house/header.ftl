@@ -2,7 +2,7 @@
     <ul>
         <#list pageNavigations as page>
         <li>
-            <a href="${page.pagePermalink}">
+            <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">
                 ${page.pageTitle}
             </a>&nbsp;&nbsp;
         </li>

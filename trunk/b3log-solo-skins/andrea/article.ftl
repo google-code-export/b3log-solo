@@ -86,7 +86,7 @@
                             <div class="clear"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
-                        <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+                        <@comments commentList=articleComments article=article></@comments>
                     </div>
                     <div class="main-footer"></div>
                 </div>
