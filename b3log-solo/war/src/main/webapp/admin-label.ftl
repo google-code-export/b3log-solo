@@ -73,7 +73,7 @@
         "editorPostLabel": "${editorPostLabel}",
         "enableLabel": "${enableLabel}",
         "disableLabel": "${disableLabel}",
-        "linkOrContentEmptyLabel": "${linkOrContentEmptyLabel}",
+        "linkEmptyLabel": "${linkEmptyLabel}",
         "openMethodLabel": "${openMethodLabel}",
         "typeLabel": "${typeLabel}"
     };    

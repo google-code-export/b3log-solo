@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Feb 25, 2012
+ * @version 1.0.1.3, Mar 1, 2012
  */
 
 /* page-list 相关操作 */
@@ -413,20 +413,13 @@ admin.pageList = {
     /*
      * 验证字段
      */
-    validate: function () {
-        var pageContent = "";
-        try {
-            pageContent = tinyMCE.get('pageContent').getContent();
-        } catch (e) {
-            pageContent = $("#pageContent").val();
-        }
-        
+    validate: function () {        
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#pageTitle").focus();
-        } else if (pageContent.replace(/\s/g, "") === "" &&
+        } else if (admin.pageList.type === "link" &&
             $("#pagePermalink").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.linkOrContentEmptyLabel);
+            $("#tipMsg").text(Label.linkEmptyLabel);
         } else {
             return true;
         }
