@@ -1,4 +1,40 @@
 #summary 版本更新
+=== ver 0.4.1 ===
+ # page.ftl 
+{{{
+<@comments commentList=pageComments permalink=page.pagePermalink></@comments>
+改为
+<@comments commentList=pageComments article=page></@comments>
+}}}
+ # article.ftl 
+{{{
+<@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+改为
+<@comments commentList=articleComments article=article></@comments>
+}}}
+ # header.ftl
+{{{
+<a href="${page.pagePermalink}">${page.pageTitle}</a>
+改为
+<a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
+}}}
+ # macro-comments.ftl
+由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
+{{{ 
+<#if article.commentable>
+XXX
+</#if>
+}}}
+{{{
+<#macro comments commentList permalink>
+改为
+<#macro comments commentList article>
+
+${permalink}
+改为
+${article.permalink}
+}}}
+
 === ver 0.4.0 ===
  # 使用 SyntaxHighlighter 时，可通过在 macro-comments.ftl 中的 page.load({language: {SHTheme: "shCoreEclipse"}}) language.SHTheme 参数指定所加载的样式。默认为 shCoreEclipse, 可设置为 shCoreDefault, shCoreDjango, shCoreEmacs, shCoreFadeToGrey, shCoreMDUltra, shCoreMidnight, shCoreRDark.
  # jQuery 升级为 1.7，采用本地 js。修改 footer.ftl 如下：
