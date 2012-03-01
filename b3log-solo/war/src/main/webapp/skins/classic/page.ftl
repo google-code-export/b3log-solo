@@ -22,7 +22,7 @@
                                 ${page.pageContent}
                             </div>
                         </div>
-                        <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
+                        <@comments commentList=pageComments article=page></@comments>
                     </div>
                 </div>
                 <div class="right side">

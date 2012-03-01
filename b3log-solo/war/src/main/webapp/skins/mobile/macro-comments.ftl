@@ -1,4 +1,4 @@
-<#macro comments commentList permalink>
+<#macro comments commentList article>
 <!-- Let's rock the comments -->
 <!-- You can start editing below here... but make a backup first!  -->
 <div class="comment_wrapper" id="comments">
@@ -21,14 +21,16 @@
                         </#if>
                         <#if comment.isReply>
                         @
-                        <a href="${permalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
+                        <a href="${article.permalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
                         </#if>
-                    </div>										
+                    </div>
+                    <#if article.commentable>
                     <div class="comdater">
                         <!--<span>TODO wptouch_moderate_comment_link(get_comment_ID())</span>-->
                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                         <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                    </div>									
+                    </div>	
+                    </#if>
                 </div><!--end comtop-->
                 <div class="combody">  
                     <p>${comment.commentContent}</p>
@@ -37,6 +39,7 @@
         </li>
         </#list>
     </ol>
+    <#if article.commentable>
     <div id="textinputwrap">
         <div id="refresher" style="display:none;">
             <img src="/skins/${skinDirName}/images/good.png" alt="checkmark" />
@@ -77,7 +80,8 @@
             </div>
             </p>
         </div>
-    </div><!--textinputwrap div-->
+    </div>
+    </#if><!--textinputwrap div-->
 </div>
 </#macro>
 

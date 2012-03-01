@@ -77,7 +77,7 @@
                     <div id="relevantArticles" class="article-relative"></div>
                     <ol id="randomArticles"></ol>
                     <ol id="externalRelevantArticles"></ol>
-                    <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+                    <@comments commentList=articleComments article=article></@comments>
                 </article>
                 <#include "side.ftl">
                 <div class="clear"></div>

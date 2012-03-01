@@ -95,7 +95,7 @@
                             <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
                         <div class="clear"></div>
-                        <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
+                        <@comments commentList=articleComments article=article></@comments>
                     </div>
                 </div>
                 <div class="right side">
