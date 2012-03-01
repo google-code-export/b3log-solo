@@ -33,8 +33,12 @@
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="right">
-            <label for="postToCommunity">${postToCommunityLabel}</label>
-            <input id="postToCommunity" type="checkbox" checked="checked"/>
+            <label>${commentable1Label}</label>
+            <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp;&nbsp;&nbsp;
+            <span id="postToCommunityPanel">
+                <label for="postToCommunity">${postToCommunityLabel}</label>
+                <input id="postToCommunity" type="checkbox" checked="checked"/>
+            </span>
         </div>
         <div class="clear"></div>
     </div>

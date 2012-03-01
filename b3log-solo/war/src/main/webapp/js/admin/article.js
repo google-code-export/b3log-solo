@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Feb 29, 2012
+ * @version 1.0.2.3, Mar 1, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -85,6 +85,8 @@ admin.article = {
                 
                 $("#tag").val(tagsString);
                 $("#permalink").val(result.article.articlePermalink);
+                
+                $("#articleCommentable").prop("checked", result.article.articleCommentable);
 
                 // signs
                 var signs = result.article.signs;
@@ -169,7 +171,7 @@ admin.article = {
                     "articleIsPublished": articleIsPublished,
                     "articleSignId": signId,
                     "postToCommunity": $("#postToCommunity").prop("checked"),
-                    "articleCommentable": true,
+                    "articleCommentable": $("#articleCommentable").prop("checked"),
                     "articleViewPwd": ""
                 }
             };
@@ -246,7 +248,8 @@ admin.article = {
                     "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
-                    "articleSignId": signId
+                    "articleSignId": signId,
+                    "articleCommentable": $("#articleCommentable").prop("checked")
                 }
             };
             
@@ -269,32 +272,6 @@ admin.article = {
                     }
                             
                     $("#tipMsg").text(Label.updateSuccLabel);
-                    // reset article form
-                    try {
-                        if (tinyMCE.get("articleContent")) {
-                            tinyMCE.get('articleContent').setContent("");
-                        } else {
-                            $("#articleContent").val("");
-                        }
-                        if (tinyMCE.get('abstract')) {
-                            tinyMCE.get('abstract').setContent("");
-                        } else {
-                            $("#abstract").val("");
-                        }
-                    } catch (e) {
-                        $("#articleContent").val("");
-                        $("#abstract").val("");
-                    }
-                    
-                    $("#tag").val("");
-                    $("#permalink").val("");
-                    $(".signs button").each(function (i) {
-                        if (i === $(".signs button").length - 1) {
-                            this.className = "selected";
-                        } else {
-                            this.className = "";
-                        }
-                    });
                     
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
@@ -326,14 +303,14 @@ admin.article = {
                 $("#unSubmitArticle").hide();
             }
             if (this.status.articleHadBeenPublished) {
-                $("#postToCommunityTR").hide();
+                $("#postToCommunityPanel").hide();
             } else {
-                $("#postToCommunityTR").show();
+                $("#postToCommunityPanel").show();
             }
         } else {
             $("#submitArticle").show();
             $("#unSubmitArticle").hide();
-            $("#postToCommunityTR").show();
+            $("#postToCommunityPanel").show();
         }
 
         $("#postToCommunity").attr("checked", "checked");
@@ -349,6 +326,9 @@ admin.article = {
             articleHadBeenPublished: undefined
         };
         this.setStatus();
+        
+        $("#title").val("");
+        
         try {
             if (tinyMCE.get("articleContent")) {
                 tinyMCE.get('articleContent').setContent("");
@@ -364,12 +344,14 @@ admin.article = {
             $("#articleContent").val("");
             $("#abstract").val("");
         }
+        
         // reset tag
         $("#tag").val("");
         $("#tagCheckboxPanel").hide().find("span").removeClass("selected");
         
-        $("#title").val("");
         $("#permalink").val("");
+        $("#articleCammentable").prop("checked", true);
+        $("#postToCommunity").prop("checked", true);
         $(".signs button").each(function (i) {
             if (i === 0) {
                 this.className = "selected";

@@ -133,26 +133,26 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
-        <script type="text/javascript" src="/js/common.js"></script>
+        <script type="text/javascript" src="/js/common.js" charset="utf-8"></script>
         <#if "" == miniPostfix>
-        <script type="text/javascript" src="/js/admin/admin.js"></script>
-        <script type="text/javascript" src="/js/admin/tablePaginate.js"></script>
-        <script type="text/javascript" src="/js/admin/article.js"></script>
-        <script type="text/javascript" src="/js/admin/comment.js"></script>
-        <script type="text/javascript" src="/js/admin/articleList.js"></script>
-        <script type="text/javascript" src="/js/admin/draftList.js"></script>
-        <script type="text/javascript" src="/js/admin/pageList.js"></script>
-        <script type="text/javascript" src="/js/admin/others.js"></script>
-        <script type="text/javascript" src="/js/admin/linkList.js"></script>
-        <script type="text/javascript" src="/js/admin/preference.js"></script>
-        <script type="text/javascript" src="/js/admin/pluginList.js"></script>
-        <script type="text/javascript" src="/js/admin/userList.js"></script>
-        <script type="text/javascript" src="/js/admin/commentList.js"></script>
-        <script type="text/javascript" src="/js/admin/plugin.js"></script>
-        <script type="text/javascript" src="/js/admin/main.js"></script>
-        <script type="text/javascript" src="/js/admin/about.js"></script>
+        <script type="text/javascript" src="/js/admin/admin.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/tablePaginate.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/article.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/comment.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/articleList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/draftList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/pageList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/others.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/linkList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/preference.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/pluginList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/userList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/commentList.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/plugin.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/main.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/about.js" charset="utf-8"></script>
         <#else>
-        <script type="text/javascript" src="/js/admin/latkeAdmin${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/admin/latkeAdmin${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
         </#if>
         <#include "admin-label.ftl">
         ${plugins}
