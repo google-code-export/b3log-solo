@@ -40,6 +40,7 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.solo.model.Common;
 
 /**
  * Page processor.
@@ -67,23 +68,20 @@ public final class PageProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService =
-            CommentQueryService.getInstance();
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
 
     /**
      * Shows page with the specified context.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/page"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("page.ftl");
@@ -104,12 +102,10 @@ public final class PageProcessor {
                     (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                     dataModel);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
-            final JSONObject page =
-                    (JSONObject) request.getAttribute(Page.PAGE);
+            final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -117,14 +113,13 @@ public final class PageProcessor {
 
             final String pageId = page.getString(Keys.OBJECT_ID);
             request.setAttribute(CACHED_OID, pageId);
-            request.setAttribute(CACHED_TITLE,
-                                 page.getString(Page.PAGE_TITLE));
-            request.setAttribute(CACHED_LINK,
-                                 page.getString(Page.PAGE_PERMALINK));
+            request.setAttribute(CACHED_TITLE, page.getString(Page.PAGE_TITLE));
+            request.setAttribute(CACHED_LINK, page.getString(Page.PAGE_PERMALINK));
 
+            page.put(Common.COMMENTABLE, page.getBoolean(Page.PAGE_COMMENTABLE));
+            page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
             dataModel.put(Page.PAGE, page);
-            final List<JSONObject> comments =
-                    commentQueryService.getComments(pageId);
+            final List<JSONObject> comments = commentQueryService.getComments(pageId);
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             filler.fillSide(request, dataModel, preference);

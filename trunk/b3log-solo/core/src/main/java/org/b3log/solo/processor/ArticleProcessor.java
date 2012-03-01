@@ -69,7 +69,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.7, Feb 24, 2012
+ * @version 1.1.1.8, Mar 1, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -743,6 +743,8 @@ public final class ArticleProcessor {
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
             throws Exception {
+        article.put(Common.COMMENTABLE, article.getBoolean(Article.ARTICLE_COMMENTABLE));
+        article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
 
