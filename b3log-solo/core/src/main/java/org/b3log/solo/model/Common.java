@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.4, Feb 23, 2012
+ * @version 1.0.4.5, Mar 1, 2012
  * @since 0.3.1
  */
 public final class Common {
@@ -233,6 +233,14 @@ public final class Common {
      * Key of article sign.
      */
     public static final String ARTICLE_SIGN = "articleSign";
+    /**
+     * Key of permalink.
+     */
+    public static final String PERMALINK = "permalink";
+    /**
+     * Key of commentable.
+     */
+    public static final String COMMENTABLE = "commentable";
 
     /**
      * Private default constructor.
