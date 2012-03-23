@@ -28,7 +28,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
 public final class AdminCache extends AbstractPlugin {
 
     /**
-     * Default servial version uid.
+     * Default serial version uid.
      */
     private static final long serialVersionUID = 1L;
 
