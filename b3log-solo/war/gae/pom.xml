@@ -100,6 +100,8 @@
                     <appDir>${project.build.directory}/${project.build.finalName}</appDir>
                     <port>${gae.dev_sever.port}</port>
                     <passIn>true</passIn>
+                    <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
+                    <jvmFlags><jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag></jvmFlags>
                 </configuration>
             </plugin>
             
