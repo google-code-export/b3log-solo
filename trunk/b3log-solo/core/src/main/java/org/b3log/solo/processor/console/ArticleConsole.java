@@ -51,18 +51,15 @@ public final class ArticleConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArticleConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleConsole.class.getName());
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService =
-            ArticleMgmtService.getInstance();
+    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService =
-            ArticleQueryService.getInstance();
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * Article URI prefix.
      */

@@ -26,10 +26,12 @@ import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Page;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.*;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +39,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 27, 2011
+ * @version 1.0.0.9, Mar 28, 2012
  * @since 0.3.1
  */
 public final class Comments {
@@ -45,18 +47,27 @@ public final class Comments {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Comments.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Comments.class.getName());
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService =
-            LangPropsService.getInstance();
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Preference query service.
+     */
+    private static PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    /**
+     * Article repository.
+     */
+    private static ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    /**
+     * Page repository.
+     */
+    private static PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Mail service.
      */
-    private static final MailService MAIL_SVC =
-            MailServiceFactory.getMailService();
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
     /**
      * Minimum length of comment name.
      */
@@ -77,10 +88,10 @@ public final class Comments {
      * Comment mail HTML body.
      */
     public static final String COMMENT_MAIL_HTML_BODY =
-            "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
-            + "{title}</a>]" + " received a new comment:</p>"
-            + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
-            + "{commentContent}</a></span>";
+                               "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
+                               + "{title}</a>]" + " received a new comment:</p>"
+                               + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
+                               + "{commentContent}</a></span>";
 
     /**
      * Gets comment sharp URL with the specified page and comment id.
@@ -90,9 +101,7 @@ public final class Comments {
      * @return comment sharp URL
      * @throws JSONException json exception
      */
-    public static String getCommentSharpURLForPage(final JSONObject page,
-                                                   final String commentId)
-            throws JSONException {
+    public static String getCommentSharpURLForPage(final JSONObject page, final String commentId) throws JSONException {
         return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
     }
 
@@ -104,9 +113,7 @@ public final class Comments {
      * @return comment sharp URL
      * @throws JSONException json exception
      */
-    public static String getCommentSharpURLForArticle(final JSONObject article,
-                                                      final String commentId)
-            throws JSONException {
+    public static String getCommentSharpURLForArticle(final JSONObject article, final String commentId) throws JSONException {
         final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
 
         return articleLink + "#" + commentId;
@@ -115,7 +122,17 @@ public final class Comments {
     /**
      * Checks the specified comment adding request.
      * 
-     * @param requestJSONObject the specified comment adding request
+     * @param requestJSONObject the specified comment adding request, for example, 
+     * <pre>
+     * {
+     *     "type": "", // "article"/"page"
+     *     "oId": "",
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     * }
+     * </pre>
      * @return check result, for example, 
      * <pre>
      * {
@@ -124,37 +141,53 @@ public final class Comments {
      * }
      * </pre>
      */
-    public static JSONObject checkAddCommentRequest(
-            final JSONObject requestJSONObject) {
+    public static JSONObject checkAddCommentRequest(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
 
         try {
             ret.put(Keys.STATUS_CODE, false);
+            final JSONObject preference = preferenceQueryService.getPreference();
+            if (null == preference || !preference.optBoolean(Preference.COMMENTABLE)) {
+                ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
 
-            final String commentName =
-                    requestJSONObject.getString(Comment.COMMENT_NAME);
-            if (MAX_COMMENT_NAME_LENGTH < commentName.length()
-                || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-                LOGGER.log(Level.WARNING, "Comment name is too long[{0}]",
-                           commentName);
+                return ret;
+            }
+
+            final String id = requestJSONObject.optString(Keys.OBJECT_ID);
+            final String type = requestJSONObject.optString(Common.TYPE);
+            if (Article.ARTICLE.equals(type)) {
+                final JSONObject article = articleRepository.get(id);
+                if (null == article || !article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
+                    ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
+
+                    return ret;
+                }
+            } else {
+                final JSONObject page = pageRepository.get(id);
+                if (null == page || !page.optBoolean(Page.PAGE_COMMENTABLE)) {
+                    ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
+
+                    return ret;
+                }
+            }
+
+            final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
+            if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
+                LOGGER.log(Level.WARNING, "Comment name is too long[{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
             }
 
-            final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
-                    toLowerCase();
+            final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             if (!Strings.isEmail(commentEmail)) {
-                LOGGER.log(Level.WARNING, "Comment email is invalid[{0}]",
-                           commentEmail);
+                LOGGER.log(Level.WARNING, "Comment email is invalid[{0}]", commentEmail);
                 ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
                 return ret;
             }
 
-            final String commentURL =
-                    requestJSONObject.optString(Comment.COMMENT_URL);
+            final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             try {
                 new URL(commentURL);
 
@@ -162,23 +195,17 @@ public final class Comments {
                     throw new IllegalArgumentException();
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]",
-                           commentURL);
+                LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
                 return ret;
             }
 
-            final String commentContent =
-                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
+            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
-            if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length()
-                || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
-                LOGGER.log(Level.WARNING,
-                           "Comment conent length is invalid[{0}]",
-                           commentContent.length());
-                ret.put(Keys.MSG, langPropsService.get(
-                        "commentContentCannotEmptyLabel"));
+            if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
+                LOGGER.log(Level.WARNING, "Comment conent length is invalid[{0}]", commentContent.length());
+                ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
 
                 return ret;
             }
@@ -186,10 +213,8 @@ public final class Comments {
             ret.put(Keys.STATUS_CODE, true);
 
             return ret;
-        } catch (final JSONException e) {
-            LOGGER.log(Level.WARNING, "Checks add comment request["
-                                      + requestJSONObject.toString()
-                                      + "] failed", e);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, "Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
 
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -222,38 +247,29 @@ public final class Comments {
 
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.FINER,
-                       "Do not send comment notification mail to admin itself[{0}]",
-                       adminEmail);
+            LOGGER.log(Level.FINER, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
             return;
         }
 
-        if (null != originalComment && comment.has(
-                Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
-            final String originalEmail =
-                    originalComment.getString(Comment.COMMENT_EMAIL);
+        if (null != originalComment && comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+            final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.FINER,
-                           "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
+                LOGGER.log(Level.FINER, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
                            commentId);
                 return;
             }
         }
 
-        final String blogTitle =
-                preference.getString(Preference.BLOG_TITLE);
-        final String blogHost =
-                preference.getString(Preference.BLOG_HOST);
+        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        final String blogHost = preference.getString(Preference.BLOG_HOST);
         boolean isArticle = true;
-        String title =
-                articleOrPage.optString(Article.ARTICLE_TITLE);
+        String title = articleOrPage.optString(Article.ARTICLE_TITLE);
         if (Strings.isEmptyOrNull(title)) {
             title = articleOrPage.getString(Page.PAGE_TITLE);
             isArticle = false;
         }
 
-        final String commentSharpURL =
-                comment.getString(Comment.COMMENT_SHARP_URL);
+        final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
@@ -261,17 +277,12 @@ public final class Comments {
         String articleOrPageURL = null;
         String mailBody = null;
         if (isArticle) {
-            mailSubject = blogTitle + ": New comment on article ["
-                          + title + "]";
-            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
-                    Article.ARTICLE_PERMALINK);
-            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}",
-                                                      "Article");
+            mailSubject = blogTitle + ": New comment on article [" + title + "]";
+            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(Article.ARTICLE_PERMALINK);
+            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
         } else {
-            mailSubject = blogTitle + ": New comment on page ["
-                          + title + "]";
-            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
-                    Page.PAGE_PERMALINK);
+            mailSubject = blogTitle + ": New comment on page [" + title + "]";
+            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(Page.PAGE_PERMALINK);
             mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
 
@@ -280,14 +291,12 @@ public final class Comments {
         final String commentURL = comment.getString(Comment.COMMENT_URL);
         String commenter = null;
         if (!"http://".equals(commentURL)) {
-            commenter = "<a target=\"_blank\" " + "href=\"" + commentURL
-                        + "\">" + commentName + "</a>";
+            commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
         } else {
             commenter = commentName;
         }
 
-        mailBody = mailBody.replace(
-                "{articleOrPageURL}", articleOrPageURL).
+        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
                 replace("{commentSharpURL}", blogHost + commentSharpURL).
