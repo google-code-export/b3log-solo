@@ -17,7 +17,7 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 10, 2011
+ * @version 1.0.0.7, Mar 28, 2012
  */
 var plugins = {};
 admin.plugin = {
@@ -102,6 +102,11 @@ admin.plugin = {
             admin.tools.push("#" + data.id);
             data.target = $("#tabTools>li").get(data.index - 1);
         }
+        
+        if (!data.target) {
+            alert("data.index is error!");
+        }
+        
         $("#tabs").tabs("add", data);
     },
     
