@@ -455,7 +455,7 @@ public final class InitService {
         LOGGER.info("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate =
-                new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+                         new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
         replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
 
         preferenceRepository.add(replyNotificationTemplate);
@@ -536,6 +536,12 @@ public final class InitService {
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
+        if (Default.DEFAULT_PAGE_CACHE_ENABLED) {
+            Latkes.enablePageCache();
+        } else {
+            Latkes.disablePageCache();
+        }
+
         ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);
 
@@ -571,7 +577,7 @@ public final class InitService {
          * Singleton.
          */
         private static final InitService SINGLETON =
-                new InitService();
+                                         new InitService();
 
         /**
          * Private default constructor.
