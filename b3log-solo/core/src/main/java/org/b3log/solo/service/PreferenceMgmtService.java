@@ -55,18 +55,15 @@ public final class PreferenceMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PreferenceMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class.getName());
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository =
-            PreferenceRepositoryImpl.getInstance();
+    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Language service.
      */
@@ -80,8 +77,7 @@ public final class PreferenceMgmtService {
      * template
      * @throws ServiceException service exception
      */
-    public void updateReplyNotificationTemplate(
-            final JSONObject replyNotificationTemplate) throws ServiceException {
+    public void updateReplyNotificationTemplate(final JSONObject replyNotificationTemplate) throws ServiceException {
         final Transaction transaction = preferenceRepository.beginTransaction();
 
         try {
@@ -104,15 +100,13 @@ public final class PreferenceMgmtService {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void updatePreference(final JSONObject preference)
-            throws ServiceException {
+    public void updatePreference(final JSONObject preference) throws ServiceException {
         @SuppressWarnings("unchecked")
         final Iterator<String> keys = preference.keys();
         while (keys.hasNext()) {
             final String key = keys.next();
             if (preference.isNull(key)) {
-                throw new ServiceException("A value is null of preference[key="
-                                           + key + "]");
+                throw new ServiceException("A value is null of preference[key=" + key + "]");
             }
         }
 
@@ -120,8 +114,7 @@ public final class PreferenceMgmtService {
 
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
-            String blogHost = preference.getString(BLOG_HOST).
-                    toLowerCase().trim();
+            String blogHost = preference.getString(BLOG_HOST).toLowerCase().trim();
             if (StringUtils.startsWithIgnoreCase(blogHost, "http://")) {
                 blogHost = blogHost.substring("http://".length());
             }
@@ -155,17 +148,14 @@ public final class PreferenceMgmtService {
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
             TimeZones.setTimeZone(timeZoneId);
 
-            preference.put(Preference.SIGNS,
-                           preference.get(Preference.SIGNS).toString());
+            preference.put(Preference.SIGNS, preference.get(Preference.SIGNS).toString());
 
-            final JSONObject oldPreference =
-                    preferenceQueryService.getPreference();
+            final JSONObject oldPreference = preferenceQueryService.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
 
             if (!preference.has(PAGE_CACHE_ENABLED)) {
-                preference.put(PAGE_CACHE_ENABLED,
-                               oldPreference.getBoolean(PAGE_CACHE_ENABLED));
+                preference.put(PAGE_CACHE_ENABLED, oldPreference.getBoolean(PAGE_CACHE_ENABLED));
             }
 
             final String version = oldPreference.optString(VERSION);
@@ -173,12 +163,9 @@ public final class PreferenceMgmtService {
                 preference.put(VERSION, version);
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Preference.LOCALE_STRING);
             LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
-            Latkes.setLocale(new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString)));
+            Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
@@ -240,8 +227,7 @@ public final class PreferenceMgmtService {
         /**
          * Singleton.
          */
-        private static final PreferenceMgmtService SINGLETON =
-                new PreferenceMgmtService();
+        private static final PreferenceMgmtService SINGLETON = new PreferenceMgmtService();
 
         /**
          * Private default constructor.
