@@ -176,8 +176,7 @@ public final class Filler {
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles =
-                                   org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             if (hasMultipleUsers) {
@@ -236,18 +235,15 @@ public final class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillMostUsedTags(final Map<String, Object> dataModel,
-                                 final JSONObject preference)
+    public void fillMostUsedTags(final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Most Used Tags");
 
         try {
             LOGGER.finer("Filling most used tags....");
-            final int mostUsedTagDisplayCnt =
-                      preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
+            final int mostUsedTagDisplayCnt = preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
-            final List<JSONObject> tags =
-                                   tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
+            final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
             tagUtils.removeForUnpublishedArticles(tags);
 
             dataModel.put(Common.MOST_USED_TAGS, tags);
@@ -269,18 +265,15 @@ public final class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillArchiveDates(final Map<String, Object> dataModel,
-                                 final JSONObject preference)
+    public void fillArchiveDates(final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Archive Dates");
 
         try {
             LOGGER.finer("Filling archive dates....");
-            final List<JSONObject> archiveDates =
-                                   archiveDateRepository.getArchiveDates();
+            final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String language = Locales.getLanguage(localeString);
 
             for (final JSONObject archiveDate : archiveDates) {
@@ -317,17 +310,13 @@ public final class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillMostViewCountArticles(final Map<String, Object> dataModel,
-                                          final JSONObject preference)
+    public void fillMostViewCountArticles(final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Most View Articles");
         try {
             LOGGER.finer("Filling the most view count articles....");
-            final int mostCommentArticleDisplayCnt =
-                      preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
-            final List<JSONObject> mostViewCountArticles =
-                                   articleRepository.getMostViewCountArticles(
-                    mostCommentArticleDisplayCnt);
+            final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
+            final List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
 
@@ -346,19 +335,14 @@ public final class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillMostCommentArticles(final Map<String, Object> dataModel,
-                                        final JSONObject preference)
+    public void fillMostCommentArticles(final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Most CMMTs Articles");
 
         try {
             LOGGER.finer("Filling most comment articles....");
-            final int mostCommentArticleDisplayCnt =
-                      preference.getInt(
-                    Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-            final List<JSONObject> mostCommentArticles =
-                                   articleRepository.getMostCommentArticles(
-                    mostCommentArticleDisplayCnt);
+            final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+            final List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
         } catch (final Exception e) {
@@ -376,17 +360,14 @@ public final class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillRecentArticles(final Map<String, Object> dataModel,
-                                   final JSONObject preference)
+    public void fillRecentArticles(final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Recent Articles");
 
         try {
-            final int recentArticleDisplayCnt =
-                      preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
+            final int recentArticleDisplayCnt = preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
-            final List<JSONObject> recentArticles =
-                                   articleRepository.getRecentArticles(recentArticleDisplayCnt);
+            final List<JSONObject> recentArticles = articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
             dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
