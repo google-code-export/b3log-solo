@@ -83,23 +83,19 @@ public final class Filler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Filler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
+    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateRepositoryImpl.getInstance();
+    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
@@ -123,8 +119,7 @@ public final class Filler {
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
     /**
      * User repository.
      */
@@ -144,23 +139,16 @@ public final class Filler {
      */
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum,
-                                  final JSONObject preference)
-            throws ServiceException {
+                                  final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill Index Articles");
 
         try {
-            final int pageSize =
-                    preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize =
-                    preference.getInt(
-                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
-            final int publishedArticleCnt =
-                    statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
-            final int pageCount = (int) Math.ceil((double) publishedArticleCnt
-                                                  / (double) pageSize);
+            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            final int publishedArticleCnt = statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).
                     setPageSize(pageSize).
@@ -171,11 +159,9 @@ public final class Filler {
                     index(Article.ARTICLE_PERMALINK);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                query.addSort(Article.ARTICLE_UPDATE_DATE,
-                              SortDirection.DESCENDING);
+                query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
             } else {
-                query.addSort(Article.ARTICLE_CREATE_DATE,
-                              SortDirection.DESCENDING);
+                query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             }
 
             final JSONObject result = articleRepository.get(query);
@@ -184,26 +170,21 @@ public final class Filler {
                                                               pageCount,
                                                               windowSize);
             if (0 != pageNums.size()) {
-                dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
-                              pageNums.get(0));
-                dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                              pageNums.get(pageNums.size() - 1));
+                dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+                dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
             }
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final List<JSONObject> articles =
-                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                    getJSONArray(Keys.RESULTS));
+                                   org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             if (hasMultipleUsers) {
                 setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author =
-                            articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
                     setArticlesExProperties(articles, author, preference);
                 }
             }
@@ -226,19 +207,14 @@ public final class Filler {
      * @param dataModel data model
      * @throws ServiceException service exception
      */
-    private void fillLinks(final Map<String, Object> dataModel)
-            throws ServiceException {
+    private void fillLinks(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Links");
         try {
-            final Map<String, SortDirection> sorts =
-                    new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
             sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
-            final Query query = new Query().addSort(Link.LINK_ORDER,
-                                                    SortDirection.ASCENDING).
-                    setPageCount(1);
+            final Query query = new Query().addSort(Link.LINK_ORDER, SortDirection.ASCENDING).setPageCount(1);
             final JSONObject linkResult = linkRepository.get(query);
-            final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
-                    jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
 
             dataModel.put(Link.LINKS, links);
         } catch (final JSONException e) {
@@ -268,10 +244,10 @@ public final class Filler {
         try {
             LOGGER.finer("Filling most used tags....");
             final int mostUsedTagDisplayCnt =
-                    preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
+                      preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
             final List<JSONObject> tags =
-                    tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
+                                   tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
             tagUtils.removeForUnpublishedArticles(tags);
 
             dataModel.put(Common.MOST_USED_TAGS, tags);
@@ -301,7 +277,7 @@ public final class Filler {
         try {
             LOGGER.finer("Filling archive dates....");
             final List<JSONObject> archiveDates =
-                    archiveDateRepository.getArchiveDates();
+                                   archiveDateRepository.getArchiveDates();
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -348,9 +324,9 @@ public final class Filler {
         try {
             LOGGER.finer("Filling the most view count articles....");
             final int mostCommentArticleDisplayCnt =
-                    preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
+                      preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostViewCountArticles =
-                    articleRepository.getMostViewCountArticles(
+                                   articleRepository.getMostViewCountArticles(
                     mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
@@ -378,10 +354,10 @@ public final class Filler {
         try {
             LOGGER.finer("Filling most comment articles....");
             final int mostCommentArticleDisplayCnt =
-                    preference.getInt(
+                      preference.getInt(
                     Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostCommentArticles =
-                    articleRepository.getMostCommentArticles(
+                                   articleRepository.getMostCommentArticles(
                     mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
@@ -407,10 +383,10 @@ public final class Filler {
 
         try {
             final int recentArticleDisplayCnt =
-                    preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
+                      preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
             final List<JSONObject> recentArticles =
-                    articleRepository.getRecentArticles(recentArticleDisplayCnt);
+                                   articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
             dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
@@ -439,14 +415,14 @@ public final class Filler {
         try {
             LOGGER.finer("Filling recent comments....");
             final int recentCommentDisplayCnt =
-                    preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
+                      preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
 
             final List<JSONObject> recentComments =
-                    commentRepository.getRecentComments(recentCommentDisplayCnt);
+                                   commentRepository.getRecentComments(recentCommentDisplayCnt);
 
             for (final JSONObject comment : recentComments) {
                 final String content =
-                        comment.getString(Comment.COMMENT_CONTENT).
+                             comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "&nbsp;");
                 comment.put(Comment.COMMENT_CONTENT, content);
                 comment.put(Comment.COMMENT_NAME,
@@ -549,7 +525,7 @@ public final class Filler {
 
 
             final String skinDirName =
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                         (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
             fillMinified(dataModel);
 
@@ -600,8 +576,7 @@ public final class Filler {
         try {
             LOGGER.fine("Filling side....");
 
-            final Template template = Templates.getTemplate((String) request.
-                    getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
+            final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
 
 // TODO:       fillRecentArticles(dataModel, preference);
             if (Templates.hasExpression(template, "<#list links as link>")) {
@@ -633,7 +608,7 @@ public final class Filler {
             }
 
             final String noticeBoard =
-                    preference.getString(Preference.NOTICE_BOARD);
+                         preference.getString(Preference.NOTICE_BOARD);
             dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Fills side failed", e);
@@ -677,7 +652,7 @@ public final class Filler {
         try {
             LOGGER.finer("Filling statistic....");
             final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
+                             statisticRepository.get(Statistic.STATISTIC);
 
             dataModel.put(Statistic.STATISTIC, statistic);
         } catch (final RepositoryException e) {
@@ -727,13 +702,11 @@ public final class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            final String articleListStyle =
-                    preference.getString(Preference.ARTICLE_LIST_STYLE);
+            final String articleListStyle = preference.getString(Preference.ARTICLE_LIST_STYLE);
             if ("titleOnly".equals(articleListStyle)) {
                 article.put(Article.ARTICLE_ABSTRACT, "");
             } else if ("titleAndContent".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT,
-                            article.getString(Article.ARTICLE_CONTENT));
+                article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
             }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
@@ -763,8 +736,7 @@ public final class Filler {
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
      */
     private void setArticleExProperties(final JSONObject article,
-                                        final JSONObject preference)
-            throws ServiceException {
+                                        final JSONObject preference) throws ServiceException {
         try {
             final JSONObject author = articleUtils.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
@@ -773,19 +745,16 @@ public final class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED,
-                            articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            final String articleListStyle =
-                    preference.getString(Preference.ARTICLE_LIST_STYLE);
+            final String articleListStyle = preference.getString(Preference.ARTICLE_LIST_STYLE);
             if ("titleOnly".equals(articleListStyle)) {
                 article.put(Article.ARTICLE_ABSTRACT, "");
             } else if ("titleAndContent".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT,
-                            article.getString(Article.ARTICLE_CONTENT));
+                article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
             }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
