@@ -31,8 +31,7 @@ public final class Category {
     /**
      * Category element.
      */
-    private static final String CATEGORY_ELEMENT =
-            "<category term=\"" + TERM_VARIABLE + "\" />";
+    private static final String CATEGORY_ELEMENT = "<category term=\"" + TERM_VARIABLE + "\" />";
     /**
      * Term.
      */

@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 2, 2011
+ * @version 1.0.0.2, Mar 28, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -50,18 +50,15 @@ public final class PreferenceConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PreferenceConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Preference management service.
      */
-    private PreferenceMgmtService preferenceMgmtService =
-            PreferenceMgmtService.getInstance();
+    private PreferenceMgmtService preferenceMgmtService = PreferenceMgmtService.getInstance();
     /**
      * User utilities.
      */
@@ -96,8 +93,7 @@ public final class PreferenceConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/reply/notification/template",
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.GET)
     public void getReplyNotificationTemplate(final HttpServletRequest request,
                                              final HttpServletResponse response,
                                              final HTTPRequestContext context)
@@ -111,8 +107,7 @@ public final class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject replyNotificationTemplate =
-                    preferenceQueryService.getReplyNotificationTemplate();
+            final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
@@ -145,8 +140,7 @@ public final class PreferenceConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/reply/notification/template",
-                       method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
     public void updateReplyNotificationTemplate(final HttpServletRequest request,
                                                 final HttpServletResponse response,
                                                 final HTTPRequestContext context)
@@ -160,15 +154,11 @@ public final class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
-            final JSONObject replyNotificationTemplate =
-                    requestJSONObject.getJSONObject(
-                    Preference.REPLY_NOTIFICATION_TEMPLATE);
+            final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject(Preference.REPLY_NOTIFICATION_TEMPLATE);
 
-            preferenceMgmtService.updateReplyNotificationTemplate(
-                    replyNotificationTemplate);
+            preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);
 
             final JSONObject ret = new JSONObject();
 
@@ -206,11 +196,8 @@ public final class PreferenceConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/signs/",
-                       method = HTTPRequestMethod.GET)
-    public void getSigns(final HttpServletRequest request,
-                         final HttpServletResponse response,
-                         final HTTPRequestContext context)
+    @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
+    public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -226,7 +213,7 @@ public final class PreferenceConsole {
             final JSONArray signs = new JSONArray();
 
             final JSONArray allSigns = // includes the empty sign(id=0)
-                    new JSONArray(preference.getString(Preference.SIGNS));
+                            new JSONArray(preference.getString(Preference.SIGNS));
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
                 signs.put(allSigns.getJSONObject(i));
             }
@@ -285,7 +272,9 @@ public final class PreferenceConsole {
      *         }, ...]",
      *         "allowVisitDraftViaPermalink": boolean,
      *         "version": "",
-     *         "articleListStyle": ""
+     *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
+     *         "commentable": boolean,
+     *         "feedOutputMode: "" // Optional values: "abstract"/"full"
      *     }
      * }
      * </pre>
@@ -296,11 +285,8 @@ public final class PreferenceConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX,
-                       method = HTTPRequestMethod.GET)
-    public void getPreference(final HttpServletRequest request,
-                              final HttpServletResponse response,
-                              final HTTPRequestContext context)
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
+    public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -364,7 +350,9 @@ public final class PreferenceConsole {
      *             "signHTML": ""
      *         }, ...],
      *         "allowVisitDraftViaPermalink": boolean,
-     *         "articleListStyle": ""
+     *         "articleListStyle": "",
+     *         "commentable": boolean,
+     *         "feedOutputMode: ""
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
@@ -372,11 +360,8 @@ public final class PreferenceConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void updatePreference(final HttpServletRequest request,
-                                 final HttpServletResponse response,
-                                 final HTTPRequestContext context)
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -387,11 +372,9 @@ public final class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
-            final JSONObject preference = requestJSONObject.getJSONObject(
-                    Preference.PREFERENCE);
+            final JSONObject preference = requestJSONObject.getJSONObject(Preference.PREFERENCE);
 
             preferenceMgmtService.updatePreference(preference);
 

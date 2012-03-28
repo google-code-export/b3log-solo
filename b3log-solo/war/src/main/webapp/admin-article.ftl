@@ -33,7 +33,7 @@
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="right">
-            <label>${commentable1Label}</label>
+            <label>${allowComment1Label}</label>
             <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp;&nbsp;&nbsp;
             <span id="postToCommunityPanel">
                 <label for="postToCommunity">${postToCommunityLabel}</label>

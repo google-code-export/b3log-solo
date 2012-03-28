@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Feb 25, 2012
+ * @version 1.1.0.4, Mar 28, 2012
  * @since 0.3.1
  */
 public final class Preference {
@@ -140,6 +140,15 @@ public final class Preference {
     public static final String VERSION = "version";
     /**
      * Key of article list display style.
+     * 
+     * <p>
+     * Optional values:
+     *   <ul>
+     *     <li>"titleOnly"</li>
+     *     <li>"titleAndContent"</li>
+     *     <li>"titleAndAbstract"</li>
+     *   </ul>
+     * </p>
      */
     public static final String ARTICLE_LIST_STYLE = "articleListStyle";
     /**
@@ -150,6 +159,18 @@ public final class Preference {
      * Key of article/page comment-able.
      */
     public static final String COMMENTABLE = "commentable";
+    /**
+     * Key of feed (Atom/RSS) output mode.
+     * 
+     * <p>
+     * Optional values:
+     *   <ul>
+     *     <li>"abstract"</li>
+     *     <li>"fullContent"</li>
+     *   </ul>
+     * </p>
+     */
+    public static final String FEED_OUTPUT_MODE = "feedOutputMode";
 
     /**
      * Private default constructor.
@@ -161,7 +182,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.5, Feb 25, 2012
+     * @version 1.1.0.6, Mar 28, 2012
      * @since 0.3.1
      */
     public static final class Default {
@@ -292,6 +313,10 @@ public final class Preference {
          * Default reply notification template.
          */
         public static final String DEFAULT_REPLY_NOTIFICATION_TEMPLATE;
+        /**
+         * Default feed output mode.
+         */
+        public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
 
         static {
             final JSONArray signs = new JSONArray();

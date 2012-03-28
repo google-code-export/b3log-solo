@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Feb 7, 2012
+ * @version 1.1.0.7, Mar 28, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -72,18 +72,15 @@ public final class FeedProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(FeedProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class.getName());
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Count of output entry.
      */
@@ -95,21 +92,18 @@ public final class FeedProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository =
-            TagRepositoryImpl.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
+    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
 
     /**
      * Blog articles Atom output.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/blog-articles-feed.do"},
-                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/blog-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesAtom(final HTTPRequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -119,68 +113,56 @@ public final class FeedProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE);
+            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(TimeZones.getTime(
-                    preference.getString(Preference.TIME_ZONE_ID)));
+            feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost + "/blog-articles-feed.do");
             feed.setId("http://" + blogHost + "/");
 
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED,
-                              FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID,
-                            SortDirection.DESCENDING).
+                    addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setPageCount(1);
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             String authorName = "";
 
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
             if (!hasMultipleUsers && 0 != articles.length()) {
-                authorName =
-                        articleUtils.getAuthor(articles.getJSONObject(0)).
-                        getString(User.USER_NAME);
+                authorName = articleUtils.getAuthor(articles.getJSONObject(0)).getString(User.USER_NAME);
             }
+
+            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final Entry entry = new Entry();
                 feed.addEntry(entry);
-                final String title = StringEscapeUtils.escapeXml(
-                        article.getString(Article.ARTICLE_TITLE));
+                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 entry.setTitle(title);
-                final String summary =
-                        StringEscapeUtils.escapeXml(article.getString(
-                        Article.ARTICLE_ABSTRACT));
+                final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                                       : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
                 entry.setSummary(summary);
-                final Date updated = (Date) article.get(
-                        Article.ARTICLE_UPDATE_DATE);
+                final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
 
-                final String link = "http://" + blogHost + article.getString(
-                        Article.ARTICLE_PERMALINK);
+                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
                 entry.setId(link);
 
                 if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
+                    authorName = StringEscapeUtils.escapeXml(articleUtils.getAuthor(article).getString(User.USER_NAME));
                 }
                 entry.setAuthor(authorName);
 
-                final String tagsString =
-                        article.getString(Article.ARTICLE_TAGS_REF);
+                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
                 final String[] tagStrings = tagsString.split(",");
                 for (int j = 0; j < tagStrings.length; j++) {
                     final Category catetory = new Category();
@@ -209,8 +191,7 @@ public final class FeedProcessor {
      * @param context the specified context
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/tag-articles-feed.do"},
-                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -230,8 +211,7 @@ public final class FeedProcessor {
 
         final Feed feed = new Feed();
         try {
-            final String tagTitle =
-                    tagRepository.get(tagId).getString(Tag.TAG_TITLE);
+            final String tagTitle = tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -239,26 +219,19 @@ public final class FeedProcessor {
                 return;
             }
 
-            final String blogTitle = preference.getString(
-                    Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE) + ", " + tagTitle;
-            final String blogHost = preference.getString(
-                    Preference.BLOG_HOST);
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(TimeZones.getTime(
-                    preference.getString(Preference.TIME_ZONE_ID)));
+            feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost + "/tag-articles-feed.do");
             feed.setId("http://" + blogHost + "/");
 
-            final JSONObject tagArticleResult =
-                    tagArticleRepository.getByTagId(tagId, 1,
-                                                    ENTRY_OUTPUT_CNT);
-            final JSONArray tagArticleRelations =
-                    tagArticleResult.getJSONArray(Keys.RESULTS);
+            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -266,57 +239,45 @@ public final class FeedProcessor {
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
-                final String articleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
+                final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
+                final String articleId = tagArticleRelation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     articles.add(article);
                 }
             }
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             String authorName = "";
 
             if (!hasMultipleUsers && !articles.isEmpty()) {
-                authorName =
-                        articleUtils.getAuthor(articles.get(0)).
-                        getString(User.USER_NAME);
+                authorName = articleUtils.getAuthor(articles.get(0)).getString(User.USER_NAME);
             }
+
+            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Entry entry = new Entry();
                 feed.addEntry(entry);
-                final String title = StringEscapeUtils.escapeXml(
-                        article.getString(Article.ARTICLE_TITLE));
+                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 entry.setTitle(title);
-                final String summary =
-                        StringEscapeUtils.escapeXml(article.getString(
-                        Article.ARTICLE_ABSTRACT));
+                final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                                       : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
                 entry.setSummary(summary);
-                final Date updated = (Date) article.get(
-                        Article.ARTICLE_UPDATE_DATE);
+                final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
-                final String link = "http://" + blogHost
-                                    + article.getString(
-                        Article.ARTICLE_PERMALINK);
+                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
                 entry.setId(link);
 
                 if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
+                    authorName = StringEscapeUtils.escapeXml(articleUtils.getAuthor(article).getString(User.USER_NAME));
                 }
 
                 entry.setAuthor(authorName);
 
-                final String tagsString =
-                        article.getString(Article.ARTICLE_TAGS_REF);
+                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
                 final String[] tagStrings = tagsString.split(",");
                 for (int j = 0; j < tagStrings.length; j++) {
                     final Category catetory = new Category();
@@ -331,8 +292,7 @@ public final class FeedProcessor {
             LOGGER.log(Level.SEVERE, "Get tag article feed error", e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -344,8 +304,7 @@ public final class FeedProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/blog-articles-rss.do"},
-                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/blog-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
@@ -360,82 +319,64 @@ public final class FeedProcessor {
             }
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE);
+            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(TimeZones.getTime(
-                    preference.getString(Preference.TIME_ZONE_ID)));
+            channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
             channel.setAtomLink("http://" + blogHost + "/blog-articles-rss.do");
-            channel.setGenerator("B3log Solo, ver "
-                                 + SoloServletListener.VERSION);
-            final String localeString =
-                    preference.getString(Preference.LOCALE_STRING);
-            final String country =
-                    Locales.getCountry(localeString).toLowerCase();
-            final String language =
-                    Locales.getLanguage(localeString).toLowerCase();
+            channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
+            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String country = Locales.getCountry(localeString).toLowerCase();
+            final String language = Locales.getLanguage(localeString).toLowerCase();
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED,
-                              FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID,
-                            SortDirection.DESCENDING).
+                    addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setPageCount(1);
 
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             String authorName = "";
 
             if (!hasMultipleUsers && 0 != articles.length()) {
-                authorName =
-                        articleUtils.getAuthor(articles.getJSONObject(0)).
-                        getString(User.USER_NAME);
+                authorName = articleUtils.getAuthor(articles.getJSONObject(0)).getString(User.USER_NAME);
             }
+
+            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final Item item = new Item();
                 channel.addItem(item);
-                final String title = StringEscapeUtils.escapeXml(
-                        article.getString(Article.ARTICLE_TITLE));
+                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 item.setTitle(title);
-                final String description =
-                        StringEscapeUtils.escapeXml(article.getString(
-                        Article.ARTICLE_ABSTRACT));
+                final String description = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                                           : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
                 item.setDescription(description);
-                final Date pubDate = (Date) article.get(
-                        Article.ARTICLE_UPDATE_DATE);
+                final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 item.setPubDate(pubDate);
-                final String link = "http://" + blogHost + article.getString(
-                        Article.ARTICLE_PERMALINK);
+                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
                 item.setLink(link);
                 item.setGUID(link);
 
-                final String authorEmail =
-                        article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+                final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
                 if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
+                    authorName = StringEscapeUtils.escapeXml(articleUtils.getAuthor(article).getString(User.USER_NAME));
                 }
 
                 item.setAuthor(authorEmail + "(" + authorName + ")");
 
-                final String tagsString =
-                        article.getString(Article.ARTICLE_TAGS_REF);
+                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
                 final String[] tagStrings = tagsString.split(",");
                 for (int j = 0; j < tagStrings.length; j++) {
-                    final org.b3log.solo.model.feed.rss.Category catetory =
-                            new org.b3log.solo.model.feed.rss.Category();
+                    final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
                     item.addCatetory(catetory);
                     final String tag = tagStrings[j];
                     catetory.setTerm(tag);
@@ -447,8 +388,7 @@ public final class FeedProcessor {
             LOGGER.log(Level.SEVERE, "Get blog article rss error", e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -461,8 +401,7 @@ public final class FeedProcessor {
      * @param context the specified context
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/tag-articles-rss.do"},
-                       method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/tag-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesRSS(final HTTPRequestContext context) throws IOException {
         final HttpServletResponse response = context.getResponse();
         final HttpServletRequest request = context.getRequest();
@@ -481,8 +420,7 @@ public final class FeedProcessor {
 
         final Channel channel = new Channel();
         try {
-            final String tagTitle =
-                    tagRepository.get(tagId).getString(Tag.TAG_TITLE);
+            final String tagTitle = tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -491,30 +429,22 @@ public final class FeedProcessor {
             }
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE) + ", " + tagTitle;
+            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(TimeZones.getTime(
-                    preference.getString(Preference.TIME_ZONE_ID)));
+            channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             channel.setLink("http://" + blogHost);
             channel.setAtomLink("http://" + blogHost + "/tag-articles-rss.do");
-            channel.setGenerator("B3log Solo, ver "
-                                 + SoloServletListener.VERSION);
-            final String localeString =
-                    preference.getString(Preference.LOCALE_STRING);
-            final String country =
-                    Locales.getCountry(localeString).toLowerCase();
-            final String language =
-                    Locales.getLanguage(localeString).toLowerCase();
+            channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
+            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String country = Locales.getCountry(localeString).toLowerCase();
+            final String language = Locales.getLanguage(localeString).toLowerCase();
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
-            final JSONObject tagArticleResult =
-                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
-            final JSONArray tagArticleRelations =
-                    tagArticleResult.getJSONArray(Keys.RESULTS);
+            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -522,62 +452,49 @@ public final class FeedProcessor {
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
-                final String articleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
+                final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
+                final String articleId = tagArticleRelation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     articles.add(article);
                 }
             }
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             String authorName = "";
 
             if (!hasMultipleUsers && !articles.isEmpty()) {
-                authorName =
-                        articleUtils.getAuthor(articles.get(0)).
-                        getString(User.USER_NAME);
+                authorName = articleUtils.getAuthor(articles.get(0)).getString(User.USER_NAME);
             }
+
+            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
                 final Item item = new Item();
                 channel.addItem(item);
-                final String title = StringEscapeUtils.escapeXml(
-                        article.getString(Article.ARTICLE_TITLE));
+                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 item.setTitle(title);
-                final String description =
-                        StringEscapeUtils.escapeXml(article.getString(
-                        Article.ARTICLE_ABSTRACT));
+                final String description = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                                           : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
                 item.setDescription(description);
-                final Date pubDate = (Date) article.get(
-                        Article.ARTICLE_UPDATE_DATE);
+                final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 item.setPubDate(pubDate);
-                final String link = "http://" + blogHost + article.getString(
-                        Article.ARTICLE_PERMALINK);
+                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
                 item.setLink(link);
                 item.setGUID(link);
 
-                final String authorEmail =
-                        article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+                final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
                 if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(
-                            articleUtils.getAuthor(article).
-                            getString(User.USER_NAME));
+                    authorName = StringEscapeUtils.escapeXml(articleUtils.getAuthor(article).getString(User.USER_NAME));
                 }
 
                 item.setAuthor(authorEmail + "(" + authorName + ")");
 
-                final String tagsString =
-                        article.getString(Article.ARTICLE_TAGS_REF);
+                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
                 final String[] tagStrings = tagsString.split(",");
                 for (int j = 0; j < tagStrings.length; j++) {
-                    final org.b3log.solo.model.feed.rss.Category catetory =
-                            new org.b3log.solo.model.feed.rss.Category();
+                    final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
                     item.addCatetory(catetory);
                     final String tag = tagStrings[j];
                     catetory.setTerm(tag);
@@ -589,8 +506,7 @@ public final class FeedProcessor {
             LOGGER.log(Level.SEVERE, "Get tag article rss error", e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
