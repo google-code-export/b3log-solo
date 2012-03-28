@@ -38,88 +38,72 @@ public final class Entry {
     /**
      * Start title element.
      */
-    private static final String START_TITLE_ELEMENT =
-            "<title type=\"text\">";
+    private static final String START_TITLE_ELEMENT = "<title type=\"text\">";
     /**
      * End title element.
      */
-    private static final String END_TITLE_ELEMENT =
-            "</title>";
+    private static final String END_TITLE_ELEMENT = "</title>";
     /**
      * Start author element.
      */
-    private static final String START_AUTHOR_ELEMENT =
-            "<author>";
+    private static final String START_AUTHOR_ELEMENT = "<author>";
     /**
      * End author element.
      */
-    private static final String END_AUTHOR_ELEMENT =
-            "</author>";
+    private static final String END_AUTHOR_ELEMENT = "</author>";
     /**
      * Start name element.
      */
-    private static final String START_NAME_ELEMENT =
-            "<name>";
+    private static final String START_NAME_ELEMENT = "<name>";
     /**
      * End name element.
      */
-    private static final String END_NAME_ELEMENT =
-            "</name>";
+    private static final String END_NAME_ELEMENT = "</name>";
     /**
      * Start URI element.
      */
-    private static final String START_URI_ELEMENT =
-            "<uri>";
+    private static final String START_URI_ELEMENT = "<uri>";
     /**
      * End URI element.
      */
-    private static final String END_URI_ELEMENT =
-            "</uri>";
+    private static final String END_URI_ELEMENT = "</uri>";
     /**
      * Start entry element.
      */
-    private static final String START_ENTRY_ELEMENT =
-            "<entry>";
+    private static final String START_ENTRY_ELEMENT = "<entry>";
     /**
      * End entry element.
      */
-    private static final String END_ENTRY_ELEMENT =
-            "</entry>";
+    private static final String END_ENTRY_ELEMENT = "</entry>";
     /**
      * Start id element.
      */
-    private static final String START_ID_ELEMENT =
-            "<id>";
+    private static final String START_ID_ELEMENT = "<id>";
     /**
      * End id element.
      */
-    private static final String END_ID_ELEMENT =
-            "</id>";
+    private static final String END_ID_ELEMENT = "</id>";
     /**
      * Start summary element.
      */
-    private static final String START_SUMMARY_ELEMENT =
-            "<summary type=\"html\">";
+    private static final String START_SUMMARY_ELEMENT = "<summary type=\"html\">";
     /**
      * End summary element.
      */
-    private static final String END_SUMMARY_ELEMENT =
-            "</summary>";
+    private static final String END_SUMMARY_ELEMENT = "</summary>";
     /**
      * Link element.
      */
     private static final String LINK_ELEMENT =
-            "<link href=\"" + LINK_VARIABLE + "\" />";
+                                "<link href=\"" + LINK_VARIABLE + "\" />";
     /**
      * Start updated element.
      */
-    private static final String START_UPDATED_ELEMENT =
-            "<updated>";
+    private static final String START_UPDATED_ELEMENT = "<updated>";
     /**
      * End updated element.
      */
-    private static final String END_UPDATED_ELEMENT =
-            "</updated>";
+    private static final String END_UPDATED_ELEMENT = "</updated>";
     /**
      * Id.
      */

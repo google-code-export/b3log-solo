@@ -504,6 +504,7 @@ public final class InitService {
         ret.put(VERSION, SoloServletListener.VERSION);
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
         ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
+        ret.put(FEED_OUTPUT_MODE, Default.DEFAULT_FEED_OUTPUT_MODE);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);

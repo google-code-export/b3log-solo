@@ -235,8 +235,7 @@
                         <label for="enableArticleUpdateHint">${enableArticleUpdateHint1Label}</label>
                     </th>
                     <td>
-                        <input id="enableArticleUpdateHint" type="checkbox"
-                               class="normalInput"/>
+                        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
@@ -244,10 +243,29 @@
                         <label for="allowVisitDraftViaPermalink">${allowVisitDraftViaPermalink1Label}</label>
                     </th>
                     <td>
-                        <input id="allowVisitDraftViaPermalink" type="checkbox"
-                               class="normalInput"/>
+                        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label for="commentable">${allowComment1Label}</label>
+                    </th>
+                    <td>
+                        <input id="commentable" type="checkbox" class="normalInput"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="feedOutputMode">${feedOutputModel1Label}</label>
+                    </th>
+                    <td>
+                        <select id="feedOutputMode">
+                            <option value="abstract">${abstractLabel}</option>
+                            <option value="fullContent">${fullContentLabel}</option>
+                        </select>
+                    </td>
+                </tr>
+
                 <tr>
                     <th colspan="2">
                         <button onclick="admin.preference.update()">${updateLabel}</button>

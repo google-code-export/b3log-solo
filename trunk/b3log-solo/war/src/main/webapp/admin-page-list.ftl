@@ -28,7 +28,7 @@
     </div>
     <div id="pagePagePanel" class="none">
         <textarea id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></textarea>
-        <label>${commentable1Label}</label>
+        <label>${allowComment1Label}</label>
         <input type="checkbox" id="pageCommentable" checked="checked" />
     </div>
     <div class="right">

@@ -76,18 +76,16 @@ public final class Feed {
     /**
      * Start document.
      */
-    private static final String START_DOCUMENT =
-            "<?xml version=\"1.0\"?>";
+    private static final String START_DOCUMENT = "<?xml version=\"1.0\"?>";
     /**
      * Start feed element.
      */
     private static final String START_FEED_ELEMENT =
-            "<feed xmlns=\"http://www.w3.org/2005/Atom\">";
+                                "<feed xmlns=\"http://www.w3.org/2005/Atom\">";
     /**
      * End feed element.
      */
-    private static final String END_FEED_ELEMENT =
-            "</feed>";
+    private static final String END_FEED_ELEMENT = "</feed>";
     /**
      * Start id element.
      */
@@ -99,59 +97,47 @@ public final class Feed {
     /**
      * Start title element.
      */
-    private static final String START_TITLE_ELEMENT =
-            "<title type=\"text\">";
+    private static final String START_TITLE_ELEMENT = "<title type=\"text\">";
     /**
      * End title element.
      */
-    private static final String END_TITLE_ELEMENT =
-            "</title>";
+    private static final String END_TITLE_ELEMENT = "</title>";
     /**
      * Start subtitle element.
      */
-    private static final String START_SUBTITLE_ELEMENT =
-            "<subtitle type=\"text\"> ";
+    private static final String START_SUBTITLE_ELEMENT = "<subtitle type=\"text\"> ";
     /**
      * End subtitle element.
      */
-    private static final String END_SUBTITLE_ELEMENT =
-            "</subtitle>";
+    private static final String END_SUBTITLE_ELEMENT = "</subtitle>";
     /**
      * Start updated element.
      */
-    private static final String START_UPDATED_ELEMENT =
-            "<updated>";
+    private static final String START_UPDATED_ELEMENT = "<updated>";
     /**
      * End updated element.
      */
-    private static final String END_UPDATED_ELEMENT =
-            "</updated>";
+    private static final String END_UPDATED_ELEMENT = "</updated>";
     /**
      * Start author element.
      */
-    private static final String START_AUTHOR_ELEMENT =
-            "<author>";
+    private static final String START_AUTHOR_ELEMENT = "<author>";
     /**
      * End author element.
      */
-    private static final String END_AUTHOR_ELEMENT =
-            "</author>";
+    private static final String END_AUTHOR_ELEMENT = "</author>";
     /**
      * Start name element.
      */
-    private static final String START_NAME_ELEMENT =
-            "<name>";
+    private static final String START_NAME_ELEMENT = "<name>";
     /**
      * End name element.
      */
-    private static final String END_NAME_ELEMENT =
-            "</name>";
+    private static final String END_NAME_ELEMENT = "</name>";
     /**
      * Link element.
      */
-    private static final String LINK_ELEMENT =
-            "<link href=\"" + LINK_VARIABLE + "\" rel=\"self\" "
-            + "type=\"application/atom+xml\" />";
+    private static final String LINK_ELEMENT = "<link href=\"" + LINK_VARIABLE + "\" rel=\"self\" " + "type=\"application/atom+xml\" />";
 
     /**
      * Gets the id.

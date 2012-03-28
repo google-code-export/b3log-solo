@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Feb 23, 2012
+ * @version 1.1.0.8, Mar 28, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -127,6 +127,12 @@ public final class UpgradeProcessor {
      *     <li>
      *       Adds a property(named {@value UserExt#USER_PUBLISHED_ARTICLE_COUNT}) to entity {@link User user}
      *     </li>
+     *     <li>
+     *       Adds a property(named {@value Preference#COMMENTABLE}) to entity {@link Preference}
+     *     </li>
+     *     <li>
+     *       Adds a property(named {@value Preference#FEED_OUTPUT_MODE}) to entity {@link Preference}
+     *     </li>
      *   </ul>
      * </p>
      * @throws Exception upgrade fails
@@ -183,7 +189,11 @@ public final class UpgradeProcessor {
 
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+            
+            preference.put(Preference.COMMENTABLE, Preference.Default.DEFAULT_COMMENTABLE);
+            preference.put(Preference.FEED_OUTPUT_MODE, Preference.Default.DEFAULT_FEED_OUTPUT_MODE);
             preference.put(Preference.VERSION, "0.4.1");
+            
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();

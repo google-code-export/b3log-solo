@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Feb 25, 2012
+ * @version 1.0.1.3, Mar 28, 2012
  */
 
 /* preference 相关操作 */
@@ -111,6 +111,10 @@ admin.preference = {
                         
                 // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
+                // Feed output mode
+                $("#feedOutputMode").val(preference.feedOutputMode);
+                // Commentable
+                preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
                 
                 $("#loadMsg").text("");
             }
@@ -163,7 +167,9 @@ admin.preference = {
                 "signs": signs,
                 "keyOfSolo": $("#keyOfSolo").val(),
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
-                "articleListStyle": $("#articleListDisplay").val()
+                "articleListStyle": $("#articleListDisplay").val(),
+                "feedOutputMode": $("#feedOutputMode").val(),
+                "commentable": $("#commentable").prop("checked")
             }
         };
         
