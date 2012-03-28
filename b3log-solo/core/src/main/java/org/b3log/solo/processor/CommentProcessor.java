@@ -30,6 +30,9 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.util.Comments;
 import org.json.JSONObject;
@@ -38,7 +41,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Feb 3, 2012
+ * @version 1.1.0.6, Mar 28, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -47,18 +50,15 @@ public final class CommentProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CommentProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService =
-            LangPropsService.getInstance();
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService =
-            CommentMgmtService.getInstance();
+    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
 
     /**
      * Adds a comment to a page.
@@ -94,39 +94,31 @@ public final class CommentProcessor {
      * @throws ServletException servlet exception
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/add-page-comment.do"},
-                       method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context)
-            throws ServletException, IOException {
+    @RequestProcessing(value = {"/add-page-comment.do"}, method = HTTPRequestMethod.POST)
+    public void addPageComment(final HTTPRequestContext context) throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject =
-                AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                      httpServletResponse);
+        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+        requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        final JSONObject jsonObject =
-                Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.
-                    optString(Keys.MSG));
+            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
-        final String captcha = requestJSONObject.optString(
-                CaptchaProcessor.CAPTCHA);
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
         final HttpSession session = httpServletRequest.getSession();
-        final String storedCaptcha = (String) session.getAttribute(
-                CaptchaProcessor.CAPTCHA);
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
         if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
             jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get(
-                    "captchaErrorLabel"));
+            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
             return;
         }
@@ -134,8 +126,7 @@ public final class CommentProcessor {
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         try {
-            final JSONObject addResult =
-                    commentMgmtService.addPageComment(requestJSONObject);
+            final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
             addResult.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(addResult);
@@ -181,39 +172,31 @@ public final class CommentProcessor {
      * @throws ServletException servlet exception
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/add-article-comment.do"},
-                       method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context)
-            throws ServletException, IOException {
+    @RequestProcessing(value = {"/add-article-comment.do"}, method = HTTPRequestMethod.POST)
+    public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject =
-                AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                      httpServletResponse);
-
-        final JSONObject jsonObject =
-                Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+        requestJSONObject.put(Common.TYPE, Article.ARTICLE);
+                
+        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.
-                    optString(Keys.MSG));
+            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
-        final String captcha =
-                requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
         final HttpSession session = httpServletRequest.getSession();
-        final String storedCaptcha =
-                (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
         if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
             jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get(
-                    "captchaErrorLabel"));
+            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
             return;
         }
@@ -221,8 +204,7 @@ public final class CommentProcessor {
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         try {
-            final JSONObject addResult =
-                    commentMgmtService.addArticleComment(requestJSONObject);
+            final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
 
             addResult.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(addResult);
