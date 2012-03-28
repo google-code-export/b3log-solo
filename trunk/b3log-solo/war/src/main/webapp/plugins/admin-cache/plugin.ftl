@@ -153,7 +153,7 @@
         "id": "cache-list",
         "text": "${cacheMgmtLabel}",
         "path": "/tools",
-        "index": 7,
+        "index": 6,
         "content": $("#cachePlugin").html()
     });
     
