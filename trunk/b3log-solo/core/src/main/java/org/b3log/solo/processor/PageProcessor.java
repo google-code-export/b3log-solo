@@ -16,7 +16,7 @@
 package org.b3log.solo.processor;
 
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -81,7 +81,7 @@ public final class PageProcessor {
      */
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("page.ftl");

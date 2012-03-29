@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
@@ -122,7 +122,7 @@ public final class TagProcessor {
     public void showTagArticles(final HTTPRequestContext context)
             throws IOException {
         final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+                new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tag-articles.ftl");
@@ -298,7 +298,7 @@ public final class TagProcessor {
     @RequestProcessing(value = {"/tags.html"}, method = HTTPRequestMethod.GET)
     public void showTags(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+                new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tags.ftl");

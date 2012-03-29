@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -231,7 +231,7 @@ public final class ArticleProcessor {
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, JSONException {
-        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("author-articles.ftl");
@@ -329,7 +329,7 @@ public final class ArticleProcessor {
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
                                     final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("archive-articles.ftl");
@@ -451,7 +451,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("article.ftl");
