@@ -34,8 +34,8 @@ import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.processor.InitProcessor;
 import org.b3log.solo.processor.LoginProcessor;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
@@ -54,8 +54,7 @@ public final class TopBars {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TopBars.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TopBars.class.getName());
     /**
      * User utilities.
      */
@@ -67,8 +66,7 @@ public final class TopBars {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.
-            getInstance();
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Generates top bar HTML.
@@ -78,37 +76,29 @@ public final class TopBars {
      * @return top bar HTML
      * @throws ServiceException service exception 
      */
-    public static String getTopBarHTML(final HttpServletRequest request,
-                                       final HttpServletResponse response)
+    public static String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
             throws ServiceException {
         Stopwatchs.start("Gens Top Bar HTML");
 
         try {
-            final Template topBarTemplate =
-                    InitProcessor.TEMPLATE_CFG.getTemplate("top-bar.ftl");
+            final Template topBarTemplate = ConsoleRenderer.TEMPLATE_CFG.getTemplate("top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
 
-            final Map<String, Object> topBarModel =
-                    new HashMap<String, Object>();
+            final Map<String, Object> topBarModel = new HashMap<String, Object>();
 
             LoginProcessor.tryLogInWithCookie(request, response);
             final JSONObject currentUser = userUtils.getCurrentUser(request);
 
             topBarModel.put(Common.IS_LOGGED_IN, false);
 
-            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(
-                    request));
+            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(request));
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
 
-            topBarModel.put("onlineVisitor1Label",
-                            langPropsService.get("onlineVisitor1Label"));
-            topBarModel.put(Common.ONLINE_VISITOR_CNT,
-                            Statistics.getOnlineVisitorCount());
+            topBarModel.put("onlineVisitor1Label", langPropsService.get("onlineVisitor1Label"));
+            topBarModel.put(Common.ONLINE_VISITOR_CNT, Statistics.getOnlineVisitorCount());
 
             if (null == currentUser) {
-                topBarModel.put(Common.LOGIN_URL,
-                                userService.createLoginURL(
-                        Common.ADMIN_INDEX_URI));
+                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
 
                 topBarTemplate.process(topBarModel, stringWriter);
@@ -117,16 +107,11 @@ public final class TopBars {
             }
 
             topBarModel.put(Common.IS_LOGGED_IN, true);
-            topBarModel.put(Common.LOGOUT_URL,
-                            userService.createLogoutURL("/"));
-            topBarModel.put(Common.IS_ADMIN,
-                            Role.ADMIN_ROLE.equals(currentUser.getString(
-                    User.USER_ROLE)));
+            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+            topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
-            topBarModel.put("clearAllCacheLabel",
-                            langPropsService.get("clearAllCacheLabel"));
-            topBarModel.put("clearCacheLabel",
-                            langPropsService.get("clearCacheLabel"));
+            topBarModel.put("clearAllCacheLabel", langPropsService.get("clearAllCacheLabel"));
+            topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 

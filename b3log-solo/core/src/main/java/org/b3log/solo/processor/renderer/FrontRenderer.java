@@ -36,13 +36,12 @@ import org.b3log.solo.util.Statistics;
  * @version 1.0.0.6, Dec 3, 2011
  * @since 0.3.1
  */
-public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
+public final class FrontRenderer extends CacheFreeMarkerRenderer {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(FrontFreeMarkerRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FrontRenderer.class.getName());
     /**
      * Statistic utilities.
      */
@@ -56,17 +55,13 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
      * </p>
      */
     @Override
-    protected void beforeRender(final HTTPRequestContext context)
-            throws Exception {
+    protected void beforeRender(final HTTPRequestContext context) throws Exception {
         LOGGER.log(Level.FINEST, "Before render....");
-        getDataModel().put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
-                           Common.TOP_BAR_REPLACEMENT_FLAG);
+        getDataModel().put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY, Common.TOP_BAR_REPLACEMENT_FLAG);
     }
 
     @Override
-    protected void doRender(final String html,
-                            final HttpServletRequest request,
-                            final HttpServletResponse response)
+    protected void doRender(final String html, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         LOGGER.log(Level.FINEST, "Do render....");
         response.setContentType("text/html");
@@ -86,15 +81,12 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             return;
         }
 
-        final String pageContent =
-                (String) request.getAttribute(
-                AbstractCacheablePageAction.CACHED_CONTENT);
+        final String pageContent = (String) request.getAttribute(AbstractCacheablePageAction.CACHED_CONTENT);
         String output = html;
         if (null != pageContent) {
             // Adds the top bar HTML content for output
             final String topBarHTML = TopBars.getTopBarHTML(request, response);
-            output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG,
-                                  topBarHTML);
+            output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }
 
         writer.write(output);
@@ -110,8 +102,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
      * </p>
      */
     @Override
-    protected void afterRender(final HTTPRequestContext context)
-            throws Exception {
+    protected void afterRender(final HTTPRequestContext context) throws Exception {
         LOGGER.log(Level.FINEST, "After render....");
 
         try {
@@ -121,8 +112,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
         }
 
         final HttpServletRequest request = context.getRequest();
-        if ("mobile".equals(
-                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME))) {
+        if ("mobile".equals((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME))) {
             // Skips page caching if requested by mobile device
             return;
         }

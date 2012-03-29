@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.processor;
 
-import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
-import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,13 +34,12 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -63,21 +60,11 @@ public final class LoginProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(LoginProcessor.class.getName());
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
+    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
     /**
      * User repository.
      */
-    private static UserRepository userRepository =
-            UserRepositoryImpl.getInstance();
+    private static UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Language service.
      */
@@ -101,34 +88,13 @@ public final class LoginProcessor {
             destinationURL = "/";
         }
 
-        final AbstractFreeMarkerRenderer renderer =
-                new AbstractFreeMarkerRenderer() {
-
-                    @Override
-                    protected Template getTemplate(final String templateDirName,
-                                                   final String templateName)
-                            throws IOException {
-                        return InitProcessor.TEMPLATE_CFG.getTemplate(
-                                templateName);
-                    }
-
-                    @Override
-                    protected void afterRender(final HTTPRequestContext context)
-                            throws Exception {
-                    }
-
-                    @Override
-                    protected void beforeRender(final HTTPRequestContext context)
-                            throws Exception {
-                    }
-                };
-
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("login.ftl");
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs =
-                langPropsService.getAll(Latkes.getLocale());
+                                  langPropsService.getAll(Latkes.getLocale());
         dataModel.putAll(langs);
         dataModel.put(Common.GOTO, destinationURL);
         dataModel.put(Common.YEAR,
@@ -170,12 +136,12 @@ public final class LoginProcessor {
             jsonObject.put(Keys.MSG, loginFailLabel);
 
             final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request,
-                                                          context.getResponse());
+                             AbstractAction.parseRequestJSONObject(request,
+                                                                   context.getResponse());
             final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL);
+                         requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd =
-                    requestJSONObject.getString(User.USER_PASSWORD);
+                         requestJSONObject.getString(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userEmail)
                 || Strings.isEmptyOrNull(userPwd)) {
@@ -246,10 +212,10 @@ public final class LoginProcessor {
                 final Cookie cookie = cookies[i];
                 if ("b3log-latke".equals(cookie.getName())) {
                     final JSONObject cookieJSONObject =
-                            new JSONObject(cookie.getValue());
+                                     new JSONObject(cookie.getValue());
 
                     final String userEmail =
-                            cookieJSONObject.optString(User.USER_EMAIL);
+                                 cookieJSONObject.optString(User.USER_EMAIL);
                     if (Strings.isEmptyOrNull(userEmail)) {
                         break;
                     }
@@ -261,9 +227,9 @@ public final class LoginProcessor {
                     }
 
                     final String userPassword =
-                            user.optString(User.USER_PASSWORD);
+                                 user.optString(User.USER_PASSWORD);
                     final String hashPassword =
-                            cookieJSONObject.optString(User.USER_PASSWORD);
+                                 cookieJSONObject.optString(User.USER_PASSWORD);
                     if (MD5.hash(userPassword).equals(hashPassword)) {
                         Sessions.login(request, response, user);
                         LOGGER.log(Level.INFO,

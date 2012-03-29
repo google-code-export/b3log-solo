@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.4.2, Feb 25, 2012
+    Version: 1.0.4.3, Mar 29, 2012
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -100,33 +100,6 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>AdminIndexAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminIndexAction</servlet-name>
-        <url-pattern>/admin-index.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AdminDoNothingAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.AdminDoNothingAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminDoNothingAction</servlet-name>
-        <url-pattern>/admin-article.do</url-pattern>
-        <url-pattern>/admin-article-list.do</url-pattern>
-        <url-pattern>/admin-comment-list.do</url-pattern>
-        <url-pattern>/admin-link-list.do</url-pattern>
-        <url-pattern>/admin-preference.do</url-pattern>
-        <url-pattern>/admin-page-list.do</url-pattern>
-        <url-pattern>/admin-others.do</url-pattern>
-        <url-pattern>/admin-draft-list.do</url-pattern>
-        <url-pattern>/admin-user-list.do</url-pattern>
-        <url-pattern>/admin-plugin-list.do</url-pattern>
-        <url-pattern>/admin-main.do</url-pattern>
-        <url-pattern>/admin-about.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AddArticleCommentFromSymphonyAction</servlet-class>
     </servlet>
@@ -134,14 +107,7 @@
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
         <url-pattern>/add-article-from-symphony-comment.do</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>AdminError</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.AdminErrorAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminError</servlet-name>
-        <url-pattern>/admin-error.do</url-pattern>
-    </servlet-mapping>
+    
     <!-- Error Pages -->
     <error-page>
         <error-code>404</error-code>
@@ -150,9 +116,5 @@
     <error-page>
         <error-code>403</error-code>
         <location>/403.html</location>
-    </error-page>
-    <error-page>
-        <error-code>400</error-code>
-        <location>/admin-error.do</location>
     </error-page>
 </web-app>

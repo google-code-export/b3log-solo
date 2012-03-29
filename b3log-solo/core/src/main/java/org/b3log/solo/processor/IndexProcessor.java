@@ -17,7 +17,7 @@ package org.b3log.solo.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontFreeMarkerRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.processor.util.TopBars;
@@ -50,6 +50,7 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 
 /**
  * Index processor.
@@ -64,8 +65,7 @@ public final class IndexProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(IndexProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
     /**
      * Filler.
      */
@@ -73,8 +73,7 @@ public final class IndexProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Language service.
      */
@@ -85,11 +84,9 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/\\d*"}, uriPatternsMode = URIPatternMode.REGEX,
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/\\d*"}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("index.ftl");
@@ -102,27 +99,20 @@ public final class IndexProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE,
-                                 langs.get(PageTypes.INDEX_ARTICLES)
-                                 + "  [" + langs.get("pageNumLabel") + "="
-                                 + currentPageNum + "]");
-            request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.INDEX_ARTICLES));
+            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.INDEX_ARTICLES) + "  [" + langs.get("pageNumLabel") + "="
+                                               + currentPageNum + "]");
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.INDEX_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
 
             @SuppressWarnings("unchecked")
-            final List<JSONObject> articles =
-                    (List<JSONObject>) dataModel.get(Article.ARTICLES);
+            final List<JSONObject> articles = (List<JSONObject>) dataModel.get(Article.ARTICLES);
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -138,18 +128,13 @@ public final class IndexProcessor {
             filler.fillBlogFooter(dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            final String previousPageNum =
-                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
-                                     : 0);
-            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                          "0".equals(previousPageNum) ? "" : previousPageNum);
-            final Integer pageCount =
-                    (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
+            final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
+            final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             if (pageCount == currentPageNum + 1) { // The next page is the last page
                 dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
             } else {
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                                   + 1);
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum + 1);
             }
 
             dataModel.put(Common.PATH, "");
@@ -172,9 +157,7 @@ public final class IndexProcessor {
      * @param response the specified response 
      */
     @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
-    public void handleErrors(final HTTPRequestContext context,
-                             final HttpServletRequest request,
-                             final HttpServletResponse response) {
+    public void handleErrors(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -182,18 +165,14 @@ public final class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         try {
-            final JSONObject preference =
-                    preferenceQueryService.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             // Adds the top bar HTML content for output
             final String topBarHTML = TopBars.getTopBarHTML(request, response);
-            dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
-                          topBarHTML);
-            
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY, topBarHTML);
+
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
@@ -214,8 +193,7 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/kill-browser.html"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/kill-browser.html"}, method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
         context.setRenderer(renderer);
@@ -225,8 +203,7 @@ public final class IndexProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            final Map<String, String> langs =
-                    langPropsService.getAll(Locales.getLocale(request));
+            final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
@@ -234,8 +211,7 @@ public final class IndexProcessor {
 
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE, "Kill Browser Page");
-            request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER_PAGE));
             request.setAttribute(CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -273,8 +249,7 @@ public final class IndexProcessor {
         /**
          * Logger.
          */
-        private static final Logger LOGGER =
-                Logger.getLogger(KillBrowserRenderer.class.getName());
+        private static final Logger LOGGER = Logger.getLogger(KillBrowserRenderer.class.getName());
 
         @Override
         public void render(final HTTPRequestContext context) {
@@ -283,9 +258,7 @@ public final class IndexProcessor {
             response.setCharacterEncoding("UTF-8");
 
             try {
-                final Template template =
-                        InitProcessor.TEMPLATE_CFG.getTemplate(
-                        "kill-browser.ftl");
+                final Template template = ConsoleRenderer.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
 
                 final PrintWriter writer = response.getWriter();
 
@@ -301,8 +274,7 @@ public final class IndexProcessor {
                 writer.close();
             } catch (final Exception e) {
                 try {
-                    response.sendError(
-                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     return;
                 } catch (final IOException ex) {
                     LOGGER.log(Level.SEVERE, "Can not sned error 500!", ex);
@@ -311,14 +283,12 @@ public final class IndexProcessor {
         }
 
         @Override
-        protected void afterRender(final HTTPRequestContext context)
-                throws Exception {
+        protected void afterRender(final HTTPRequestContext context) throws Exception {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        protected void beforeRender(final HTTPRequestContext context) throws
-                Exception {
+        protected void beforeRender(final HTTPRequestContext context) throws Exception {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

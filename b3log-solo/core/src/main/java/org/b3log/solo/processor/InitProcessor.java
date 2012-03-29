@@ -15,10 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
@@ -42,6 +38,7 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.util.QueryResults;
@@ -51,7 +48,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 6, 2012
+ * @version 1.0.0.3, Mar 29, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -60,16 +57,11 @@ public final class InitProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(InitProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InitProcessor.class.getName());
     /**
      * Initialization service.
      */
     private InitService initService = InitService.getInstance();
-    /**
-     * FreeMarker configuration.
-     */
-    public static final Configuration TEMPLATE_CFG;
     /**
      * Filler.
      */
@@ -78,18 +70,6 @@ public final class InitProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-
-    static {
-        TEMPLATE_CFG = new Configuration();
-        TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-
-            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(webRootPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
 
     /**
      * Shows initialization page.
@@ -100,9 +80,7 @@ public final class InitProcessor {
      * @throws Exception exception 
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
-    public void showInit(final HTTPRequestContext context,
-                         final HttpServletRequest request,
-                         final HttpServletResponse response)
+    public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (SoloServletListener.isInited()) {
             response.sendRedirect("/");
@@ -110,41 +88,18 @@ public final class InitProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer =
-                new AbstractFreeMarkerRenderer() {
-
-                    @Override
-                    protected Template getTemplate(final String templateDirName,
-                                                   final String templateName)
-                            throws IOException {
-                        return TEMPLATE_CFG.getTemplate(templateName);
-                    }
-
-                    @Override
-                    protected void beforeRender(final HTTPRequestContext context)
-                            throws Exception {
-                    }
-
-                    @Override
-                    protected void afterRender(final HTTPRequestContext context)
-                            throws Exception {
-                    }
-                };
-
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final Map<String, String> langs =
-                langPropsService.getAll(Locales.getLocale(request));
+        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
         dataModel.putAll(langs);
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION,
-                      Latkes.getStaticResourceVersion());
-        dataModel.put(Common.YEAR,
-                      String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         filler.fillMinified(dataModel);
     }
@@ -165,10 +120,8 @@ public final class InitProcessor {
      * @throws Exception exception 
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
-    public void initB3logSolo(final HTTPRequestContext context,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
-            throws Exception {
+    public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
+                              final HttpServletResponse response) throws Exception {
         if (SoloServletListener.isInited()) {
             response.sendRedirect("/");
 
@@ -182,14 +135,11 @@ public final class InitProcessor {
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
-            final String userEmail =
-                    requestJSONObject.optString(User.USER_EMAIL);
-            final String userPassword =
-                    requestJSONObject.optString(User.USER_PASSWORD);
+            final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
+            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userName)
                 || Strings.isEmptyOrNull(userEmail)
@@ -204,13 +154,10 @@ public final class InitProcessor {
 
             // If initialized, login the admin
             final JSONObject admin = new JSONObject();
-            admin.put(User.USER_NAME,
-                      requestJSONObject.getString(User.USER_NAME));
-            admin.put(User.USER_EMAIL,
-                      requestJSONObject.getString(User.USER_EMAIL));
+            admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
+            admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-            admin.put(User.USER_PASSWORD,
-                      requestJSONObject.getString(User.USER_PASSWORD));
+            admin.put(User.USER_PASSWORD, requestJSONObject.getString(User.USER_PASSWORD));
 
             Sessions.login(request, response, admin);
 
