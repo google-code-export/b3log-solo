@@ -53,8 +53,7 @@ public final class PageCacheFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageCacheFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageCacheFilter.class.getName());
     /**
      * Statistic utilities.
      */
@@ -90,8 +89,7 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        final String skinDirName =
-                (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+        final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
         if ("mobile".equals(skinDirName)) {
             // Mobile request, bypasses page caching
             chain.doFilter(request, response);
@@ -133,10 +131,8 @@ public final class PageCacheFilter implements Filter {
             statistics.incBlogViewCount((HttpServletRequest) request);
 
             final long endimeMillis = System.currentTimeMillis();
-            final String dateString = DateFormatUtils.format(
-                    endimeMillis, "yyyy/MM/dd HH:mm:ss");
-            final String msg = String.format("<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
-                                             endimeMillis - startTimeMillis, dateString);
+            final String dateString = DateFormatUtils.format(endimeMillis, "yyyy/MM/dd HH:mm:ss");
+            final String msg = String.format("<!-- Cached by B3log Solo(%1$d ms), %2$s -->", endimeMillis - startTimeMillis, dateString);
             LOGGER.finer(msg);
             cachedPageContent += Strings.LINE_SEPARATOR + msg;
             writer.write(cachedPageContent);
