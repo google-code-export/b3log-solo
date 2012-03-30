@@ -83,7 +83,7 @@ public final class UpgradeProcessor {
 
         try {
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
-            if (null == preference) { // Not init yet
+            if (null == preference) {
                 LOGGER.log(Level.INFO, "Not init yet");
                 renderer.setContent("Not init yet");
 
