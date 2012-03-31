@@ -26,7 +26,7 @@
  # 在 skins 目录中新建文件夹，用于存放一款皮肤所需的各个文件，文件结构如上所示。
  # 可参照 /neoease 目录中的文件进行创建及相应的修改。
  # 建议从 index.ftl 开始修改。一旦 index.ftl 的结构确定下来，其余页面的结构与此基本类似。当然，其中通过 <#include "xxx.ftl"> 包含了一些通用的页面。
- # 如 JS、CSS 文件需要压缩。可分别创建两个文件，在开发环境中使用 XXX.css.js, 在线上环境使用 XXX.min.css.js. 其中 ${miniPostfix} 变量用于区别线上环境和本地环境。使用示例如下：
+ # 如 JS、CSS 文件需要压缩。可分别创建两个文件，在开发环境中使用 XXX.css/js, 在线上环境使用 XXX.min.css/js. 其中 ${miniPostfix} 变量用于区别线上环境和本地环境。使用示例如下：
 <code language="xml">
 {{{
 <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/css/${skinDirName}${miniPostfix}.css" charset="utf-8" />
@@ -39,8 +39,9 @@
  # macro-comments.ftl 中标签 id 不可进行更改。
  # 部分公用方法已被提取到 /js/common.js 和 /js/page.js 文件中。
  # /css/default-base.css 重置样式较多，可选择性的进行拷贝，如标签，标签，文章内容 css 重置等。
- # 文章内容须加上 class="article-body"，否则不能进行代码高亮。 
+ # 文章内容须加上 class="article-body"，否则不能进行代码高亮。
+ # Let's kill IE7- ,如果想要对所有浏览器进行支持，可修改 js/common.js 中 killIE 函数为 killIE: function () {}, 
  # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系或者加入 QQ 群:13139268，直接请教 ansen & noday ^^
  # footer.ftl 中版权声明格式如下：
-http://imgmi.net/e/ef15c4f9.png
+   © 2012 - XXX(博客作者) Powered by B3LOG  Solo, ver 0.4.0   Theme by XXX(皮肤作者).
 <g:plusone size="medium" href="http://code.google.com/p/b3log-solo/w/edit/develop_steps"></g:plusone>
