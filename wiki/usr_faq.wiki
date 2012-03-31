@@ -3,12 +3,17 @@
 ----
 <wiki:toc max_depth="3"/> 
 ----
+==`为何修改偏好设定一直出现“载入中”？`== 
+请先检查您是否使用了代理程序（例如 GoAgent）访问？
+如果不是代理的问题，请报 [http://code.google.com/p/b3log-solo/issues/entry Issue]
+----
 <p align="right">[#Top]</p> 
 ==`如何重新初始化？`== 
 重新初始化将删除所有数据：
  # 正常登录
  # 访问 /rm-all-data.do 
 ----
+<p align="right">[#Top]</p> 
 ==`上传时出现 javax.net.ssl.SSLHandshakeException`==
 上传时出现报错：
 {{{
@@ -18,3 +23,4 @@ No name matching appengine.google.com found
 可能是您修改了 hosts 文件，导致 HTTPS 认证失败，请尝试：
  # 使用非安全方式上传，增加参数如：appcfg *--insecure* update xxxxx
  # 删除 appengine.google.com 的 hosts 配置，尝试以其他方式（例如[https://code.google.com/appengine/docs/java/tools/uploadinganapp.html#Using_an_HTTP_Proxy 代理方式]）进行上传
+----
