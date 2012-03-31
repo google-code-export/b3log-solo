@@ -46,8 +46,7 @@ public final class CacheProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CacheProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CacheProcessor.class.getName());
     /**
      * User utilities.
      */
@@ -58,16 +57,13 @@ public final class CacheProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/clear-cache.do"},
-                       method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/clear-cache.do"}, method = HTTPRequestMethod.POST)
     public void clearCache(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                          httpServletResponse);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
             final String all = requestJSONObject.optString("all");
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
@@ -76,7 +72,7 @@ public final class CacheProcessor {
             } else { // Clears all page caches
                 clearAllPageCache(httpServletRequest, httpServletResponse);
             }
-            
+
             context.setRenderer(new DoNothingRenderer());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -92,9 +88,7 @@ public final class CacheProcessor {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    private void clearPageCache(final String uri,
-                                final HttpServletRequest request,
-                                final HttpServletResponse response)
+    private void clearPageCache(final String uri, final HttpServletRequest request, final HttpServletResponse response)
             throws ActionException, IOException {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -102,8 +96,7 @@ public final class CacheProcessor {
         }
 
         final String pageCacheKey = PageCaches.getPageCacheKey(uri, null);
-        LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]",
-                   pageCacheKey);
+        LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]", pageCacheKey);
 
         PageCaches.remove(pageCacheKey);
     }
@@ -116,8 +109,7 @@ public final class CacheProcessor {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    private void clearAllPageCache(final HttpServletRequest request,
-                                   final HttpServletResponse response)
+    private void clearAllPageCache(final HttpServletRequest request, final HttpServletResponse response)
             throws ActionException, IOException {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);

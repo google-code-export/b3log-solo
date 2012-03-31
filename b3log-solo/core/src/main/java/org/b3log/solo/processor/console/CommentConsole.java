@@ -48,8 +48,7 @@ public final class CommentConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CommentConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentConsole.class.getName());
     /**
      * User utilities.
      */
@@ -57,13 +56,11 @@ public final class CommentConsole {
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService =
-            CommentQueryService.getInstance();
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService =
-            CommentMgmtService.getInstance();
+    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
     /**
      * Language service.
      */
@@ -95,11 +92,8 @@ public final class CommentConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/page/comment/*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removePageComment(final HttpServletRequest request,
-                                  final HttpServletResponse response,
-                                  final HTTPRequestContext context)
+    @RequestProcessing(value = "/console/page/comment/*", method = HTTPRequestMethod.DELETE)
+    public void removePageComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -113,8 +107,7 @@ public final class CommentConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String commentId = request.getRequestURI().substring(
-                    "/console/page/comment/".length());
+            final String commentId = request.getRequestURI().substring("/console/page/comment/".length());
 
             commentMgmtService.removePageComment(commentId);
 
@@ -146,11 +139,8 @@ public final class CommentConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/article/comment/*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removeArticleComment(final HttpServletRequest request,
-                                     final HttpServletResponse response,
-                                     final HTTPRequestContext context)
+    @RequestProcessing(value = "/console/article/comment/*", method = HTTPRequestMethod.DELETE)
+    public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -164,8 +154,7 @@ public final class CommentConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String commentId = request.getRequestURI().substring(
-                    "/console/article/comment/".length());
+            final String commentId = request.getRequestURI().substring("/console/article/comment/".length());
 
             commentMgmtService.removeArticleComment(commentId);
 
@@ -217,12 +206,9 @@ public final class CommentConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX
-                               + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
-    public void getComments(final HttpServletRequest request,
-                            final HttpServletResponse response,
-                            final HTTPRequestContext context) throws Exception {
+    @RequestProcessing(value = COMMENTS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    public void getComments(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -233,14 +219,11 @@ public final class CommentConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path =
-                    requestURI.substring(COMMENTS_URI_PREFIX.length());
+            final String path = requestURI.substring(COMMENTS_URI_PREFIX.length());
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result =
-                    commentQueryService.getComments(requestJSONObject);
+            final JSONObject result = commentQueryService.getComments(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -281,11 +264,8 @@ public final class CommentConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX + "article/*",
-                       method = HTTPRequestMethod.GET)
-    public void getArticleComments(final HTTPRequestContext context,
-                                   final HttpServletRequest request,
-                                   final HttpServletResponse response)
+    @RequestProcessing(value = COMMENTS_URI_PREFIX + "article/*", method = HTTPRequestMethod.GET)
+    public void getArticleComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -300,12 +280,9 @@ public final class CommentConsole {
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String articleId =
-                    requestURI.substring((COMMENTS_URI_PREFIX
-                                          + "article/").length());
+            final String articleId = requestURI.substring((COMMENTS_URI_PREFIX + "article/").length());
 
-            final List<JSONObject> comments =
-                    commentQueryService.getComments(articleId);
+            final List<JSONObject> comments = commentQueryService.getComments(articleId);
 
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, true);
@@ -346,11 +323,8 @@ public final class CommentConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX + "page/*",
-                       method = HTTPRequestMethod.GET)
-    public void getPageComments(final HTTPRequestContext context,
-                                final HttpServletRequest request,
-                                final HttpServletResponse response)
+    @RequestProcessing(value = COMMENTS_URI_PREFIX + "page/*", method = HTTPRequestMethod.GET)
+    public void getPageComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -365,12 +339,9 @@ public final class CommentConsole {
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String pageId =
-                    requestURI.substring((COMMENTS_URI_PREFIX
-                                          + "page/").length());
+            final String pageId = requestURI.substring((COMMENTS_URI_PREFIX + "page/").length());
 
-            final List<JSONObject> comments =
-                    commentQueryService.getComments(pageId);
+            final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, true);
