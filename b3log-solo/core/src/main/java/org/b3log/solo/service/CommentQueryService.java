@@ -124,7 +124,7 @@ public final class CommentQueryService {
             // Sets comment title and content escaping
             for (int i = 0; i < comments.length(); i++) {
                 final JSONObject comment = comments.getJSONObject(i);
-                String title = null;
+                String title;
 
                 final String onType = comment.getString(Comment.COMMENT_ON_TYPE);
                 final String onId = comment.getString(Comment.COMMENT_ON_ID);
