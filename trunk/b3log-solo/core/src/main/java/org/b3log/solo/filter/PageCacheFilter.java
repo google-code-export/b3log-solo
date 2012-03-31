@@ -34,6 +34,7 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.TopBars;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 12, 2011
+ * @version 1.0.0.9, Mar 31, 2012
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -81,6 +82,14 @@ public final class PageCacheFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
+
+        if (StaticResources.isStatic(httpServletRequest)) {
+            final String path = httpServletRequest.getServletPath() + httpServletRequest.getPathInfo();
+            LOGGER.log(Level.FINEST, "Requests a static resource, forwards to servlet[path={0}]", path);
+            request.getRequestDispatcher(path).forward(request, response);
+
+            return;
+        }
 
         if (!Latkes.isPageCacheEnabled()) {
             LOGGER.log(Level.FINEST, "Page cache is disabled");

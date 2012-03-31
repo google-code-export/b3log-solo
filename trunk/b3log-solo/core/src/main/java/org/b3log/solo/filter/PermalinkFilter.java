@@ -89,7 +89,7 @@ public final class PermalinkFilter implements Filter {
             return;
         }
 
-        JSONObject article = null;
+        JSONObject article;
         JSONObject page = null;
         try {
             article = articleRepository.getByPermalink(requestURI);
