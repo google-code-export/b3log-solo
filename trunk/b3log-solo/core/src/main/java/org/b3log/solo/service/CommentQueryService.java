@@ -54,18 +54,15 @@ public final class CommentQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CommentQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
+    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
@@ -111,21 +108,16 @@ public final class CommentQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getComments(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public JSONObject getComments(final JSONObject requestJSONObject) throws ServiceException {
         try {
             final JSONObject ret = new JSONObject();
 
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
+            final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
-                                                  SortDirection.DESCENDING);
+                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE, SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
             final JSONArray comments = result.getJSONArray(Keys.RESULTS);
 
@@ -134,10 +126,8 @@ public final class CommentQueryService {
                 final JSONObject comment = comments.getJSONObject(i);
                 String title = null;
 
-                final String onType =
-                        comment.getString(Comment.COMMENT_ON_TYPE);
-                final String onId =
-                        comment.getString(Comment.COMMENT_ON_ID);
+                final String onType = comment.getString(Comment.COMMENT_ON_TYPE);
+                final String onId = comment.getString(Comment.COMMENT_ON_ID);
                 if (Article.ARTICLE.equals(onType)) {
                     final JSONObject article = articleRepository.get(onId);
                     title = article.getString(Article.ARTICLE_TITLE);
@@ -150,12 +140,10 @@ public final class CommentQueryService {
 
                 comment.put(Common.COMMENT_TITLE, title);
 
-                comment.put(Comment.COMMENT_TIME,
-                            ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+                comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.remove(Comment.COMMENT_DATE);
 
-                final String content =
-                        comment.getString(Comment.COMMENT_CONTENT).
+                final String content = comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
             }
@@ -163,10 +151,7 @@ public final class CommentQueryService {
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject pagination = new JSONObject();
-            final List<Integer> pageNums = Paginator.paginate(currentPageNum,
-                                                              pageSize,
-                                                              pageCount,
-                                                              windowSize);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -233,8 +218,7 @@ public final class CommentQueryService {
         /**
          * Singleton.
          */
-        private static final CommentQueryService SINGLETON =
-                new CommentQueryService();
+        private static final CommentQueryService SINGLETON = new CommentQueryService();
 
         /**
          * Private default constructor.
