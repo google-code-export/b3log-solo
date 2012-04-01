@@ -29,4 +29,4 @@
 ||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27||2011-11-27||<font color='green'>已完成</font>|| ||
 ||23||Latke <font color='grey'>Local</font> Task Queue Service ||Y||2012-03-01||2012-03-15|| ||<font color='blue'>0%</font>|| ||
 ||24||Index 修改与发布||V||2012-03-25||2011-04-25|| ||<font color='blue'>30%</font>|| ||
-||25||B3log <font color='#7BB026'>Node</font>||L||2012-04-01||2012-06-01|| ||<font color='blue'>2%</font>|| ||
+||25||B3log <font color='#7BB026'>Node</font>||L||2012-04-01||2012-06-01|| ||<font color='blue'>2%</font>||node.js环境一下的博客 ||
