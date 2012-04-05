@@ -8,9 +8,10 @@
  * 负责任务：B3log 系列项目发起人。从上到下、从前到后、从内到外的维持着 B3log 系列项目的活跃性。经常梦到有人来分担这艰巨的任务 -`_`-
  * 两句话飘过：D：我靠，又有人加入团队，但不做贡献，搞毛啊。V：快来人收购我们吧~~~~ 
 
- [http://lamb.b3log.org Lamb]（L）：
+ [http://lamb.b3log.org Lamb]（L）<font color="gray">Apr 1, 2012 离开 B3 团队</font>：
  * 有创意才有新意
  * 实现梦想，即使在中国！
+
 
  [http://jiangzezhou.b3log.org jboat]（J）：
  * 大三学生，热爱开源，处于实习和出去找工作的边缘，技术菜鸟，很可能是刚好在你之前加入的那一个。qq：415116548，邮箱：jiangzezhou1989@163.com。
