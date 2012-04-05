@@ -44,8 +44,7 @@ public final class AuthFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(AuthFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthFilter.class.getName());
     /**
      * User service.
      */
@@ -74,17 +73,13 @@ public final class AuthFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        final HttpServletResponse httpServletResponse =
-                (HttpServletResponse) response;
-        final HttpServletRequest httpServletRequest =
-                (HttpServletRequest) request;
+        final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         try {
-            LoginProcessor.tryLogInWithCookie(httpServletRequest,
-                                              httpServletResponse);
+            LoginProcessor.tryLogInWithCookie(httpServletRequest, httpServletResponse);
 
-            final GeneralUser currentUser =
-                    userService.getCurrentUser(httpServletRequest);
+            final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
             if (null == currentUser) {
                 LOGGER.warning("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
