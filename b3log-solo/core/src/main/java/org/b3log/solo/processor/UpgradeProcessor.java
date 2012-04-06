@@ -70,6 +70,10 @@ public final class UpgradeProcessor {
      * Task queue service.
      */
     private TaskQueueService taskQueueService = TaskQueueServiceFactory.getTaskQueueService();
+    /**
+     * Step for article updating.
+     */
+    private static final int STEP = 50;
 
     /**
      * Checks upgrade.
@@ -140,6 +144,8 @@ public final class UpgradeProcessor {
     private void v040ToV041() throws Exception {
         LOGGER.info("Upgrading from version 040 to version 041....");
 
+        articleRepository.setCacheEnabled(false);
+
         Transaction transaction = null;
         try {
             upgradeArticles();
@@ -197,6 +203,8 @@ public final class UpgradeProcessor {
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
             throw new Exception("Upgrade fail from version 040 to version 041");
+        } finally {
+            articleRepository.setCacheEnabled(true);
         }
 
         LOGGER.info("Upgraded from version 040 to version 041 successfully :-)");
@@ -210,8 +218,6 @@ public final class UpgradeProcessor {
     private void upgradeArticles() throws Exception {
         LOGGER.log(Level.INFO, "Processes remove unused article properties");
 
-        articleRepository.setCacheEnabled(false);
-
         final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
         if (articles.length() <= 0) {
             LOGGER.log(Level.FINEST, "No unused article properties");
@@ -224,7 +230,7 @@ public final class UpgradeProcessor {
         try {
             final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
             for (int i = 0; i < articles.length(); i++) {
-                if (0 == i % 300) {
+                if (0 == i % STEP) {
                     transaction = userRepository.beginTransaction();
                 }
 
@@ -258,13 +264,15 @@ public final class UpgradeProcessor {
                     LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]", new Object[]{articleId, nameSet});
                 }
 
-                if (0 == i % 300) {
+                if (0 == i % STEP) {
                     transaction.commit();
+                    LOGGER.log(Level.FINEST, "Updated some articles");
                 }
             }
-            
+
             if (transaction.isActive()) {
                 transaction.commit();
+                LOGGER.log(Level.FINEST, "Updated articles");
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -272,8 +280,6 @@ public final class UpgradeProcessor {
             }
 
             throw e;
-        } finally {
-            articleRepository.setCacheEnabled(true);
         }
     }
 }
