@@ -34,6 +34,7 @@
         </retry-parameters>
     </queue>
     -->
+    
     <queue>
         <name>fix-queue</name>
         <rate>20/m</rate>
