@@ -140,10 +140,11 @@ public final class UpgradeProcessor {
     private void v040ToV041() throws Exception {
         LOGGER.info("Upgrading from version 040 to version 041....");
 
-        final Transaction transaction = userRepository.beginTransaction();
+        Transaction transaction = null;
         try {
             upgradeArticles();
 
+            transaction = userRepository.beginTransaction();
             // Upgrades user models
             final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
             LOGGER.log(Level.INFO, "Users[length={0}]", users.length());
@@ -219,35 +220,60 @@ public final class UpgradeProcessor {
 
         final ArticleSignRepositoryImpl articleSignRepository = ArticleSignRepositoryImpl.getInstance();
 
-        final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
-        for (int i = 0; i < articles.length(); i++) {
-            final JSONObject article = articles.getJSONObject(i);
-
-            final String articleId = article.optString(Keys.OBJECT_ID);
-            final JSONObject articleSignRel = articleSignRepository.getByArticleId(articleId);
-            String signId = "1";
-            if (null != articleSignRel) {
-                signId = articleSignRel.getString("sign_oId");
-                articleSignRepository.remove(articleSignRel.getString(Keys.OBJECT_ID));
-            }
-            LOGGER.log(Level.INFO, "Found an article[id={0}, signId={1}]", new Object[]{articleId, signId});
-            article.put(Article.ARTICLE_SIGN_ID, signId);
-            article.put(Article.ARTICLE_COMMENTABLE, true);
-            article.put(Article.ARTICLE_VIEW_PWD, "");
-
-            final JSONArray names = article.names();
-            final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
-
-            if (nameSet.removeAll(keyNames)) {
-                for (final String unusedName : nameSet) {
-                    article.remove(unusedName);
+        Transaction transaction = null;
+        try {
+            final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
+            for (int i = 0; i < articles.length(); i++) {
+                if (0 == i % 300) {
+                    transaction = userRepository.beginTransaction();
                 }
 
-                articleRepository.update(article.getString(Keys.OBJECT_ID), article);
-                LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]", new Object[]{articleId, nameSet});
-            }
-        }
+                if (!transaction.isActive()) {
+                    transaction = userRepository.beginTransaction();
+                }
 
-        articleRepository.setCacheEnabled(true);
+                final JSONObject article = articles.getJSONObject(i);
+
+                final String articleId = article.optString(Keys.OBJECT_ID);
+                final JSONObject articleSignRel = articleSignRepository.getByArticleId(articleId);
+                String signId = "1";
+                if (null != articleSignRel) {
+                    signId = articleSignRel.getString("sign_oId");
+                    articleSignRepository.remove(articleSignRel.getString(Keys.OBJECT_ID));
+                }
+                LOGGER.log(Level.INFO, "Found an article[id={0}, signId={1}]", new Object[]{articleId, signId});
+                article.put(Article.ARTICLE_SIGN_ID, signId);
+                article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
+
+                final JSONArray names = article.names();
+                final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
+
+                if (nameSet.removeAll(keyNames)) {
+                    for (final String unusedName : nameSet) {
+                        article.remove(unusedName);
+                    }
+
+                    articleRepository.update(article.getString(Keys.OBJECT_ID), article);
+                    LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]", new Object[]{articleId, nameSet});
+                }
+
+                if (0 == i % 300) {
+                    transaction.commit();
+                }
+            }
+            
+            if (transaction.isActive()) {
+                transaction.commit();
+            }
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw e;
+        } finally {
+            articleRepository.setCacheEnabled(true);
+        }
     }
 }
