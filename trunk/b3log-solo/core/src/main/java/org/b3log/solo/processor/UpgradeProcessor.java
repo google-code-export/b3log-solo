@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -25,10 +26,9 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.taskqueue.Queue;
-import org.b3log.latke.taskqueue.Task;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -142,15 +142,7 @@ public final class UpgradeProcessor {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            // Submits a task to process articles
-            final Queue queue = taskQueueService.getQueue("fix-queue");
-            final Task task = new Task();
-            task.setURL("/fix/normalization/articles/properties");
-            task.setRequestMethod(HTTPRequestMethod.POST);
-            queue.add(task);
-            LOGGER.log(Level.INFO, "Subbmitted a task[{0}] to queue[name=fix-queue]", task.toString());
-
-            // Do not care article properties fix task, keep going upgrade
+            upgradeArticles();
 
             // Upgrades user models
             final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
@@ -189,11 +181,11 @@ public final class UpgradeProcessor {
 
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
-            
+
             preference.put(Preference.COMMENTABLE, Preference.Default.DEFAULT_COMMENTABLE);
             preference.put(Preference.FEED_OUTPUT_MODE, Preference.Default.DEFAULT_FEED_OUTPUT_MODE);
             preference.put(Preference.VERSION, "0.4.1");
-            
+
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();
@@ -207,5 +199,47 @@ public final class UpgradeProcessor {
         }
 
         LOGGER.info("Upgraded from version 040 to version 041 successfully :-)");
+    }
+
+    /**
+     * Upgrades articles.
+     * 
+     * @throws Exception exception
+     */
+    private void upgradeArticles() throws Exception {
+        LOGGER.log(Level.INFO, "Processes remove unused article properties");
+
+        final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+        if (articles.length() <= 0) {
+            LOGGER.log(Level.FINEST, "No unused article properties");
+            return;
+        }
+
+        final ArticleSignRepositoryImpl articleSignRepository = ArticleSignRepositoryImpl.getInstance();
+
+        final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
+        for (int i = 0; i < articles.length(); i++) {
+            final JSONObject article = articles.getJSONObject(i);
+
+            final String articleId = article.optString(Keys.OBJECT_ID);
+            final JSONObject articleSignRel = articleSignRepository.getByArticleId(articleId);
+            final String signId = articleSignRel.getString("sign_oId");
+            LOGGER.log(Level.INFO, "Found an article[id={0}, signId={1}]", new Object[]{articleId, signId});
+            article.put(Article.ARTICLE_SIGN_ID, signId);
+            article.put(Article.ARTICLE_COMMENTABLE, true);
+            article.put(Article.ARTICLE_VIEW_PWD, "");
+
+            final JSONArray names = article.names();
+            final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
+
+            if (nameSet.removeAll(keyNames)) {
+                for (final String unusedName : nameSet) {
+                    article.remove(unusedName);
+                }
+
+                articleRepository.update(article.getString(Keys.OBJECT_ID), article);
+                LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]", new Object[]{articleId, nameSet});
+            }
+        }
     }
 }

@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Feb 23, 2012
+ * @version 1.1.0.5, Apr 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -116,21 +116,11 @@ public final class RepairProcessor {
                 return;
             }
 
-            final ArticleSignRepositoryImpl articleSignRepository = ArticleSignRepositoryImpl.getInstance();
-
             transaction = statisticRepository.beginTransaction();
 
             final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-
-                // TODO: 045 to remove ---- START ----
-                final JSONObject articleSignRel = articleSignRepository.getByArticleId(article.optString(Keys.OBJECT_ID));
-                final String signId = articleSignRel.getString("sign_oId");
-                article.put(Article.ARTICLE_SIGN_ID, signId);
-                article.put(Article.ARTICLE_COMMENTABLE, true);
-                article.put(Article.ARTICLE_VIEW_PWD, "");
-                // 045 to remove ---- END ----
 
                 final JSONArray names = article.names();
                 final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
@@ -344,8 +334,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/rm-all-data.do"},
-                       method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/rm-all-data.do"}, method = HTTPRequestMethod.POST)
     public void removeAllDataPOST(final HTTPRequestContext context) {
         LOGGER.info("Removing all data....");
 
@@ -354,27 +343,16 @@ public final class RepairProcessor {
         boolean succeed = false;
         try {
             remove(ArchiveDateArticleRepositoryImpl.getInstance());
-
             remove(ArchiveDateRepositoryImpl.getInstance());
-
             remove(ArticleRepositoryImpl.getInstance());
-
             remove(ArticleSignRepositoryImpl.getInstance());
-
             remove(CommentRepositoryImpl.getInstance());
-
             remove(LinkRepositoryImpl.getInstance());
-
             remove(PageRepositoryImpl.getInstance());
-
             remove(PreferenceRepositoryImpl.getInstance());
-
             remove(StatisticRepositoryImpl.getInstance());
-
             remove(TagArticleRepositoryImpl.getInstance());
-
             remove(TagRepositoryImpl.getInstance());
-
             remove(UserRepositoryImpl.getInstance());
 
             succeed = true;
@@ -392,8 +370,7 @@ public final class RepairProcessor {
             if (succeed) {
                 htmlBuilder.append("Removed all data!");
             } else {
-                htmlBuilder.append(
-                        "Refresh this page and run this remover again.");
+                htmlBuilder.append("Refresh this page and run this remover again.");
             }
             htmlBuilder.append("</body></html>");
 
@@ -401,8 +378,7 @@ public final class RepairProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -442,8 +418,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes all data in repository[name="
-                                     + repository.getName() + "] failed", e);
+            LOGGER.log(Level.SEVERE, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
         }
     }
 }
