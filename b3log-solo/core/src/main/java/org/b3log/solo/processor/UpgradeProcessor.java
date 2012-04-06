@@ -194,7 +194,7 @@ public final class UpgradeProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
+            LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
             throw new Exception("Upgrade fail from version 040 to version 041");
         }
 
@@ -208,6 +208,8 @@ public final class UpgradeProcessor {
      */
     private void upgradeArticles() throws Exception {
         LOGGER.log(Level.INFO, "Processes remove unused article properties");
+
+        articleRepository.setCacheEnabled(false);
 
         final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
         if (articles.length() <= 0) {
@@ -223,13 +225,15 @@ public final class UpgradeProcessor {
 
             final String articleId = article.optString(Keys.OBJECT_ID);
             final JSONObject articleSignRel = articleSignRepository.getByArticleId(articleId);
-            final String signId = articleSignRel.getString("sign_oId");
+            String signId = "1";
+            if (null != articleSignRel) {
+                signId = articleSignRel.getString("sign_oId");
+                articleSignRepository.remove(articleSignRel.getString(Keys.OBJECT_ID));
+            }
             LOGGER.log(Level.INFO, "Found an article[id={0}, signId={1}]", new Object[]{articleId, signId});
             article.put(Article.ARTICLE_SIGN_ID, signId);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
-            
-            articleSignRepository.remove(articleSignRel.getString(Keys.OBJECT_ID));
 
             final JSONArray names = article.names();
             final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
@@ -243,5 +247,7 @@ public final class UpgradeProcessor {
                 LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]", new Object[]{articleId, nameSet});
             }
         }
+
+        articleRepository.setCacheEnabled(true);
     }
 }
