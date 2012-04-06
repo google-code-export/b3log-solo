@@ -36,6 +36,7 @@
     -->
     <queue>
         <name>fix-queue</name>
+        <rate>20/m</rate>
         <retry-parameters>
             <task-retry-limit>7</task-retry-limit>
         </retry-parameters>
