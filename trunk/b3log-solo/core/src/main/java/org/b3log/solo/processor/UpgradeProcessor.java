@@ -228,6 +228,8 @@ public final class UpgradeProcessor {
             article.put(Article.ARTICLE_SIGN_ID, signId);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
+            
+            articleSignRepository.remove(articleSignRel.getString(Keys.OBJECT_ID));
 
             final JSONArray names = article.names();
             final Set<String> nameSet = CollectionUtils.<String>jsonArrayToSet(names);
