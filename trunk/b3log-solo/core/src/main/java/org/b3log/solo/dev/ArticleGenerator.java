@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Generates some dummy articles for development testing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 23, 2012
+ * @version 1.0.0.2, Apr 8, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -98,6 +98,9 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_CREATE_DATE, new Date());
                 article.put(Article.ARTICLE_UPDATE_DATE, new Date());
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+                article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
+                article.put(Article.ARTICLE_SIGN_ID, "1");
 
                 articleMgmtService.addArticle(new JSONObject().put(Article.ARTICLE, article));
             }
