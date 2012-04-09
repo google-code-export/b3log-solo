@@ -48,19 +48,16 @@ import org.json.JSONObject;
  * @see UpdateArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
-public final class AddArticleGoogleBlogSearchPinger
-        extends AbstractEventListener<JSONObject> {
+public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(AddArticleGoogleBlogSearchPinger.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AddArticleGoogleBlogSearchPinger.class.getName());
     /**
      * URL fetch service.
      */
-    private static final URLFetchService URL_FETCH_SERVICE =
-            URLFetchServiceFactory.getURLFetchService();
+    private static final URLFetchService URL_FETCH_SERVICE = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
@@ -80,39 +77,30 @@ public final class AddArticleGoogleBlogSearchPinger
         try {
             final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
             articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final JSONObject preference =
-                    PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             String blogHost = preference.getString(Preference.BLOG_HOST).
                     toLowerCase().trim();
             if ("localhost".equals(blogHost.split(":")[0].trim())) {
-                LOGGER.log(Level.INFO,
-                           "Blog Solo runs on local server, so should not ping "
-                           + "Google Blog Search Service for the article[title={0}]",
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not ping "
+                                       + "Google Blog Search Service for the article[title={0}]",
                            new Object[]{article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
             blogHost = StringUtils.removeEnd("http://" + blogHost, "/");
 
-            final String articlePermalink =
-                    blogHost + article.getString(Article.ARTICLE_PERMALINK);
-            final String spec =
-                    "http://blogsearch.google.com/ping?name="
-                    + URLEncoder.encode(blogTitle, "UTF-8")
-                    + "&url=" + URLEncoder.encode(blogHost, "UTF-8")
-                    + "&changesURL=" + URLEncoder.encode(articlePermalink,
-                                                         "UTF-8");
-            LOGGER.log(Level.FINER,
-                       "Request Google Blog Search Service API[{0}] while adding an "
-                       + "article[title=" + articleTitle + "]", spec);
+            final String articlePermalink = blogHost + article.getString(Article.ARTICLE_PERMALINK);
+            final String spec = "http://blogsearch.google.com/ping?name="
+                                + URLEncoder.encode(blogTitle, "UTF-8") + "&url=" + URLEncoder.encode(blogHost, "UTF-8")
+                                + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
+            LOGGER.log(Level.FINER, "Request Google Blog Search Service API[{0}] while adding an "
+                                    + "article[title=" + articleTitle + "]", spec);
             final HTTPRequest request = new HTTPRequest();
             request.setURL(new URL(spec));
 
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE,
-                       "Ping Google Blog Search Service fail while adding an article[title="
-                       + articleTitle + "]", e);
+            LOGGER.log(Level.SEVERE, "Ping Google Blog Search Service fail while adding an article[title=" + articleTitle + "]", e);
         }
     }
 }
