@@ -50,12 +50,71 @@ public final class RepositoryAccessor {
     private static final Logger LOGGER = Logger.getLogger(RepositoryAccessor.class.getName());
 
     /**
+     * Gets repository names.
+     * 
+     * <p>
+     * Query parameters:
+     * /latke/remote/repository/names?<em>userName=xxx&password=xxx</em><br/>
+     * All parameters are required.
+     * </p>
+     * 
+     * <p>
+     * Renders response like the following: 
+     * <pre>
+     * {
+     *     "sc":200,
+     *     "msg":"Got data",
+     *     "repositoryNames" : [
+     *         "repository1", "repository2", ....
+     *       ] 
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param context the specified HTTP request context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response 
+     */
+    @RequestProcessing(value = "/latke/remote/repository/names", method = HTTPRequestMethod.GET)
+    public void getRepositoryNames(final HTTPRequestContext context, final HttpServletRequest request,
+                                   final HttpServletResponse response) {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
+        jsonObject.put(Keys.MSG, "Got data");
+
+        if (!authSucc(request, jsonObject)) {
+            return;
+        }
+
+        jsonObject.put("repositoryNames", Repositories.getRepositoryNames());
+    }
+
+    /**
      * Gets repository data.
      * 
      * <p>
      * Query parameters:
      * /latke/remote/repository/data?<em>userName=xxx&password=xxx&repositoryName=xxx&pageNum=xxx&pageSize=xxx</em><br/>
      * All parameters are required.
+     * </p>
+     * 
+     * <p>
+     * Renders response like the following:
+     * <pre>
+     * {
+     *   "sc":200,
+     *   "msg":"Got data",
+     *   "pagination":{
+     *      "paginationPageCount":11
+     *   },
+     *   "rslts":[{}, {}, ....]
+     * }
+     * </pre>
      * </p>
      * 
      * @param context the specified HTTP request context
@@ -126,6 +185,18 @@ public final class RepositoryAccessor {
         final String userName = request.getParameter("userName");
         final String password = request.getParameter("password");
 
+        if (Strings.isEmptyOrNull(userName)) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Requires parameter[userName]");
+            return false;
+        }
+
+        if (Strings.isEmptyOrNull(password)) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Requires parameter[password]");
+            return false;
+        }
+
         final Repository repository = Repositories.getRepository(User.USER);
         if (null == repository) {
             jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -169,23 +240,9 @@ public final class RepositoryAccessor {
      * @return {@code true} if it is bad, returns {@code false} otherwise
      */
     public boolean badRequest(final HttpServletRequest request, final JSONObject jsonObject) {
-        final String userName = request.getParameter("userName");
-        final String password = request.getParameter("password");
         final String repositoryName = request.getParameter("repositoryName");
         final String pageNumString = request.getParameter("pageNum");
         final String pageSizeString = request.getParameter("pageSize");
-
-        if (Strings.isEmptyOrNull(userName)) {
-            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
-            jsonObject.put(Keys.MSG, "Requires parameter[userName]");
-            return true;
-        }
-
-        if (Strings.isEmptyOrNull(password)) {
-            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
-            jsonObject.put(Keys.MSG, "Requires parameter[password]");
-            return true;
-        }
 
         if (Strings.isEmptyOrNull(repositoryName)) {
             jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
