@@ -54,7 +54,7 @@ public final class RepositoryAccessor {
      * 
      * <p>
      * Query parameters:
-     * /latke/remote/getData?<em>userName=xxx&password=xxx&repositoryName=xxx&pageNum=xxx&pageSize=xxx</em><br/>
+     * /latke/remote/repository/data?<em>userName=xxx&password=xxx&repositoryName=xxx&pageNum=xxx&pageSize=xxx</em><br/>
      * All parameters are required.
      * </p>
      * 
@@ -62,7 +62,7 @@ public final class RepositoryAccessor {
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response 
      */
-    @RequestProcessing(value = "/latke/remote/getData", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/latke/remote/repository/data", method = HTTPRequestMethod.GET)
     public void getData(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
