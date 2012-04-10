@@ -327,7 +327,7 @@ public final class ArticleMgmtService {
 
             LOGGER.log(Level.SEVERE, "Updates an article failed", e);
 
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -774,7 +774,7 @@ public final class ArticleMgmtService {
         final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
         for (int i = 0; i < tagArticleRelations.size(); i++) {
             final JSONObject tagArticleRelation = tagArticleRelations.get(i);
-            String relationId = null;
+            String relationId;
             if (tagIdList.isEmpty()) { // Removes all if un-specified
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
@@ -819,7 +819,7 @@ public final class ArticleMgmtService {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
-            String tagId = null;
+            String tagId;
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
                            new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
