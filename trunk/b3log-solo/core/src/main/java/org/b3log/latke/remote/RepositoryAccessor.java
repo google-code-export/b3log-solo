@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Accesses repository via HTTP protocol.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Apr 8, 2012
+ * @version 1.0.0.1, Apr 10, 2012
  */
 // TODO: 88250, moves this class into Latke
 @RequestProcessor
@@ -48,6 +48,100 @@ public final class RepositoryAccessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RepositoryAccessor.class.getName());
+
+    /**
+     * Gets whether repositories is writable.
+     * 
+     * <p>
+     * Query parameters:
+     * /latke/remote/repositories/writable?<em>userName=xxx&password=xxx</em><br/>
+     * All parameters are required.
+     * </p>
+     * 
+     * <p>
+     * Renders response like the following: 
+     * <pre>
+     * {
+     *     "sc":200,
+     *     "writable": true,
+     *     "msg":"Gets repositories writable[true]"
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param context the specified HTTP request context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response 
+     */
+    @RequestProcessing(value = "/latke/remote/repositories/writable", method = HTTPRequestMethod.GET)
+    public void getRepositoriesWritable(final HTTPRequestContext context, final HttpServletRequest request,
+                                        final HttpServletResponse response) {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        if (!authSucc(request, jsonObject)) {
+            return;
+        }
+        
+        final boolean writable = Repositories.getReposirotiesWritable();
+
+        jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
+        jsonObject.put(Keys.MSG, "Gets repositories writable[" + writable + "]");
+        jsonObject.put("writable", writable);
+    }
+    
+    /**
+     * Sets whether repositories is writable.
+     * 
+     * <p>
+     * Query parameters:
+     * /latke/remote/repositories/writable?<em>userName=xxx&password=xxx&writable=true</em><br/>
+     * All parameters are required.
+     * </p>
+     * 
+     * <p>
+     * Renders response like the following: 
+     * <pre>
+     * {
+     *     "sc":200,
+     *     "msg":"Sets repositories writable[true]"
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param context the specified HTTP request context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response 
+     */
+    @RequestProcessing(value = "/latke/remote/repositories/writable", method = HTTPRequestMethod.PUT)
+    public void setRepositoriesWritable(final HTTPRequestContext context, final HttpServletRequest request,
+                                        final HttpServletResponse response) {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        final String writable = request.getParameter("writable");
+        if (!"true".equals(writable) && !"false".equals(writable)) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Requires parameter[writable], optional value is [true] or [false]");
+
+            return;
+        }
+
+        if (!authSucc(request, jsonObject)) {
+            return;
+        }
+
+        Repositories.setRepositoriesWritable(Boolean.parseBoolean(writable));
+
+        jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
+        jsonObject.put(Keys.MSG, "Sets repositories writable[" + writable + "]");
+    }
 
     /**
      * Gets repository names.
@@ -181,7 +275,7 @@ public final class RepositoryAccessor {
      * @param jsonObject the specified json object
      * @return {@code true} if authenticated, returns {@code false} otherwise
      */
-    public boolean authSucc(final HttpServletRequest request, final JSONObject jsonObject) {
+    private boolean authSucc(final HttpServletRequest request, final JSONObject jsonObject) {
         final String userName = request.getParameter("userName");
         final String password = request.getParameter("password");
 
@@ -239,7 +333,7 @@ public final class RepositoryAccessor {
      * @param jsonObject the specified jsonObject
      * @return {@code true} if it is bad, returns {@code false} otherwise
      */
-    public boolean badRequest(final HttpServletRequest request, final JSONObject jsonObject) {
+    private boolean badRequest(final HttpServletRequest request, final JSONObject jsonObject) {
         final String repositoryName = request.getParameter("repositoryName");
         final String pageNumString = request.getParameter("pageNum");
         final String pageSizeString = request.getParameter("pageSize");
