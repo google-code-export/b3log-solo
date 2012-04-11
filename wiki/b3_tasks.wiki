@@ -29,6 +29,6 @@
 ||22||Latke <font color='brown'>GAE</font> Task Queue Service ||D||2011-11-15||2011-11-27||2011-11-27||<font color='green'>已完成</font>|| ||
 ||23||Latke <font color='grey'>Local</font> Task Queue Service ||Y||2012-03-01||2012-03-15|| ||<font color='blue'>0%</font>|| ||
 ||24||Index 修改与发布||V||2012-03-25||2011-04-25||2011-04-08||<font color='green'>已完成</font>|| ||
-||25||Latke <font color='grey'>Local</font> Cron Service ||D||2012-04-05||2011-04-25|| ||<font color='blue'>10%</font>|| ||
-||26||Latke 数据备份/恢复服务端||D||2012-04-09||2011-04-25|| ||<font color='blue'>20%</font>|| ||
+||25||Latke <font color='grey'>Local</font> Cron Service ||D||2012-04-05||2011-04-25||2011-04-10||<font color='green'>已完成</font>|| ||
+||26||Latke 数据备份/恢复服务端||D||2012-04-09||2011-04-25|| ||<font color='blue'>80%</font>|| ||
 ||27||Latke 数据备份/恢复客户端||D||2012-04-05||2011-04-25|| ||<font color='blue'>0%</font>|| ||
