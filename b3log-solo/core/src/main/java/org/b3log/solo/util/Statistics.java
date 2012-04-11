@@ -43,13 +43,11 @@ public final class Statistics {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Statistics.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Statistics.class.getName());
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository =
-            StatisticRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
     /**
      * Online visitor count.
      */
@@ -96,16 +94,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public int getBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public int getBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        return statistic.getInt(
-                Statistic.STATISTIC_BLOG_COMMENT_COUNT);
+        return statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
     }
 
     /**
@@ -115,16 +110,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public int getPublishedBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public int getPublishedBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        return statistic.getInt(
-                Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
+        return statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
     }
 
     /**
@@ -134,10 +126,8 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void setBlogCommentCount(final int count)
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void setBlogCommentCount(final int count) throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
@@ -153,16 +143,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void setPublishedBlogCommentCount(final int count)
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void setPublishedBlogCommentCount(final int count) throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
-                      count);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, count);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -173,10 +160,8 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public int getPublishedBlogArticleCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public int getPublishedBlogArticleCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
@@ -191,10 +176,8 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public int getBlogArticleCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public int getBlogArticleCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
@@ -219,35 +202,28 @@ public final class Statistics {
      * @throws JSONException json exception 
      * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest) 
      */
-    public void incBlogViewCount(final HttpServletRequest request)
-            throws RepositoryException, JSONException {
+    public void incBlogViewCount(final HttpServletRequest request) throws RepositoryException, JSONException {
         if (Requests.searchEngineBotRequest(request)) {
-            LOGGER.log(Level.FINER,
-                       "Request made from a search engine[User-Agent={0}], bypasses blog view count",
+            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}], bypasses blog view count",
                        request.getHeader("User-Agent"));
             return;
         }
 
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             return;
         }
 
-        LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]",
-                   statistic);
+        LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]", statistic);
 
-        int blogViewCnt =
-                statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+        int blogViewCnt = statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
         // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
-        statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX
-                                                + Statistic.STATISTIC, statistic);
+        statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, statistic);
 
-        LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]",
-                   statistic);
+        LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]", statistic);
     }
 
     /**
@@ -256,15 +232,12 @@ public final class Statistics {
      * @throws RepositoryException repository exception
      */
     public void incBlogArticleCount() throws RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                      statistic.optInt(
-                Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
+        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -273,17 +246,13 @@ public final class Statistics {
      *
      * @throws RepositoryException repository exception
      */
-    public void incPublishedBlogArticleCount()
-            throws RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void incPublishedBlogArticleCount() throws RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
-                      statistic.optInt(
-                Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) + 1);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -293,17 +262,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void decBlogArticleCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void decBlogArticleCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_BLOG_ARTICLE_COUNT) - 1);
+        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT) - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -315,15 +280,12 @@ public final class Statistics {
      */
     public void decPublishedBlogArticleCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) - 1);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -333,16 +295,12 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void incBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void incBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
-        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_BLOG_COMMENT_COUNT) + 1);
+        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -352,16 +310,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void incPublishedBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void incPublishedBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
-        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) + 1);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT)
+                                                                        + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -371,17 +326,13 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void decBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void decBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_BLOG_COMMENT_COUNT) - 1);
+        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT) - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -391,17 +342,14 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void decPublishedBlogCommentCount()
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
+    public void decPublishedBlogCommentCount() throws JSONException, RepositoryException {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
         }
 
-        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) - 1);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT)
+                                                                        - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 

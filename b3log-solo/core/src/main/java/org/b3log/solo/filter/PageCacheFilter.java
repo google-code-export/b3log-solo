@@ -106,7 +106,7 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        String pageCacheKey = null;
+        String pageCacheKey;
         final String queryString = httpServletRequest.getQueryString();
         pageCacheKey = (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
         if (Strings.isEmptyOrNull(pageCacheKey)) {
@@ -150,18 +150,12 @@ public final class PageCacheFilter implements Filter {
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             chain.doFilter(request, response);
-
-            return;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             chain.doFilter(request, response);
-
-            return;
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             chain.doFilter(request, response);
-
-            return;
         }
     }
 
