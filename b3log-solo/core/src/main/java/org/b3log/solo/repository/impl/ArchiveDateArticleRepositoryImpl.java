@@ -39,13 +39,10 @@ public final class ArchiveDateArticleRepositoryImpl
         implements ArchiveDateArticleRepository {
 
     @Override
-    public JSONObject getByArchiveDateId(final String archiveDateId,
-                                         final int currentPageNum,
-                                         final int pageSize)
+    public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().
-                addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
-                          FilterOperator.EQUAL, archiveDateId).
+        final Query query = new Query().addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
+                                                  FilterOperator.EQUAL, archiveDateId).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
@@ -56,11 +53,9 @@ public final class ArchiveDateArticleRepositoryImpl
     }
 
     @Override
-    public JSONObject getByArticleId(final String articleId)
-            throws RepositoryException {
+    public JSONObject getByArticleId(final String articleId) throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -101,8 +96,8 @@ public final class ArchiveDateArticleRepositoryImpl
          * Singleton.
          */
         private static final ArchiveDateArticleRepositoryImpl SINGLETON =
-                new ArchiveDateArticleRepositoryImpl(ArchiveDate.ARCHIVE_DATE
-                                                     + "_" + Article.ARTICLE);
+                                                              new ArchiveDateArticleRepositoryImpl(ArchiveDate.ARCHIVE_DATE
+                                                                                                   + "_" + Article.ARTICLE);
 
         /**
          * Private default constructor.
