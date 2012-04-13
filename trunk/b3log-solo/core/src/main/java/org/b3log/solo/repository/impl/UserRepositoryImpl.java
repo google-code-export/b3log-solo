@@ -34,20 +34,17 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Nov 10, 2011
  * @since 0.3.1
  */
-public final class UserRepositoryImpl extends AbstractRepository
-        implements UserRepository {
+public final class UserRepositoryImpl extends AbstractRepository implements UserRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(UserRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
 
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query().setPageCount(1);
-        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
-                        email.toLowerCase().trim());
+        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim());
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -61,10 +58,7 @@ public final class UserRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getAdmin() throws RepositoryException {
-        final Query query = new Query().addFilter(User.USER_ROLE,
-                                                  FilterOperator.EQUAL,
-                                                  Role.ADMIN_ROLE).
-                setPageCount(1);
+        final Query query = new Query().addFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE).setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
@@ -76,8 +70,7 @@ public final class UserRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public boolean isAdminEmail(final String email)
-            throws RepositoryException {
+    public boolean isAdminEmail(final String email) throws RepositoryException {
         final JSONObject user = getByEmail(email);
 
         if (null == user) {
@@ -116,8 +109,7 @@ public final class UserRepositoryImpl extends AbstractRepository
         /**
          * Singleton.
          */
-        private static final UserRepositoryImpl SINGLETON =
-                new UserRepositoryImpl(User.USER);
+        private static final UserRepositoryImpl SINGLETON = new UserRepositoryImpl(User.USER);
 
         /**
          * Private default constructor.
