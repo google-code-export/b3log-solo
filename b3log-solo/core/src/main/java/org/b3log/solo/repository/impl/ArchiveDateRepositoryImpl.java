@@ -39,14 +39,16 @@ import org.json.JSONObject;
  * @version 1.0.0.6, Dec 31, 2011
  * @since 0.3.1
  */
-public final class ArchiveDateRepositoryImpl extends AbstractRepository
-        implements ArchiveDateRepository {
+public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final ArchiveDateRepositoryImpl SINGLETON = new ArchiveDateRepositoryImpl(ArchiveDate.ARCHIVE_DATE);
 
     @Override
     public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
@@ -54,10 +56,8 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
         try {
             time = ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime();
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, "Can not parse archive date ["
-                                     + archiveDate + "]", e);
-            throw new RepositoryException("Can not parse archive date ["
-                                          + archiveDate + "]");
+            LOGGER.log(Level.SEVERE, "Can not parse archive date [" + archiveDate + "]", e);
+            throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
 
         final Query query = new Query();
@@ -94,8 +94,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
      * @param archiveDates the specified archive dates
      * @throws RepositoryException repository exception
      */
-    private void removeForUnpublishedArticles(
-            final List<JSONObject> archiveDates) throws RepositoryException {
+    private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) throws RepositoryException {
         final Iterator<JSONObject> iterator = archiveDates.iterator();
         while (iterator.hasNext()) {
             final JSONObject archiveDate = iterator.next();
@@ -111,7 +110,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static ArchiveDateRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -121,26 +120,5 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
      */
     private ArchiveDateRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArchiveDateRepositoryImpl SINGLETON =
-                new ArchiveDateRepositoryImpl(ArchiveDate.ARCHIVE_DATE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

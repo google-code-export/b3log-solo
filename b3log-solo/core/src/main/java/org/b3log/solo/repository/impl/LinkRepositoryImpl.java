@@ -34,20 +34,20 @@ import org.json.JSONObject;
  * @version 1.0.0.5, Nov 10, 2011
  * @since 0.3.1
  */
-public final class LinkRepositoryImpl extends AbstractRepository
-        implements LinkRepository {
+public final class LinkRepositoryImpl extends AbstractRepository implements LinkRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(LinkRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final LinkRepositoryImpl SINGLETON = new LinkRepositoryImpl(Link.LINK);
 
     @Override
-    public JSONObject getByAddress(final String address)
-            throws RepositoryException {
-        final Query query = new Query().addFilter(Link.LINK_ADDRESS,
-                                                  FilterOperator.EQUAL, address).
+    public JSONObject getByAddress(final String address) throws RepositoryException {
+        final Query query = new Query().addFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address).
                 setPageCount(1);
 
         final JSONObject result = get(query);
@@ -98,11 +98,8 @@ public final class LinkRepositoryImpl extends AbstractRepository
         }
 
         final Query query = new Query();
-        query.addFilter(Link.LINK_ORDER,
-                        FilterOperator.LESS_THAN,
-                        link.optInt(Link.LINK_ORDER)).
-                addSort(Link.LINK_ORDER,
-                        SortDirection.DESCENDING);
+        query.addFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER)).
+                addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(1);
 
@@ -124,11 +121,8 @@ public final class LinkRepositoryImpl extends AbstractRepository
         }
 
         final Query query = new Query();
-        query.addFilter(Link.LINK_ORDER,
-                        FilterOperator.GREATER_THAN,
-                        link.optInt(Link.LINK_ORDER)).
-                addSort(Link.LINK_ORDER,
-                        SortDirection.ASCENDING);
+        query.addFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER)).
+                addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(1);
 
@@ -148,7 +142,7 @@ public final class LinkRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static LinkRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -158,26 +152,5 @@ public final class LinkRepositoryImpl extends AbstractRepository
      */
     private LinkRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final LinkRepositoryImpl SINGLETON =
-                new LinkRepositoryImpl(Link.LINK);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

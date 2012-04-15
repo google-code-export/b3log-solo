@@ -27,14 +27,16 @@ import org.b3log.solo.repository.PluginRepository;
  * @version 1.0.0.0, Jul 21, 2011
  * @since 0.3.1
  */
-public final class PluginRepositoryImpl extends AbstractRepository
-        implements PluginRepository {
+public final class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PluginRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final PluginRepositoryImpl SINGLETON = new PluginRepositoryImpl(Plugin.PLUGIN);
 
     /**
      * Gets the {@link PluginRepositoryImpl} singleton.
@@ -42,7 +44,7 @@ public final class PluginRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static PluginRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -52,26 +54,5 @@ public final class PluginRepositoryImpl extends AbstractRepository
      */
     private PluginRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PluginRepositoryImpl SINGLETON =
-                new PluginRepositoryImpl(Plugin.PLUGIN);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

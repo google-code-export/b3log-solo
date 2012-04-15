@@ -40,6 +40,10 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final UserRepositoryImpl SINGLETON = new UserRepositoryImpl(User.USER);
 
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
@@ -86,7 +90,7 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
      * @return the singleton
      */
     public static UserRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -96,25 +100,5 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
      */
     private UserRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final UserRepositoryImpl SINGLETON = new UserRepositoryImpl(User.USER);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

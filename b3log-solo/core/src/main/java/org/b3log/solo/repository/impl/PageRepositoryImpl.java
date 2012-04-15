@@ -36,21 +36,20 @@ import org.json.JSONObject;
  * @version 1.0.0.9, Dec 31, 2011
  * @since 0.3.1
  */
-public final class PageRepositoryImpl extends AbstractRepository
-        implements PageRepository {
+public final class PageRepositoryImpl extends AbstractRepository implements PageRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final PageRepositoryImpl SINGLETON = new PageRepositoryImpl(Page.PAGE);
 
     @Override
-    public JSONObject getByPermalink(final String permalink)
-            throws RepositoryException {
-        final Query query = new Query().addFilter(Page.PAGE_PERMALINK,
-                                                  FilterOperator.EQUAL,
-                                                  permalink).
+    public JSONObject getByPermalink(final String permalink) throws RepositoryException {
+        final Query query = new Query().addFilter(Page.PAGE_PERMALINK, FilterOperator.EQUAL, permalink).
                 setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -64,8 +63,7 @@ public final class PageRepositoryImpl extends AbstractRepository
 
     @Override
     public int getMaxOrder() throws RepositoryException {
-        final Query query = new Query().addSort(Page.PAGE_ORDER,
-                                                SortDirection.DESCENDING).
+        final Query query = new Query().addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).
                 setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -84,13 +82,9 @@ public final class PageRepositoryImpl extends AbstractRepository
             return null;
         }
 
-        final Query query = new Query().addFilter(
-                Page.PAGE_ORDER, FilterOperator.LESS_THAN,
-                page.optInt(Page.PAGE_ORDER)).
-                addSort(Page.PAGE_ORDER,
-                        SortDirection.DESCENDING).
-                setCurrentPageNum(1).
-                setPageSize(1).setPageCount(1);
+        final Query query = new Query().addFilter(Page.PAGE_ORDER, FilterOperator.LESS_THAN, page.optInt(Page.PAGE_ORDER)).
+                addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(1).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -109,11 +103,8 @@ public final class PageRepositoryImpl extends AbstractRepository
             return null;
         }
 
-        final Query query = new Query().addFilter(
-                Page.PAGE_ORDER, FilterOperator.GREATER_THAN,
-                page.optInt(Page.PAGE_ORDER)).
-                addSort(Page.PAGE_ORDER,
-                        SortDirection.ASCENDING).setCurrentPageNum(1).
+        final Query query = new Query().addFilter(Page.PAGE_ORDER, FilterOperator.GREATER_THAN, page.optInt(Page.PAGE_ORDER)).
+                addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setCurrentPageNum(1).
                 setPageSize(1).
                 setPageCount(1);
 
@@ -129,8 +120,7 @@ public final class PageRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getByOrder(final int order) throws RepositoryException {
-        final Query query = new Query().addFilter(Page.PAGE_ORDER,
-                                                  FilterOperator.EQUAL, order).
+        final Query query = new Query().addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order).
                 setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -157,7 +147,7 @@ public final class PageRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static PageRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -167,26 +157,5 @@ public final class PageRepositoryImpl extends AbstractRepository
      */
     private PageRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PageRepositoryImpl SINGLETON =
-                new PageRepositoryImpl(Page.PAGE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }
