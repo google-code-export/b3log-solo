@@ -37,25 +37,24 @@ import org.json.JSONObject;
  * @version 1.0.1.1, Nov 29, 2011
  * @since 0.3.1
  */
-public final class TagRepositoryImpl extends AbstractRepository
-        implements TagRepository {
+public final class TagRepositoryImpl extends AbstractRepository implements TagRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final TagRepositoryImpl SINGLETON = new TagRepositoryImpl(Tag.TAG);
     /**
      * Tag-Article relation repository.
      */
-    private TagArticleRepositoryImpl tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
+    private TagArticleRepositoryImpl tagArticleRepository = TagArticleRepositoryImpl.getInstance();
 
     @Override
-    public JSONObject getByTitle(final String tagTitle)
-            throws RepositoryException {
-        final Query query = new Query().addFilter(Tag.TAG_TITLE,
-                                                  FilterOperator.EQUAL, tagTitle).
+    public JSONObject getByTitle(final String tagTitle) throws RepositoryException {
+        final Query query = new Query().addFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle).
                 setPageCount(1);
 
         final JSONObject result = get(query);
@@ -69,10 +68,8 @@ public final class TagRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public List<JSONObject> getMostUsedTags(final int num)
-            throws RepositoryException {
-        final Query query = new Query().addSort(
-                Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
+    public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
+        final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
                 setCurrentPageNum(1).
                 setPageSize(num).
                 setPageCount(1);
@@ -84,16 +81,12 @@ public final class TagRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
-            throws RepositoryException {
+    public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
+        final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
         for (final JSONObject tagArticleRelation : tagArticleRelations) {
-            final String tagId =
-                    tagArticleRelation.optString(Tag.TAG + "_"
-                                                 + Keys.OBJECT_ID);
+            final String tagId = tagArticleRelation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
             final JSONObject tag = get(tagId);
 
             ret.add(tag);
@@ -108,7 +101,7 @@ public final class TagRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static TagRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -118,26 +111,5 @@ public final class TagRepositoryImpl extends AbstractRepository
      */
     private TagRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final TagRepositoryImpl SINGLETON =
-                new TagRepositoryImpl(Tag.TAG);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

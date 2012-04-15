@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,19 +42,20 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Oct 18, 2011
  * @since 0.3.1
  */
-public final class CommentRepositoryImpl extends AbstractRepository
-        implements CommentRepository {
+public final class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CommentRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final CommentRepositoryImpl SINGLETON = new CommentRepositoryImpl(Comment.COMMENT);
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Recent comments query results cache key.
      */
@@ -63,27 +63,22 @@ public final class CommentRepositoryImpl extends AbstractRepository
 
     @Override
     public int removeComments(final String onId) throws RepositoryException {
-        final List<JSONObject> comments =
-                getComments(onId, 1, Integer.MAX_VALUE);
+        final List<JSONObject> comments = getComments(onId, 1, Integer.MAX_VALUE);
 
         for (final JSONObject comment : comments) {
             final String commentId = comment.optString(Keys.OBJECT_ID);
             remove(commentId);
         }
 
-        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]",
-                   new Object[]{onId, comments.size()});
+        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]", new Object[]{onId, comments.size()});
 
         return comments.size();
     }
 
     @Override
-    public List<JSONObject> getComments(final String onId,
-                                        final int currentPageNum,
-                                        final int pageSize)
+    public List<JSONObject> getComments(final String onId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().addSort(Keys.OBJECT_ID,
-                                                SortDirection.DESCENDING).
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
@@ -98,8 +93,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<JSONObject> getRecentComments(final int num)
-            throws RepositoryException {
+    public List<JSONObject> getRecentComments(final int num) throws RepositoryException {
         if (isCacheEnabled()) {
             final Cache<String, Serializable> cache = getCache();
             final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
@@ -108,12 +102,11 @@ public final class CommentRepositoryImpl extends AbstractRepository
             }
         }
 
-        final Query query = new Query().addSort(Keys.OBJECT_ID,
-                                                SortDirection.DESCENDING).
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(1).
                 setPageSize(num).setPageCount(1);
 
-        List<JSONObject> ret = new ArrayList<JSONObject>();
+        List<JSONObject> ret;
         final JSONObject result = get(query);
 
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -137,17 +130,14 @@ public final class CommentRepositoryImpl extends AbstractRepository
      * @param comments the specified comments
      * @throws RepositoryException repository exception
      */
-    private void removeForUnpublishedArticles(
-            final List<JSONObject> comments) throws RepositoryException {
+    private void removeForUnpublishedArticles(final List<JSONObject> comments) throws RepositoryException {
         LOGGER.finer("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
         while (iterator.hasNext()) {
             final JSONObject comment = iterator.next();
-            final String commentOnType =
-                    comment.optString(Comment.COMMENT_ON_TYPE);
+            final String commentOnType = comment.optString(Comment.COMMENT_ON_TYPE);
             if (Article.ARTICLE.equals(commentOnType)) {
-                final String articleId =
-                        comment.optString(Comment.COMMENT_ON_ID);
+                final String articleId = comment.optString(Comment.COMMENT_ON_ID);
 
                 if (!articleRepository.isPublished(articleId)) {
                     iterator.remove();
@@ -164,7 +154,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static CommentRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -174,26 +164,5 @@ public final class CommentRepositoryImpl extends AbstractRepository
      */
     private CommentRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final CommentRepositoryImpl SINGLETON =
-                new CommentRepositoryImpl(Comment.COMMENT);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

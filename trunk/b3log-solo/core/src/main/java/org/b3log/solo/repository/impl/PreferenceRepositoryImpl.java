@@ -35,6 +35,10 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final PreferenceRepositoryImpl SINGLETON = new PreferenceRepositoryImpl(Preference.PREFERENCE);
 
     /**
      * {@inheritDoc}
@@ -70,7 +74,7 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
      * @return the singleton
      */
     public static PreferenceRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -80,25 +84,5 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
      */
     private PreferenceRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PreferenceRepositoryImpl SINGLETON = new PreferenceRepositoryImpl(Preference.PREFERENCE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

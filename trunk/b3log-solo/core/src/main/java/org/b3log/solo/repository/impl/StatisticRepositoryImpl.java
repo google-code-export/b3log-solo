@@ -27,14 +27,16 @@ import org.b3log.solo.repository.StatisticRepository;
  * @version 1.0.0.1, Jan 12, 2011
  * @since 0.3.1
  */
-public final class StatisticRepositoryImpl extends AbstractRepository
-        implements StatisticRepository {
+public final class StatisticRepositoryImpl extends AbstractRepository implements StatisticRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(StatisticRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatisticRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final StatisticRepositoryImpl SINGLETON = new StatisticRepositoryImpl(Statistic.STATISTIC);
 
     /**
      * Gets the {@link StatisticRepositoryImpl} singleton.
@@ -42,7 +44,7 @@ public final class StatisticRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static StatisticRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -52,26 +54,5 @@ public final class StatisticRepositoryImpl extends AbstractRepository
      */
     private StatisticRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final StatisticRepositoryImpl SINGLETON =
-                new StatisticRepositoryImpl(Statistic.STATISTIC);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

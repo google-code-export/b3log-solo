@@ -34,9 +34,13 @@ import org.json.JSONObject;
  * @version 1.0.0.6, Nov 9, 2011
  * @since 0.3.1
  */
-public final class ArchiveDateArticleRepositoryImpl
-        extends AbstractRepository
-        implements ArchiveDateArticleRepository {
+public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
+
+    /**
+     * Singleton.
+     */
+    private static final ArchiveDateArticleRepositoryImpl SINGLETON =
+            new ArchiveDateArticleRepositoryImpl(ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
 
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
@@ -72,7 +76,7 @@ public final class ArchiveDateArticleRepositoryImpl
      * @return the singleton
      */
     public static ArchiveDateArticleRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -82,27 +86,5 @@ public final class ArchiveDateArticleRepositoryImpl
      */
     private ArchiveDateArticleRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArchiveDateArticleRepositoryImpl SINGLETON =
-                                                              new ArchiveDateArticleRepositoryImpl(ArchiveDate.ARCHIVE_DATE
-                                                                                                   + "_" + Article.ARTICLE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

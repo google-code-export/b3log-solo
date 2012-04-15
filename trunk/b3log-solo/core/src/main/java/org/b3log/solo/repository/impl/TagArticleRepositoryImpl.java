@@ -37,22 +37,20 @@ import org.json.JSONObject;
  * @version 1.0.0.9, Nov 9, 2011
  * @since 0.3.1
  */
-public final class TagArticleRepositoryImpl extends AbstractRepository
-        implements TagArticleRepository {
+public final class TagArticleRepositoryImpl extends AbstractRepository implements TagArticleRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagArticleRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagArticleRepositoryImpl.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final TagArticleRepositoryImpl SINGLETON = new TagArticleRepositoryImpl(Tag.TAG + "_" + Article.ARTICLE);
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
-            throws RepositoryException {
-        final Query query = new Query().addFilter(Article.ARTICLE + "_"
-                                                  + Keys.OBJECT_ID,
-                                                  FilterOperator.EQUAL,
-                                                  articleId).
+    public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
+        final Query query = new Query().addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId).
                 setPageCount(1);
 
         final JSONObject result = get(query);
@@ -62,14 +60,10 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public JSONObject getByTagId(final String tagId,
-                                 final int currentPageNum,
-                                 final int pageSize)
+    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                                  FilterOperator.EQUAL, tagId).
-                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        SortDirection.DESCENDING).
+        final Query query = new Query().addFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId).
+                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
                 setPageCount(1);
@@ -83,7 +77,7 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
      * @return the singleton
      */
     public static TagArticleRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -93,26 +87,5 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
      */
     private TagArticleRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final TagArticleRepositoryImpl SINGLETON =
-                new TagArticleRepositoryImpl(Tag.TAG + "_" + Article.ARTICLE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

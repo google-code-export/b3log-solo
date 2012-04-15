@@ -46,6 +46,10 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleRepositoryImpl.class.getName());
     /**
+     * Singleton.
+     */
+    private static final ArticleRepositoryImpl SINGLETON = new ArticleRepositoryImpl(Article.ARTICLE);
+    /**
      * Random range.
      */
     private static final double RANDOM_RANGE = 0.1D;
@@ -239,7 +243,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
      * @return the singleton
      */
     public static ArticleRepositoryImpl getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
@@ -249,25 +253,5 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
      */
     private ArticleRepositoryImpl(final String name) {
         super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArticleRepositoryImpl SINGLETON = new ArticleRepositoryImpl(Article.ARTICLE);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }
