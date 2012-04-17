@@ -16,6 +16,7 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Dec 31, 2011
+ * @version 1.0.3.8, Apr 17, 2012
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository implements ArticleRepository {
@@ -126,11 +127,12 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
 
     @Override
     public JSONObject getPreviousArticle(final String articleId) throws RepositoryException {
-        final Query query = new Query().addFilter(Keys.OBJECT_ID,
-                                                  FilterOperator.LESS_THAN,
-                                                  articleId).addFilter(
-                Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).
+        final JSONObject currentArticle = get(articleId);
+        final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
+
+        final Query query = new Query().addFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.LESS_THAN, currentArticleCreateDate).
+                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(1).
                 setPageSize(1).setPageCount(1);
 
         final JSONObject result = get(query);
@@ -155,11 +157,12 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
 
     @Override
     public JSONObject getNextArticle(final String articleId) throws RepositoryException {
-        final Query query = new Query().addFilter(Keys.OBJECT_ID,
-                                                  FilterOperator.GREATER_THAN,
-                                                  articleId).addFilter(
-                Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).
+        final JSONObject currentArticle = get(articleId);
+        final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
+
+        final Query query = new Query().addFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.GREATER_THAN, currentArticleCreateDate).
+                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).setCurrentPageNum(1).
                 setPageSize(1).setPageCount(1);
 
         final JSONObject result = get(query);
