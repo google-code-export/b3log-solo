@@ -20,7 +20,7 @@
     Description: Datastore index configurations on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/indexconfig.html
                  for more details.
-    Version: 1.0.1.9, Jan 10, 2012
+    Version: 1.0.2.0, Apr 17, 2012
     Author: Liang Ding
 -->
 <datastore-indexes autoGenerate="true">
@@ -32,12 +32,12 @@
 
     <datastore-index kind="article" ancestor="false" source="manual">
         <property name="articleIsPublished" direction="asc"/>
-        <property name="oId" direction="asc"/>
+        <property name="articleCreateDate" direction="asc"/>
     </datastore-index>
     
     <datastore-index kind="article" ancestor="false" source="manual">
         <property name="articleIsPublished" direction="asc"/>
-        <property name="oId" direction="desc"/>
+        <property name="articleCreateDate" direction="desc"/>
     </datastore-index>
     
     <datastore-index kind="tag_article" ancestor="false" source="auto">
