@@ -24,21 +24,20 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Repositories;
-import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Strings;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Accesses repository via HTTP protocol.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Apr 10, 2012
+ * @version 1.0.0.2, Apr 20, 2012
  */
 // TODO: 88250, moves this class into Latke
 @RequestProcessor
@@ -85,14 +84,14 @@ public final class RepositoryAccessor {
         if (!authSucc(request, jsonObject)) {
             return;
         }
-        
+
         final boolean writable = Repositories.getReposirotiesWritable();
 
         jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
         jsonObject.put(Keys.MSG, "Gets repositories writable[" + writable + "]");
         jsonObject.put("writable", writable);
     }
-    
+
     /**
      * Sets whether repositories is writable.
      * 
@@ -226,7 +225,7 @@ public final class RepositoryAccessor {
         jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
         jsonObject.put(Keys.MSG, "Got data");
 
-        if (badRequest(request, jsonObject) || !authSucc(request, jsonObject)) {
+        if (badGetDataRequest(request, jsonObject) || !authSucc(request, jsonObject)) {
             return;
         }
 
@@ -260,6 +259,81 @@ public final class RepositoryAccessor {
             jsonObject.put(Keys.MSG, "Gets data failed[errorMsg=" + e.getMessage() + "]");
         } finally {
             repository.setCacheEnabled(cacheEnabled);
+        }
+    }
+
+    /**
+     * Puts data to repository.
+     * 
+     * <p>
+     * Query parameters:
+     * /latke/remote/repository/data?<em>userName=xxx&password=xxx&repositoryName=xxx</em><br/>
+     * All parameters are required.
+     * </p>
+     * 
+     * <p>
+     * The post body, for example, "data": {....} or [] // JSON object or JSON array, content of the backup file
+     * </p>
+     * 
+     * <p>
+     * Renders response like the following:
+     * <pre>
+     * {
+     *   "sc":200,
+     *   "msg":"Put data"
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param context the specified HTTP request context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response 
+     */
+    @RequestProcessing(value = "/latke/remote/repository/data", method = HTTPRequestMethod.POST)
+    public void putData(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
+        jsonObject.put(Keys.MSG, "Put data");
+
+        if (badPutDataRequest(request, jsonObject) || !authSucc(request, jsonObject)) {
+            return;
+        }
+
+        final String repositoryName = request.getParameter("repositoryName");
+        Repository repository = Repositories.getRepository(repositoryName);
+        if (null == repository) {
+            repository = new AbstractRepository(repositoryName) {
+            };
+        }
+
+        repository.setCacheEnabled(false);
+
+        final Transaction transaction = repository.beginTransaction();
+        try {
+            final String dataContent = request.getParameter("data").trim();
+            final JSONArray data = new JSONArray(dataContent);
+            for (int i = 0; i < data.length(); i++) {
+                final JSONObject record = data.getJSONObject(i);
+                repository.add(record);
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Gets data failed", e);
+
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            jsonObject.put(Keys.MSG, "Gets data failed[errorMsg=" + e.getMessage() + "]");
+        } finally {
+            repository.setCacheEnabled(true);
         }
     }
 
@@ -322,7 +396,7 @@ public final class RepositoryAccessor {
     }
 
     /**
-     * Determines whether the specified request is bad.
+     * Determines whether the specified get data request is bad.
      * 
      * <p>
      * If the specified request is bad, puts {@link Keys#STATUS_CODE sc} and {@link Keys#MSG msg}
@@ -333,7 +407,7 @@ public final class RepositoryAccessor {
      * @param jsonObject the specified jsonObject
      * @return {@code true} if it is bad, returns {@code false} otherwise
      */
-    private boolean badRequest(final HttpServletRequest request, final JSONObject jsonObject) {
+    private boolean badGetDataRequest(final HttpServletRequest request, final JSONObject jsonObject) {
         final String repositoryName = request.getParameter("repositoryName");
         final String pageNumString = request.getParameter("pageNum");
         final String pageSizeString = request.getParameter("pageSize");
@@ -369,6 +443,44 @@ public final class RepositoryAccessor {
         } catch (final Exception e) {
             jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
             jsonObject.put(Keys.MSG, "Parameter[pageSize] must be a integer");
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether the specified put data request is bad.
+     * 
+     * <p>
+     * If the specified request is bad, puts {@link Keys#STATUS_CODE sc} and {@link Keys#MSG msg}
+     * into the specified json object to render.
+     * </p>
+     * 
+     * @param request the specified request
+     * @param jsonObject the specified jsonObject
+     * @return {@code true} if it is bad, returns {@code false} otherwise
+     */
+    private boolean badPutDataRequest(final HttpServletRequest request, final JSONObject jsonObject) {
+        final String repositoryName = request.getParameter("repositoryName");
+        if (Strings.isEmptyOrNull(repositoryName)) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Requires parameter[repositoryName]");
+            return true;
+        }
+
+        final String dataContent = request.getParameter("data");
+        if (Strings.isEmptyOrNull(dataContent)) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Requires parameter[data]");
+            return true;
+        }
+
+        try {
+            new JSONArray(dataContent);
+        } catch (final JSONException e) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_BAD_REQUEST);
+            jsonObject.put(Keys.MSG, "Parameter[data] must be a JSON object or a JSON array");
             return true;
         }
 
