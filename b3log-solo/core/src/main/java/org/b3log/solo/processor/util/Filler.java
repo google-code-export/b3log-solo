@@ -31,17 +31,19 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.action.AbstractAction;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
+import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Dates;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
@@ -409,7 +411,7 @@ public final class Filler {
     }
 
     /**
-     * Fills article-footer.ftl.
+     * Fills footer.ftl.
      *
      * @param dataModel data model
      * @param preference the specified preference
@@ -427,6 +429,19 @@ public final class Filler {
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+
+            try {
+                final ViewLoadEventData data = new ViewLoadEventData();
+                data.setViewName("footer.ftl");
+                data.setDataModel(dataModel);
+                 EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(AbstractAction.FREEMARKER_ACTION, data));
+                if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
+                    // There is no plugin for this template, fill ${plugins} with blank.
+                    dataModel.put(Plugin.PLUGINS, "");
+                }
+            } catch (final EventException e) {
+                LOGGER.log(Level.WARNING, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+            }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Fills blog footer failed", e);
             throw new ServiceException(e);
@@ -436,7 +451,7 @@ public final class Filler {
     }
 
     /**
-     * Fills article-header.ftl.
+     * Fills header.ftl.
      *
      * @param request the specified HTTP servlet request
      * @param dataModel data model
