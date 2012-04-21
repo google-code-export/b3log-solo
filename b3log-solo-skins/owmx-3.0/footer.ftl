@@ -38,3 +38,4 @@
     common.init();
     common.replaceSideEm($(".side-comment").parent());
 </script>
+${plugins}

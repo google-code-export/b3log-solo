@@ -41,3 +41,4 @@
     common.init();
     common.replaceSideEm($(".side-navi .navi-comments .side-comment"));
 </script>
+${plugins}

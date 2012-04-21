@@ -36,3 +36,4 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
     common.init();
     common.replaceSideEm($("#recentComments li a"));
 </script>
+${plugins}
