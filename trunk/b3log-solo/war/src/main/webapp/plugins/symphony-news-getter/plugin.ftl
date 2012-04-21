@@ -55,7 +55,7 @@
      */
     admin.plugin.add({
         "id": "symphonyNewsGetter",
-        "path": "/main/panel1 ",
+        "path": "/main/panel1",
         "content": $("#symphonyNewsGetterPanel").html()
     });
     
