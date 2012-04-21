@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Jan 7, 2012
+ * @version 1.0.1.6, Apri 21, 2012
  */
 var Util = {
     error: function () {
@@ -114,7 +114,31 @@ var Util = {
             url = "http://" + url;
         }
         return url;
-    }
+    },
+    
+    switchMobile: function (skin) {
+        Cookie.createCookie("btouch_switch_toggle", skin, 365);
+        setTimeout(function () {
+            location.reload();
+        }, 1250); 
+    },
+    
+    setTopBar: function () {
+        var $top = $("#top");
+        if ($top.length === 1) {
+            var $showTop = $("#showTop");
+            
+            $showTop.click(function () {
+                $top.slideDown();
+                $showTop.hide();
+            })
+            
+            $("#hideTop").click(function () {
+                $top.slideUp();
+                $showTop.show();
+            });
+        }
+    } 
 };
 
 var Common = function (tips) {
@@ -136,6 +160,7 @@ $.extend(Common.prototype, {
     init: function () {
         //window.onerror = Util.error;
         Util.killIE();
+        Util.setTopBar();
     },
 
     clearCache: function (all) {
@@ -172,7 +197,7 @@ $.extend(Common.prototype, {
             for (var j = 1; j < commentSplited.length; j++) {
                 var key = commentSplited[j].substr(0, 2);
                 replacedStr += "[" + this.tips["em" + key + "Label"]  +
-                "]" + commentSplited[j].slice(3);
+                    "]" + commentSplited[j].slice(3);
             }
             $comment.html(replacedStr);
         }
@@ -207,3 +232,32 @@ $.extend(Common.prototype, {
         }));
     }
 });
+
+if (!Cookie) {
+    var Cookie = {
+        readCookie: function (name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return "";
+        },
+
+        eraseCookie: function (name) {
+            this.createCookie(name,"",-1);
+        },
+
+        createCookie: function (name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                expires = "; expires="+date.toGMTString();
+            }
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+    };
+}
