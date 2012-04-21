@@ -430,6 +430,7 @@ public final class Filler {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
+            // Activates plugins
             try {
                 final ViewLoadEventData data = new ViewLoadEventData();
                 data.setViewName("footer.ftl");
