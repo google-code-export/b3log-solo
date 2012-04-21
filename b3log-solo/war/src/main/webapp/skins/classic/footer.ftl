@@ -74,3 +74,4 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         common.replaceSideEm($("#recentComments li"));
     })();
 </script>
+${plugins}
