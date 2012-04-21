@@ -77,7 +77,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.9, Feb 1, 2012
+ * @version 1.0.5.0, Apr 21, 2012
  * @since 0.3.1
  */
 public final class Filler {
