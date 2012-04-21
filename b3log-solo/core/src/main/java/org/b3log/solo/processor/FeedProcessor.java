@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Mar 28, 2012
+ * @version 1.1.0.8, Arp 21, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -126,7 +126,7 @@ public final class FeedProcessor {
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
                     addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                     setPageCount(1);
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
@@ -336,7 +336,7 @@ public final class FeedProcessor {
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
                     addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                     setPageCount(1);
 
             final JSONObject articleResult = articleRepository.get(query);
