@@ -9,6 +9,7 @@
         border-bottom: 1px solid #E5E5E5;
         height: 26px;
         line-height: 26px;
+        display: none;
     }
 
     #top a, #top span span {
@@ -30,8 +31,39 @@
         margin: 0px;
         line-height: 26px;
     }
+
+    #showTop {
+        background-image: url("/images/arrow-left.png");
+        cursor: pointer;
+        height: 26px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 26px;
+    }
+
+    #showTop:hover {
+        background-image: url("/images/arrow-left.gif");
+    }
+
+    #top #hideTop {
+        background-image: url("/images/arrow-right.png");
+        height: 26px;
+        margin: 0;
+        padding: 0;
+        width: 26px
+    }
+
+    #top #hideTop:hover {
+        background-image: url("/images/arrow-right.gif");
+        border-radius: 0;    
+    }
+
+
 </style>
+<div id="showTop"></div>
 <div id="top">
+    <a href="javascript:void(0)" id="hideTop"></a>
     <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
         B3log Solo
     </a>
@@ -55,25 +87,7 @@
         <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>
         </#if>
         <#if isMobileRequest>
-        <script type="text/javascript">
-        function switch_delayer() { location.reload();}
-        var Cookie = {
-            createCookie: function (name,value,days) {
-                var expires = "";
-                if (days) {
-                    var date = new Date();
-                    date.setTime(date.getTime()+(days*24*60*60*1000));
-                    expires = "; expires="+date.toGMTString();
-                }
-                document.cookie = name+"="+value+expires+"; path=/";
-            }
-        };
-        function wptouch_switch_confirmation(skin ) {
-                        Cookie.createCookie("btouch_switch_toggle", skin, 365);
-                            setTimeout('switch_delayer()', 1250 ); 
-        }
-        </script>
-        <a href="javascript:void(0)" onclick="wptouch_switch_confirmation('mobile');" title="${mobileLabel}">${mobileLabel}</a>
+        <a href="javascript:void(0)" onclick="Util.switchMobile('mobile');" title="${mobileLabel}">${mobileLabel}</a>
         </#if>
     </span>
     <div class="clear"></div>
