@@ -3,10 +3,10 @@
  * skin i-nove style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Jan 5, 2012
+ * @version 1.0.1.0, Apr 21, 2012
 */
-body {
-    background: url("../images/bg.jpg") repeat-x scroll 0 20px #BEC3C6;
+.bg {
+    background: url("../images/bg.jpg") repeat-x scroll 0 0 #BEC3C6;
     color: #555555;
 }
 a, a:link, a:active, a:visited {
