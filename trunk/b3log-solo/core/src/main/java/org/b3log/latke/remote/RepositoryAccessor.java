@@ -372,23 +372,12 @@ public final class RepositoryAccessor {
             return false;
         }
 
-        final Repository repository = Repositories.getRepository(User.USER);
-        if (null == repository) {
-            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            jsonObject.put(Keys.MSG, "Not found user repository, please init your application first");
-
-            return false;
-        }
+        final String repositoryAccessorUserName = Latkes.getRemoteProperty("repositoryAccessor.userName");
+        final String repositoryAccessorPassword = Latkes.getRemoteProperty("repositoryAccessor.password");
 
         try {
-            final JSONObject result = repository.get(new Query());
-            final JSONArray users = result.getJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < users.length(); i++) {
-                final JSONObject user = users.getJSONObject(i);
-                if (userName.equals(user.getString(User.USER_NAME)) && password.equals(user.getString(User.USER_PASSWORD))) {
-                    return true;
-                }
+            if (userName.equals(repositoryAccessorUserName) && password.equals(repositoryAccessorPassword)) {
+                return true;
             }
 
             jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
