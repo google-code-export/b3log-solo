@@ -24,7 +24,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -375,18 +374,12 @@ public final class RepositoryAccessor {
         final String repositoryAccessorUserName = Latkes.getRemoteProperty("repositoryAccessor.userName");
         final String repositoryAccessorPassword = Latkes.getRemoteProperty("repositoryAccessor.password");
 
-        try {
-            if (userName.equals(repositoryAccessorUserName) && password.equals(repositoryAccessorPassword)) {
-                return true;
-            }
-
-            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
-            jsonObject.put(Keys.MSG, "Auth failed[userName=" + userName + ", password=" + password + "]");
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            jsonObject.put(Keys.MSG, "Can not auth request[errorMsg=" + e.getMessage() + "]");
+        if (userName.equals(repositoryAccessorUserName) && password.equals(repositoryAccessorPassword)) {
+            return true;
         }
+
+        jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+        jsonObject.put(Keys.MSG, "Auth failed[userName=" + userName + ", password=" + password + "]");
 
         return false;
     }
