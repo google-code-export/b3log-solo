@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Pagination;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Accesses repository via HTTP protocol.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Apr 20, 2012
+ * @version 1.0.0.3, Apr 22, 2012
  */
 // TODO: 88250, moves this class into Latke
 @RequestProcessor
@@ -350,6 +351,12 @@ public final class RepositoryAccessor {
      * @return {@code true} if authenticated, returns {@code false} otherwise
      */
     private boolean authSucc(final HttpServletRequest request, final JSONObject jsonObject) {
+        if (!Latkes.isRemoteEnabled()) {
+            jsonObject.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_IMPLEMENTED);
+            jsonObject.put(Keys.MSG, "Latke remote interfaces are disabled");
+            return false;
+        }
+
         final String userName = request.getParameter("userName");
         final String password = request.getParameter("password");
 
