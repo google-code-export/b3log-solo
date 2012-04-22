@@ -12,3 +12,7 @@
  * 标签-文章列表
   * Atom: /tag-articles-feed.do?oId=${tagId}
   * RSS: /tag-articles-rss.do?oId=${tagId}
+
+在“偏好设定”-> “参数设置”中可配置“订阅输出模式”为：
+ * 摘要
+ * 全文
