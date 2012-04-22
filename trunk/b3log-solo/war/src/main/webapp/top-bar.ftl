@@ -33,37 +33,36 @@
     }
 
     #showTop {
-        background-image: url("/images/arrow-left.png");
+        background-image: url("/images/arrow-right.png");
         cursor: pointer;
         height: 26px;
-        left: 0;
+        right: 0;
         position: absolute;
         top: 0;
         width: 26px;
+        border-radius: 0 0 0 15px;
     }
 
     #showTop:hover {
-        background-image: url("/images/arrow-left.gif");
+        background-image: url("/images/arrow-right.gif");
     }
 
     #top #hideTop {
-        background-image: url("/images/arrow-right.png");
+        background-image: url("/images/arrow-left.png");
         height: 26px;
         margin: 0;
         padding: 0;
-        width: 26px
+        width: 26px;
+        border: 0;
     }
 
     #top #hideTop:hover {
-        background-image: url("/images/arrow-right.gif");
+        background-image: url("/images/arrow-left.gif");
         border-radius: 0;    
     }
-
-
 </style>
 <div id="showTop"></div>
 <div id="top">
-    <a href="javascript:void(0)" id="hideTop"></a>
     <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
         B3log Solo
     </a>
@@ -89,6 +88,7 @@
         <#if isMobileRequest>
         <a href="javascript:void(0)" onclick="Util.switchMobile('mobile');" title="${mobileLabel}">${mobileLabel}</a>
         </#if>
+        <a href="javascript:void(0)" id="hideTop"></a>
     </span>
     <div class="clear"></div>
 </div>
