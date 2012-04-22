@@ -77,7 +77,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.0, Apr 21, 2012
+ * @version 1.0.5.1, Apr 22, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -435,7 +435,7 @@ public final class Filler {
                 final ViewLoadEventData data = new ViewLoadEventData();
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
-                 EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(AbstractAction.FREEMARKER_ACTION, data));
+                EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(AbstractAction.FREEMARKER_ACTION, data));
                 if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");
@@ -464,9 +464,8 @@ public final class Filler {
         Stopwatchs.start("Fill Header");
         try {
             LOGGER.fine("Filling header....");
-            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
-                          preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
+            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, 
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
