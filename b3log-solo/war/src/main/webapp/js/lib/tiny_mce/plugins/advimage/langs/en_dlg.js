@@ -41,5 +41,6 @@ align_texttop:"Text top",
 align_textbottom:"Text bottom",
 align_left:"Left",
 align_right:"Right",
-image_list:"Image list"
+image_list:"Image list",
+isFancybox: "Use Img View"
 });

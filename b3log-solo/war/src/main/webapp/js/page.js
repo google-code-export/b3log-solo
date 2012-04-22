@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Mar 9, 2012
+ * @version 1.0.2.6, Apr 22, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -305,7 +305,6 @@ $.extend(Page.prototype, {
             document.write("<script src=\"/js/lib/google-code-prettify/prettify.js\"><\/script>");
             
             // load function
-            
             $(document).ready(function () {
                 prettyPrint();
             });
