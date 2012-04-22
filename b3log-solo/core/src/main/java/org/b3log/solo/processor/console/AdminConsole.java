@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -38,6 +39,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
@@ -49,7 +52,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Mar 29, 2012
+ * @version 1.0.0.0, Apr 22, 2012
  * @since 0.4.1
  */
 @RequestProcessor
@@ -109,9 +112,19 @@ public final class AdminConsole {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
-        } catch (final ServiceException e) {
+            dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
+            dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+            dataModel.put(Preference.BLOG_SUBTITLE, preference.getString(Preference.BLOG_SUBTITLE));
+            dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+            dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+            dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
+            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                          preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+            dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
+
+            filler.fillMinified(dataModel);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Admin index render failed", e);
         }
 
