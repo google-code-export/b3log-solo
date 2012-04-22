@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.0.3, Feb 9, 2012
+    Version: 2.0.0.4, Apr 23, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -32,13 +32,20 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
             <exclusions>
+                <!-- Javamail for local -->
                 <exclusion>
                     <artifactId>mail</artifactId>
                     <groupId>javax.mail</groupId>
                 </exclusion>
+                <!-- Freemarker for local-->
                 <exclusion>
                     <artifactId>freemarker</artifactId>
                     <groupId>org.freemarker</groupId>
+                </exclusion>
+                <!-- Database Connections Pool for local-->
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
                 </exclusion>
                 <!-- Container provided -->
                 <exclusion>
@@ -101,7 +108,9 @@
                     <port>${gae.dev_sever.port}</port>
                     <passIn>true</passIn>
                     <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
-                    <jvmFlags><jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag></jvmFlags>
+                    <jvmFlags>
+                        <jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
+                    </jvmFlags>
                 </configuration>
             </plugin>
             
