@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Mar 1, 2012
+ * @version 1.0.2.4, Apr 23, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -468,8 +468,8 @@ admin.article = {
                 plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
 
                 // Theme options
-                theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,advhr,spellchecker,fullscreen,syntaxhl",
-                theme_advanced_buttons2 : "formatselect,forecolor,|,pastetext,pasteword,cleanup,charmap,|,outdent,indent,undo,redo,|,image,iespell,media,code,preview,",
+                theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,link,unlink,image,iespell,media,syntaxhl,",
+                theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,advhr,blockquote,charmap,|,spellchecker,cleanup,fullscreen,code,preview,",
                 theme_advanced_buttons3 : "",
                 theme_advanced_toolbar_location : "top",
                 theme_advanced_toolbar_align : "left",
