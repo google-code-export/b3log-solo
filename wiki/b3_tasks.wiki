@@ -30,5 +30,6 @@
 ||23||Latke <font color='grey'>Local</font> Task Queue Service ||Y||2012-03-01||2012-03-15||2012-03-15||<font color='green'>已完成</font>||只是进行了简化实现||
 ||24||Index 修改与发布||V||2012-03-25||2011-04-25||2011-04-08||<font color='green'>已完成</font>|| ||
 ||25||Latke <font color='grey'>Local</font> Cron Service ||D||2012-04-05||2011-04-25||2011-04-10||<font color='green'>已完成</font>|| ||
-||26||Latke 数据备份/恢复服务端||D||2012-04-09||2011-04-25|| ||<font color='blue'>80%</font>|| ||
-||27||Latke 数据备份/恢复客户端||D||2012-04-05||2011-04-25|| ||<font color='blue'>40%</font>|| ||
+||26||Latke 数据备份/恢复服务端||D||2012-04-09||2011-04-25||2011-04-25||<font color='green'>已完成</font>|| ||
+||27||Latke 数据备份/恢复客户端||D||2012-04-05||2011-04-25||2011-04-25||<font color='green'>已完成</font>|| ||
+||28||Solo 0.4.1 发布||D||2012-04-26||2012-04-26||2012-04-26||<font color='green'>已完成</font>|| ||
