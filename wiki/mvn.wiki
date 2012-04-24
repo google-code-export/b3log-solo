@@ -2,6 +2,4 @@
 
 ===Maven2+===
  * Maven 2.2.1: http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-2.2.1-bin.tar.gz
-
-_注意_：
-Maven 3 可能不能成功支持，如果你有兴趣，请帮我们折腾，然后提 Issue 吧 ;-)
+ * Maven 3.0.4：http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-3.0.4-bin.tar.gz
