@@ -10,23 +10,25 @@
     </head>
     <body>
         ${topBarReplacement}
-        <div class="wrapper">
-            <div class="content">
-                <#include "header.ftl">
-                <div class="body">
-                    <div class="left main">
-                        <div class="error-panel">
-                            <h1 class="error-title">${notFoundLabel}</h1>
-                            <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+        <div class="bg">
+            <div class="wrapper">
+                <div class="content">
+                    <#include "header.ftl">
+                    <div class="body">
+                        <div class="left main">
+                            <div class="error-panel">
+                                <h1 class="error-title">${notFoundLabel}</h1>
+                                <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+                            </div>
                         </div>
+                        <div class="right">
+                            <#include "side.ftl">
+                        </div>
+                        <div class="clear"></div>
                     </div>
-                    <div class="right">
-                        <#include "side.ftl">
+                    <div class="footer">
+                        <#include "footer.ftl">
                     </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="footer">
-                    <#include "footer.ftl">
                 </div>
             </div>
         </div>
