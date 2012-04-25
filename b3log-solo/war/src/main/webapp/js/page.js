@@ -340,7 +340,7 @@ $.extend(Page.prototype, {
         // cookie
         var $top = $("#top #admin");
         if ($top.length === 1) {
-            if ($top.find("a").length > 1) {
+            if ($top.find("a").length > 2) {
                 if (Cookie.readCookie("commentName") === "") {
                     Cookie.createCookie("commentName", $top.find("span").text(), 365); 
                 }
