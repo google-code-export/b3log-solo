@@ -3,7 +3,7 @@
 
 ==加入到 B3log 团队==
 ===1、写在前面的话===
-  欢迎您打开这一页面，想必您有兴趣加入到 B3log 团队。B3log Solo 是一个基于 Google App Engine Java 版的博客程序，B3log 首页：[http://www.b3log.org]， B3log 社区：[http://symphony.b3log.org] ——自由、平等、奔放。
+  欢迎您打开这一页面，想必您有兴趣加入到 B3log 团队。B3log Solo 是一个 Java 开源博客程序，可部署在 GAE 或标准 Servlet 容器中。B3log 首页：[http://www.b3log.org]， B3log 社区：[http://symphony.b3log.org] ——自由、平等、奔放。
 ===2、加入我们您需要什么===
 <ul>
 <li>关于责任</li>
