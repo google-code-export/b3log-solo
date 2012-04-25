@@ -18,8 +18,10 @@
 {{{
 appcfg.cmd update ${b3log-solo-x.x.x}
 }}}
+<li>部署完毕后请在[http://appengine.google.com GAE 管理控制台] Verssions 一栏中确认启用刚部署的版本为默认版本</li>
+<li>在浏览器中访问：[http://${application-id}.appspot.com] 进行初始化</li>
 </ol>
-等部署完毕后，在浏览器中访问：[http://${application-id}.appspot.com] 进行初始化。
+
 
 _备注_：
  * `${application-id}` 为你自己的 GAE 应用 ID
