@@ -74,9 +74,9 @@
                             </div><div class="clear"></div>
                             </#if>                            
                             <#if previousArticlePermalink??>
-                             <div class="right">
-                                 <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
-                             </div>
+                            <div class="right">
+                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                            </div>
                             </#if>
                             <div class="clear"></div>
                         </div>
@@ -95,9 +95,12 @@
         </div>
         <#include "footer.ftl">
         <@comment_script oId=article.oId>
-        page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
+        <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();
-         page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticlesLabel}</h4>');
+        </#if>
+        <#if 0 != relevantArticlesDisplayCount>
+        page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticlesLabel}</h4>');
+        </#if>
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
