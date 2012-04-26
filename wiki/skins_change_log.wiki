@@ -1,6 +1,7 @@
 #summary 版本更新
 === ver 0.4.5 ===
  # article.ftl
+如果“随机阅读显示数目”/“相关阅读显示数目”/“站外相关阅读显示数目”配置为 0 时，不发加载请求：
 {{{
 <#if 0 != randomArticlesDisplayCount>
     page.loadRandomArticles();
@@ -14,7 +15,7 @@
 }}}
 === ver 0.4.1 ===
  # footer.ftl
-  底部添加 ${plugins}
+ 底部添加 ${plugins}
  # page.ftl 
 {{{
 <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
