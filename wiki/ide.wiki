@@ -5,6 +5,8 @@
 
 [https://code.google.com/p/b3log-solo/source/browse 在线浏览代码]
 
+下面是对 GAE 版的运行方式进行介绍。标准 Servlet 容器版本的运行方式与通常项目一样，这里不再描述。
+
 ====`NetBeans`_（<font color='red'>推荐的</font>）_====
  * `NetBeans`:  http://netbeans.org/downloads/index.html
 =====配置=====
