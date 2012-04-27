@@ -1,6 +1,6 @@
 ﻿ * 用户手册
    * 安装
-     * [pre_installation 前提准备]
+     * [pre_installation GAE 版前提准备]
      * [local_test GAE 本地测试]
      * [deploy_gae 部署至 GAE]
      * [deploy_local_tomcat 部署至 Tomcat]
