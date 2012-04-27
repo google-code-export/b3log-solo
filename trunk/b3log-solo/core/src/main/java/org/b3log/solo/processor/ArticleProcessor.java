@@ -34,6 +34,7 @@ import org.b3log.solo.model.Preference;
 import org.jsoup.Jsoup;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -69,7 +70,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.8, Mar 1, 2012
+ * @version 1.1.1.9, Apr 26, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -120,24 +121,34 @@ public final class ArticleProcessor {
      * Gets random articles with the specified context.
      * 
      * @param context the specified context
+     * @throws Exception exception 
      */
     @RequestProcessing(value = "/get-random-articles.do", method = HTTPRequestMethod.POST)
-    public void getRandomArticles(final HTTPRequestContext context) {
-        Stopwatchs.start("Get Random Articles");
-
+    public void getRandomArticles(final HTTPRequestContext context) throws Exception {
         final JSONObject jsonObject = new JSONObject();
 
-        try {
-            final List<JSONObject> randomArticles = getRandomArticles(preferenceQueryService.getPreference());
+        final JSONObject preference = preferenceQueryService.getPreference();
+        final int displayCnt = preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
 
-            jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
+        if (0 == displayCnt) {
+            jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
 
             final JSONRenderer renderer = new JSONRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return;
         }
+
+        Stopwatchs.start("Get Random Articles");
+        final List<JSONObject> randomArticles = getRandomArticles(preference);
+
+        jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+
 
         Stopwatchs.end();
     }
@@ -153,6 +164,22 @@ public final class ArticleProcessor {
     @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
     public void getRelevantArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        final JSONObject jsonObject = new JSONObject();
+
+        final JSONObject preference = preferenceQueryService.getPreference();
+
+        final int displayCnt = preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+        if (0 == displayCnt) {
+            jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
+
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            renderer.setJSONObject(jsonObject);
+
+            return;
+        }
+
+
         Stopwatchs.start("Get Relevant Articles");
         final String requestURI = request.getRequestURI();
 
@@ -170,18 +197,12 @@ public final class ArticleProcessor {
             return;
         }
 
-        final List<JSONObject> relevantArticles = articleQueryService.getRelevantArticles(article, preferenceQueryService.getPreference());
-        final JSONObject jsonObject = new JSONObject();
+        final List<JSONObject> relevantArticles = articleQueryService.getRelevantArticles(article, preference);
+        jsonObject.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
-        try {
-            jsonObject.put(Common.RELEVANT_ARTICLES, relevantArticles);
-
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-            renderer.setJSONObject(jsonObject);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
 
         Stopwatchs.end();
     }
