@@ -64,6 +64,8 @@
                     <suffix>.min</suffix> <!-- Common#MINI_POSTFIX_VALUE -->
                     <adminJSs>
                         <param>admin.js</param>
+                        <param>editor.js</param>
+                        <param>editorTinyMCE.js</param>
                         <param>tablePaginate.js</param>
                         <param>article.js</param>
                         <param>comment.js</param>

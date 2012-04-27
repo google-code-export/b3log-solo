@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Apr 23, 2012
+ * @version 1.0.1.5, Apr 27, 2012
  */
 
 /* page-list 相关操作 */
@@ -75,33 +75,12 @@ admin.pageList = {
         if (language === "zh") {
             language = "zh-cn";
         }
-        try {
-            tinyMCE.init({
-                // General options
-                language: language,
-                mode : "exact",
-                elements : "pageContent",
-                theme : "advanced",
-                plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
-
-                // Theme options
-                 theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,link,unlink,image,iespell,media,syntaxhl,",
-                theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,advhr,blockquote,charmap,|,spellchecker,cleanup,fullscreen,code,preview,",
-                theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_location : "top",
-                theme_advanced_toolbar_align : "left",
-                theme_advanced_resizing : true,
-                theme_advanced_statusbar_location : "bottom",
-                
-                extended_valid_elements: "link[type|rel|href|charset],pre[name|class],iframe[src|width|height|name|align]",
-
-                valid_children : "+body[style]",
-                relative_urls: false,
-                remove_script_host: false
-            });
-        } catch (e) {
-            $("#tipMsg").text("TinyMCE load fail");
-        }
+        
+        admin.editorPage = new Editor({
+            language: language,
+            kind: "all",
+            id: "pageContent"
+        });
         
         // select type
         $(".fn-type").click(function () {
@@ -217,11 +196,8 @@ admin.pageList = {
                     $($(".fn-type").get(0)).click();
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
-                try {
-                    tinyMCE.get('pageContent').setContent(result.page.pageContent);
-                } catch (e) {
-                    $("#pageContent").val(result.page.pageContent);
-                }
+
+                admin.editorPage.setContent(result.page.pageContent);
                 
                 $("#loadMsg").text("");
             }
@@ -276,12 +252,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = "";
-            try {
-                pageContent = tinyMCE.get('pageContent').getContent();
-            } catch (e) {
-                pageContent = $("#pageContent").val();
-            }
+            var pageContent = admin.editorPage.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -318,16 +289,8 @@ admin.pageList = {
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
                     
-                    try {
-                        if (tinyMCE.get("pageContent")) {
-                            tinyMCE.get('pageContent').setContent("");
-                        } else {
-                            $("#pageContent").val("");
-                        }
-                    } catch (e) {
-                        $("#pageContent").val("");
-                    }
-                   
+                    admin.editorPage.setContent("");
+                    
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount++;
@@ -353,12 +316,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = "";
-            try {
-                pageContent = tinyMCE.get('pageContent').getContent();
-            } catch (e) {
-                pageContent = $("#pageContent").val();
-            }
+            var pageContent = admin.editorPage.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -398,11 +356,8 @@ admin.pageList = {
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
-                    try {
-                        tinyMCE.get('pageContent').setContent("");
-                    } catch (e) {
-                        $("#pageContent").val("");
-                    }
+
+                    admin.editorPage.setContent("");
                     
                     $("#loadMsg").text("");
                 }

@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.6, Nov 16, 2011
+ * @version 1.0.1.7, Apr 28, 2012
  */
 
 var Admin = function () {
@@ -99,22 +99,18 @@ $.extend(Admin.prototype, {
         
         // 离开编辑器时进行提示
         try {
-            if (tinyMCE) {
-                if (tinyMCE.get('articleContent')) {
-                    // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
-                    if (tab !== "article" && admin.article.isConfirm &&
-                        tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
-                        if (!confirm(Label.editorLeaveLabel)) {
-                            window.location.hash = "#article/article";
-                            return;
-                        }
-                    }
-                    // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
-                    if (tab === "article" && admin.article.isConfirm &&
-                        tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
-                        return;
-                    }
+            // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
+            if (tab !== "article" && admin.article.isConfirm &&
+                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                if (!confirm(Label.editorLeaveLabel)) {
+                    window.location.hash = "#article/article";
+                    return;
                 }
+            }
+            // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
+            if (tab === "article" && admin.article.isConfirm &&
+                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                return;
             }
         } catch (e) {
             var $articleContent =  $('#articleContent');
@@ -135,7 +131,7 @@ $.extend(Admin.prototype, {
         }
         
         // clear article 
-        if (tab !== "article") {
+        if (tab !== "article" && admin.editorArticle.setContent) {
             admin.article.clear();
         }
         admin.article.isConfirm = true;

@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Apr 23, 2012
+ * @version 1.0.2.5, Apr 27, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -57,21 +57,9 @@ admin.article = {
                 // set default value for article.
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
-                try {
-                    if (tinyMCE.get('articleContent')) {
-                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                    } else {
-                        $("#articleContent").val(result.article.articleContent);
-                    }
-                    if (tinyMCE.get('abstract')) {
-                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
-                    } else {
-                        $("#abstract").val(result.article.articleAbstract);
-                    }
-                } catch (e) {
-                    $("#articleContent").val(result.article.articleContent);
-                    $("#abstract").val(result.article.articleAbstract);
-                }
+                
+                admin.editorArticle.setContent(result.article.articleContent);
+                admin.editorAbstract.setContent(result.article.articleAbstract);
 
                 var tags = result.article.articleTags,
                 tagsString = '';
@@ -150,16 +138,8 @@ admin.article = {
                 }
             });
 
-            var articleContent = "",
-            articleAbstract = "";
-            
-            try {
-                articleContent = tinyMCE.get('articleContent').getContent();
-                articleAbstract =  tinyMCE.get('abstract').getContent();
-            } catch (e) {
-                articleContent = $("#articleContent").val();
-                articleAbstract =  $("#abstract").val();
-            }
+            var articleContent = admin.editorArticle.getContent(),
+            articleAbstract = admin.editorAbstract.getContent();
             
             var requestJSONObject = {
                 "article": {
@@ -228,16 +208,8 @@ admin.article = {
                 }
             });
             
-            var articleContent = "",
-            articleAbstract = "";
-            
-            try {
-                articleContent = tinyMCE.get('articleContent').getContent();
-                articleAbstract =  tinyMCE.get('abstract').getContent();
-            } catch (e) {
-                articleContent = $("#articleContent").val();
-                articleAbstract =  $("#abstract").val();
-            }
+            var articleContent = admin.editorArticle.getContent(),
+            articleAbstract = admin.editorAbstract.getContent();
             
             var requestJSONObject = {
                 "article": {
@@ -330,21 +302,8 @@ admin.article = {
         
         $("#title").val("");
         
-        try {
-            if (tinyMCE.get("articleContent")) {
-                tinyMCE.get('articleContent').setContent("");
-            } else {
-                $("#articleContent").val("");
-            }
-            if (tinyMCE.get('abstract')) {
-                tinyMCE.get('abstract').setContent("");
-            } else {
-                $("#abstract").val("");
-            }
-        } catch (e) {
-            $("#articleContent").val("");
-            $("#abstract").val("");
-        }
+        admin.editorArticle.setContent("");
+        admin.editorAbstract.setContent("");
         
         // reset tag
         $("#tag").val("");
@@ -366,9 +325,7 @@ admin.article = {
      * 初始化发布文章页面
      */
     init: function (fun) {
-        //admin.article.clear();
         // Inits Signs.
-        
         $.ajax({
             url: "/console/signs/",
             type: "GET",
@@ -458,69 +415,26 @@ admin.article = {
         if (language === "zh") {
             language = "zh-cn";
         }
-        try {
-            tinyMCE.init({
-                // General options
-                language: language,
-                mode : "exact",
-                elements : "articleContent",
-                theme : "advanced",
-                plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
-
-                // Theme options
-                theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,link,unlink,image,iespell,media,syntaxhl,",
-                theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,advhr,blockquote,charmap,|,spellchecker,cleanup,fullscreen,code,preview,",
-                theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_location : "top",
-                theme_advanced_toolbar_align : "left",
-                theme_advanced_resizing : true,
-                theme_advanced_statusbar_location : "bottom",
-                
-                extended_valid_elements: "link[type|rel|href|charset],pre[name|class],iframe[src|width|height|name|align]",
-
-                valid_children : "+body[style]",
-                relative_urls: false,
-                remove_script_host: false,
-                oninit : function () {
-                    if (typeof(fun) === "function") {
-                        fun();
-                    }
-                }
-            });
-            
-            tinyMCE.init({
-                // General options
-                language: language,
-                mode : "exact",
-                elements : "abstract",
-                theme : "advanced",
-
-                // Theme options
-                theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist",
-                theme_advanced_buttons2 : "",
-                theme_advanced_buttons3 : "",
-                theme_advanced_toolbar_location : "top",
-                theme_advanced_toolbar_align : "left",
-                
-                valid_children : "+body[style]"
-            });
-            
-        } catch (e) {
-            $("#tipMsg").text("TinyMCE load fail");
-        }
+        
+        admin.editorArticle = new Editor({
+            language: language, 
+            id: "articleContent",
+            kind: "all",
+            fun: fun
+        });
+        
+        admin.editorAbstract = new Editor({
+            language: language, 
+            id: "abstract",
+            kind: "simple"
+        });
     },
     
     /*
      * 验证发布文章字段的合法性
      */
     validate: function () {
-        var articleContent = "";
-            
-        try {
-            articleContent = tinyMCE.get('articleContent').getContent();
-        } catch (e) {
-            articleContent = $("#articleContent").val();
-        }
+        var articleContent = admin.editorArticle.getContent();
         
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
@@ -587,13 +501,7 @@ admin.article = {
      */
     prePost:function () {
         $("#loadMsg").text(Label.loadingLabel);
-        var articleContent = "";
-            
-        try {
-            articleContent = tinyMCE.get('articleContent').getContent();
-        } catch (e) {
-            articleContent = $("#articleContent").val();
-        }
+        var articleContent = admin.editorArticle.getContent();
         
         if (window.location.hash === "#article/article" && 
             articleContent.replace(/\s/g, '') !== "") {
