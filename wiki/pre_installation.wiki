@@ -1,4 +1,4 @@
-#summary 前提准备
+#summary GAE 版前提准备
 
 ===前提准备===
  # 正确安装 [http://www.oracle.com/technetwork/java/javase/downloads/index.html JDK]（推荐使用 [http://www.oracle.com/technetwork/java/javase/downloads/jdk-6u30-download-1377139.html Sun JDK 6 Update 30]），在命令行下可以使用 `javac` 命令
