@@ -136,6 +136,8 @@
         <script type="text/javascript" src="/js/common.js" charset="utf-8"></script>
         <#if "" == miniPostfix>
         <script type="text/javascript" src="/js/admin/admin.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/editor.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/editorTinyMCE.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/tablePaginate.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/article.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/comment.js" charset="utf-8"></script>

@@ -1,5 +1,6 @@
 <script type="text/javascript">
     var Label = {
+        "editor": "tinyMCE",
         "userRole": "${userRole}",
         "PAGE_SIZE": "${articleListDisplayCount}",
         "WINDOW_SIZE": "${articleListPaginationWindowSize}",
