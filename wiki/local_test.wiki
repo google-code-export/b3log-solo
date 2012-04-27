@@ -1,6 +1,6 @@
-#summary 本地测试
+#summary GAE 本地测试
 
-===本地测试===
+===GAE 本地测试===
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
 {{{
 dev_appserver.cmd ${b3log-solo-x.x.x}
