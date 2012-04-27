@@ -3,7 +3,7 @@
      * [pre_installation 前提准备]
      * [local_test 本地测试]
      * [deploy_gae 部署至 GAE]
-     * [deploy_local_tomcat 部署至本地容器（Tomcat）]
+     * [deploy_local_tomcat 部署至 Tomcat]
    * 配置
      * [basic_configuration 基本配置]
      * [upgrade 升级]
