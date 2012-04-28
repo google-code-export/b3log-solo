@@ -153,7 +153,7 @@
                     <td>
                         <select id="editorType">
                             <option value="tinyMCE">${tinyMCELabel}</option>
-                            <option value="WMD">${WMDLabel}</option>
+                            <option value="CodeMirror-Markdown">${CodeMirrorMarkdownLabel}</option>
                         </select>
                     </td>
                 </tr>
