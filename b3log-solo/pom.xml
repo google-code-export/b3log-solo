@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.1.5, Apr 25, 2012
+    Version: 2.0.1.6, Apr 28, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -29,20 +29,15 @@
     <properties>
         <servlet.version>2.5</servlet.version>
         <org.b3log.solo.version>0.4.1</org.b3log.solo.version>
-        
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
-        <org.b3log.latke-gae.version>
-            0.5.0-SNAPSHOT
-        </org.b3log.latke-gae.version>
-        <org.b3log.latke-repository-sleepycat.version>
-            0.5.0-SNAPSHOT
-        </org.b3log.latke-repository-sleepycat.version>
-        <org.b3log.latke-repository-mysql.version>
-            0.5.0-SNAPSHOT
-        </org.b3log.latke-repository-mysql.version>
+        <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
+        <org.b3log.latke-repository-sleepycat.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-sleepycat.version>
+        <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
+        <gae.version>1.6.4.1</gae.version>
+        
         <freemarker-gae.version>2.3.18</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
-        <gae.version>1.6.4.1</gae.version>
+        <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -92,19 +87,6 @@
             <name>Liyuan Li</name>
             <email>LLY219@gmail.com</email>
             <url>http://vanessa.b3log.org</url>
-            <roles>
-                <role>Committer</role>
-            </roles>
-            <organization>B3log</organization>
-            <organizationUrl>http://www.b3log.org</organizationUrl>
-            <timezone>+8</timezone>
-        </developer>
-
-        <developer>
-            <id>lamb52gao@gmail.com</id>
-            <name>Yang Gao</name>
-            <email>lamb52gao@gmail.com</email>
-            <url>http://lamb.b3log.org</url>
             <roles>
                 <role>Committer</role>
             </roles>
@@ -231,6 +213,12 @@
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker-gae</artifactId>
                 <version>${freemarker-gae.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.tautua.markdownpapers</groupId>
+                <artifactId>markdownpapers-core</artifactId>
+                <version>${markdownpapers-core.version}</version>
             </dependency>
 
         </dependencies>
