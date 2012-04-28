@@ -297,6 +297,17 @@ button.selected {
 /* end comments */
 
 /* start article */
+.wmd-preivew {
+    padding-left: 20px;
+    width: 47%;
+    word-wrap: break-word;
+    float: left;
+}
+
+.wmd-preivew-main {
+    margin: 10 px 0 0 10px;
+}
+
 button#submitArticle {
     background: none repeat scroll 0 0 #D54121;
     box-shadow: 0 0 0 1px #FFFFFF inset, 0 1px 1px rgba(0, 0, 0, 0.1);

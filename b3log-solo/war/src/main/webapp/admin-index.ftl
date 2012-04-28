@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -9,7 +9,9 @@
         <link rel="icon" type="image/png" href="/favicon.png" />
         <script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}" charset="utf-8"></script>
+        <!-- TODO: 按需加载 -->
         <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/lib/wmd/wmd.js" charset="utf-8"></script>
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
@@ -137,7 +139,9 @@
         <#if "" == miniPostfix>
         <script type="text/javascript" src="/js/admin/admin.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/editor.js" charset="utf-8"></script>
+        <!-- TODO: 按需加载 -->
         <script type="text/javascript" src="/js/admin/editorTinyMCE.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/editorWMD.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/tablePaginate.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/article.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/comment.js" charset="utf-8"></script>
