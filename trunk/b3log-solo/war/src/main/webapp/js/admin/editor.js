@@ -39,7 +39,7 @@ var Editor = function (conf) {
         id: "",
         language: ""
     };
-    conf.type = Label.editor;
+    conf.type = Label.editorType;
     this.conf = conf;
     this._init();
 };
