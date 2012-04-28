@@ -1,6 +1,6 @@
 <script type="text/javascript">
     var Label = {
-        "editorType": "${editorType}",
+        "editorType": "CodeMirror",
         "userRole": "${userRole}",
         "PAGE_SIZE": "${articleListDisplayCount}",
         "WINDOW_SIZE": "${articleListPaginationWindowSize}",

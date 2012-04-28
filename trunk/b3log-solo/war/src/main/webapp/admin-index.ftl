@@ -6,12 +6,14 @@
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link type="text/css" rel="stylesheet" href="/css/default-admin${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <!-- TODO: 按需加载 -->
+        <link type="text/css" rel="stylesheet" href="/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}" charset="utf-8"></script>
         <!-- TODO: 按需加载 -->
         <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js" charset="utf-8"></script>
-        <script type="text/javascript" src="/js/lib/wmd/wmd.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/lib/CodeMirror/codemirror.js" charset="utf-8"></script>
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
@@ -141,7 +143,7 @@
         <script type="text/javascript" src="/js/admin/editor.js" charset="utf-8"></script>
         <!-- TODO: 按需加载 -->
         <script type="text/javascript" src="/js/admin/editorTinyMCE.js" charset="utf-8"></script>
-        <script type="text/javascript" src="/js/admin/editorWMD.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/admin/editorCodeMirror.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/tablePaginate.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/article.js" charset="utf-8"></script>
         <script type="text/javascript" src="/js/admin/comment.js" charset="utf-8"></script>

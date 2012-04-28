@@ -420,13 +420,15 @@ admin.article = {
             language: language, 
             id: "articleContent",
             kind: "all",
-            fun: fun
+            fun: fun,
+            height: 500
         });
         
         admin.editorAbstract = new Editor({
             language: language, 
             id: "abstract",
-            kind: "simple"
+            kind: "simple",
+            height: 200
         });
     },
     
