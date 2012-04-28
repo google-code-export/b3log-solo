@@ -45,7 +45,6 @@
         </dependency>
         
         <!-- BEGIN GAE related dependencies just for test -->
-        
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-gae</artifactId>
@@ -78,8 +77,12 @@
             <version>${gae.version}</version>
             <scope>test</scope>
         </dependency>
-        
         <!-- END GAE related dependencies just for test -->
+        
+        <dependency>
+            <groupId>org.tautua.markdownpapers</groupId>
+            <artifactId>markdownpapers-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
