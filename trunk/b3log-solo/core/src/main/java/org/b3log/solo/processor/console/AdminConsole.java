@@ -122,6 +122,8 @@ public final class AdminConsole {
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
+            // TODO: 88250, 045 upgrader
+            dataModel.put("editorType", "WMD"); // markdown
 
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
