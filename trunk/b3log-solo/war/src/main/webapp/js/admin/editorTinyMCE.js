@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 /**
- * @fileoverview editor
+ * @fileoverview tinyMCE editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Apr 25, 2012
- */
-
-/*
- * @description Create Editor can use all editor. 
- *                e.g: TinyMCE, wnd 
- * @constructor
+ * @version 1.0.0.2, Apr 28, 2012
  */
 admin.editors.tinyMCE = {
     /*

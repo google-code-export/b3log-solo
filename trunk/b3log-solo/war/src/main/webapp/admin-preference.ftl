@@ -148,6 +148,17 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="editorType">${editType1Label}</label>
+                    </th>
+                    <td>
+                        <select id="editorType">
+                            <option value="tinyMCE">${tinyMCELabel}</option>
+                            <option value="WMD">${WMDLabel}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <label for="articleListDisplay">${articleListDisplay1Label}</label>
                     </th>
                     <td>

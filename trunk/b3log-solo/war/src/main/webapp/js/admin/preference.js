@@ -24,6 +24,7 @@
 /* preference 相关操作 */
 admin.preference = {
     locale: "",
+    editorType: "",
     
     /*
      * 初始化
@@ -74,6 +75,7 @@ admin.preference = {
                 preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
 
                 admin.preference.locale = preference.localeString;
+                admin.preference.editorType = preference.editorType;
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);
@@ -111,6 +113,8 @@ admin.preference = {
                         
                 // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
+                // Editor Type
+                $("#editorType").val(preference.editorType);
                 // Feed output mode
                 $("#feedOutputMode").val(preference.feedOutputMode);
                 // Commentable
@@ -168,6 +172,7 @@ admin.preference = {
                 "keyOfSolo": $("#keyOfSolo").val(),
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
                 "articleListStyle": $("#articleListDisplay").val(),
+                "editorType": $("#editorType").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
                 "commentable": $("#commentable").prop("checked")
             }
@@ -185,7 +190,8 @@ admin.preference = {
                     return;
                 }
                     
-                if ($("#localeString").val() !== admin.preference.locale) {
+                if ($("#localeString").val() !== admin.preference.locale ||
+                    $("#editorType").val() !== admin.preference.editorType) {
                     window.location.reload();
                 }
                         
