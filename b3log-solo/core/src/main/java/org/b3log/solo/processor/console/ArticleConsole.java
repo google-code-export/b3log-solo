@@ -455,7 +455,7 @@ public final class ArticleConsole {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSignId": "" // optional,
+     *         "articleSignId": "" // optional
      *         "articleCommentable": boolean,
      *         "articleViewPwd": ""
      *     }
@@ -535,7 +535,7 @@ public final class ArticleConsole {
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "postToCommunity": boolean,
-     *         "articleSignId": "" // optional,
+     *         "articleSignId": "" // optional
      *         "articleCommentable": boolean,
      *         "articleViewPwd": ""
      *     }
