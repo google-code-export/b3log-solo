@@ -67,6 +67,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
@@ -77,7 +78,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.1, Apr 22, 2012
+ * @version 1.0.5.2, Apr 29, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -126,6 +127,10 @@ public final class Filler {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * {@code true} for published.
      */
@@ -465,7 +470,7 @@ public final class Filler {
         try {
             LOGGER.fine("Filling header....");
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, 
+            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
@@ -612,8 +617,8 @@ public final class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified 
-     * author and preference.
+     * Sets some extra properties into the specified article with the specified author and preference, performs content and 
+     * abstract editor processing.
      * 
      * <p>
      * Article ext properties:
@@ -653,15 +658,18 @@ public final class Filler {
             } else if ("titleAndContent".equals(articleListStyle)) {
                 article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
             }
-        } catch (final JSONException e) {
+
+
+            articleQueryService.markdown(article);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified 
-     * preference.
+     * Sets some extra properties into the specified article with the specified preference, performs content and 
+     * abstract editor processing.
      * 
      * <p>
      * Article ext properties:
@@ -700,7 +708,9 @@ public final class Filler {
             } else if ("titleAndContent".equals(articleListStyle)) {
                 article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
             }
-        } catch (final JSONException e) {
+
+            articleQueryService.markdown(article);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
             throw new ServiceException(e);
         }

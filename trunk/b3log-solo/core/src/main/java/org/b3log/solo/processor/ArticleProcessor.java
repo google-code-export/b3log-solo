@@ -286,7 +286,7 @@ public final class ArticleProcessor {
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            JSONObject result = userQueryService.getUser(authorId);
+            final JSONObject result = userQueryService.getUser(authorId);
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -299,8 +299,7 @@ public final class ArticleProcessor {
             request.setAttribute(CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
-            result = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
-            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -522,6 +521,8 @@ public final class ArticleProcessor {
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
+            
+            articleQueryService.markdown(article);
 
             final JSONObject author = articleUtils.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
@@ -670,8 +671,7 @@ public final class ArticleProcessor {
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
-        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                      "0".equals(previousPageNum) ? "" : previousPageNum);
+        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
         } else {

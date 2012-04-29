@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Feb 25, 2012
+ * @version 1.0.1.5, Apr 29, 2012
  * @since 0.3.1
  */
 public final class Article {
@@ -108,6 +108,12 @@ public final class Article {
      * Key of view password.
      */
     public static final String ARTICLE_VIEW_PWD = "articleViewPwd";
+    /**
+     * Key of article editor type.
+     * 
+     * @see Preference#EDITOR_TYPE
+     */
+    public static final String ARTICLE_EDITOR_TYPE = "articleEditorType";
 
     /**
      * Private default constructor.

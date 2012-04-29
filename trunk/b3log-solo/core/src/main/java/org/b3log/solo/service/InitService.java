@@ -58,7 +58,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Feb 28, 2012
+ * @version 1.0.1.0, Apr 29, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -238,6 +238,7 @@ public final class InitService {
         article.put(Article.ARTICLE_AUTHOR_EMAIL, preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
 
         final String articleId = addHelloWorldArticle(article);
 
@@ -455,7 +456,7 @@ public final class InitService {
         LOGGER.info("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate =
-                         new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+                new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
         replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
 
         preferenceRepository.add(replyNotificationTemplate);
@@ -470,8 +471,7 @@ public final class InitService {
      * @return preference
      * @throws Exception exception
      */
-    private JSONObject initPreference(final JSONObject requestJSONObject)
-            throws Exception {
+    private JSONObject initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.info("Initializing preference....");
 
         final JSONObject ret = new JSONObject();
@@ -505,6 +505,7 @@ public final class InitService {
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
         ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
         ret.put(FEED_OUTPUT_MODE, Default.DEFAULT_FEED_OUTPUT_MODE);
+        ret.put(EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
@@ -577,7 +578,7 @@ public final class InitService {
          * Singleton.
          */
         private static final InitService SINGLETON =
-                                         new InitService();
+                new InitService();
 
         /**
          * Private default constructor.

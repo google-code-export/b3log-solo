@@ -30,7 +30,7 @@ import org.json.JSONObject;
 public interface ArticleRepository extends Repository {
 
     /**
-     * Gets the published articles by the specified author email, current page number and page size.
+     * Gets published articles by the specified author email, current page number and page size.
      *
      * @param authorEmail the specified author email
      * @param currentPageNum the specified current page number, MUST greater then {@code 0}

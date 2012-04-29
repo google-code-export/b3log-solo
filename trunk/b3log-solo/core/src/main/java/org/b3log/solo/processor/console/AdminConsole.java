@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Apr 22, 2012
+ * @version 1.0.0.1, Apr 29, 2012
  * @since 0.4.1
  */
 @RequestProcessor
@@ -122,8 +122,7 @@ public final class AdminConsole {
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
-            // TODO: 88250, 045 upgrader
-            dataModel.put("editorType", "WMD"); // markdown
+            dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
 
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
@@ -151,8 +150,7 @@ public final class AdminConsole {
                                 "/admin-main.do",
                                 "/admin-about.do"},
                        method = HTTPRequestMethod.GET)
-    public void showAdminFunctions(final HttpServletRequest request,
-                                   final HTTPRequestContext context) {
+    public void showAdminFunctions(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
 
@@ -178,8 +176,7 @@ public final class AdminConsole {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin-preference.do", method = HTTPRequestMethod.GET)
-    public void showAdminPreferenceFunction(final HttpServletRequest request,
-                                            final HTTPRequestContext context) {
+    public void showAdminPreferenceFunction(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
 

@@ -18,7 +18,6 @@ package org.b3log.solo.service;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import java.util.Set;
-import org.json.JSONException;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
 import java.util.Date;
@@ -40,6 +39,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -54,12 +54,13 @@ import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import static org.b3log.solo.model.Article.*;
+import org.b3log.solo.util.Markdowns;
 
 /**
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 12, 2011
+ * @version 1.0.0.8, Apr 29, 2012
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -117,6 +118,10 @@ public final class ArticleQueryService {
 
     /**
      * Gets an article by the specified article id.
+     * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
      *
      * @param articleId the specified article id
      * @return for example,
@@ -136,6 +141,7 @@ public final class ArticleQueryService {
      *         }, ....],
      *         "articleSignId": "",
      *         "articleViewPwd": "",
+     *         "articleEditorType": "",
      *         "signs": [{
      *             "oId": "",
      *             "signHTML": ""
@@ -157,6 +163,7 @@ public final class ArticleQueryService {
 
             ret.put(ARTICLE, article);
 
+            // Tags
             final JSONArray tags = new JSONArray();
             final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
             for (int i = 0; i < tagArticleRelations.size(); i++) {
@@ -168,6 +175,7 @@ public final class ArticleQueryService {
             }
             article.put(ARTICLE_TAGS_REF, tags);
 
+            // Signs
             final JSONObject preference = preferenceQueryService.getPreference();
             article.put(Sign.SIGNS, new JSONArray(preference.getString(Preference.SIGNS)));
 
@@ -180,7 +188,7 @@ public final class ArticleQueryService {
             article.remove(ARTICLE_VIEW_COUNT);
             article.remove(ARTICLE_RANDOM_DOUBLE);
 
-            LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
+            LOGGER.log(Level.FINER, "Got an article[id={0}]", articleId);
 
             return ret;
         } catch (final Exception e) {
@@ -225,7 +233,8 @@ public final class ArticleQueryService {
      *         "articlePutTop": boolean,
      *         "articleIsPublished": boolean // optional, default is true
      *         "articleSignId": "",
-     *         "articleViewPwd": ""
+     *         "articleViewPwd": "",
+     *         "articleEditorType": ""
      *      }, ....]
      * }
      * </pre>, order by article update date and sticky(put top).
@@ -273,6 +282,9 @@ public final class ArticleQueryService {
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
+                // Markdown to HTML for content and abstract
+                markdown(article);
+
                 // Remove unused properties
                 article.remove(ARTICLE_CONTENT);
                 article.remove(ARTICLE_ABSTRACT);
@@ -295,8 +307,7 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets a list of published articles with the specified tag id, current page
-     * number and page size.
+     * Gets a list of published articles with the specified tag id, current page number and page size.
      * 
      * @param tagId the specified tag id
      * @param currentPageNum the specified current page number
@@ -335,22 +346,21 @@ public final class ArticleQueryService {
                     continue;
                 }
 
+                // Markdown to HTML for content and abstract
+                markdown(article);
+
                 ret.add(article);
             }
 
             return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId + "] failed", e);
-            throw new ServiceException(e);
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId + "] failed", e);
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Gets a list of published articles with the specified archive date id, 
-     * current page number and page size.
+     * Gets a list of published articles with the specified archive date id, current page number and page size.
      * 
      * @param archiveDateId the specified archive date id
      * @param currentPageNum the specified current page number
@@ -390,14 +400,14 @@ public final class ArticleQueryService {
                     continue;
                 }
 
+                // Markdown to HTML for content and abstract
+                markdown(article);
+
                 ret.add(article);
             }
 
             return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets articles by archive date[id=" + archiveDateId + "] failed", e);
-            throw new ServiceException(e);
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets articles by archive date[id=" + archiveDateId + "] failed", e);
             throw new ServiceException(e);
         }
@@ -405,6 +415,10 @@ public final class ArticleQueryService {
 
     /**
      * Gets a list of articles randomly with the specified fetch size.
+     * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
      *
      * @param fetchSize the specified fetch size
      * @return a list of json objects, its size less or equal to the specified
@@ -426,6 +440,10 @@ public final class ArticleQueryService {
 
     /**
      * Gets the relevant published articles of the specified article.
+     * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
      *
      * @param article the specified article
      * @param preference the specified preference
@@ -513,8 +531,11 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets the next article(by create date) by the specified article
-     * id.
+     * Gets the next article(by create date) by the specified article id.
+     * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
      *
      * @param articleId the specified article id
      * @return the previous article,
@@ -537,8 +558,11 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets the previous article(by create date) by the specified article
-     * id.
+     * Gets the previous article(by create date) by the specified article id.
+     * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
      *
      * @param articleId the specified article id
      * @return the previous article,
@@ -563,6 +587,10 @@ public final class ArticleQueryService {
     /**
      * Gets an article by the specified article id.
      * 
+     * <p>
+     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
+     * 
      * @param articleId the specified article id
      * @return an article, returns {@code null} if not found
      * @throws ServiceException service exception 
@@ -577,29 +605,31 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets <em>published</em> articles by the specified author email, current page 
-     * number and page size.
+     * Gets <em>published</em> articles by the specified author email, current page number and page size.
      * 
      * @param authorEmail the specified author email
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return query result, for example
-     * <pre>
-     * {
-     *     "pagination": {
-     *       "paginationPageCount": 88250
-     *     },
-     *     "rslts": [{
-     *         // article keys....
-     *     }, ....]
-     * }
-     * </pre>
+     * @return a list of articles, returns an empty list if not found
      * @throws ServiceException service exception 
      */
-    public JSONObject getArticlesByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
+    public List<JSONObject> getArticlesByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
             throws ServiceException {
         try {
-            return articleRepository.getByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final JSONObject result = articleRepository.getByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+
+                // Markdown to HTML for content and abstract
+                markdown(article);
+
+                ret.add(article);
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets articles by author email failed[authorEmail="
                                      + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
@@ -630,11 +660,55 @@ public final class ArticleQueryService {
                 return null;
             }
 
+            // Markdown to HTML for content and abstract
+            if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+                Stopwatchs.start("Get Article Content [Markdown]");
+                final String content = article.optString(ARTICLE_CONTENT);
+                article.put(ARTICLE_CONTENT, Markdowns.toHTML(content));
+                Stopwatchs.end();
+            }
+
             return article.getString(Article.ARTICLE_CONTENT);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets article content failed[articleId=" + articleId + "]", e);
 
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Converts the content and abstract for each of the specified articles to HTML if that is saved by Markdown editor.
+     * 
+     * @param articles the specified articles
+     * @throws Exception exception 
+     */
+    public void markdowns(final List<JSONObject> articles) throws Exception {
+        for (final JSONObject article : articles) {
+            markdown(article);
+        }
+    }
+
+    /**
+     * Converts the content and abstract for the specified article to HTML if it is saved by Markdown editor.
+     * 
+     * @param article the specified article
+     * @throws Exception exception 
+     */
+    public void markdown(final JSONObject article) throws Exception {
+        if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+            Stopwatchs.start("Markdown Article[id=" + article.optString(Keys.OBJECT_ID) + "]");
+
+            Stopwatchs.start("Content");
+            final String content = article.optString(ARTICLE_CONTENT);
+            article.put(ARTICLE_CONTENT, Markdowns.toHTML(content));
+            Stopwatchs.end();
+
+            Stopwatchs.start("Abstract");
+            final String abstractContent = article.optString(ARTICLE_ABSTRACT);
+            article.put(ARTICLE_ABSTRACT, Markdowns.toHTML(abstractContent));
+            Stopwatchs.end();
+
+            Stopwatchs.end();
         }
     }
 

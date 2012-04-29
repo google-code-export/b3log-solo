@@ -27,6 +27,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
@@ -70,6 +71,10 @@ public final class PageMgmtService {
      * Permalink utilities.
      */
     private Permalinks permalinks = Permalinks.getInstance();
+    /**
+     * Preference query service.
+     */
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
      * Updates a page by the specified request json object.
@@ -101,8 +106,7 @@ public final class PageMgmtService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
-            newPage.put(Page.PAGE_COMMENT_COUNT,
-                        oldPage.getInt(Page.PAGE_COMMENT_COUNT));
+            newPage.put(Page.PAGE_COMMENT_COUNT, oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
@@ -143,11 +147,15 @@ public final class PageMgmtService {
                 processCommentsForPageUpdate(newPage);
             }
 
+            // Editor type
+            final JSONObject preference = preferenceQueryService.getPreference();
+            page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+
             pageRepository.update(pageId, newPage);
 
             transaction.commit();
 
-            LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
+            LOGGER.log(Level.FINER, "Updated a page[id={0}]", pageId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -167,7 +175,7 @@ public final class PageMgmtService {
     public void removePage(final String pageId) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
         try {
-            LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
+            LOGGER.log(Level.FINER, "Removing a page[id={0}]", pageId);
             removePageComments(pageId);
             pageRepository.remove(pageId);
 
@@ -242,6 +250,10 @@ public final class PageMgmtService {
             // TODO: SBC case
             page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
 
+            // Editor type
+            final JSONObject preference = preferenceQueryService.getPreference();
+            page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+
             final String ret = pageRepository.add(page);
 
             transaction.commit();
@@ -272,8 +284,7 @@ public final class PageMgmtService {
      * @param direction the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
-    public void changeOrder(final String pageId, final String direction)
-            throws ServiceException {
+    public void changeOrder(final String pageId, final String direction) throws ServiceException {
 
         final Transaction transaction = pageRepository.beginTransaction();
         try {
@@ -292,9 +303,7 @@ public final class PageMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARNING,
-                           "Cant not find the target page of source page[order={0}]",
-                           srcPageOrder);
+                LOGGER.log(Level.WARNING, "Cant not find the target page of source page[order={0}]", srcPageOrder);
                 return;
             }
 
@@ -303,8 +312,7 @@ public final class PageMgmtService {
             targetPage.put(Page.PAGE_ORDER, srcPageOrder);
 
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
-            pageRepository.update(targetPage.getString(Keys.OBJECT_ID),
-                                  targetPage);
+            pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -338,16 +346,14 @@ public final class PageMgmtService {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    private void removePageComments(final String pageId)
-            throws JSONException, RepositoryException {
+    private void removePageComments(final String pageId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(pageId);
 
         int blogCommentCount = statistics.getBlogCommentCount();
         blogCommentCount -= removedCnt;
         statistics.setBlogCommentCount(blogCommentCount);
 
-        int publishedBlogCommentCount =
-                statistics.getPublishedBlogCommentCount();
+        int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
         publishedBlogCommentCount -= removedCnt;
         statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
@@ -358,27 +364,22 @@ public final class PageMgmtService {
      * @param page the specified page to update
      * @throws Exception exception 
      */
-    public void processCommentsForPageUpdate(final JSONObject page)
-            throws Exception {
+    public void processCommentsForPageUpdate(final JSONObject page) throws Exception {
         final String pageId = page.getString(Keys.OBJECT_ID);
 
-        final List<JSONObject> comments =
-                commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
+        final List<JSONObject> comments = commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
 
         for (final JSONObject comment : comments) {
             final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL =
-                    Comments.getCommentSharpURLForPage(page, commentId);
+            final String sharpURL = Comments.getCommentSharpURLForPage(page, commentId);
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
             // TODO: 88250, 041, original comment id and name default value
-            if (Strings.isEmptyOrNull(
-                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
-            if (Strings.isEmptyOrNull(
-                    comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
@@ -403,8 +404,7 @@ public final class PageMgmtService {
         /**
          * Singleton.
          */
-        private static final PageMgmtService SINGLETON =
-                new PageMgmtService();
+        private static final PageMgmtService SINGLETON = new PageMgmtService();
 
         /**
          * Private default constructor.
