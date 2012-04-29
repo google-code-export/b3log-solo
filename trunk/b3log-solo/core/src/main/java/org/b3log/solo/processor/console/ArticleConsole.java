@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +33,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
@@ -42,7 +45,7 @@ import org.json.JSONObject;
  * Article console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 6, 2011
+ * @version 1.0.0.2, Apr 30, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -76,6 +79,58 @@ public final class ArticleConsole {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Gets an article by the specified request json object.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "html": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
+    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = new JSONObject();
+        renderer.setJSONObject(result);
+
+        result.put(Keys.STATUS_CODE, true);
+
+        final String markdownText = request.getParameter("markdownText");
+        if (Strings.isEmptyOrNull(markdownText)) {
+            result.put("html", "");
+
+            return;
+        }
+
+        if (!userUtils.isLoggedIn(request, response)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        try {
+            final String html = Markdowns.toHTML(markdownText);
+
+            result.put("html", html);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
 
     /**
      * Gets an article by the specified request json object.
