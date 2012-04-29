@@ -17,7 +17,7 @@
  * @fileoverview markdowm CodeMirror editor 
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Apr 28, 2012
+ * @version 1.0.0.2, Apr 29, 2012
  */
 admin.editors.CodeMirror = {
     /*
@@ -27,24 +27,75 @@ admin.editors.CodeMirror = {
      * @param conf.id 编辑器渲染元素 id
      * @param conf.fun 编辑器首次加载完成后回调函数
      * @param conf.height 编辑器高度
+     * @param conf.codeMirrorLanguage codeMirror 编辑器当前解析语言
      * @returns {obj} editor
      */
     init: function (conf) {
+        // load preview and clear
+        var previewHTML = "<div class='clear'></div>";
+        if (conf.kind !== "simple") {
+            previewHTML = "<div class='markdown-preivew'>" + 
+            "<div class='markdown-help ico-close'></div>" + 
+            "<div class='clear'></div>" + 
+            "<div class='markdown-preview-main none'></div>" +
+            "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
+            "</div>" + 
+        "<div class='clear'></div>";
+        } 
+        $("#" + conf.id).after(previewHTML);
+        
+        // init codemirror
         this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
             mode: 'markdown',
             lineNumbers: true,
             matchBrackets: true,
             theme: "default",
-            height: conf.height
+            height: conf.height,
+            onUpdate: function () {
+                var timeout = setTimeout(function () {
+                    console.log(1)
+                }, 5000);
+                clearTimeout(timeout);
+            }
         });
         
+        // 该编辑器是否第一次触发 preivew 事件
+        this[conf.id + "IsFirst"] = false;
+        
+        // after render, call back function
         if (typeof(conf.fun) === "function") {
             conf.fun();
         }
-        
+      
         if (conf.kind === "simple") {
+            // 摘要不需要 preview，设置其宽度
             $("#" + conf.id).next().width("99%");
-        } 
+        } else {
+            // 有 preview 时，绑定 preview 事件
+            this._bindEvent(conf.id);
+        }
+        
+    },
+    
+    /*
+    * @description 绑定编辑器 preview 事件
+    * @param {string} id 编辑器id
+    */
+    _bindEvent: function (id) {
+        var $preview = $("#" + id).parent().find(".markdown-preivew");
+        
+        $preview.find(".markdown-help").click(function () {
+            var $it = $(this);
+            if ($it.hasClass("ico-help")) {
+                $it.removeClass("ico-help").addClass("ico-close");
+                $preview.find(".markdown-preview-main").hide();
+                $preview.find(".markdown-help-main").show();
+            } else {
+                $it.addClass("ico-help").removeClass("ico-close");
+                $preview.find(".markdown-preview-main").show();
+                $preview.find(".markdown-help-main").hide();
+            }
+        });
     },
     
     /*

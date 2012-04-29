@@ -17,7 +17,7 @@
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Apr 25, 2012
+ * @version 1.0.0.3, Apr 29, 2012
  */
 
 admin.editors = {};
@@ -27,10 +27,11 @@ admin.editors = {};
  *                e.g: TinyMCE, wnd 
  * @constructor
  * @param conf 编辑器初始化参数
- * @param conf.kind 编辑器类型
+ * @param conf.kind 编辑器类型 simple/all
  * @param conf.id 编辑器渲染元素 id
- * @param conf.language 编辑器使用预研
+ * @param conf.language 编辑器使用语言
  * @param conf.type 编辑器种类
+ * @param conf.codeMirrorLanguage codeMirror 编辑器当前解析语言
  */
 var Editor = function (conf) {
     this._defaults = {
@@ -57,6 +58,12 @@ $.extend(Editor.prototype, {
      */
     init: function () {
         var conf = this.conf;
+        
+        var types = conf.type.split("-");
+        if (types.length === 2) {
+            conf.codeMirrorLanguage = types[1];
+            conf.type = types[0];
+        }
         admin.editors[conf.type].init(conf);
     },
     

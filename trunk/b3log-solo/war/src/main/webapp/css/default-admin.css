@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.0, Mar 1, 2011
+ * @version 1.0.3.2, Apr 29, 2012
 */
 
 /* start resset */
@@ -297,15 +297,46 @@ button.selected {
 /* end comments */
 
 /* start article */
-.wmd-preivew {
-    padding-left: 20px;
+.markdown-preivew {
+    background-color: #FFFFFF;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    float: left;
+    height: 500px;
+    margin-left: 20px;
+    overflow: auto;
     width: 47%;
     word-wrap: break-word;
-    float: left;
 }
 
-.wmd-preivew-main {
-    margin: 10 px 0 0 10px;
+.markdown-help.ico-help, .markdown-help.ico-close {
+    background-image: url("/images/icon.png");
+    background-position: -16px -47px;
+    cursor: pointer;
+    float: right;
+    height: 17px;
+    width: 17px;
+}
+
+.markdown-help.ico-close {
+    height: 16px;
+    background-position: -48px -16px;
+}
+
+.markdown-help-main {
+    color: #21759B;
+    padding: 0 12px
+}
+
+.markdown-help-main dt {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 6px 0;
+}
+
+.markdown-help-main dd {
+    margin-left: 12px;
 }
 
 button#submitArticle {
