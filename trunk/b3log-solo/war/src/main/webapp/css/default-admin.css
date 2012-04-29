@@ -324,7 +324,7 @@ button.selected {
     background-position: -48px -16px;
 }
 
-.markdown-help-main {
+.markdown-help-main, .markdown-preview-main {
     color: #21759B;
     padding: 0 12px
 }

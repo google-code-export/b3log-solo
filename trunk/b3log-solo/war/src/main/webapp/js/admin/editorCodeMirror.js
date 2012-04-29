@@ -31,6 +31,8 @@ admin.editors.CodeMirror = {
      * @returns {obj} editor
      */
     init: function (conf) {
+        var it = this;
+        
         // load preview and clear
         var previewHTML = "<div class='clear'></div>";
         if (conf.kind !== "simple") {
@@ -45,28 +47,62 @@ admin.editors.CodeMirror = {
         $("#" + conf.id).after(previewHTML);
         
         // init codemirror
-        this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
-            mode: 'markdown',
-            lineNumbers: true,
-            matchBrackets: true,
-            theme: "default",
-            height: conf.height,
-            onUpdate: function () {
-                var timeout = setTimeout(function () {
-                    console.log(1)
-                }, 5000);
-                clearTimeout(timeout);
-            }
-        });
+        if (conf.kind === "simple") {
+            this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
+                mode: 'markdown',
+                lineNumbers: true,
+                matchBrackets: true,
+                theme: "default",
+                height: conf.height
+            });
+        } else {
+            // preview 执行队列
+            it[conf.id + "Timers"] = [];
         
-        // 该编辑器是否第一次触发 preivew 事件
-        this[conf.id + "IsFirst"] = false;
-        
-        // after render, call back function
-        if (typeof(conf.fun) === "function") {
-            conf.fun();
-        }
+            // 该编辑器是否第一次触发 preivew 事件
+            it[conf.id + "IsFirst"] = true;
+            
+            var $preview = $("#" + conf.id).parent().find(".markdown-preivew"),
+            $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
+            this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
+                mode: 'markdown',
+                lineNumbers: true,
+                matchBrackets: true,
+                theme: "default",
+                height: conf.height,
+                onUpdate: function () {
+                    var update = function () {
+                        if (it[conf.id].getValue() === "") {
+                            return;
+                        }
+                        
+                        $.ajax({
+                            url: "/console/markdown/2html",
+                            type: "POST",
+                            cache: false,
+                            data: "markdownText=" + it[conf.id].getValue(),
+                            success: function(data, textStatus) {
+                                if (data.sc) {
+                                    if (it[conf.id + "IsFirst"] && $help.hasClass("ico-close")) {
+                                        $help.click();
+                                    } 
+                                    it[conf.id + "IsFirst"] = false;
+                                    
+                                    $preview.find(".markdown-preview-main").html(data.html);
+                                } else {
+                                    $preview.find(".markdown-preview-main").html(data.msg);
+                                }
+                            }
+                        });
+                    }
+                    
+                    it[conf.id + "Timers"].push(update);
+                }
+            });
       
+            this._callPreview(conf.id, it[conf.id + "Timers"]);
+        }
+        
         if (conf.kind === "simple") {
             // 摘要不需要 preview，设置其宽度
             $("#" + conf.id).next().width("99%");
@@ -75,6 +111,23 @@ admin.editors.CodeMirror = {
             this._bindEvent(conf.id);
         }
         
+        // after render, call back function
+        if (typeof(conf.fun) === "function") {
+            conf.fun();
+        }
+    },
+    
+    /*
+     * @description 当有更新时每隔3秒 preview
+     * @param {string} id 编辑器 id
+     */
+    _callPreview: function (id) {
+        setInterval(function () {
+            var timers = admin.editors.CodeMirror[id + "Timers"];
+            $(document).queue("myAnimation", [timers[timers.length - 1]]);
+            $(document).dequeue("myAnimation");
+            admin.editors.CodeMirror[id + "Timers"] = [];
+        }, 2000);
     },
     
     /*
