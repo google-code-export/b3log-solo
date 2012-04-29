@@ -40,13 +40,16 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.service.PageQueryService;
+import org.b3log.solo.util.Markdowns;
 
 /**
  * Page processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Dec 14, 2011
+ * @version 1.1.0.2, Apr 29, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -55,8 +58,7 @@ public final class PageProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageProcessor.class.getName());
     /**
      * Language service.
      */
@@ -73,6 +75,10 @@ public final class PageProcessor {
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    /**
+     * Page query service.
+     */
+    private PageQueryService pageQueryService = PageQueryService.getInstance();
 
     /**
      * Shows page with the specified context.
@@ -121,6 +127,16 @@ public final class PageProcessor {
             dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
+
+            // Markdown
+            if ("CodeMirror-Markdown".equals(page.optString(Page.PAGE_EDITOR_TYPE))) {
+                Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
+
+                final String content = page.optString(Page.PAGE_CONTENT);
+                page.put(Page.PAGE_CONTENT, Markdowns.toHTML(content));
+
+                Stopwatchs.end();
+            }
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);

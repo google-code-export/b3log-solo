@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Mar 28, 2012
+ * @version 1.1.0.5, Apr 29, 2012
  * @since 0.3.1
  */
 public final class Preference {
@@ -171,6 +171,18 @@ public final class Preference {
      * </p>
      */
     public static final String FEED_OUTPUT_MODE = "feedOutputMode";
+    /**
+     * Key of editor type.
+     * 
+     * Optional values: 
+     * <p>
+     *   <ul>
+     *     <li>"tinyMCE"</li>
+     *     <li>"CodeMirror-Markdown"</li>
+     *   </ul>
+     * </p>
+     */
+    public static final String EDITOR_TYPE = "editorType";
 
     /**
      * Private default constructor.
@@ -317,6 +329,10 @@ public final class Preference {
          * Default feed output mode.
          */
         public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
+        /**
+         * Default editor type.
+         */
+        public static final String DEFAULT_EDITOR_TYPE = "tinyMCE";
 
         static {
             final JSONArray signs = new JSONArray();

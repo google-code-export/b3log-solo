@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all page model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Feb 25, 2012
+ * @version 1.0.0.5, Apr 29, 2012
  * @since 0.3.1
  */
 public final class Page {
@@ -95,6 +95,12 @@ public final class Page {
      * </p>
      */
     public static final String PAGE_OPEN_TARGET = "pageOpenTarget";
+    /**
+     * Key of page editor type.
+     * 
+     * @see Preference#EDITOR_TYPE
+     */
+    public static final String PAGE_EDITOR_TYPE = "pageEditorType";
 
     /**
      * Private default constructor.
