@@ -76,7 +76,8 @@
         "disableLabel": "${disableLabel}",
         "linkEmptyLabel": "${linkEmptyLabel}",
         "openMethodLabel": "${openMethodLabel}",
-        "typeLabel": "${typeLabel}"
+        "typeLabel": "${typeLabel}",
+        "markdownHelpLabel": "${markdownHelpLabel}"
     };    
     admin.init();
 </script>
