@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.5, Mar 1, 2012
+ * @version 1.0.4.6, Apr 30, 2012
  * @since 0.3.1
  */
 public final class Common {
@@ -241,6 +241,10 @@ public final class Common {
      * Key of commentable.
      */
     public static final String COMMENTABLE = "commentable";
+    /**
+     * Key of context path.
+     */
+    public static final String CONTEXT_PATH = "contextPath";
 
     /**
      * Private default constructor.

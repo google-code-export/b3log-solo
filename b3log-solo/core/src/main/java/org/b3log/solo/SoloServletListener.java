@@ -239,6 +239,26 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
+     * Gets context full path with the specified HTTP servlet request.
+     * 
+     * <p>
+     * Scheme://ServerName:ServerPort + ContextPath<br/>
+     * For example, http://88250.b3log.org:80/blog/
+     * </p>
+     * 
+     * @param httpServletRequest the specified HTTP servlet request
+     * @return context full path, returns {@code null} if the specified HTTP servlet reqeust is {@code null}
+     */
+    public static String getContextPath(final HttpServletRequest httpServletRequest) {
+        if (null == httpServletRequest) {
+            return null;
+        }
+
+        return httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ':' + httpServletRequest.getServerPort()
+               + httpServletRequest.getContextPath();
+    }
+
+    /**
      * Register event processors.
      */
     private void registerEventProcessor() {

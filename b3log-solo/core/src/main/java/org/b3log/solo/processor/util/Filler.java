@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.2, Apr 29, 2012
+ * @version 1.0.5.3, Apr 30, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -478,6 +478,7 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
+            dataModel.put(Common.CONTEXT_PATH, SoloServletListener.getContextPath(request));
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
@@ -486,7 +487,6 @@ public final class Filler {
             for (final JSONObject user : userList) {
                 user.remove(User.USER_EMAIL);
             }
-
 
             final String skinDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);

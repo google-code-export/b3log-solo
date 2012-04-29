@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Dec 15, 2011
+ * @version 1.1.0.7, Apr 30, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -93,15 +93,13 @@ public final class LoginProcessor {
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final Map<String, String> langs =
-                                  langPropsService.getAll(Latkes.getLocale());
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         dataModel.putAll(langs);
         dataModel.put(Common.GOTO, destinationURL);
-        dataModel.put(Common.YEAR,
-                      String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION,
-                      Latkes.getStaticResourceVersion());
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Common.CONTEXT_PATH, SoloServletListener.getContextPath(request));
 
         filler.fillMinified(dataModel);
     }
@@ -136,12 +134,12 @@ public final class LoginProcessor {
             jsonObject.put(Keys.MSG, loginFailLabel);
 
             final JSONObject requestJSONObject =
-                             AbstractAction.parseRequestJSONObject(request,
-                                                                   context.getResponse());
+                    AbstractAction.parseRequestJSONObject(request,
+                                                          context.getResponse());
             final String userEmail =
-                         requestJSONObject.getString(User.USER_EMAIL);
+                    requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd =
-                         requestJSONObject.getString(User.USER_PASSWORD);
+                    requestJSONObject.getString(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userEmail)
                 || Strings.isEmptyOrNull(userPwd)) {
@@ -212,10 +210,10 @@ public final class LoginProcessor {
                 final Cookie cookie = cookies[i];
                 if ("b3log-latke".equals(cookie.getName())) {
                     final JSONObject cookieJSONObject =
-                                     new JSONObject(cookie.getValue());
+                            new JSONObject(cookie.getValue());
 
                     final String userEmail =
-                                 cookieJSONObject.optString(User.USER_EMAIL);
+                            cookieJSONObject.optString(User.USER_EMAIL);
                     if (Strings.isEmptyOrNull(userEmail)) {
                         break;
                     }
@@ -227,9 +225,9 @@ public final class LoginProcessor {
                     }
 
                     final String userPassword =
-                                 user.optString(User.USER_PASSWORD);
+                            user.optString(User.USER_PASSWORD);
                     final String hashPassword =
-                                 cookieJSONObject.optString(User.USER_PASSWORD);
+                            cookieJSONObject.optString(User.USER_PASSWORD);
                     if (MD5.hash(userPassword).equals(hashPassword)) {
                         Sessions.login(request, response, user);
                         LOGGER.log(Level.INFO,
