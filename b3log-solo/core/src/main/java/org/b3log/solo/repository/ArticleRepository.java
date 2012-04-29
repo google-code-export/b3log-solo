@@ -30,14 +30,11 @@ import org.json.JSONObject;
 public interface ArticleRepository extends Repository {
 
     /**
-     * Gets articles by the specified author email, current page number and
-     * page size.
+     * Gets the published articles by the specified author email, current page number and page size.
      *
      * @param authorEmail the specified author email
-     * @param currentPageNum the specified current page number, MUST greater
-     * then {@code 0}
-     * @param pageSize the specified page size(count of a page contains objects),
-     * MUST greater then {@code 0}
+     * @param currentPageNum the specified current page number, MUST greater then {@code 0}
+     * @param pageSize the specified page size(count of a page contains objects), MUST greater then {@code 0}
      * @return for example
      * <pre>
      * {
@@ -51,9 +48,7 @@ public interface ArticleRepository extends Repository {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    JSONObject getByAuthorEmail(final String authorEmail,
-                                final int currentPageNum,
-                                final int pageSize) throws RepositoryException;
+    JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize) throws RepositoryException;
 
     /**
      * Gets an article by the specified permalink.
@@ -71,34 +66,28 @@ public interface ArticleRepository extends Repository {
      * @return a list of articles recently, returns an empty list if not found
      * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getRecentArticles(final int fetchSize)
-            throws RepositoryException;
+    List<JSONObject> getRecentArticles(final int fetchSize) throws RepositoryException;
 
     /**
      * Gets most commented and published articles with the specified number.
      *
      * @param num the specified number
-     * @return a list of most comment articles, returns an empty list if not
-     * found
+     * @return a list of most comment articles, returns an empty list if not found
      * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getMostCommentArticles(final int num)
-            throws RepositoryException;
+    List<JSONObject> getMostCommentArticles(final int num) throws RepositoryException;
 
     /**
      * Gets most view count and published articles with the specified number.
      *
      * @param num the specified number
-     * @return a list of most view count articles, returns an empty list if not
-     * found
+     * @return a list of most view count articles, returns an empty list if not found
      * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getMostViewCountArticles(final int num)
-            throws RepositoryException;
+    List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException;
 
     /**
-     * Gets the previous article(by create date) by the specified article
-     * id.
+     * Gets the previous article(by create date) by the specified article id.
      *
      * @param articleId the specified article id
      * @return the previous article,
@@ -111,8 +100,7 @@ public interface ArticleRepository extends Repository {
      * returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getPreviousArticle(final String articleId)
-            throws RepositoryException;
+    JSONObject getPreviousArticle(final String articleId) throws RepositoryException;
 
     /**
      * Gets the next article(by create date, oId) by the specified article id.
@@ -128,8 +116,7 @@ public interface ArticleRepository extends Repository {
      * returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getNextArticle(final String articleId)
-            throws RepositoryException;
+    JSONObject getNextArticle(final String articleId) throws RepositoryException;
 
     /**
      * Determines an article specified by the given article id is published.
