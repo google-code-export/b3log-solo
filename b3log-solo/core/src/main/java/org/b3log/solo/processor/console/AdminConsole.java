@@ -90,8 +90,7 @@ public final class AdminConsole {
      * @param context the specified context
      */
     @RequestProcessing(value = "/admin-index.do", method = HTTPRequestMethod.GET)
-    public void showAdminIndex(final HttpServletRequest request,
-                               final HTTPRequestContext context) {
+    public void showAdminIndex(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         context.setRenderer(renderer);
