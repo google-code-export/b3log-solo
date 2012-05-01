@@ -3,7 +3,7 @@
  * init, login and kill IE page style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Dec 28, 2011
+ * @version 1.0.0.7, May 1, 2012
 */
 html {
     height: 100%;
@@ -167,3 +167,17 @@ tr {
 .footerWrapper a {
     text-decoration: none;
 }
+
+
+/* start article-pwd */
+.main > div {
+    margin-bottom: 10px;
+    max-height: 264px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+#confirm {
+    margin-top: 6px;
+}
+/* end article-pwd */
