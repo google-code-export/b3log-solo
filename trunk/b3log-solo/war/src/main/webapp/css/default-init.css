@@ -22,7 +22,7 @@ body {
 }
 
 button {
-    background: url(/images/icon.png) repeat center bottom;
+    background: url(../images/icon.png) repeat center bottom;
     border: 1px solid;
     border-color: #CCC #BBBBBB #A0A0A0;
     border-radius: 4px;
@@ -86,7 +86,7 @@ tr {
 }
 
 .content {
-    background: url("/images/zz.jpg") repeat-x scroll center bottom white;
+    background: url("../images/zz.jpg") repeat-x scroll center bottom white;
     border-color: #E6E5D9;
     border-style: solid solid none;
     border-width: 1px;

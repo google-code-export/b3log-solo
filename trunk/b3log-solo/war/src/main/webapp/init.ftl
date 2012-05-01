@@ -21,7 +21,7 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.jpg"/>
+                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${contextPath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="/favicon.png"/>
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${contextPath}/favicon.png"/>
                         </a>
                     </div>
                     <span class="clear"></span>
@@ -176,7 +176,7 @@
                 
                 if(confirm("${confirmInitLabel}")){
                     $.ajax({
-                        url: "/init",
+                        url: "${contextPath}/init",
                         type: "POST",
                         data: JSON.stringify(requestJSONObject),
                         success: function(result, textStatus){
@@ -186,7 +186,7 @@
                                 return;
                             }
                     
-                            window.location.href = "/admin-index.do#tools/user-list";
+                            window.location.href = "${contextPath}/admin-index.do#tools/user-list";
                         }
                     });
                 }

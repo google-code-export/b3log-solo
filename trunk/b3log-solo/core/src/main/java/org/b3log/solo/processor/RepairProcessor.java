@@ -23,6 +23,7 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
@@ -34,6 +35,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
@@ -61,7 +63,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Apr 6, 2012
+ * @version 1.1.0.6, May 1, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -297,9 +299,10 @@ public final class RepairProcessor {
      * Shows remove all data page.
      * 
      * @param context the specified context
+     * @param request the specified HTTP servlet request 
      */
     @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.GET)
-    public void removeAllDataGET(final HTTPRequestContext context) {
+    public void removeAllDataGET(final HTTPRequestContext context, final HttpServletRequest request) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
 
@@ -313,7 +316,7 @@ public final class RepairProcessor {
             htmlBuilder.append("Continue to delete ALL DATA</button></body>");
             htmlBuilder.append("<script type='text/javascript'>");
             htmlBuilder.append("function remove() {");
-            htmlBuilder.append("$.ajax({type: 'POST',url: '/rm-all-data.do',");
+            htmlBuilder.append("$.ajax({type: 'POST',url:'").append(Requests.getContextPath(request)).append("/rm-all-data.do',");
             htmlBuilder.append("dataType: 'text/html',success: function(result){");
             htmlBuilder.append("$('html').html(result);}});}</script></html>");
 
@@ -345,7 +348,6 @@ public final class RepairProcessor {
             remove(ArchiveDateArticleRepositoryImpl.getInstance());
             remove(ArchiveDateRepositoryImpl.getInstance());
             remove(ArticleRepositoryImpl.getInstance());
-            remove(ArticleSignRepositoryImpl.getInstance());
             remove(CommentRepositoryImpl.getInstance());
             remove(LinkRepositoryImpl.getInstance());
             remove(PageRepositoryImpl.getInstance());
@@ -419,81 +421,6 @@ public final class RepairProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
-        }
-    }
-}
-
-/**
- * Article-Sign relation repository.
- *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 31, 2011
- * @since 0.3.1
- */
-// TODO: 045 to remove this class!
-final class ArticleSignRepositoryImpl extends AbstractRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSignRepositoryImpl.class.getName());
-
-    /**
-     * Get an Article-Sign relation by the specified article id.
-     * 
-     * @param articleId the specified article id
-     * @return an article-Sign relation, returns {@code null} if not found
-     * @throws RepositoryException repository exception
-     */
-    public JSONObject getByArticleId(final String articleId) throws RepositoryException {
-        final Query query = new Query().addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId).
-                setPageCount(1);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
-    }
-
-    /**
-     * Gets the {@link ArticleSignRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArticleSignRepositoryImpl getInstance() {
-        return ArticleSignRepositoryImpl.SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ArticleSignRepositoryImpl(final String name) {
-        super(name);
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArticleSignRepositoryImpl SINGLETON = new ArticleSignRepositoryImpl(Article.ARTICLE + "_" + Sign.SIGN);
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
         }
     }
 }

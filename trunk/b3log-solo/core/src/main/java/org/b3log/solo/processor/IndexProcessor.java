@@ -84,7 +84,7 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/\\d*"}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"\\d*"}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
