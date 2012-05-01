@@ -21,8 +21,15 @@
         <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
     </div>
     <div>
-        <label>${permalink1Label}</label>
-        <input id="permalink" type="text"/>
+        <div class="left">
+            <label for="permalink">${permalink1Label}</label>
+            <input id="permalink" type="text" style="width: 416px;" />
+        </div>
+        <div class="right">
+            <label for="viewPwd">${articleViewPwd1Label}</label>
+            <input id="viewPwd" type="text" style="width: 156px" />
+        </div>
+        <div class="clear"></div>
     </div>
     <div>
         <span class="signs">
@@ -33,16 +40,12 @@
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="right">
-            <label>${allowComment1Label}</label>
+            <label for="articleCommentable">${allowComment1Label}</label>
             <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp;&nbsp;&nbsp;
             <span id="postToCommunityPanel">
                 <label for="postToCommunity">${postToCommunityLabel}</label>
                 <input id="postToCommunity" type="checkbox" checked="checked"/>
             </span>
-        </div>
-        <div>
-            <label>${articleViewPwd1Label}</label>
-            <input id="viewPwd" type="text"/>
         </div>
         <div class="clear"></div>
     </div>
