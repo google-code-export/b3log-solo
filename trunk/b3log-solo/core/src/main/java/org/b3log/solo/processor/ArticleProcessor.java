@@ -114,6 +114,10 @@ public final class ArticleProcessor {
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
+     * User utilities.
+     */
+    private Users userUtils = Users.getInstance();
+    /**
      * Default update count for article random value.
      */
     private static final int DEFAULT_UPDATE_CNT = 10;
@@ -525,7 +529,12 @@ public final class ArticleProcessor {
         }
 
         final String viewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
-        final boolean notTypedPwd = null == request.getAttribute("typedViewPwd");
+        boolean notTypedPwd = null == request.getAttribute("typedViewPwd");
+
+        if (userUtils.isLoggedIn(request, response)) { // The blogger does not need to type password
+            notTypedPwd = true;
+        }
+
         if (!Strings.isEmptyOrNull(viewPwd) && notTypedPwd) {
             // The article need view password and not typed the password yet, show the password form
             showArticlePwdForm(context, request, response, article);
@@ -896,10 +905,11 @@ public final class ArticleProcessor {
             dataModel.put("articleTitle", article.getString(Article.ARTICLE_TITLE));
             dataModel.put("articleAbstract", article.getString(Article.ARTICLE_ABSTRACT));
             dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+            dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-            dataModel.put(Common.CONTEXT_PATH, SoloServletListener.getContextPath(request));
+            dataModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
             filler.fillMinified(dataModel);
