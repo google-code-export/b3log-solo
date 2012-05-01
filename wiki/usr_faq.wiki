@@ -14,7 +14,7 @@
  # 访问 /rm-all-data.do 
 ----
 <p align="right">[#Top]</p> 
-==`上传时出现 javax.net.ssl.SSLHandshakeException`==
+==`GAE 版上传时出现 javax.net.ssl.SSLHandshakeException`==
 上传时出现报错：
 {{{
 javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException:
