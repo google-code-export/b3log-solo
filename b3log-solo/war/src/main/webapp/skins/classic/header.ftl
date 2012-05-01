@@ -12,8 +12,8 @@
         <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;&nbsp;
     </span>
     </#list>
-    <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
-    <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>
+    <a href="${contextPath}/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
+    <a href="${contextPath}/blog-articles-feed.do">${atomLabel}</a><a href="${contextPath}/blog-articles-feed.do"><img src="${contextPath}/images/feed.png" alt="Atom"/></a>
 </div>
 <div class="right" id="statistic">
     <span>${viewCount1Label}

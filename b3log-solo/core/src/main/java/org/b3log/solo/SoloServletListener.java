@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.7, Feb 23, 2011
+ * @version 1.0.6.8, May 1, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -236,26 +236,6 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }
-    }
-
-    /**
-     * Gets context full path with the specified HTTP servlet request.
-     * 
-     * <p>
-     * Scheme://ServerName:ServerPort + ContextPath<br/>
-     * For example, http://88250.b3log.org:80/blog/
-     * </p>
-     * 
-     * @param httpServletRequest the specified HTTP servlet request
-     * @return context full path, returns {@code null} if the specified HTTP servlet reqeust is {@code null}
-     */
-    public static String getContextPath(final HttpServletRequest httpServletRequest) {
-        if (null == httpServletRequest) {
-            return null;
-        }
-
-        return httpServletRequest.getScheme() + "://" + httpServletRequest.getServerName() + ':' + httpServletRequest.getServerPort()
-               + httpServletRequest.getContextPath();
     }
 
     /**

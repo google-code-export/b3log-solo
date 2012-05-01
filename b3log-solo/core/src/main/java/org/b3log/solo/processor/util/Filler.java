@@ -478,7 +478,7 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
-            dataModel.put(Common.CONTEXT_PATH, SoloServletListener.getContextPath(request));
+            dataModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
