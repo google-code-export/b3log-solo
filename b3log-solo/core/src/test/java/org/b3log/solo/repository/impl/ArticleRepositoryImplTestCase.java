@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 25, 2012
+ * @version 1.0.0.3, May 1, 2012
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -65,6 +65,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_EDITOR_TYPE, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -119,6 +120,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_EDITOR_TYPE, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -168,6 +170,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_EDITOR_TYPE, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
@@ -215,6 +218,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_EDITOR_TYPE, "");
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);

@@ -40,6 +40,10 @@
                 <input id="postToCommunity" type="checkbox" checked="checked"/>
             </span>
         </div>
+        <div>
+            <label>${articleViewPwd1Label}</label>
+            <input id="viewPwd" type="text"/>
+        </div>
         <div class="clear"></div>
     </div>
     <div class="right">
