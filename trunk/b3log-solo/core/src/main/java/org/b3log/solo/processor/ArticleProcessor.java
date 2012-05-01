@@ -34,14 +34,13 @@ import org.b3log.solo.model.Preference;
 import org.jsoup.Jsoup;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -63,14 +62,16 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.ArchiveDateQueryService;
 
 /**
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.9, Apr 26, 2012
+ * @version 1.1.2.1, May 1, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -118,6 +119,50 @@ public final class ArticleProcessor {
     private static final int DEFAULT_UPDATE_CNT = 10;
 
     /**
+     * Processes the article view password form submits.
+     * 
+     * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
+    public void onArticlePwdForm(final HTTPRequestContext context,
+                                 final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+
+        try {
+            final String articleId = requestJSONObject.getString("articleId");
+            final String pwdTyped = requestJSONObject.getString("pwdTyped");
+
+            final JSONObject article = articleQueryService.getArticleById(articleId);
+            if (article.getString(Article.ARTICLE_VIEW_PWD).equals(pwdTyped)) {
+                request.setAttribute(Article.ARTICLE, article);
+                request.setAttribute("typedViewPwd", true);
+
+                showArticle(context, request, response);
+                return;
+            }
+
+            final JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
+
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            renderer.setJSONObject(jsonObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Processes article view password form submits failed", e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
+
+    /**
      * Gets random articles with the specified context.
      * 
      * @param context the specified context
@@ -149,7 +194,6 @@ public final class ArticleProcessor {
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
-
         Stopwatchs.end();
     }
 
@@ -162,7 +206,8 @@ public final class ArticleProcessor {
      * @throws Exception exception 
      */
     @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
-    public void getRelevantArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void getRelevantArticles(final HTTPRequestContext context,
+                                    final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject jsonObject = new JSONObject();
 
@@ -178,7 +223,6 @@ public final class ArticleProcessor {
 
             return;
         }
-
 
         Stopwatchs.start("Get Relevant Articles");
         final String requestURI = request.getRequestURI();
@@ -433,7 +477,6 @@ public final class ArticleProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -468,17 +511,33 @@ public final class ArticleProcessor {
      * Shows an article with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
-    public void showArticle(final HTTPRequestContext context) {
+    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        final String viewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
+        final boolean notTypedPwd = null == request.getAttribute("typedViewPwd");
+        if (!Strings.isEmptyOrNull(viewPwd) && notTypedPwd) {
+            // The article need view password and not typed the password yet, show the password form
+            showArticlePwdForm(context, request, response, article);
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
-
         renderer.setTemplateName("article.ftl");
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
-        String articleId = null;
+        String articleId;
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -489,12 +548,6 @@ public final class ArticleProcessor {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
-
-            final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
-            if (null == article) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
 
             articleId = article.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
@@ -521,7 +574,7 @@ public final class ArticleProcessor {
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
-            
+
             articleQueryService.markdown(article);
 
             final JSONObject author = articleUtils.getAuthor(article);
@@ -545,7 +598,6 @@ public final class ArticleProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -740,7 +792,7 @@ public final class ArticleProcessor {
         final String month = dateStrings[1];
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
         final String language = Locales.getLanguage(preference.getString(Preference.LOCALE_STRING));
-        String ret = null;
+        String ret;
         if ("en".equals(language)) {
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, Dates.EN_MONTHS.get(month));
             ret = Dates.EN_MONTHS.get(month) + " " + year;
@@ -815,5 +867,49 @@ public final class ArticleProcessor {
                       preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
 
         filler.fillBlogFooter(dataModel, preference);
+    }
+
+    /**
+     * Shows the article password form page.
+     * 
+     * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param article the specified article
+     * @throws IOException io exception 
+     */
+    private void showArticlePwdForm(final HTTPRequestContext context,
+                                    final HttpServletRequest request, final HttpServletResponse response,
+                                    final JSONObject article) throws IOException {
+        try {
+            final JSONObject preference = preferenceQueryService.getPreference();
+
+            final ConsoleRenderer renderer = new ConsoleRenderer();
+            renderer.setTemplateName("article-pwd.ftl");
+            context.setRenderer(renderer);
+
+            final Map<String, Object> dataModel = renderer.getDataModel();
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+            dataModel.putAll(langs);
+            dataModel.put("articleId", article.getString(Keys.OBJECT_ID));
+            dataModel.put("articlePermalink", article.getString(Article.ARTICLE_PERMALINK));
+            dataModel.put("articleTitle", article.getString(Article.ARTICLE_TITLE));
+            dataModel.put("articleAbstract", article.getString(Article.ARTICLE_ABSTRACT));
+            dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+
+            dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+            dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+            dataModel.put(Common.CONTEXT_PATH, SoloServletListener.getContextPath(request));
+            dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+
+            filler.fillMinified(dataModel);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Show article password form failed", e);
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ import org.testng.annotations.Test;
  * {@link PageRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 25, 2012
+ * @version 1.0.0.2, May 1, 2012
  */
 @Test(suiteName = "repository")
 public class PageRepositoryImplTestCase extends AbstractTestCase {
@@ -55,6 +56,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
+        page.put(Page.PAGE_EDITOR_TYPE, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -100,6 +102,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
+        page.put(Page.PAGE_EDITOR_TYPE, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -128,6 +131,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
+        page.put(Page.PAGE_EDITOR_TYPE, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
