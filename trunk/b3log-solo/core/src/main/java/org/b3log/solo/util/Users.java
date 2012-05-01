@@ -50,8 +50,7 @@ public final class Users {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Users.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Users.class.getName());
     /**
      * User repository.
      */
@@ -63,8 +62,7 @@ public final class Users {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
 
     /**
      * Determines whether if exists multiple users in current Solo.
@@ -100,8 +98,7 @@ public final class Users {
      * {@code false} otherwise
      * @throws Exception exception
      */
-    public boolean canAccessArticle(final String articleId,
-                                    final HttpServletRequest request)
+    public boolean canAccessArticle(final String articleId, final HttpServletRequest request)
             throws Exception {
         if (Strings.isEmptyOrNull(articleId)) {
             return false;
@@ -112,11 +109,9 @@ public final class Users {
         }
 
         final JSONObject article = articleRepository.get(articleId);
-        final String currentUserEmail =
-                getCurrentUser(request).getString(User.USER_EMAIL);
+        final String currentUserEmail = getCurrentUser(request).getString(User.USER_EMAIL);
 
-        if (!article.getString(Article.ARTICLE_AUTHOR_EMAIL).
-                equals(currentUserEmail)) {
+        if (!article.getString(Article.ARTICLE_AUTHOR_EMAIL).equals(currentUserEmail)) {
             return false;
         }
 
@@ -136,17 +131,15 @@ public final class Users {
      * @return {@code true} if the current request is made by logged in user,
      * returns {@code false} otherwise
      */
-    public boolean isLoggedIn(final HttpServletRequest request,
-                              final HttpServletResponse response) {
+    public boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
         LoginProcessor.tryLogInWithCookie(request, response);
-        
+
         final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             return false;
         }
 
-        return isSoloUser(currentUser.getEmail())
-               || userService.isUserAdmin(request);
+        return isSoloUser(currentUser.getEmail()) || userService.isUserAdmin(request);
     }
 
     /**
@@ -157,8 +150,7 @@ public final class Users {
      * administrator, returns {@code false} otherwise
      */
     public boolean isAdminLoggedIn(final HttpServletRequest request) {
-        return userService.isUserLoggedIn(request)
-               && userService.isUserAdmin(request);
+        return userService.isUserLoggedIn(request) && userService.isUserAdmin(request);
     }
 
     /**
@@ -178,8 +170,7 @@ public final class Users {
         try {
             return userRepository.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE,
-                       "Gets current user by request failed, returns null", e);
+            LOGGER.log(Level.SEVERE, "Gets current user by request failed, returns null", e);
 
             return null;
         }
@@ -213,8 +204,7 @@ public final class Users {
      * @return {@code true} if exists, {@code false} otherwise
      * @throws JSONException json exception
      */
-    private boolean existEmail(final String email, final JSONArray users)
-            throws JSONException {
+    private boolean existEmail(final String email, final JSONArray users) throws JSONException {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
             if (user.getString(User.USER_EMAIL).equalsIgnoreCase(email)) {
