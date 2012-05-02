@@ -1,6 +1,6 @@
 <div class="marginBottom12">
     <h1 class="title">
-        <a href="${contextPath}" id="logoTitle" >
+        <a href="${servePath}" id="logoTitle" >
             ${blogTitle}
         </a>
         <span class="sub-title">${blogSubtitle}</span>
@@ -9,11 +9,11 @@
 <div class="left">
     <#list pageNavigations as page>
     <span>
-        <a href="${contextPath}${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;&nbsp;
+        <a href="${servePath}${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;&nbsp;
     </span>
     </#list>
-    <a href="${contextPath}/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
-    <a href="${contextPath}/blog-articles-feed.do">${atomLabel}</a><a href="${contextPath}/blog-articles-feed.do"><img src="${contextPath}/images/feed.png" alt="Atom"/></a>
+    <a href="${servePath}/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
+    <a href="${servePath}/blog-articles-feed.do">${atomLabel}</a><a href="${servePath}/blog-articles-feed.do"><img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
 </div>
 <div class="right" id="statistic">
     <span>${viewCount1Label}

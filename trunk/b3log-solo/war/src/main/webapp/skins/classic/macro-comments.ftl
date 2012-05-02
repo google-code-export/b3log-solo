@@ -15,7 +15,7 @@
                 </#if>
                 <#if comment.isReply>
                 @
-                <a href="${contextPath}${article.permalink}#${comment.commentOriginalCommentId}"
+                <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 23);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if>
@@ -109,7 +109,7 @@
                 </th>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
-                    <img id="captcha" alt="validate" src="${contextPath}/captcha.do" />
+                    <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
                 </td>
                 <th>
                     <span class="error-msg" id="commentErrorTip"></span>
@@ -127,7 +127,7 @@
 </#macro>
 
 <#macro comment_script oId>
-<script type="text/javascript" src="${contextPath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     var page = new Page({
         "nameTooLongLabel": "${nameTooLongLabel}",

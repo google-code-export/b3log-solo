@@ -79,5 +79,7 @@
         "typeLabel": "${typeLabel}",
         "markdownHelpLabel": "${markdownHelpLabel}"
     };    
+    
+    
     admin.init();
 </script>
