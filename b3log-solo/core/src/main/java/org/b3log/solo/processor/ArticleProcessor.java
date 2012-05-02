@@ -62,7 +62,6 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
@@ -910,7 +909,7 @@ public final class ArticleProcessor {
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-            dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
             filler.fillMinified(dataModel);

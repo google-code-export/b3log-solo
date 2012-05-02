@@ -43,7 +43,6 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
@@ -79,7 +78,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.3, Apr 30, 2012
+ * @version 1.0.5.4, May 2, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -436,6 +435,10 @@ public final class Filler {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
+            dataModel.put(Common.STATIC_SERVER, Latkes.getStaticServer());
+            dataModel.put(Common.SERVER, Latkes.getServer());
+
+
             // Activates plugins
             try {
                 final ViewLoadEventData data = new ViewLoadEventData();
@@ -479,7 +482,7 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
-            dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
