@@ -233,7 +233,7 @@ public final class IndexProcessor {
      * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring("/".length());
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }

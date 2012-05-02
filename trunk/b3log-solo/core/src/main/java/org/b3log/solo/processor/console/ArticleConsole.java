@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -176,7 +177,7 @@ public final class ArticleConsole {
         context.setRenderer(renderer);
 
         try {
-            final String articleId = request.getRequestURI().substring(ARTICLE_URI_PREFIX.length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX).length());
 
             final JSONObject result = articleQueryService.getArticle(articleId);
 
@@ -241,7 +242,7 @@ public final class ArticleConsole {
         context.setRenderer(renderer);
 
         try {
-            String path = request.getRequestURI().substring((ARTICLES_URI_PREFIX + "status/").length());
+            String path = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLES_URI_PREFIX + "status/").length());
             final String status = StringUtils.substringBefore(path, "/");
             path = path.substring((status + "/").length());
 
@@ -296,7 +297,7 @@ public final class ArticleConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId = request.getRequestURI().substring(ARTICLE_URI_PREFIX.length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX).length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -352,7 +353,8 @@ public final class ArticleConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring(
+                    (Latkes.getContextPath() + ARTICLE_URI_PREFIX + "canceltop/").length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -415,7 +417,8 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring(
+                    (Latkes.getContextPath() + ARTICLE_URI_PREFIX + "canceltop/").length());
             articleMgmtService.topArticle(articleId, false);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -470,7 +473,7 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((ARTICLE_URI_PREFIX + "puttop/").length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX + "puttop/").length());
             articleMgmtService.topArticle(articleId, true);
 
             ret.put(Keys.STATUS_CODE, true);

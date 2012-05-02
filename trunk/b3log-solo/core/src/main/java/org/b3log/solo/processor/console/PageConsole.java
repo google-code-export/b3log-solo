@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -176,7 +177,7 @@ public final class PageConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String pageId = request.getRequestURI().substring(PAGE_URI_PREFIX.length());
+            final String pageId = request.getRequestURI().substring((Latkes.getContextPath() + PAGE_URI_PREFIX).length());
 
             pageMgmtService.removePage(pageId);
 
@@ -349,7 +350,7 @@ public final class PageConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring(PAGE_URI_PREFIX.length());
+            final String pageId = requestURI.substring((Latkes.getContextPath() + PAGE_URI_PREFIX).length());
 
             final JSONObject result = pageQueryService.getPage(pageId);
 
@@ -413,7 +414,7 @@ public final class PageConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring(PAGES_URI_PREFIX.length());
+            final String path = requestURI.substring((Latkes.getContextPath() + PAGES_URI_PREFIX).length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 

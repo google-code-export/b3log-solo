@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -225,7 +226,7 @@ public final class UserConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String userId = request.getRequestURI().substring(USER_URI_PREFIX.length());
+            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + USER_URI_PREFIX).length());
 
             userMgmtService.removeUser(userId);
 
@@ -285,7 +286,7 @@ public final class UserConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring(USERS_URI_PREFIX.length());
+            final String path = requestURI.substring((Latkes.getContextPath() + USERS_URI_PREFIX).length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
@@ -338,7 +339,7 @@ public final class UserConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String userId = requestURI.substring(USER_URI_PREFIX.length());
+            final String userId = requestURI.substring((Latkes.getContextPath() + USER_URI_PREFIX).length());
 
 
             final JSONObject result = userQueryService.getUser(userId);

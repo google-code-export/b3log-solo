@@ -74,8 +74,7 @@ public final class TagProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class.getName());
     /**
      * Tag repository.
      */
@@ -91,8 +90,7 @@ public final class TagProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Article utilities.
      */
@@ -100,13 +98,11 @@ public final class TagProcessor {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService =
-            ArticleQueryService.getInstance();
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService =
-            TagQueryService.getInstance();
+    private TagQueryService tagQueryService = TagQueryService.getInstance();
     /**
      * Tag utilities.
      */
@@ -118,11 +114,9 @@ public final class TagProcessor {
      * @param context the specified context
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/tags/**"}, method = HTTPRequestMethod.GET)
-    public void showTagArticles(final HTTPRequestContext context)
-            throws IOException {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontRenderer();
+    @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
+    public void showTagArticles(final HTTPRequestContext context) throws IOException {
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tag-articles.ftl");
@@ -144,8 +138,7 @@ public final class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
-                       new Object[]{tagTitle, currentPageNum});
+            LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]", new Object[]{tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -160,30 +153,23 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final int pageSize = preference.getInt(
-                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(
-                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             request.setAttribute(CACHED_OID, tagId);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(
-                    CACHED_TITLE,
-                    langs.get(PageTypes.TAG_ARTICLES) + "  ["
-                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + langs.get("tagLabel") + "=" + tagTitle + "]");
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TITLE,
+                                 langs.get(PageTypes.TAG_ARTICLES) + "  ["
+                                 + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                                 + langs.get("tagLabel") + "=" + tagTitle + "]");
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
-            final List<JSONObject> articles =
-                    articleQueryService.getArticlesByTag(
+            final List<JSONObject> articles = articleQueryService.getArticlesByTag(
                     tagId, currentPageNum, pageSize);
             if (articles.isEmpty()) {
                 try {
@@ -194,45 +180,32 @@ public final class TagProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers =
-                    Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 // All articles composed by the same author
-                final JSONObject author =
-                        articleUtils.getAuthor(articles.get(0));
+                final JSONObject author = articleUtils.getAuthor(articles.get(0));
                 filler.setArticlesExProperties(articles, author, preference);
             }
 
-            final int tagArticleCount =
-                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-            final int pageCount = (int) Math.ceil((double) tagArticleCount
-                                                  / (double) pageSize);
+            final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
-                       new Object[]{currentPageNum,
-                                    pageSize,
-                                    pageCount,
-                                    windowSize});
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+                       new Object[]{currentPageNum, pageSize, pageCount, windowSize});
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
-            fillPagination(dataModel, pageCount, currentPageNum,
-                           articles, pageNums);
-            dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle,
-                                                                    "UTF-8"));
+            fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
+            dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
 
@@ -271,21 +244,17 @@ public final class TagProcessor {
                                 final int pageCount, final int currentPageNum,
                                 final List<JSONObject> articles,
                                 final List<Integer> pageNums) {
-        final String previousPageNum =
-                Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
-        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                      "0".equals(previousPageNum) ? "" : previousPageNum);
+        final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
         } else {
-            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM,
-                          currentPageNum + 1);
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum + 1);
         }
         dataModel.put(Article.ARTICLES, articles);
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                      pageNums.get(pageNums.size() - 1));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
@@ -297,8 +266,7 @@ public final class TagProcessor {
      */
     @RequestProcessing(value = {"/tags.html"}, method = HTTPRequestMethod.GET)
     public void showTags(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tags.ftl");
@@ -315,14 +283,12 @@ public final class TagProcessor {
                 return;
             }
 
-            Skins.fillSkinLangs(
-                    preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
+                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                                dataModel);
 
             request.setAttribute(CACHED_OID, "No id");
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getLocale());
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
@@ -331,8 +297,7 @@ public final class TagProcessor {
             final JSONObject result = tagRepository.get(query);
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
 
-            final List<JSONObject> tags =
-                    CollectionUtils.jsonArrayToList(tagArray);
+            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(tagArray);
             tagUtils.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
 
@@ -361,10 +326,8 @@ public final class TagProcessor {
      * @return page number, returns {@code -1} if the specified request URI
      * can not convert to an number
      */
-    private static int getCurrentPageNum(final String requestURI,
-                                         final String tagTitle) {
-        final String pageNumString =
-                requestURI.substring(("/tags/" + tagTitle + "/").length());
+    private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }
@@ -376,7 +339,7 @@ public final class TagProcessor {
      * @return tag title
      */
     private static String getTagTitle(final String requestURI) {
-        final String path = requestURI.substring("/tags/".length());
+        final String path = requestURI.substring((Latkes.getContextPath() + "/tags/").length());
 
         if (path.contains("/")) {
             return path.substring(0, path.indexOf("/"));

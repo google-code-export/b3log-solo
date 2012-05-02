@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -117,7 +118,7 @@ public final class LinkConsole {
 
         try {
             final String linkId =
-                    request.getRequestURI().substring(LINK_URI_PREFIX.length());
+                    request.getRequestURI().substring((Latkes.getContextPath() + LINK_URI_PREFIX).length());
 
             linkMgmtService.removeLink(linkId);
 
@@ -354,8 +355,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = LINKS_URI_PREFIX
-                               + Requests.PAGINATION_PATH_PATTERN,
+    @RequestProcessing(value = LINKS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN,
                        method = HTTPRequestMethod.GET)
     public void getLinks(final HttpServletRequest request,
                          final HttpServletResponse response,
@@ -370,14 +370,11 @@ public final class LinkConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path =
-                    requestURI.substring(LINKS_URI_PREFIX.length());
+            final String path = requestURI.substring((Latkes.getContextPath() + LINKS_URI_PREFIX).length());
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result =
-                    linkQueryService.getLinks(requestJSONObject);
+            final JSONObject result = linkQueryService.getLinks(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -413,8 +410,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = LINK_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
     public void getLink(final HttpServletRequest request,
                         final HttpServletResponse response,
                         final HTTPRequestContext context)
@@ -429,8 +425,7 @@ public final class LinkConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String linkId =
-                    requestURI.substring(LINK_URI_PREFIX.length());
+            final String linkId = requestURI.substring((Latkes.getContextPath() + LINK_URI_PREFIX).length());
 
             final JSONObject result = linkQueryService.getLink(linkId);
 
