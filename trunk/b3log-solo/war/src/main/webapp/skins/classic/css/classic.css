@@ -3,7 +3,8 @@
  * skin classic style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Nov 19, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.1.1, May 2, 2012
 */
 a, a:link {
     color: #0000CC;
@@ -220,7 +221,7 @@ h5 {
     padding: 24px;
 }
 .commentIcon, .browserIcon {
-    background-image: url("/images/icon.png");
+    background-image: url("../../../images/icon.png");
     cursor: pointer;
     height: 16px;
     margin-right: 3px;

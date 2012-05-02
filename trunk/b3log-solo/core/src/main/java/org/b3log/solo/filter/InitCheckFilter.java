@@ -79,7 +79,9 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && "/init".equals(requestURI)) {
+            final String contextPath = Requests.getContextPath(httpServletRequest);
+
+            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (contextPath + "/init").equals(requestURI)) {
                 // Do initailization
                 chain.doFilter(request, response);
 
@@ -95,7 +97,7 @@ public final class InitCheckFilter implements Filter {
                 context.setRequest((HttpServletRequest) request);
                 context.setResponse((HttpServletResponse) response);
 
-                request.setAttribute("requestURI", Requests.getContextPath(httpServletRequest) + "/init");
+                request.setAttribute("requestURI", contextPath + "/init");
                 request.setAttribute("method", "GET");
 
                 HTTPRequestDispatcher.dispatch(context);

@@ -33,7 +33,7 @@
     }
 
     #showTop {
-        background-image: url("/images/arrow-right.png");
+        background-image: url("${contextPath}/images/arrow-right.png");
         cursor: pointer;
         height: 26px;
         right: 0;
@@ -44,11 +44,11 @@
     }
 
     #showTop:hover {
-        background-image: url("/images/arrow-right.gif");
+        background-image: url("${contextPath}/images/arrow-right.gif");
     }
 
     #top #hideTop {
-        background-image: url("/images/arrow-left.png");
+        background-image: url("${contextPath}/images/arrow-left.png");
         height: 26px;
         margin: 0;
         padding: 0;
@@ -57,7 +57,7 @@
     }
 
     #top #hideTop:hover {
-        background-image: url("/images/arrow-left.gif");
+        background-image: url("${contextPath}/images/arrow-left.gif");
         border-radius: 0;    
     }
 </style>
@@ -77,7 +77,7 @@
         <a href="javascript:common.clearCache();">
             ${clearCacheLabel}
         </a>
-        <a href="/admin-index.do#main" title="${adminLabel}">
+        <a href="${contextPath}/admin-index.do#main" title="${adminLabel}">
             ${adminLabel}
         </a>
         <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>

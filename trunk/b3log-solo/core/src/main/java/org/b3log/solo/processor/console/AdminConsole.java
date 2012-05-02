@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, May 1, 2012
+ * @version 1.0.0.3, May 2, 2012
  * @since 0.4.1
  */
 @RequestProcessor
@@ -156,7 +156,7 @@ public final class AdminConsole {
         context.setRenderer(renderer);
 
         final String requestURI = request.getRequestURI();
-        final String templateName = StringUtils.substringBetween(requestURI, "/", ".") + ".ftl";
+        final String templateName = StringUtils.substringBetween(requestURI, Requests.getContextPath(request) + '/', ".") + ".ftl";
         LOGGER.log(Level.FINEST, "Admin function[templateName={0}]", templateName);
         renderer.setTemplateName(templateName);
 
