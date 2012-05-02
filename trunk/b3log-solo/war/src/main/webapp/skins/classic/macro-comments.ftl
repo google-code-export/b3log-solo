@@ -109,7 +109,7 @@
                 </th>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
-                    <img id="captcha" alt="validate" src="/captcha.do" />
+                    <img id="captcha" alt="validate" src="${contextPath}/captcha.do" />
                 </td>
                 <th>
                     <span class="error-msg" id="commentErrorTip"></span>
@@ -127,7 +127,7 @@
 </#macro>
 
 <#macro comment_script oId>
-<script type="text/javascript" src="/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${contextPath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     var page = new Page({
         "nameTooLongLabel": "${nameTooLongLabel}",
