@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.util.Users;
@@ -264,9 +265,7 @@ public final class AdminCacheService {
      */
     @RequestProcessing(value = "/console/plugins/admin-cache/enable/*",
                        method = HTTPRequestMethod.PUT)
-    public void setPageCache(final HttpServletRequest request,
-                             final HttpServletResponse response,
-                             final HTTPRequestContext context)
+    public void setPageCache(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -281,9 +280,8 @@ public final class AdminCacheService {
         renderer.setJSONObject(ret);
 
         try {
-            final String path =
-                    request.getRequestURI().substring("/console/plugins/admin-cache/enable/".
-                    length());
+            final String path = request.getRequestURI().substring(
+                    (Latkes.getContextPath() + "/console/plugins/admin-cache/enable/").length());
 
             final boolean pageCacheEnabled = "true".equals(path) ? true : false;
 
@@ -299,8 +297,7 @@ public final class AdminCacheService {
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.
-                    getMessage());
+            jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.getMessage());
         }
     }
 }

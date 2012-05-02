@@ -637,7 +637,7 @@ public final class ArticleProcessor {
      * @return archive date
      */
     private static String getArchiveDate(final String requestURI) {
-        final String path = requestURI.substring("/archives/".length());
+        final String path = requestURI.substring((Latkes.getContextPath() + "/archives/").length());
 
         return path.substring(0, "yyyy/MM".length());
     }
@@ -650,7 +650,7 @@ public final class ArticleProcessor {
      * can not convert to an number
      */
     private static int getArchiveCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring("/archives/yyyy/MM/".length());
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/archives/yyyy/MM/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }
@@ -662,7 +662,7 @@ public final class ArticleProcessor {
      * @return author id
      */
     private static String getAuthorId(final String requestURI) {
-        final String path = requestURI.substring("/authors/".length());
+        final String path = requestURI.substring((Latkes.getContextPath() + "/authors/").length());
 
         final int idx = path.indexOf("/");
         if (-1 == idx) {
@@ -680,7 +680,7 @@ public final class ArticleProcessor {
      * @return page number
      */
     private static int getAuthorCurrentPageNum(final String requestURI, final String authorId) {
-        final String pageNumString = requestURI.substring(("/authors/" + authorId + "/").length());
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/authors/" + authorId + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }

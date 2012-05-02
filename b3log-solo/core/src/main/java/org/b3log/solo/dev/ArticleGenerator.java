@@ -72,7 +72,7 @@ public final class ArticleGenerator {
         Stopwatchs.start("Gen Articles");
 
         final String requestURI = request.getRequestURI();
-        final int num = Integer.valueOf(requestURI.substring("/dev/articles/gen/".length()));
+        final int num = Integer.valueOf(requestURI.substring((Latkes.getContextPath() + "/dev/articles/gen/").length()));
 
         try {
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();

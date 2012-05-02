@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -107,7 +108,7 @@ public final class CommentConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String commentId = request.getRequestURI().substring("/console/page/comment/".length());
+            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/comment/").length());
 
             commentMgmtService.removePageComment(commentId);
 
@@ -154,7 +155,7 @@ public final class CommentConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String commentId = request.getRequestURI().substring("/console/article/comment/".length());
+            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/comment/").length());
 
             commentMgmtService.removeArticleComment(commentId);
 
@@ -219,7 +220,7 @@ public final class CommentConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring(COMMENTS_URI_PREFIX.length());
+            final String path = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX).length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
@@ -280,7 +281,7 @@ public final class CommentConsole {
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String articleId = requestURI.substring((COMMENTS_URI_PREFIX + "article/").length());
+            final String articleId = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX + "article/").length());
 
             final List<JSONObject> comments = commentQueryService.getComments(articleId);
 
@@ -339,7 +340,7 @@ public final class CommentConsole {
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((COMMENTS_URI_PREFIX + "page/").length());
+            final String pageId = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX + "page/").length());
 
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
 

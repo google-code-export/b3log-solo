@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -160,7 +161,7 @@ public final class PluginConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring(PLUGINS_URI_PREFIX.length());
+            final String path = requestURI.substring((Latkes.getContextPath() + PLUGINS_URI_PREFIX).length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
