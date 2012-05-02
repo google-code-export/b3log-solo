@@ -26,8 +26,9 @@
                 <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
                     B3log Solo
                 </a>
-                <span class="right">
-                    <span>${userName}</span><a href="${contextPath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
+               
+                <span class="right"> 
+                    <span>${userName}</span><a href="${servePath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
                 </span>
                 <div class="clear"></div>
             </div>
