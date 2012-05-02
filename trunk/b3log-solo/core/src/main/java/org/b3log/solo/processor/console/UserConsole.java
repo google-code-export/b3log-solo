@@ -48,8 +48,7 @@ public final class UserConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(UserConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserConsole.class.getName());
     /**
      * User query service.
      */
@@ -102,11 +101,8 @@ public final class UserConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void updateUser(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = USER_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -119,8 +115,7 @@ public final class UserConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             userMgmtService.updateUser(requestJSONObject);
 
@@ -165,11 +160,8 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX,
-                       method = HTTPRequestMethod.POST)
-    public void addUser(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
+    @RequestProcessing(value = USER_URI_PREFIX, method = HTTPRequestMethod.POST)
+    public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -182,8 +174,7 @@ public final class UserConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
 
             final String userId = userMgmtService.addUser(requestJSONObject);
 
@@ -219,11 +210,8 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removeUser(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
+    @RequestProcessing(value = USER_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    public void removeUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -237,8 +225,7 @@ public final class UserConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String userId =
-                    request.getRequestURI().substring(USER_URI_PREFIX.length());
+            final String userId = request.getRequestURI().substring(USER_URI_PREFIX.length());
 
             userMgmtService.removeUser(userId);
 
@@ -285,12 +272,8 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = USERS_URI_PREFIX
-                               + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
-    public void getUsers(final HttpServletRequest request,
-                         final HttpServletResponse response,
-                         final HTTPRequestContext context)
+    @RequestProcessing(value = USERS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    public void getUsers(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -302,14 +285,11 @@ public final class UserConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path =
-                    requestURI.substring(USERS_URI_PREFIX.length());
+            final String path = requestURI.substring(USERS_URI_PREFIX.length());
 
-            final JSONObject requestJSONObject =
-                    Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
-            final JSONObject result =
-                    userQueryService.getUsers(requestJSONObject);
+            final JSONObject result = userQueryService.getUsers(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -345,11 +325,8 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.GET)
-    public void getUser(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
+    @RequestProcessing(value = USER_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -361,8 +338,7 @@ public final class UserConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String userId =
-                    requestURI.substring(USER_URI_PREFIX.length());
+            final String userId = requestURI.substring(USER_URI_PREFIX.length());
 
 
             final JSONObject result = userQueryService.getUser(userId);
