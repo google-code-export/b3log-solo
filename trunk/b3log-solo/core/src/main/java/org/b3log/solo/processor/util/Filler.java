@@ -482,7 +482,6 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
-            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
@@ -494,8 +493,9 @@ public final class Filler {
 
             final String skinDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
-            fillMinified(dataModel);
 
+            fillServer(dataModel);
+            fillMinified(dataModel);
             fillPageNavigations(dataModel);
             fillStatistic(dataModel);
         } catch (final JSONException e) {
@@ -507,6 +507,40 @@ public final class Filler {
         } finally {
             Stopwatchs.end();
         }
+    }
+
+    /**
+     * Fills the server info.
+     * 
+     * <p>
+     *   <ul>
+     *     <li>{@value Common#SERVER_SCHEME}</li>
+     *     <li>{@value Common#SERVER_HOST}</li>
+     *     <li>{@value Common#SERVER_PORT}</li>
+     *     <li>{@value Common#SERVER}</li>
+     *     <li>{@value Common#STATIC_SERVER_SCHEME}</li>
+     *     <li>{@value Common#STATIC_SERVER_HOST}</li>
+     *     <li>{@value Common#STATIC_SERVER_PORT}</li>
+     *     <li>{@value Common#STATIC_SERVER}</li>
+     *     <li>{@value Common#CONTEXT_PATH}</li>
+     *   </ul>
+     * </p>
+     * 
+     * @param dataModel the specified data model
+     */
+    public void fillServer(final Map<String, Object> dataModel) {
+        dataModel.put(Common.SERVER_SCHEME, Latkes.getServerScheme());
+        dataModel.put(Common.SERVER_HOST, Latkes.getServerHost());
+        dataModel.put(Common.SERVER_PORT, Latkes.getServerPort());
+        dataModel.put(Common.SERVER, Latkes.getServer());
+
+        dataModel.put(Common.STATIC_SERVER_SCHEME, Latkes.getStaticServerScheme());
+        dataModel.put(Common.STATIC_SERVER_HOST, Latkes.getStaticServerHost());
+        dataModel.put(Common.STATIC_SERVER_PORT, Latkes.getStaticServerPort());
+        dataModel.put(Common.STATIC_SERVER, Latkes.getStaticServer());
+
+        dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
+
     }
 
     /**

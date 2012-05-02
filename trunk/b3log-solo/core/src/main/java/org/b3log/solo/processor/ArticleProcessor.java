@@ -909,9 +909,9 @@ public final class ArticleProcessor {
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
+            filler.fillServer(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Show article password form failed", e);
