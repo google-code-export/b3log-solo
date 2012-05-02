@@ -28,7 +28,7 @@
                         ${killBrowserLabel}
                         <img class="kill" src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="/favicon.png"/>
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${contextPath}/favicon.png"/>
                         </a>
                     </div>
 

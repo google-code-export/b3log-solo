@@ -179,7 +179,7 @@ $.extend(Common.prototype, {
         
         $.ajax({
             type: "POST",
-            url: "/clear-cache.do",
+            url: "/blog/clear-cache.do",
             cache: false,
             contentType: "application/json",
             data: JSON.stringify(data),

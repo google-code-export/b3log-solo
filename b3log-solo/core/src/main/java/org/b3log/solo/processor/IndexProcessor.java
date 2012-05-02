@@ -192,19 +192,20 @@ public final class IndexProcessor {
      * Shows kill browser page with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response 
      */
     @RequestProcessing(value = {"/kill-browser.html"}, method = HTTPRequestMethod.GET)
-    public void showKillBrowser(final HTTPRequestContext context) {
+    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
+            dataModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
             filler.fillMinified(dataModel);

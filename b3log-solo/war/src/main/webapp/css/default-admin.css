@@ -311,7 +311,7 @@ button.selected {
 }
 
 .markdown-help.ico-help, .markdown-help.ico-close {
-    background-image: url("/images/icon.png");
+    background-image: url("../images/icon.png");
     background-position: -16px -47px;
     cursor: pointer;
     float: right;
@@ -439,7 +439,7 @@ button#submitArticle {
     margin-top: 9px;
 }
 .completed-ck span {
-    background: url(/images/icon.png) repeat center bottom;
+    background: url(../images/icon.png) repeat center bottom;
     border: 1px solid;
     border-color: #CCC #BBBBBB #A0A0A0;
     border-radius: 4px;
@@ -499,7 +499,7 @@ button#submitArticle {
     width: auto;
 }
 .dialog-close-icon {
-    background: url("/images/icon.png") repeat scroll -49px -16px transparent;
+    background: url("../images/icon.png") repeat scroll -49px -16px transparent;
     cursor: pointer;
     float: right;
     height: 6px;
@@ -522,7 +522,7 @@ button#submitArticle {
     text-decoration: none;
 }
 .pagination-pages {
-    background: url(/images/icon.png) repeat center bottom;
+    background: url(../images/icon.png) repeat center bottom;
     border: 1px solid;
     border-color: #CCC #BBBBBB #A0A0A0;
     border-radius: 4px;
@@ -567,7 +567,7 @@ button#submitArticle {
     text-indent: 6px;
     font-size: 14px;
     font-weight: normal;
-    background: url("/images/icon.png") repeat scroll center bottom #F1F1F1;
+    background: url("../images/icon.png") repeat scroll center bottom #F1F1F1;
 }
 
 .table-main td {
@@ -605,7 +605,7 @@ button#submitArticle {
     margin: 0 auto;
 }
 .table-upIcon,.table-downIcon {
-    background-image: url("/images/icon.png");
+    background-image: url("../images/icon.png");
     cursor: pointer;
     float: left;
     height: 16px;

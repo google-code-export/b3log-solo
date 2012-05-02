@@ -114,6 +114,7 @@ public final class TopBars {
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
+            topBarModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
 
             final String userName = currentUser.getString(User.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);
