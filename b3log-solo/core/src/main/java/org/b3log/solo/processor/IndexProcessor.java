@@ -205,9 +205,9 @@ public final class IndexProcessor {
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
-            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
+            filler.fillServer(dataModel);
             filler.fillMinified(dataModel);
 
             request.setAttribute(CACHED_OID, "No id");

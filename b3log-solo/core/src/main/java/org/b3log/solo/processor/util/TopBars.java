@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -68,6 +67,10 @@ public final class TopBars {
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Filler.
+     */
+    private static Filler filler = Filler.getInstance();
 
     /**
      * Generates top bar HTML.
@@ -115,7 +118,8 @@ public final class TopBars {
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-            topBarModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
+
+            filler.fillServer(topBarModel);
 
             final String userName = currentUser.getString(User.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);

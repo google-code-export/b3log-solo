@@ -122,8 +122,8 @@ public final class AdminConsole {
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
-            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
-
+            
+            filler.fillServer(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Admin index render failed", e);
