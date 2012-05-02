@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="robots" content="none" />
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="${contextPath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="${staticServer}${contextPath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link type="text/css" rel="stylesheet" href="${contextPath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <#if "CodeMirror-Markdown" == editorType>
         <link type="text/css" rel="stylesheet" href="${contextPath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" charset="utf-8" />

@@ -10,7 +10,7 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript" src="${contextPath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${contextPath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
-    var b3Config = {
+    var latkeConfig = {
         "staticServer": "${staticServer}",
         "server": "${server}",
         "contextPath": "${contextPath}",

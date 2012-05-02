@@ -180,7 +180,7 @@ $.extend(Common.prototype, {
         
         $.ajax({
             type: "POST",
-            url: b3Config.server + "/clear-cache.do",
+            url: latkeConfig.server + latkeConfig.contextPath + "/clear-cache.do",
             cache: false,
             contentType: "application/json",
             data: JSON.stringify(data),
