@@ -17,7 +17,7 @@
  * @fileoverview tinyMCE editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Apr 28, 2012
+ * @version 1.0.0.3, May 2, 2012
  */
 admin.editors.tinyMCE = {
     /*
@@ -25,15 +25,19 @@ admin.editors.tinyMCE = {
      * @param conf 编辑器初始化参数
      * @param conf.kind 编辑器类型
      * @param conf.id 编辑器渲染元素 id
-     * @param conf.language 编辑器使用预研
      * @param conf.fun 编辑器首次加载完成后回调函数
      */
     init: function (conf) {
+        var language = Label.localeString.substring(0, 2);
+        if (language === "zh") {
+            language = "zh-cn";
+        }
+        
         if (conf.kind && conf.kind === "simple") {
             try {
                 tinyMCE.init({
                     // General options
-                    language: conf.language,
+                    language: language,
                     mode : "exact",
                     elements : conf.id,
                     theme : "advanced",
@@ -54,15 +58,15 @@ admin.editors.tinyMCE = {
             try {
                 tinyMCE.init({
                     // General options
-                    language: conf.language,
+                    language: language,
                     mode : "exact",
                     elements : conf.id,
                     theme : "advanced",
-                    plugins : "spellchecker,autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,fullscreen,syntaxhl,wordcount",
+                    plugins : "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,syntaxhl,wordcount",
 
                     // Theme options
-                    theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,link,unlink,image,iespell,media,syntaxhl,",
-                    theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,advhr,blockquote,charmap,|,spellchecker,cleanup,fullscreen,code,preview,",
+                    theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,advhr,blockquote,syntaxhl,",
+                    theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,link,unlink,image,iespell,media,|,cleanup,code,preview,",
                     theme_advanced_buttons3 : "",
                     theme_advanced_toolbar_location : "top",
                     theme_advanced_toolbar_align : "left",
