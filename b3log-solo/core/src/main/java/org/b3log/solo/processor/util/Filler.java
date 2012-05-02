@@ -482,6 +482,7 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
+            dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
@@ -518,11 +519,14 @@ public final class Filler {
      *     <li>{@value Common#SERVER_HOST}</li>
      *     <li>{@value Common#SERVER_PORT}</li>
      *     <li>{@value Common#SERVER}</li>
+     *     <li>{@value Common#CONTEXT_PATH}</li>
+     *     <li>{@value Common#SERVE_PATH}</li>
      *     <li>{@value Common#STATIC_SERVER_SCHEME}</li>
      *     <li>{@value Common#STATIC_SERVER_HOST}</li>
      *     <li>{@value Common#STATIC_SERVER_PORT}</li>
      *     <li>{@value Common#STATIC_SERVER}</li>
-     *     <li>{@value Common#CONTEXT_PATH}</li>
+     *     <li>{@value Common#STATIC_PATH}</li>
+     *     <li>{@value Common#STATIC_SERVE_PATH}</li>
      *   </ul>
      * </p>
      * 
@@ -533,14 +537,15 @@ public final class Filler {
         dataModel.put(Common.SERVER_HOST, Latkes.getServerHost());
         dataModel.put(Common.SERVER_PORT, Latkes.getServerPort());
         dataModel.put(Common.SERVER, Latkes.getServer());
+        dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
+        dataModel.put(Common.SERVE_PATH, Latkes.getServePath());
 
         dataModel.put(Common.STATIC_SERVER_SCHEME, Latkes.getStaticServerScheme());
         dataModel.put(Common.STATIC_SERVER_HOST, Latkes.getStaticServerHost());
         dataModel.put(Common.STATIC_SERVER_PORT, Latkes.getStaticServerPort());
         dataModel.put(Common.STATIC_SERVER, Latkes.getStaticServer());
-
-        dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
-
+        dataModel.put(Common.STATIC_PATH, Latkes.getStaticPath());
+        dataModel.put(Common.STATIC_SERVE_PATH, Latkes.getStaticServePath());
     }
 
     /**
