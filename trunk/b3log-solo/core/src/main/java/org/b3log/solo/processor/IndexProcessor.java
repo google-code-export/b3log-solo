@@ -50,7 +50,6 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 
 /**
@@ -206,7 +205,7 @@ public final class IndexProcessor {
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
-            dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
             filler.fillMinified(dataModel);

@@ -29,7 +29,6 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -100,7 +99,7 @@ public final class InitProcessor {
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+        dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         filler.fillMinified(dataModel);
@@ -152,7 +151,7 @@ public final class InitProcessor {
                 return;
             }
 
-            requestJSONObject.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+            requestJSONObject.put(Common.CONTEXT_PATH, Latkes.getContextPath());
 
             initService.init(requestJSONObject);
 

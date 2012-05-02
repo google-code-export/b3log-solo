@@ -27,8 +27,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
@@ -85,7 +85,7 @@ public final class PermalinkFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
-        final String contextPath = AbstractServletListener.getContextPath();
+        final String contextPath = Latkes.getContextPath();
         final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 
         if (Permalinks.invalidPermalinkFormat(permalink)) {
@@ -140,10 +140,10 @@ public final class PermalinkFilter implements Filter {
 
         if (null != article) {
             request.setAttribute(Article.ARTICLE, article);
-            request.setAttribute("requestURI", AbstractServletListener.getContextPath() + "/article");
+            request.setAttribute("requestURI", Latkes.getContextPath() + "/article");
         } else {
             request.setAttribute(Page.PAGE, page);
-            request.setAttribute("requestURI", AbstractServletListener.getContextPath() + "/page");
+            request.setAttribute("requestURI", Latkes.getContextPath() + "/page");
         }
 
         request.setAttribute("method", "GET");

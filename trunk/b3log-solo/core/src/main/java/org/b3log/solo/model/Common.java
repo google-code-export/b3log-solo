@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.6, Apr 30, 2012
+ * @version 1.0.4.7, May 2, 2012
  * @since 0.3.1
  */
 public final class Common {
@@ -241,6 +241,38 @@ public final class Common {
      * Key of commentable.
      */
     public static final String COMMENTABLE = "commentable";
+    /**
+     * Key of server scheme.
+     */
+    public static final String SERVER_SCHEME = "serverScheme";
+    /**
+     * Key of server host.
+     */
+    public static final String SERVER_HOST = "serverHost";
+    /**
+     * Key of server port.
+     */
+    public static final String SERVER_PORT = "serverPort";
+    /**
+     * Key of server.
+     */
+    public static final String SERVER = "server";
+    /**
+     * Key of static server scheme.
+     */
+    public static final String STATIC_SERVER_SCHEME = "staticServerScheme";
+    /**
+     * Key of static server host.
+     */
+    public static final String STATIC_SERVER_HOST = "staticServerHost";
+    /**
+     * Key of static server port.
+     */
+    public static final String STATIC_SERVER_PORT = "staticServerPort";
+    /**
+     * Key of static server.
+     */
+    public static final String STATIC_SERVER = "staticServer";
     /**
      * Key of context path.
      */

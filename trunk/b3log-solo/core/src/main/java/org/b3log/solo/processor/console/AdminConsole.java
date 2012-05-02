@@ -35,7 +35,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -123,7 +122,7 @@ public final class AdminConsole {
                           preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
-            dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
+            dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
 
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
@@ -156,7 +155,7 @@ public final class AdminConsole {
         context.setRenderer(renderer);
 
         final String requestURI = request.getRequestURI();
-        final String templateName = StringUtils.substringBetween(requestURI, AbstractServletListener.getContextPath() + '/', ".") + ".ftl";
+        final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
         LOGGER.log(Level.FINEST, "Admin function[templateName={0}]", templateName);
         renderer.setTemplateName(templateName);
 

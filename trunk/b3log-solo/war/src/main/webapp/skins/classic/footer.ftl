@@ -10,6 +10,12 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript" src="${contextPath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${contextPath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
+    var b3Config = {
+        "staticServer": "${staticServer}",
+        "server": "${server}",
+        "contextPath": "${contextPath}",
+    };
+
     var common = new Common({
         "em00Label": "${em00Label}",
         "em01Label": "${em01Label}",

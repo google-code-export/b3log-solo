@@ -26,8 +26,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.SoloServletListener;
@@ -80,7 +80,7 @@ public final class InitCheckFilter implements Filter {
             }
 
             if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
-                && (AbstractServletListener.getContextPath() + "/init").equals(requestURI)) {
+                && (Latkes.getContextPath() + "/init").equals(requestURI)) {
                 // Do initailization
                 chain.doFilter(request, response);
 
@@ -96,7 +96,7 @@ public final class InitCheckFilter implements Filter {
                 context.setRequest((HttpServletRequest) request);
                 context.setResponse((HttpServletResponse) response);
 
-                request.setAttribute("requestURI", AbstractServletListener.getContextPath() + "/init");
+                request.setAttribute("requestURI", Latkes.getContextPath() + "/init");
                 request.setAttribute("method", "GET");
 
                 HTTPRequestDispatcher.dispatch(context);
