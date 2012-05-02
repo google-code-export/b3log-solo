@@ -29,6 +29,7 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
@@ -114,7 +115,7 @@ public final class TopBars {
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-            topBarModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
+            topBarModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
 
             final String userName = currentUser.getString(User.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);

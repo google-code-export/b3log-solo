@@ -43,6 +43,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
@@ -478,7 +479,7 @@ public final class Filler {
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
-            dataModel.put(Common.CONTEXT_PATH, Requests.getContextPath(request));
+            dataModel.put(Common.CONTEXT_PATH, AbstractServletListener.getContextPath());
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
