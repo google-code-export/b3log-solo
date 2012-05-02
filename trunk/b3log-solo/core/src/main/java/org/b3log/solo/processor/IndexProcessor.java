@@ -276,7 +276,6 @@ public final class IndexProcessor {
             } catch (final Exception e) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    return;
                 } catch (final IOException ex) {
                     LOGGER.log(Level.SEVERE, "Can not sned error 500!", ex);
                 }
