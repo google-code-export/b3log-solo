@@ -277,6 +277,18 @@ public final class Common {
      * Key of context path.
      */
     public static final String CONTEXT_PATH = "contextPath";
+    /**
+     * Key of static path.
+     */
+    public static final String STATIC_PATH = "staticPath";
+    /**
+     * Key of serve path.
+     */
+    public static final String SERVE_PATH = "servePath";
+    /**
+     * Key of static serve path.
+     */
+    public static final String STATIC_SERVE_PATH = "staticServePath";
 
     /**
      * Private default constructor.
