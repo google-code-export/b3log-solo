@@ -1,6 +1,6 @@
 <div class="marginBottom12">
     <h1 class="title">
-        <a href="/" id="logoTitle" >
+        <a href="${contextPath}" id="logoTitle" >
             ${blogTitle}
         </a>
         <span class="sub-title">${blogSubtitle}</span>
@@ -9,7 +9,7 @@
 <div class="left">
     <#list pageNavigations as page>
     <span>
-        <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;&nbsp;
+        <a href="${contextPath}${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>&nbsp;&nbsp;
     </span>
     </#list>
     <a href="${contextPath}/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;

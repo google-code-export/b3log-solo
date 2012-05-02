@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="article-title">
                                     <h2>
-                                        <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                                        <a class="no-underline" href="${contextPath}${article.articlePermalink}">${article.articleTitle}</a>
                                         <#if article.hasUpdated>
                                         <sup class="red">
                                             ${updatedLabel}
@@ -44,12 +44,12 @@
                                         ${tags1Label}
                                         <#list article.articleTags?split(",") as articleTag>
                                         <span>
-                                            <a href="/tags/${articleTag?url('UTF-8')}">
+                                            <a href="${contextPath}/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>&nbsp;&nbsp;&nbsp;
                                         <#-- 注释掉填充用户名部分
-                                        ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a>
+                                        ${author1Label}<a href="${contextPath}/authors/${article.authorId}">${article.authorName}</a>
                                         -->
                                     </div>
                                 </div>
@@ -66,21 +66,21 @@
                             <div class="article-details-footer">
                                 <div class="left">
                                     <#if nextArticlePermalink??>
-                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a><br/>
+                                    <a href="${contextPath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a><br/>
                                     </#if>
                                     <#if previousArticlePermalink??>
-                                    <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                    <a href="${contextPath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                     </#if>
                                 </div>
                                 <div class="right">
                                     <span class="article-create-date left">
                                         ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                     </span>
-                                    <a href="${article.articlePermalink}#comments" class="left">
+                                    <a href="${contextPath}${article.articlePermalink}#comments" class="left">
                                         <span class="left commentIcon" title="${commentLabel}"></span>
                                         <span class="left">${article.articleCommentCount}</span>&nbsp;&nbsp;
                                     </a>
-                                    <a href="${article.articlePermalink}" class="left">
+                                    <a href="${contextPath}${article.articlePermalink}" class="left">
                                         <span class="left browserIcon" title="${viewLabel}"></span>
                                         <span id="articleViewCount">${article.articleViewCount}</span>
                                     </a>
