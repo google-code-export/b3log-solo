@@ -24,3 +24,11 @@ No name matching appengine.google.com found
  # 使用非安全方式上传，增加参数如：appcfg *--insecure* update xxxxx
  # 删除 appengine.google.com 的 hosts 配置，尝试以其他方式（例如[https://code.google.com/appengine/docs/java/tools/uploadinganapp.html#Using_an_HTTP_Proxy 代理方式]）进行上传
 ----
+<p align="right">[#Top]</p> 
+==`为什浏览统计数么一直不变？`== 
+博客访问数、文章浏览计数默认是半小时从缓存同步数据存储的，可以配置 WEB-INF/cron.xml 修改这个定时策略。
+
+对数据有操作时（例如发/删/更新文章）都会清空缓存，这时的统计数是不会同步写入数据存储的。所以，统计数不会非常准确。
+
+另外，由于[https://code.google.com/p/b3log-solo/wiki/page_cache 页面缓存]（默认开启）的原因，统计数在页面上是不会有改变的，除非页面缓存被清空了。
+----
