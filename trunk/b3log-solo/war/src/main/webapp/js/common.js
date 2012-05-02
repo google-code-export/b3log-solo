@@ -17,7 +17,8 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.6, Apri 21, 2012
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.1.7, May 2, 2012
  */
 var Util = {
     error: function () {
@@ -179,7 +180,7 @@ $.extend(Common.prototype, {
         
         $.ajax({
             type: "POST",
-            url: "/blog/clear-cache.do",
+            url: b3Config.server + "/clear-cache.do",
             cache: false,
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -197,7 +198,7 @@ $.extend(Common.prototype, {
             for (var j = 1; j < commentSplited.length; j++) {
                 var key = commentSplited[j].substr(0, 2);
                 replacedStr += "[" + this.tips["em" + key + "Label"]  +
-                    "]" + commentSplited[j].slice(3);
+                "]" + commentSplited[j].slice(3);
             }
             $comment.html(replacedStr);
         }

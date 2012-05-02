@@ -232,7 +232,7 @@ $.extend(Page.prototype, {
         
         // load js
         $.ajax({
-            url: "/js/lib/SyntaxHighlighter/scripts/shCore.js",
+            url: b3Config.staticServer + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
             dataType: "script",
             cache: true,
             success: function() {
@@ -255,7 +255,7 @@ $.extend(Page.prototype, {
                 // when html-script is true, need shBrushXml.js
                 if (isScrip) {
                     $.ajax({
-                        url: "/js/lib/SyntaxHighlighter/scripts/shBrushXml.js",
+                        url: b3Config.staticServer + "/js/lib/SyntaxHighlighter/scripts/shBrushXml.js",
                         dataType: "script",
                         cache: true,
                         success: function() {
@@ -364,7 +364,7 @@ $.extend(Page.prototype, {
         var randomArticles1Label = this.tips.randomArticles1Label;
         // getRandomArticles
         $.ajax({
-            url: "/get-random-articles.do",
+            url: b3Config.server + "/get-random-articles.do",
             type: "POST",
             success: function(result, textStatus){
                 var randomArticles = result.randomArticles;
@@ -395,7 +395,7 @@ $.extend(Page.prototype, {
     loadRelevantArticles: function (id, headTitle) {
         try {
             $.ajax({
-                url: "/article/id/" + id + "/relevant/articles",
+                url: b3Config.server + "/article/id/" + id + "/relevant/articles",
                 type: "GET",
                 success: function(data, textStatus){
                     var articles = data.relevantArticles;
@@ -501,7 +501,7 @@ $.extend(Page.prototype, {
             }
             $.ajax({
                 type: "POST",
-                url: "/add-" + type + "-comment.do",
+                url: b3Config.server + "/add-" + type + "-comment.do",
                 cache: false,
                 contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
