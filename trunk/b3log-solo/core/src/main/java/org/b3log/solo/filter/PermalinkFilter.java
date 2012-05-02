@@ -26,7 +26,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
@@ -42,10 +44,11 @@ import org.json.JSONObject;
  * Article/Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Nov 17, 2011
+ * @version 1.0.1.5, May 2, 2012
  * @since 0.3.1
- * @see org.b3log.solo.web.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext) 
- * @see org.b3log.solo.web.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext) 
+ * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext, 
+ * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) 
+ * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext) 
  */
 public final class PermalinkFilter implements Filter {
 
@@ -82,8 +85,11 @@ public final class PermalinkFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
-        if (Permalinks.invalidPermalinkFormat(requestURI)) {
-            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
+        final String contextPath = AbstractServletListener.getContextPath();
+        final String permalink = StringUtils.substringAfter(requestURI, contextPath);
+
+        if (Permalinks.invalidPermalinkFormat(permalink)) {
+            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", permalink);
             chain.doFilter(request, response);
 
             return;
@@ -92,13 +98,13 @@ public final class PermalinkFilter implements Filter {
         JSONObject article;
         JSONObject page = null;
         try {
-            article = articleRepository.getByPermalink(requestURI);
+            article = articleRepository.getByPermalink(permalink);
             if (null == article) {
-                page = pageRepository.getByPermalink(requestURI);
+                page = pageRepository.getByPermalink(permalink);
             }
 
             if (null == page && null == article) {
-                LOGGER.log(Level.FINER, "Not found article/page with permalink[{0}]", requestURI);
+                LOGGER.log(Level.FINER, "Not found article/page with permalink[{0}]", permalink);
                 chain.doFilter(request, response);
 
                 return;
@@ -134,10 +140,10 @@ public final class PermalinkFilter implements Filter {
 
         if (null != article) {
             request.setAttribute(Article.ARTICLE, article);
-            request.setAttribute("requestURI", "/article");
+            request.setAttribute("requestURI", AbstractServletListener.getContextPath() + "/article");
         } else {
             request.setAttribute(Page.PAGE, page);
-            request.setAttribute("requestURI", "/page");
+            request.setAttribute("requestURI", AbstractServletListener.getContextPath() + "/page");
         }
 
         request.setAttribute("method", "GET");
