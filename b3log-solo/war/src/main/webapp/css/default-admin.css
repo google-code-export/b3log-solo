@@ -36,7 +36,7 @@ button.selected {
 
 /* start ico */
 .ico-arrow-down, .ico-arrow-up {
-    background: url("/images/arrows.png") repeat scroll 0 4px transparent;
+    background: url("../images/arrows.png") repeat scroll 0 4px transparent;
     float: right;
     height: 20px;
     margin: 2px 3px 0 0;
