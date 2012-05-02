@@ -30,7 +30,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
