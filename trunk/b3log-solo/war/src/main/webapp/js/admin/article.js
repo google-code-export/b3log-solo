@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, May 1, 2012
+ * @version 1.0.2.8, May 2, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -412,13 +412,7 @@ admin.article = {
         });
 
         // editor
-        var language = Label.localeString.substring(0, 2);
-        if (language === "zh") {
-            language = "zh-cn";
-        }
-        
         admin.editorArticle = new Editor({
-            language: language, 
             id: "articleContent",
             kind: "all",
             fun: fun,
@@ -426,7 +420,6 @@ admin.article = {
         });
         
         admin.editorAbstract = new Editor({
-            language: language, 
             id: "abstract",
             kind: "simple",
             height: 200

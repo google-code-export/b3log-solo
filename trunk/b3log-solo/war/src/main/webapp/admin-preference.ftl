@@ -152,8 +152,9 @@
                     </th>
                     <td>
                         <select id="editorType">
-                            <option value="tinyMCE">${tinyMCELabel}</option>
-                            <option value="CodeMirror-Markdown">${CodeMirrorMarkdownLabel}</option>
+                            <option value="tinyMCE">tinyMCE</option>
+                            <option value="CodeMirror-Markdown">CodeMirror(Markdown)</option>
+                            <option value="KindEditor">KindEditor</option>
                         </select>
                     </td>
                 </tr>

@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
+        <meta />
         <meta name="robots" content="none" />
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <#if "CodeMirror-Markdown" == editorType>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" />
         </#if>
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}" charset="utf-8"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <#if "tinyMCE" == editorType>
-        <script type="text/javascript" src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <#elseif "KindEditor" == editorType>
+        <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
         <#else>
-        <script type="text/javascript" src="${staticServePath}/js/lib/CodeMirror/codemirror.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/lib/CodeMirror/codemirror.js"></script>
         </#if>
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -141,36 +143,38 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
-        <script type="text/javascript" src="${staticServePath}/js/common.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/common.js"></script>
         <#if "" == miniPostfix>
-        <script type="text/javascript" src="${staticServePath}/js/admin/admin.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/editor.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/admin/admin.js"></script>
+        <script src="${staticServePath}/js/admin/editor.js"></script>
         <#if "tinyMCE" == editorType>
-        <script type="text/javascript" src="${staticServePath}/js/admin/editorTinyMCE.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/admin/editorTinyMCE.js"></script>
+        <#elseif "KindEditor" == editorType>
+        <script src="${staticServePath}/js/admin/editorKindEditor.js"></script>
         <#else>
-        <script type="text/javascript" src="${staticServePath}/js/admin/editorCodeMirror.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/admin/editorCodeMirror.js"></script>
         </#if>
-        <script type="text/javascript" src="${staticServePath}/js/admin/tablePaginate.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}}/js/admin/article.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/comment.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/articleList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/draftList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/pageList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/others.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/linkList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/preference.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/pluginList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/userList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/commentList.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/plugin.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/main.js" charset="utf-8"></script>
-        <script type="text/javascript" src="${staticServePath}/js/admin/about.js" charset="utf-8"></script>
+        <script src="${staticServePath}/js/admin/tablePaginate.js"></script>
+        <script src="${staticServePath}/js/admin/article.js"></script>
+        <script src="${staticServePath}/js/admin/comment.js"></script>
+        <script src="${staticServePath}/js/admin/articleList.js"></script>
+        <script src="${staticServePath}/js/admin/draftList.js"></script>
+        <script src="${staticServePath}/js/admin/pageList.js"></script>
+        <script src="${staticServePath}/js/admin/others.js"></script>
+        <script src="${staticServePath}/js/admin/linkList.js"></script>
+        <script src="${staticServePath}/js/admin/preference.js"></script>
+        <script src="${staticServePath}/js/admin/pluginList.js"></script>
+        <script src="${staticServePath}/js/admin/userList.js"></script>
+        <script src="${staticServePath}/js/admin/commentList.js"></script>
+        <script src="${staticServePath}/js/admin/plugin.js"></script>
+        <script src="${staticServePath}/js/admin/main.js"></script>
+        <script src="${staticServePath}/js/admin/about.js"></script>
         <#else>
-        <script type="text/javascript" src="${staticServePath}/js/admin/latkeAdmin${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+        <script src="${staticServePath}/js/admin/latkeAdmin${miniPostfix}.js?${staticResourceVersion}"></script>
         </#if>
         <#include "admin-label.ftl">
         ${plugins}
-        <script type="text/javascript">
+        <script >
             admin.inited();
         </script>
     </body>
