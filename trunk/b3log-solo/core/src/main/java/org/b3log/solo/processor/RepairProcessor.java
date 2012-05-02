@@ -31,11 +31,11 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
@@ -316,7 +316,7 @@ public final class RepairProcessor {
             htmlBuilder.append("Continue to delete ALL DATA</button></body>");
             htmlBuilder.append("<script type='text/javascript'>");
             htmlBuilder.append("function remove() {");
-            htmlBuilder.append("$.ajax({type: 'POST',url:'").append(Requests.getContextPath(request)).append("/rm-all-data.do',");
+            htmlBuilder.append("$.ajax({type: 'POST',url:'").append(AbstractServletListener.getContextPath()).append("/rm-all-data.do',");
             htmlBuilder.append("dataType: 'text/html',success: function(result){");
             htmlBuilder.append("$('html').html(result);}});}</script></html>");
 
