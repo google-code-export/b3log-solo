@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.2, Apr 29, 2012
+ * @version 1.0.3.3, May 3, 2012
 */
 
 /* start resset */
@@ -29,7 +29,7 @@ a:hover {
 }
 
 button.selected {
-    background: url("/images/bowknot/completed.png") no-repeat scroll right bottom transparent;
+    background: url("../images/bowknot/completed.png") no-repeat scroll right bottom transparent;
     color: #D54121;
 }
 /* end reset */
@@ -458,7 +458,7 @@ button#submitArticle {
 
 .completed-ck span.selected {
     color: #D54121;
-    background: url(/images/bowknot/completed.png) no-repeat right bottom;
+    background: url(../images/bowknot/completed.png) no-repeat right bottom;
 }
 .dialog-background {
     background-color: #000000;

@@ -1,4 +1,8 @@
 <script type="text/javascript">
+    var latkeConfig = {
+      "staticServePath": "${staticServePath}",
+      "servePath": "${servePath}"
+    };
     var Label = {
         "editorType": "${editorType}",
         "userRole": "${userRole}",
@@ -79,7 +83,6 @@
         "typeLabel": "${typeLabel}",
         "markdownHelpLabel": "${markdownHelpLabel}"
     };    
-    
     
     admin.init();
 </script>

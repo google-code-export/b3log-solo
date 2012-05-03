@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 25, 2012
+ * @version 1.0.0.7, May 3, 2012
  */
 
 admin.comment = { 
@@ -48,7 +48,7 @@ admin.comment = {
         }
         
         $.ajax({
-            url: "/console/comments/" + from + "/" + onId ,
+            url: latkeConfig.servePath + "/console/comments/" + from + "/" + onId ,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -108,7 +108,7 @@ admin.comment = {
             }
             
             $.ajax({
-                url: "/console/" + from + "/comment/" + id,
+                url: latkeConfig.servePath + "/console/" + from + "/comment/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){

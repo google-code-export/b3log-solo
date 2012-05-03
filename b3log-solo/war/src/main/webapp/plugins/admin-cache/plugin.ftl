@@ -18,7 +18,7 @@
             $("#loadMsg").text("${loadingLabel}");
             
             $.ajax({
-                url: "/console/plugins/admin-cache/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+                url: latkeConfig.servePath + "/console/plugins/admin-cache/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
                 type: "GET",
                 cache: false,
                 success: function(result, textStatus){
@@ -54,7 +54,7 @@
             }
             
             $.ajax({
-                url: "/console/plugins/admin-cache/enable/" + flag,
+                url: latkeConfig.servePath + "/console/plugins/admin-cache/enable/" + flag,
                 type: "PUT",
                 cache: false,
                 success: function(result, textStatus){

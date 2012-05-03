@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, May 2, 2012
+ * @version 1.0.2.9, May 3, 2012
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -44,7 +44,7 @@ admin.article = {
         $("#loadMsg").text(Label.loadingLabel);
         
         $.ajax({
-            url: "/console/article/" + admin.article.status.id,
+            url: latkeConfig.servePath + "/console/article/" + admin.article.status.id,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -105,7 +105,7 @@ admin.article = {
             $("#tipMsg").text("");
             
             $.ajax({
-                url: "/console/article/" + id,
+                url: latkeConfig.servePath + "/console/article/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){
@@ -158,7 +158,7 @@ admin.article = {
             };
             
             $.ajax({
-                url: "/console/article/",
+                url: latkeConfig.servePath + "/console/article/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -228,7 +228,7 @@ admin.article = {
             };
             
             $.ajax({
-                url: "/console/article/",
+                url: latkeConfig.servePath + "/console/article/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -328,7 +328,7 @@ admin.article = {
     init: function (fun) {
         // Inits Signs.
         $.ajax({
-            url: "/console/signs/",
+            url: latkeConfig.servePath + "/console/signs/",
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -365,7 +365,7 @@ admin.article = {
         
         // For tag auto-completion
         $.ajax({ // Gets all tags
-            url: "/console/tags",
+            url: latkeConfig.servePath + "/console/tags",
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -454,7 +454,7 @@ admin.article = {
         that._addDisabled();
         
         $.ajax({
-            url: "/console/article/unpublish/" + admin.article.status.id,
+            url: latkeConfig.servePath + "/console/article/unpublish/" + admin.article.status.id,
             type: "PUT",
             cache: false,
             success: function(result, textStatus){

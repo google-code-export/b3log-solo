@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Apr 29, 2012
+ * @version 1.0.1.8, May 3, 2012
  */
 
 /* page-list 相关操作 */
@@ -116,7 +116,7 @@ admin.pageList = {
         var that = this;
         
         $.ajax({
-            url: "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            url: latkeConfig.servePath + "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -180,7 +180,7 @@ admin.pageList = {
         $("#tipMsg").text("");
         
         $.ajax({
-            url: "/console/page/" + id,
+            url: latkeConfig.servePath + "/console/page/" + id,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -220,7 +220,7 @@ admin.pageList = {
             $("#tipMsg").text("");
 
             $.ajax({
-                url: "/console/page/" + id,
+                url: latkeConfig.servePath + "/console/page/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){
@@ -276,7 +276,7 @@ admin.pageList = {
             };
             
             $.ajax({
-                url: "/console/page/",
+                url: latkeConfig.servePath + "/console/page/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -342,7 +342,7 @@ admin.pageList = {
             };
             
             $.ajax({
-                url: "/console/page/",
+                url: latkeConfig.servePath + "/console/page/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -410,7 +410,7 @@ admin.pageList = {
         };
         
         $.ajax({
-            url: "/console/page/order/",
+            url: latkeConfig.servePath + "/console/page/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

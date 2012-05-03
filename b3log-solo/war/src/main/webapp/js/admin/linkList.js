@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Feb 25, 2012
+ * @version 1.0.1.2, May 3, 2012
  */
 
 /* link-list 相关操作 */
@@ -81,7 +81,7 @@ admin.linkList = {
         var that = this;
         
         $.ajax({
-            url: "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            url: latkeConfig.servePath + "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -149,7 +149,7 @@ admin.linkList = {
             };
             
             $.ajax({
-                url: "/console/link/",
+                url: latkeConfig.servePath + "/console/link/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -189,7 +189,7 @@ admin.linkList = {
         $("#updateLink").dialog("open");
         
         $.ajax({
-            url: "/console/link/" + id,
+            url: latkeConfig.servePath + "/console/link/" + id,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -227,7 +227,7 @@ admin.linkList = {
             };
             
             $.ajax({
-                url: "/console/link/",
+                url: latkeConfig.servePath + "/console/link/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -258,7 +258,7 @@ admin.linkList = {
             $("#tipMsg").text("");
             
             $.ajax({
-                url: "/console/link/" + id,
+                url: latkeConfig.servePath + "/console/link/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){
@@ -324,7 +324,7 @@ admin.linkList = {
         };
         
         $.ajax({
-            url: "/console/link/order/",
+            url: latkeConfig.servePath + "/console/link/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
