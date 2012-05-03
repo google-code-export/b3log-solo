@@ -1,4 +1,4 @@
-<link type="text/css" rel="stylesheet" href="/plugins/symphony-news-getter/style.css"/>
+<link type="text/css" rel="stylesheet" href="${staticServePath}/plugins/symphony-news-getter/style.css"/>
 <div id="symphonyNewsGetterPanel">
     <div class="module-panel">
         <div class="module-header">
@@ -16,7 +16,7 @@
             $("#loadMsg").text("${loadingLabel}");
             
             $("#symphonyNewsGetter").css("background",
-            "url(/images/loader.gif) no-repeat scroll center center transparent");
+            "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
             
             $.ajax({
                 url: "http://symphony.b3log.org:80/get-news",

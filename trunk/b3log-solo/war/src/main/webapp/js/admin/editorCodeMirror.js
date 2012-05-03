@@ -17,7 +17,7 @@
  * @fileoverview markdowm CodeMirror editor 
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Apr 29, 2012
+ * @version 1.0.0.3, May 3, 2012
  */
 admin.editors.CodeMirror = {
     /*
@@ -77,7 +77,7 @@ admin.editors.CodeMirror = {
                         }
                         
                         $.ajax({
-                            url: "/console/markdown/2html",
+                            url: latkeConfig.servePath + "/console/markdown/2html",
                             type: "POST",
                             cache: false,
                             data: "markdownText=" + it[conf.id].getValue(),

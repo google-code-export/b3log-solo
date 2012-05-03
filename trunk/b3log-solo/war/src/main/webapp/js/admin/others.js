@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 25, 2012
+ * @version 1.0.0.7, May 3, 2012
  */
 
 /* oterhs 相关操作 */
@@ -30,7 +30,7 @@ admin.others = {
         $("#tabOthers").tabs();
         
         $.ajax({
-            url: "/console/reply/notification/template",
+            url: latkeConfig.servePath + "/console/reply/notification/template",
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -55,7 +55,7 @@ admin.others = {
         $("#tipMsg").text("");
         
         $.ajax({
-            url: "/console/tag/unused",
+            url: latkeConfig.servePath + "/console/tag/unused",
             type: "DELETE",
             cache: false,
             success: function(result, textStatus){
@@ -70,7 +70,7 @@ admin.others = {
      */
     getUnusedTags: function () {
         $.ajax({
-            url: "/console/tag/unused",
+            url: latkeConfig.servePath + "/console/tag/unused",
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -103,7 +103,7 @@ admin.others = {
         };
             
         $.ajax({
-            url: "/console/reply/notification/template",
+            url: latkeConfig.servePath + "/console/reply/notification/template",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

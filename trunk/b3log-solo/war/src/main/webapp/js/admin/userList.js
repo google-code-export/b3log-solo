@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Feb 25, 2012
+ * @version 1.0.1.2, May 3, 2012
  */
 
 /* user-list 相关操作 */
@@ -76,7 +76,7 @@ admin.userList = {
         var that = this;
         
         $.ajax({
-            url: "/console/users/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            url: latkeConfig.servePath +  "/console/users/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -136,7 +136,7 @@ admin.userList = {
             };
             
             $.ajax({
-                url: "/console/user/",
+                url: latkeConfig.servePath + "/console/user/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -176,7 +176,7 @@ admin.userList = {
         $("#userUpdate").dialog("open");
         
         $.ajax({
-            url: "/console/user/" + id,
+            url: latkeConfig.servePath + "/console/user/" + id,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -222,7 +222,7 @@ admin.userList = {
             };
             
             $.ajax({
-                url: "/console/user/",
+                url: latkeConfig.servePath + "/console/user/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -253,7 +253,7 @@ admin.userList = {
             $("#tipMsg").text("");
             
             $.ajax({
-                url: "/console/user/" + id,
+                url: latkeConfig.servePath + "/console/user/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){
