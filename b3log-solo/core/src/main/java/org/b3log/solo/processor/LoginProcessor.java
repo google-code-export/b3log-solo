@@ -100,7 +100,7 @@ public final class LoginProcessor {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
-        filler.fillServer(dataModel);
+        Keys.fillServer(dataModel);
         filler.fillMinified(dataModel);
     }
 

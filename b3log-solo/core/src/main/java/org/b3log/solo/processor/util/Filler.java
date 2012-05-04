@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.4, May 2, 2012
+ * @version 1.0.5.5, May 4, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -435,8 +435,8 @@ public final class Filler {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-            dataModel.put(Common.STATIC_SERVER, Latkes.getStaticServer());
-            dataModel.put(Common.SERVER, Latkes.getServer());
+            dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
+            dataModel.put(Keys.Server.SERVER, Latkes.getServer());
 
 
             // Activates plugins
@@ -495,7 +495,7 @@ public final class Filler {
             final String skinDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-            fillServer(dataModel);
+            Keys.fillServer(dataModel);
             fillMinified(dataModel);
             fillPageNavigations(dataModel);
             fillStatistic(dataModel);
@@ -508,44 +508,6 @@ public final class Filler {
         } finally {
             Stopwatchs.end();
         }
-    }
-
-    /**
-     * Fills the server info.
-     * 
-     * <p>
-     *   <ul>
-     *     <li>{@value Common#SERVER_SCHEME}</li>
-     *     <li>{@value Common#SERVER_HOST}</li>
-     *     <li>{@value Common#SERVER_PORT}</li>
-     *     <li>{@value Common#SERVER}</li>
-     *     <li>{@value Common#CONTEXT_PATH}</li>
-     *     <li>{@value Common#SERVE_PATH}</li>
-     *     <li>{@value Common#STATIC_SERVER_SCHEME}</li>
-     *     <li>{@value Common#STATIC_SERVER_HOST}</li>
-     *     <li>{@value Common#STATIC_SERVER_PORT}</li>
-     *     <li>{@value Common#STATIC_SERVER}</li>
-     *     <li>{@value Common#STATIC_PATH}</li>
-     *     <li>{@value Common#STATIC_SERVE_PATH}</li>
-     *   </ul>
-     * </p>
-     * 
-     * @param dataModel the specified data model
-     */
-    public void fillServer(final Map<String, Object> dataModel) {
-        dataModel.put(Common.SERVER_SCHEME, Latkes.getServerScheme());
-        dataModel.put(Common.SERVER_HOST, Latkes.getServerHost());
-        dataModel.put(Common.SERVER_PORT, Latkes.getServerPort());
-        dataModel.put(Common.SERVER, Latkes.getServer());
-        dataModel.put(Common.CONTEXT_PATH, Latkes.getContextPath());
-        dataModel.put(Common.SERVE_PATH, Latkes.getServePath());
-
-        dataModel.put(Common.STATIC_SERVER_SCHEME, Latkes.getStaticServerScheme());
-        dataModel.put(Common.STATIC_SERVER_HOST, Latkes.getStaticServerHost());
-        dataModel.put(Common.STATIC_SERVER_PORT, Latkes.getStaticServerPort());
-        dataModel.put(Common.STATIC_SERVER, Latkes.getStaticServer());
-        dataModel.put(Common.STATIC_PATH, Latkes.getStaticPath());
-        dataModel.put(Common.STATIC_SERVE_PATH, Latkes.getStaticServePath());
     }
 
     /**

@@ -101,7 +101,7 @@ public final class InitProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-        filler.fillServer(dataModel);
+        Keys.fillServer(dataModel);
         filler.fillMinified(dataModel);
     }
 
@@ -151,7 +151,7 @@ public final class InitProcessor {
                 return;
             }
 
-            requestJSONObject.put(Common.CONTEXT_PATH, Latkes.getContextPath());
+            requestJSONObject.put(Keys.Server.CONTEXT_PATH, Latkes.getContextPath());
 
             initService.init(requestJSONObject);
 
