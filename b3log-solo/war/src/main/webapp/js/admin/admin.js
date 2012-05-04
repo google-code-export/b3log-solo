@@ -35,7 +35,7 @@ $.extend(Admin.prototype, {
      * 登出
      */
     logout: function () {
-        window.location.href = latkeConfig.servePath + "/logout?to=" + latkeConfig.servePath + "/";
+        window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
     },
     
     /*
