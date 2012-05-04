@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.3, Dec 26, 2011
+ * @version 1.0.0.4, May 4, 2012
  * @since 0.3.5
  */
 public final class TopBars {
@@ -68,10 +69,6 @@ public final class TopBars {
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
-    /**
-     * Filler.
-     */
-    private static Filler filler = Filler.getInstance();
 
     /**
      * Generates top bar HTML.
@@ -103,7 +100,7 @@ public final class TopBars {
             topBarModel.put(Common.ONLINE_VISITOR_CNT, Statistics.getOnlineVisitorCount());
 
             if (null == currentUser) {
-                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
+                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Latkes.getServePath() + Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
 
                 topBarTemplate.process(topBarModel, stringWriter);
@@ -112,7 +109,7 @@ public final class TopBars {
             }
 
             topBarModel.put(Common.IS_LOGGED_IN, true);
-            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL(Latkes.getServePath()));
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
             topBarModel.put("clearAllCacheLabel", langPropsService.get("clearAllCacheLabel"));

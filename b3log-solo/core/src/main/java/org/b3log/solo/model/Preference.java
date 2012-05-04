@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Apr 29, 2012
+ * @version 1.1.0.6, May 4, 2012
  * @since 0.3.1
  */
 public final class Preference {
@@ -239,10 +239,6 @@ public final class Preference {
          * Default skin directory name.
          */
         public static final String DEFAULT_SKIN_DIR_NAME = "classic";
-        /**
-         * Default blog host.
-         */
-        public static final String DEFAULT_BLOG_HOST = "localhost:8080";
         /**
          * Default language.
          */

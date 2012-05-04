@@ -151,8 +151,6 @@ public final class InitProcessor {
                 return;
             }
 
-            requestJSONObject.put(Keys.Server.CONTEXT_PATH, Latkes.getContextPath());
-
             initService.init(requestJSONObject);
 
             // If initialized, login the admin
