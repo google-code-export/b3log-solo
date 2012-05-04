@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, May 2, 2012
+ * @version 1.0.1.8, May 4, 2012
  */
 var Util = {
     error: function () {
@@ -180,7 +180,7 @@ $.extend(Common.prototype, {
         
         $.ajax({
             type: "POST",
-            url: latkeConfig.server + latkeConfig.contextPath + "/clear-cache.do",
+            url: latkeConfig.servePath + "/clear-cache.do",
             cache: false,
             contentType: "application/json",
             data: JSON.stringify(data),
