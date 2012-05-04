@@ -39,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
@@ -147,14 +148,8 @@ public final class ArticleProcessor {
                 showArticle(context, request, response);
                 return;
             }
-
-            final JSONObject jsonObject = new JSONObject();
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
-
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-            renderer.setJSONObject(jsonObject);
+            
+            showArticlePwdForm(context, request, response, article);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Processes article view password form submits failed", e);
 
@@ -528,15 +523,41 @@ public final class ArticleProcessor {
             return;
         }
 
-        final String viewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
-        boolean notTypedPwd = null == request.getAttribute("typedViewPwd");
+        final String articleId = article.optString(Keys.OBJECT_ID);
 
-        if (userUtils.isLoggedIn(request, response)) { // The blogger does not need to type password
-            notTypedPwd = true;
+        final HttpSession session = request.getSession(true);
+        Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+        if (null == viewPwds) {
+            viewPwds = new HashMap<String, String>();
         }
 
-        if (!Strings.isEmptyOrNull(viewPwd) && notTypedPwd) {
-            // The article need view password and not typed the password yet, show the password form
+        final String viewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
+        final boolean needPwd = !Strings.isEmptyOrNull(viewPwd);
+
+        while (true) {
+            if (!needPwd) {
+                break;
+            }
+
+            if (userUtils.isLoggedIn(request, response)) { // The blogger does not need to type password, assumes typed
+                break;
+            }
+
+            if (viewPwd.equals(viewPwds.get(articleId))) { // Has typed right password
+                break;
+            }
+
+            if (viewPwd.equals(request.getAttribute("typedViewPwd"))) { // Just typed right password
+                viewPwds.put(articleId, (String) request.getAttribute("typedViewPwd"));
+                session.setAttribute(Common.ARTICLES_VIEW_PWD, viewPwds);
+
+                break;
+            }
+
+            if (null != request.getAttribute("typedViewPwd")) {
+                LOGGER.log(Level.WARNING, "Typed a wrong password for article[id={0}] ", articleId);
+            }
+
             showArticlePwdForm(context, request, response, article);
 
             return;
@@ -546,7 +567,6 @@ public final class ArticleProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
 
-        String articleId;
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -558,7 +578,6 @@ public final class ArticleProcessor {
 
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
 
-            articleId = article.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
 
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
@@ -910,6 +929,8 @@ public final class ArticleProcessor {
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            
+            // TODO: 88250, langPropsService.get("passwordNotMatchLabel");
 
             Keys.fillServer(dataModel);
             filler.fillMinified(dataModel);
