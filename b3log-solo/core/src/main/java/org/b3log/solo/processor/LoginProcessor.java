@@ -193,8 +193,7 @@ public final class LoginProcessor {
      * @param request the specified request
      * @param response the specified response
      */
-    public static void tryLogInWithCookie(final HttpServletRequest request,
-                                          final HttpServletResponse response) {
+    public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return;
@@ -204,36 +203,28 @@ public final class LoginProcessor {
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
                 if ("b3log-latke".equals(cookie.getName())) {
-                    final JSONObject cookieJSONObject =
-                            new JSONObject(cookie.getValue());
+                    final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                    final String userEmail =
-                            cookieJSONObject.optString(User.USER_EMAIL);
+                    final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
                     if (Strings.isEmptyOrNull(userEmail)) {
                         break;
                     }
 
-                    final JSONObject user = userRepository.getByEmail(
-                            userEmail.toLowerCase().trim());
+                    final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
                     if (null == user) {
                         break;
                     }
 
-                    final String userPassword =
-                            user.optString(User.USER_PASSWORD);
-                    final String hashPassword =
-                            cookieJSONObject.optString(User.USER_PASSWORD);
+                    final String userPassword = user.optString(User.USER_PASSWORD);
+                    final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
                     if (MD5.hash(userPassword).equals(hashPassword)) {
                         Sessions.login(request, response, user);
-                        LOGGER.log(Level.INFO,
-                                   "Logged in with cookie[email={0}]", userEmail);
+                        LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
                     }
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARNING,
-                       "Parses cookie failed, clears the cookie[name=b3log-latke]",
-                       e);
+            LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
             final Cookie cookie = new Cookie("b3log-latke", null);
             cookie.setMaxAge(0);

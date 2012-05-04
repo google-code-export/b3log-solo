@@ -90,6 +90,7 @@ public final class TopBars {
             LoginProcessor.tryLogInWithCookie(request, response);
             final JSONObject currentUser = userUtils.getCurrentUser(request);
 
+            Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);
 
             topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(request));
@@ -115,8 +116,6 @@ public final class TopBars {
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-
-            Keys.fillServer(topBarModel);
 
             final String userName = currentUser.getString(User.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);
