@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -119,7 +120,7 @@ public final class TopBars {
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
-            filler.fillServer(topBarModel);
+            Keys.fillServer(topBarModel);
 
             final String userName = currentUser.getString(User.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);

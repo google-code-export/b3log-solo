@@ -56,7 +56,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Nov 7, 2011
+ * @version 1.1.0.7, May 4, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -84,7 +84,7 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = "/\\d*", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
         context.setRenderer(renderer);
@@ -207,7 +207,7 @@ public final class IndexProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
-            filler.fillServer(dataModel);
+            Keys.fillServer(dataModel);
             filler.fillMinified(dataModel);
 
             request.setAttribute(CACHED_OID, "No id");

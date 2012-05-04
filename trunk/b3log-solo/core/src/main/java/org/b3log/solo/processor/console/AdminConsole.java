@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, May 2, 2012
+ * @version 1.0.0.4, May 4, 2012
  * @since 0.4.1
  */
 @RequestProcessor
@@ -123,7 +124,7 @@ public final class AdminConsole {
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
             
-            filler.fillServer(dataModel);
+            Keys.fillServer(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Admin index render failed", e);
@@ -163,6 +164,8 @@ public final class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
+        
+        Keys.fillServer(dataModel);
 
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
 

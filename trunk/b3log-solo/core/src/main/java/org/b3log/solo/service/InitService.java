@@ -493,7 +493,7 @@ public final class InitService {
         ret.put(RECENT_COMMENT_DISPLAY_CNT, Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
-        ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST + requestJSONObject.optString(Common.CONTEXT_PATH));
+        ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST + requestJSONObject.optString(Keys.Server.CONTEXT_PATH));
         ret.put(ADMIN_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
