@@ -39,19 +39,22 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
  * Login/logout processor.
- * 
+ *
  * <p>Initializes administrator</p>.
- * 
+ *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Apr 30, 2012
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.1.0.8, Mar 4, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -73,14 +76,19 @@ public final class LoginProcessor {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+    /**
+     * Preference query service.
+     */
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
      * Shows login page.
-     * 
+     *
      * @param context the specified context
+     * @throws Exception exception 
      */
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
-    public void showLogin(final HTTPRequestContext context) {
+    public void showLogin(final HTTPRequestContext context) throws Exception {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
@@ -94,11 +102,14 @@ public final class LoginProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+        final JSONObject preference = preferenceQueryService.getPreference();
         dataModel.putAll(langs);
         dataModel.put(Common.GOTO, destinationURL);
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
 
         Keys.fillServer(dataModel);
         filler.fillMinified(dataModel);
@@ -106,7 +117,7 @@ public final class LoginProcessor {
 
     /**
      * Logins.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -116,7 +127,7 @@ public final class LoginProcessor {
      * }
      * </pre>
      * </p>
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
@@ -169,9 +180,9 @@ public final class LoginProcessor {
 
     /**
      * Logout.
-     * 
+     *
      * @param context the specified context
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
@@ -189,7 +200,7 @@ public final class LoginProcessor {
 
     /**
      * Tries to login with cookie.
-     * 
+     *
      * @param request the specified request
      * @param response the specified response
      */

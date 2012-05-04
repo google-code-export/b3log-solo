@@ -48,7 +48,7 @@
                     Powered by
                     <a href="http://b3log-solo.googlecode.com" target="_blank">
                         ${b3logLabel}&nbsp;
-                        <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+                        <span class="solo">Solo</span></a>,
                     ver ${version}
                 </div>
             </div>
