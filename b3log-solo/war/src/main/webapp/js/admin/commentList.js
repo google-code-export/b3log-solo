@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, May 3, 2012
+ * @version 1.0.1.4, May 4, 2012
  */
 
 /* comment-list 相关操作 */
@@ -83,7 +83,7 @@ admin.commentList = {
                     commentsData[i] = {};
                     
                     commentsData[i].content = Util.replaceEmString(comments[i].commentContent) + 
-                    "<span class='table-tag'> on &nbsp;&nbsp;</span><a href='" + comments[i].commentSharpURL + 
+                    "<span class='table-tag'> on &nbsp;&nbsp;</span><a href='" + latkeConfig.servePath + comments[i].commentSharpURL + 
                     "' target='_blank'>" + comments[i].commentTitle +
                     "</a>";
                 

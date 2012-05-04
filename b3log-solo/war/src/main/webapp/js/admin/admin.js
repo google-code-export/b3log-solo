@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.7, Apr 28, 2012
+ * @version 1.0.1.8, May 4, 2012
  */
 
 var Admin = function () {
@@ -35,7 +35,7 @@ $.extend(Admin.prototype, {
      * 登出
      */
     logout: function () {
-        window.location.href = "/logout?to=/";
+        window.location.href = latkeConfig.servePath + "/logout?to=" + latkeConfig.servePath + "/";
     },
     
     /*
