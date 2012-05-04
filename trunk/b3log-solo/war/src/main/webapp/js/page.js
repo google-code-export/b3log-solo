@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Apr 22, 2012
+ * @version 1.0.2.7, May 4, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -232,7 +232,7 @@ $.extend(Page.prototype, {
         
         // load js
         $.ajax({
-            url: latkeConfig.staticServer + latkeConfig.contextPath + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
+            url: latkeConfig.staticServePath + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
             dataType: "script",
             cache: true,
             success: function() {
