@@ -224,7 +224,7 @@ public final class Common {
     /**
      * Key of go to.
      */
-    public static final String GOTO = "to";
+    public static final String GOTO = "goto";
     /**
      * Key of online visitor count.
      */

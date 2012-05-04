@@ -133,16 +133,11 @@ public final class LoginProcessor {
             final String loginFailLabel = langPropsService.get("loginFailLabel");
             jsonObject.put(Keys.MSG, loginFailLabel);
 
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(request,
-                                                          context.getResponse());
-            final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL);
-            final String userPwd =
-                    requestJSONObject.getString(User.USER_PASSWORD);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, context.getResponse());
+            final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
+            final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 
-            if (Strings.isEmptyOrNull(userEmail)
-                || Strings.isEmptyOrNull(userPwd)) {
+            if (Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPwd)) {
                 return;
             }
 
@@ -160,7 +155,7 @@ public final class LoginProcessor {
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
-                jsonObject.put(Common.GOTO, Common.ADMIN_INDEX_URI);
+                jsonObject.put("to", Latkes.getServePath() + Common.ADMIN_INDEX_URI);
                 jsonObject.remove(Keys.MSG);
 
                 return;

@@ -100,7 +100,7 @@ public final class TopBars {
             topBarModel.put(Common.ONLINE_VISITOR_CNT, Statistics.getOnlineVisitorCount());
 
             if (null == currentUser) {
-                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Latkes.getServePath() + Common.ADMIN_INDEX_URI));
+                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
 
                 topBarTemplate.process(topBarModel, stringWriter);
@@ -109,7 +109,7 @@ public final class TopBars {
             }
 
             topBarModel.put(Common.IS_LOGGED_IN, true);
-            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL(Latkes.getServePath()));
+            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
             topBarModel.put("clearAllCacheLabel", langPropsService.get("clearAllCacheLabel"));
