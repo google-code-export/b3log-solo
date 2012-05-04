@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.4, May 4, 2012
+ * @version 1.0.3.5, May 4, 2012
 */
 
 /* start resset */
@@ -298,7 +298,11 @@ button.selected {
 
 /* start article */
 .markdown-preivew {
-    background-color: #FFFFFF;
+    background-image: -moz-linear-gradient(top,#FFFFFF,#F3F3F3);
+    background-image: -ms-linear-gradient(top,#FFFFFF,#F3F3F3);
+    background-image: -o-linear-gradient(top,#FFFFFF,#F3F3F3);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#F3F3F3));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#F3F3F3');
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-style: solid;
     border-width: 1px;
@@ -493,31 +497,38 @@ button#submitArticle {
     line-height: 27px;
     margin-left: 3px;
 }
-.dialog-header-left, .dialog-header-right, .dialog-header-bg {
-    background-color: #666666;
-    float: left;
-    height: 24px;
+
+.dialog-header-bg {
+    background: url("../images/icon.png") repeat scroll center bottom #F1F1F1;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-radius: 6px 6px 0 0;
+    border-style: solid;
+    border-width: 1px 1px 0;
     cursor: move;
-    width: 4px;
+    height: 34px;
 }
 .dialog-header-middle {
     float: left;
 }
-.dialog-header-bg {
-    width: auto;
-}
+
 .dialog-close-icon {
-    background: url("../images/icon.png") repeat scroll -49px -16px transparent;
+    background: url("../images/bowknot/dialog-close.png") no-repeat scroll 0 0 transparent;
     cursor: pointer;
     float: right;
-    height: 6px;
-    padding: 5px;
-    width: 7px;
-    margin-top: 5px;
+    height: 18px;
+    margin-top: 6px;
+    padding: 3px;
+    width: 22px;
 }
+
+.dialog-close-icon:hover {
+    background-image: url("../images/bowknot/dialog-close-hover.png");
+}
+
 .dialog-main {
     background-color: #FFFFFF;
     border: 2px solid #666666;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-top-width: 0;
     padding: 12px;
 }
@@ -588,8 +599,8 @@ button#submitArticle {
     border-bottom: 0px;
 }
 .table-heiglight td, .table-lineHover td {
-    background-color: #F2F2F2;
-    border-right-color: #F2F2F2;
+    background-color: #F3F3F3;
+    border-right-color: #F3F3F3;
 }
 .table-expendRow td {
     padding: 0 0 5px 36px;
