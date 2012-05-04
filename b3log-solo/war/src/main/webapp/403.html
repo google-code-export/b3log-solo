@@ -4,8 +4,7 @@
         <meta charset="utf-8" />
         <meta name="robots" content="none"/>
         <title>403 Forbidden</title>
-        <link type="text/css" rel="stylesheet" href="/css/default-base.css" charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="/css/default-init.css" charset="utf-8" />
+        <link rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
     </head>
     <body>
@@ -14,13 +13,12 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
+                            <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main" style="height: 251px; padding-top: 87px; width: 370px; padding-left: 100px;">
+                    <div class="main forbidden">
                         <h2>403 Forbidden</h2>
-                        <br/><br/>
-                        <ul class="left marginLeft12" style="width: 50%;">
+                        <ul>
                             <li>
                                 <a href="/">Click</a> to <a href="/">Index</a>
                             </li>
@@ -36,7 +34,8 @@
                                 </a>
                             </li>
                         </ul>
-                        <img class="right" alt="forbidden" style="margin: 38px 10px 0 0;width: 96px;height: 96px;" src="${staticServePath}/images/forbidden.png"/>
+                        <img alt="forbidden" src="${staticServePath}/images/forbidden.png"/>
+                        <span class="clear"></span>
                     </div>
                     <span class="clear"></span>
                 </div>

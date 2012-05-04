@@ -21,10 +21,10 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
+                            <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main">
+                    <div class="main article-pwd">
                         <h2>
                             ${articleTitle}   
                         </h2>
