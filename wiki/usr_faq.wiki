@@ -32,3 +32,8 @@ No name matching appengine.google.com found
 
 另外，由于[https://code.google.com/p/b3log-solo/wiki/page_cache 页面缓存]（默认开启）的原因，统计数在页面上是不会有改变的，除非页面缓存被清空了。
 ----
+<p align="right">[#Top]</p> 
+==`忘记登录口令怎么办？`== 
+ * GAE 版本请到 [http://appengine.google.com GAE 管理控制台] Datasotre 一栏查看 User 存储
+ * 本地容器版本请直接查看数据表 User
+----
