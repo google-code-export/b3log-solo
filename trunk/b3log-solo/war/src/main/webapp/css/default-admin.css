@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.3, May 3, 2012
+ * @version 1.0.3.4, May 4, 2012
 */
 
 /* start resset */
@@ -404,6 +404,14 @@ button#submitArticle {
 .about-margin {
     font-size: 20px;
     margin: 20px 0;
+}
+
+.ico-alipay-me {
+    background-image: url("../images/alipay-me.png");
+    font-size: 20px;
+    height: 24px;
+    margin: 20px 0;
+    width: 126px;
 }
 /* end about */
 

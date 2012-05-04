@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, May 3, 2012
+ * @version 1.0.1.2, May 4, 2012
  */
 
 /* article-list 相关操作 */
@@ -83,7 +83,7 @@ admin.articleList = {
                 articleData = [];
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
-                    articleData[i].title = "<a href='" + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
+                    articleData[i].title = "<a href='" + latkeConfig.servePath + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
                     + articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime);
                     articleData[i].comments = articles[i].articleCommentCount;
@@ -91,7 +91,7 @@ admin.articleList = {
                     articleData[i].author = articles[i].authorName;
                             
                     var topClass = articles[i].articlePutTop ? Label.cancelPutTopLabel : Label.putTopLabel;
-                    articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
+                    articleData[i].expendRow = "<a target='_blank' href='" + latkeConfig.servePath + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', true)\">" + Label.updateLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.articleList.popTop(this, '" + articles[i].oId + "')\">" + topClass + "</a>  \

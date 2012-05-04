@@ -81,7 +81,7 @@
             $("#loadMsg").text("${loadingLabel}");
             
             $.ajax({
-                url: "/console/plugins/admin-cache/status/",
+                url: latkeConfig.servePath + "/console/plugins/admin-cache/status/",
                 type: "GET",
                 cache: false,
                 success: function(result, textStatus){
