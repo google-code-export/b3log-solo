@@ -24,15 +24,15 @@
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main">
+                    <div class="main login">
                         <h2>
                             <span>${welcomeToSoloLabel}</span>
                             <a target="_blank" href="http://b3log-solo.googlecode.com">
                                 ${b3logLabel}
-                                <span style="color: orangered;">&nbsp;Solo</span>
+                                <span class="solo">&nbsp;Solo</span>
                             </a>
                         </h2>
-                        <table style="margin: 66px auto;">
+                        <table>
                             <tr>
                                 <td width="60px">
                                     <label for="userEmail">
@@ -69,11 +69,11 @@
             </div>
             <div class="footerWrapper">
                 <div class="footer">
-                    &copy; ${year}
+                    &copy; ${year} - <a href="http://${blogHost}">${blogTitle}</a><br/>
                     Powered by
                     <a href="http://b3log-solo.googlecode.com" target="_blank">
                         ${b3logLabel}&nbsp;
-                        <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+                        <span class="solo">Solo</span></a>,
                     ver ${version}
                 </div>
             </div>
