@@ -241,6 +241,10 @@ public final class Common {
      * Key of commentable.
      */
     public static final String COMMENTABLE = "commentable";
+    /**
+     * Key of articles view password.
+     */
+    public static final String ARTICLES_VIEW_PWD = "articlesViewPwd";
 
     /**
      * Private default constructor.
