@@ -102,7 +102,7 @@
                 };
                 
                 $.ajax({
-                    url: "/login",
+                    url: "${servePath}/login",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(requestJSONObject),
