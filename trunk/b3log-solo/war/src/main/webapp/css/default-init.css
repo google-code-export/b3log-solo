@@ -1,18 +1,20 @@
 @charset "utf-8";
 /*
- * init, login and kill IE page style
+ * 403, article-pwd, init, login, over-quota and kill-browser page style.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, May 1, 2012
+ * @version 1.0.0.8, May 4, 2012
 */
 html {
     height: 100%;
     overflow: hidden;
 }
+
 *,html,body {
     margin: 0;
     padding: 0;
 }
+
 body {
     background-color: #F3F1E5;
     color: #4D505D;
@@ -53,10 +55,6 @@ input {
 
 input:focus {
     box-shadow: 0px 0px 5px rgba(200, 200, 200, 0.9);
-}
-
-tr {
-    height: 54px;
 }
 
 .clear {
@@ -109,6 +107,7 @@ tr {
     padding: 162px 12px 0;
     width: 153px;
 }
+
 .main {
     border-left: 1px solid #E6E5D9;
     float: right;
@@ -117,6 +116,79 @@ tr {
     padding: 12px 24px;
     width: 470px;
     height: 338px;
+}
+
+.footerWrapper {
+    background-color: #FFFFFF;
+    border-top: 1px solid #E6E5D9;
+    bottom: 0;
+    padding: 12px 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.footerWrapper a {
+    text-decoration: none;
+}
+
+
+/* start article-pwd */
+.article-pwd > div {
+    margin-bottom: 10px;
+    max-height: 264px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+.article-pwd #confirm {
+    margin-top: 6px;
+}
+/* end article-pwd */
+
+/* start over-quota */
+.over-quota {
+    height: auto; 
+    margin: 60px 0pt;
+}
+
+.over-quota ul {
+    width: 50%;
+    margin: 12px 0 0 12px;
+    float: left;
+}
+
+.over-quota {
+    margin: 38px 10px 0 0;
+    width: 96px;
+    height: 96px;
+    float: right;
+}
+/* end over-quota */
+
+/* start 403 */
+.forbidden {
+    height: 251px;
+    padding-top: 87px; 
+    width: 370px; 
+    padding-left: 100px;
+}
+
+.forbidden ul {
+    width: 50%;
+    float: left;
+    margin: 12px 0 0 12px;
+}
+
+.forbidden img {
+    margin: 38px 10px 0 0;
+    width: 96px;
+    height: 96px;
+    float: right;
+}
+/* end 403 */
+tr {
+    height: 54px;
 }
 
 .kill {
@@ -153,31 +225,3 @@ tr {
 .main p {
     margin: 12px 0;
 }
-
-.footerWrapper {
-    background-color: #FFFFFF;
-    border-top: 1px solid #E6E5D9;
-    bottom: 0;
-    padding: 12px 0;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-}
-
-.footerWrapper a {
-    text-decoration: none;
-}
-
-
-/* start article-pwd */
-.main > div {
-    margin-bottom: 10px;
-    max-height: 264px;
-    overflow: auto;
-    word-wrap: break-word;
-}
-
-#confirm {
-    margin-top: 6px;
-}
-/* end article-pwd */
