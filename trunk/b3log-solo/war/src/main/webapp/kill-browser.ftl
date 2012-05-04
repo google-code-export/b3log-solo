@@ -11,9 +11,9 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
         <meta http-equiv="Window-target" content="_top" />
-        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body>
         <div class="wrapper">
@@ -21,14 +21,14 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.jpg"/>
+                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
                         ${killBrowserLabel}
-                        <img class="kill" src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
+                        <img class="kill" src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="${contextPath}/favicon.png"/>
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
                     </div>
 

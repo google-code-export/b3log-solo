@@ -11,9 +11,9 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
         <meta http-equiv="Window-target" content="_top" />
-        <link type="text/css" rel="stylesheet" href="${contextPath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${contextPath}/favicon.png" />
-        <script type="text/javascript" src="${contextPath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
+        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -21,7 +21,7 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${contextPath}/images/logo.jpg"/>
+                            <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <img border="0" class="icon" alt="B3log" title="B3log" src="${contextPath}/favicon.png"/>
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
                     </div>
                     <span class="clear"></span>
@@ -186,7 +186,7 @@
                                 return;
                             }
                     
-                            window.location.href = "${contextPath}/admin-index.do#tools/user-list";
+                            window.location.href = "${servePath}/admin-index.do#tools/user-list";
                         }
                     });
                 }
