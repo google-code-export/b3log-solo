@@ -147,9 +147,7 @@ public final class PageCacheFilter implements Filter {
             // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE).equals(cachedType)
                 && cachedPageContentObject.has(AbstractCacheablePageAction.CACHED_PWD)) {
-                final JSONObject article = new JSONObject();
-                article.put(Keys.OBJECT_ID, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID));
-                article.put(Article.ARTICLE_VIEW_PWD, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_PWD));
+                final JSONObject article = articleRepository.get(AbstractCacheablePageAction.CACHED_OID);
 
                 if (articles.needViewPwd(httpServletRequest, article)) {
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
