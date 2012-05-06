@@ -67,7 +67,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             writer = response.getWriter();
         } catch (final Exception e) {

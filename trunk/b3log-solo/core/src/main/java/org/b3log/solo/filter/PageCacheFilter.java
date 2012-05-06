@@ -33,11 +33,18 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.processor.util.TopBars;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +66,14 @@ public final class PageCacheFilter implements Filter {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -123,6 +138,32 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
+        final String cachedType = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_TYPE);
+
+        try {
+            // If cached an article that has view password, dispatches the request to ArticleProcessor#showArticle()
+            if (langPropsService.get(PageTypes.ARTICLE).equals(cachedType)
+                && cachedPageContentObject.has(AbstractCacheablePageAction.CACHED_PWD)) {
+                final HTTPRequestContext context = new HTTPRequestContext();
+                context.setRequest((HttpServletRequest) request);
+                context.setResponse((HttpServletResponse) response);
+
+                final String articleId = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID);
+
+                final JSONObject article = articleRepository.get(articleId);
+
+                request.setAttribute(Article.ARTICLE, article);
+                request.setAttribute("requestURI", Latkes.getContextPath() + "/article");
+
+                request.setAttribute("method", "GET");
+
+                HTTPRequestDispatcher.dispatch(context);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            chain.doFilter(request, response);
+        }
+
         try {
             LOGGER.log(Level.FINEST, "Writes resposne for page[pageCacheKey={0}] from cache", pageCacheKey);
             response.setContentType("text/html");
@@ -132,7 +173,7 @@ public final class PageCacheFilter implements Filter {
             final String topBarHTML = TopBars.getTopBarHTML((HttpServletRequest) request, (HttpServletResponse) response);
             cachedPageContent = cachedPageContent.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
 
-            final String cachedType = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_TYPE);
+
             final String cachedTitle = cachedPageContentObject.getString(AbstractCacheablePageAction.CACHED_TITLE);
             LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});

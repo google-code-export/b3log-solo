@@ -156,7 +156,7 @@ public final class IndexProcessor {
      * @param request the specified request
      * @param response the specified response 
      */
-    @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/error.do", method = HTTPRequestMethod.GET)
     public void handleErrors(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
