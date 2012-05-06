@@ -125,8 +125,6 @@ public final class Articles {
             if (!articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
                 return true;
             }
-
-            return false;
         }
 
         if (null == userService.getCurrentUser(request)) {
