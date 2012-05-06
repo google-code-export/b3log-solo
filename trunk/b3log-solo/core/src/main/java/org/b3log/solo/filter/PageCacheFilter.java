@@ -35,8 +35,6 @@ import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -45,6 +43,7 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,6 +73,10 @@ public final class PageCacheFilter implements Filter {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Article utilities.
+     */
+    private Articles articles = Articles.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -141,23 +144,24 @@ public final class PageCacheFilter implements Filter {
         final String cachedType = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_TYPE);
 
         try {
-            // If cached an article that has view password, dispatches the request to ArticleProcessor#showArticle()
+            // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE).equals(cachedType)
                 && cachedPageContentObject.has(AbstractCacheablePageAction.CACHED_PWD)) {
-                final HTTPRequestContext context = new HTTPRequestContext();
-                context.setRequest((HttpServletRequest) request);
-                context.setResponse((HttpServletResponse) response);
+                final JSONObject article = new JSONObject();
+                article.put(Keys.OBJECT_ID, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID));
+                article.put(Article.ARTICLE_VIEW_PWD, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_PWD));
 
-                final String articleId = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID);
-
-                final JSONObject article = articleRepository.get(articleId);
-
-                request.setAttribute(Article.ARTICLE, article);
-                request.setAttribute("requestURI", Latkes.getContextPath() + "/article");
-
-                request.setAttribute("method", "GET");
-
-                HTTPRequestDispatcher.dispatch(context);
+                if (articles.needViewPwd(httpServletRequest, article)) {
+                    final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                    try {
+                        httpServletResponse.sendRedirect(Latkes.getServePath()
+                                                         + "/console/article-pwd" + articles.buildArticleViewPwdFormParameters(article));
+                        return;
+                    } catch (final Exception e) {
+                        httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+                        return;
+                    }
+                }
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
