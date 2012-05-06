@@ -149,11 +149,13 @@ public final class PageCacheFilter implements Filter {
                 && cachedPageContentObject.has(AbstractCacheablePageAction.CACHED_PWD)) {
                 JSONObject article = new JSONObject();
 
-                article.put(Keys.OBJECT_ID, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID));
+                final String articleId = cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID);
+
+                article.put(Keys.OBJECT_ID, articleId);
                 article.put(Article.ARTICLE_VIEW_PWD, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_PWD));
 
                 if (articles.needViewPwd(httpServletRequest, article)) {
-                    article = articleRepository.get(AbstractCacheablePageAction.CACHED_OID); // Loads the article entity
+                    article = articleRepository.get(articleId); // Loads the article entity
 
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                     try {
