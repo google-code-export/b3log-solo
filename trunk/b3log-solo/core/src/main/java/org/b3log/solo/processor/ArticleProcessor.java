@@ -40,8 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -190,27 +190,28 @@ public final class ArticleProcessor {
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
     public void onArticlePwdForm(final HTTPRequestContext context,
                                  final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
-
         try {
-            final String articleId = requestJSONObject.getString("articleId");
-            final String pwdTyped = requestJSONObject.getString("pwdTyped");
+            final String articleId = request.getParameter("articleId");
+            final String pwdTyped = request.getParameter("pwdTyped");
 
             final JSONObject article = articleQueryService.getArticleById(articleId);
 
-            final JSONObject jsonObject = new JSONObject();
-            jsonObject.put(Keys.STATUS_CODE, true);
-
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-            renderer.setJSONObject(jsonObject);
-
             if (article.getString(Article.ARTICLE_VIEW_PWD).equals(pwdTyped)) {
-                jsonObject.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                final HttpSession session = request.getSession();
+                if (null != session) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+                    if (null == viewPwds) {
+                        viewPwds = new HashMap<String, String>();
+                    }
+
+                    viewPwds.put(articleId, pwdTyped);
+                }
+
+                response.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));
                 return;
             }
 
-            jsonObject.put(Keys.STATUS_CODE, false);
             response.sendRedirect(Latkes.getServePath() + "/console/article-pwd" + articleUtils.buildArticleViewPwdFormParameters(article)
                                   + '&' + Keys.MSG + '=' + URLEncoder.encode(langPropsService.get("passwordNotMatchLabel"), "UTF-8"));
         } catch (final Exception e) {
