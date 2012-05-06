@@ -122,16 +122,16 @@ public final class Articles {
                 viewPwds = new HashMap<String, String>();
             }
 
-            if (!articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
-                return true;
+            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+                return false;
             }
         }
 
-        if (null == userService.getCurrentUser(request)) {
-            return true;
+        if (null != userService.getCurrentUser(request)) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
