@@ -37,6 +37,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.processor.util.TopBars;
@@ -146,9 +147,14 @@ public final class PageCacheFilter implements Filter {
             // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE).equals(cachedType)
                 && cachedPageContentObject.has(AbstractCacheablePageAction.CACHED_PWD)) {
-                final JSONObject article = articleRepository.get(AbstractCacheablePageAction.CACHED_OID);
+                JSONObject article = new JSONObject();
+
+                article.put(Keys.OBJECT_ID, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_OID));
+                article.put(Article.ARTICLE_VIEW_PWD, cachedPageContentObject.optString(AbstractCacheablePageAction.CACHED_PWD));
 
                 if (articles.needViewPwd(httpServletRequest, article)) {
+                    article = articleRepository.get(AbstractCacheablePageAction.CACHED_OID); // Loads the article entity
+
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                     try {
                         httpServletResponse.sendRedirect(Latkes.getServePath()
