@@ -46,8 +46,7 @@ input {
     font-size: 20px;
     font-weight: 200;
     height: 28px;
-    margin-right: 6px;
-    margin-top: 2px;
+    margin-top: 10px;
     outline: medium none;
     padding: 3px;
     width: 280px;
@@ -231,6 +230,14 @@ input:focus {
     position: absolute;
     top: 102px;
     width: 470px;
+}
+
+#sys p {
+    height: 166px;
+}
+
+#initButton {
+    margin-right: 10px;
 }
 
 #tip  {

@@ -135,7 +135,7 @@
             var getUserInfo = function () {
                 if (validate()) {
                     $("#init").animate({
-                        "top": -170
+                        "top": -130
                     }); 
                     
                     $("#user").animate({
