@@ -15,12 +15,16 @@
  */
 package org.b3log.solo.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
@@ -28,7 +32,11 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -42,7 +50,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Feb 24, 2012
+ * @version 1.0.2.8, May 6, 2012
  * @since 0.3.1
  */
 public final class Articles {
@@ -59,6 +67,74 @@ public final class Articles {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
+
+    /**
+     * Builds article view password form parameters with the specified article.
+     * 
+     * @param article the specified article
+     * @return parameters string, for example,
+     * <pre>
+     * "?articleId=xxx&articleTitle=xxx&articlePermalink=xxx&articleAbstract=xxx"
+     * </pre>
+     * @throws UnsupportedEncodingException if can not encode the arguments 
+     */
+    public String buildArticleViewPwdFormParameters(final JSONObject article) throws UnsupportedEncodingException {
+        final StringBuilder parametersBuilder =
+                new StringBuilder("?articleId=").append(article.optString(Keys.OBJECT_ID)).
+                append("&articleTitle=").append(URLEncoder.encode(article.optString(Article.ARTICLE_TITLE), "UTF-8")).
+                append("&articlePermalink=").append(URLEncoder.encode(article.optString(Article.ARTICLE_PERMALINK), "UTF-8")).
+                append("&articleAbstract=").append(URLEncoder.encode(article.optString(Article.ARTICLE_ABSTRACT, " "), "UTF-8"));
+
+        return parametersBuilder.toString();
+    }
+
+    /**
+     * Checks whether need password to view the specified article with the specified request.
+     * 
+     * <p>
+     * Checks session, if not represents, checks article property {@link Article#ARTICLE_VIEW_PWD view password}.
+     * </p>
+     * 
+     * <p>
+     * The blogger itself dose not need view password never.
+     * </p>
+     * 
+     * @param request the specified request
+     * @param article the specified article
+     * @return {@code true} if need, returns {@code false} otherwise
+     */
+    public boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+        final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
+
+        if (Strings.isEmptyOrNull(articleViewPwd)) {
+            return false;
+        }
+
+        final HttpSession session = request.getSession();
+        if (null != session) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+            if (null == viewPwds) {
+                viewPwds = new HashMap<String, String>();
+            }
+
+            if (!articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (null == userService.getCurrentUser(request)) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Gets the specified article's author. 
@@ -78,8 +154,7 @@ public final class Articles {
      * @return user, {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getAuthor(final JSONObject article)
-            throws ServiceException {
+    public JSONObject getAuthor(final JSONObject article) throws ServiceException {
         try {
             final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
 
@@ -96,12 +171,10 @@ public final class Articles {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed",
-                       article.optString(Keys.OBJECT_ID));
+            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
             throw new ServiceException(e);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed",
-                       article.optString(Keys.OBJECT_ID));
+            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
             throw new ServiceException(e);
         }
     }
@@ -161,8 +234,7 @@ public final class Articles {
      * @return {@code true} if it has updated, {@code false} otherwise
      * @throws JSONException json exception
      */
-    public boolean hasUpdated(final JSONObject article)
-            throws JSONException {
+    public boolean hasUpdated(final JSONObject article) throws JSONException {
         final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
         final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
 
@@ -176,8 +248,7 @@ public final class Articles {
      * @return {@code true} if it had been published, {@code false} otherwise
      * @throws JSONException json exception
      */
-    public boolean hadBeenPublished(final JSONObject article)
-            throws JSONException {
+    public boolean hadBeenPublished(final JSONObject article) throws JSONException {
         return article.getBoolean(Article.ARTICLE_HAD_BEEN_PUBLISHED);
     }
 
@@ -188,15 +259,11 @@ public final class Articles {
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    public List<JSONObject> getUnpublishedArticles()
-            throws RepositoryException, JSONException {
-        final Map<String, SortDirection> sorts =
-                new HashMap<String, SortDirection>();
+    public List<JSONObject> getUnpublishedArticles() throws RepositoryException, JSONException {
+        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED,
-                                                  FilterOperator.EQUAL,
-                                                  true);
+        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
         final JSONObject result = articleRepository.get(query);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 

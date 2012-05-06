@@ -37,6 +37,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
 import org.json.JSONObject;
 
@@ -64,6 +65,10 @@ public final class PermalinkFilter implements Filter {
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    /**
+     * Article utilities.
+     */
+    private Articles articles = Articles.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -82,6 +87,8 @@ public final class PermalinkFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
@@ -111,9 +118,21 @@ public final class PermalinkFilter implements Filter {
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Processes article permalink filter failed", e);
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
+        }
+
+        // If requests an article and the article need view passowrd, sends redirect to the password form
+        if (null != article && articles.needViewPwd(httpServletRequest, article)) {
+            try {
+                httpServletResponse.sendRedirect(Latkes.getServePath()
+                                                 + "/console/article-pwd" + articles.buildArticleViewPwdFormParameters(article));
+                return;
+            } catch (final Exception e) {
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
         }
 
         dispatchToArticleOrPageProcessor(request, response, article, page);
