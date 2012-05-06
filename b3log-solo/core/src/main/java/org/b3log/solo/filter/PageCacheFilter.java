@@ -37,7 +37,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.processor.util.TopBars;
