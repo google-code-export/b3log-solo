@@ -34,9 +34,12 @@
                         <#if msg??>
                         <div>${msg}</div>
                         </#if>
-                        <label for="pwdTyped">访问密码：</label>
-                        <input type="password" id="pwdTyped" />
-                        <button id="confirm" onclick="confirm();">${confirmLabel}</button>
+                        <form method="POST" action="${staticServePath}/console/article-pwd">
+                            <label for="pwdTyped">访问密码：</label>
+                            <input type="password" id="pwdTyped" name="pwdTyped" />
+                            <input type="hidden" name="articleId" value="${articleId}" />
+                            <button id="confirm" type="submit">${confirmLabel}</button>
+                        </form>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
@@ -56,28 +59,5 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            function confirm() {
-                var requestJSONObject = {
-                    "articleId": "${articleId}",
-                    "articlePermalink": "${articlePermalink}",
-                    "pwdTyped": $("#pwdTyped").val()
-                };
-                
-                $.ajax({
-                    url: "${staticServePath}/console/article-pwd",
-                    type: "POST",
-                    data: JSON.stringify(requestJSONObject),
-                    success: function(result, textStatus){
-                        if (!result.sc) {
-                            alert(result.msg);
-                            return;
-                        }
-                        
-                        document.location.href = "result.articlePermalink";
-                    }
-                });
-            }
-        </script>
     </body>
 </html>
