@@ -206,6 +206,8 @@ public final class ArticleProcessor {
                     }
 
                     viewPwds.put(articleId, pwdTyped);
+                    
+                    session.setAttribute(Common.ARTICLES_VIEW_PWD, viewPwds);
                 }
 
                 response.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));
