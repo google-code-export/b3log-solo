@@ -31,6 +31,9 @@
                         <div>
                             ${articleAbstract}
                         </div>
+                        <#if msg??>
+                        <div>${msg}</div>
+                        </#if>
                         <label for="pwdTyped">访问密码：</label>
                         <input type="password" id="pwdTyped" />
                         <button id="confirm" onclick="confirm();">${confirmLabel}</button>
@@ -66,11 +69,12 @@
                     type: "POST",
                     data: JSON.stringify(requestJSONObject),
                     success: function(result, textStatus){
-                        if (result.sc) {
+                        if (!result.sc) {
                             alert(result.msg);
-                        } else {
-                            $("html").html(result);
+                            return;
                         }
+                        
+                        document.location.href = "result.articlePermalink";
                     }
                 });
             }
