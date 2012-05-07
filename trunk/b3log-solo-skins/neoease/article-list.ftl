@@ -2,7 +2,7 @@
 <div class="article">
     <h2>
         <span class="left">
-        <a class="article-title" href="${article.articlePermalink}">
+        <a class="article-title" href="${servePath}${article.articlePermalink}">
             ${article.articleTitle}
         </a>
         <#if article.hasUpdated>
@@ -28,14 +28,14 @@
             </#if>
         </span>
         <span class="user-ico" title="${authorLabel}">
-            <a href="/authors/${article.authorId}">${article.authorName}</a>
+            <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
         </span>
     </div>
     <div class="right article-element">
-        <a href="${article.articlePermalink}#comments">
+        <a href="${servePath}${article.articlePermalink}#comments">
             ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
         </a>&nbsp;&nbsp;
-        <a href="${article.articlePermalink}">
+        <a href="${servePath}${article.articlePermalink}">
             ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
         </a>
     </div>
@@ -49,7 +49,7 @@
     <div class="article-element">
         <span class="tag-ico" title="${tagsLabel}">
             <#list article.articleTags?split(",") as articleTag>
-            <a href="/tags/${articleTag?url('UTF-8')}">
+            <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                 ${articleTag}</a><#if articleTag_has_next>,</#if>
             </#list>
         </span>
@@ -59,19 +59,19 @@
 <#if 0 != paginationPageCount>
 <div class="pagination">
     <#if 1 != paginationPageNums?first>
-    <a href="${path}/1" title="${firstPageLabel}"><</a>
-    <a href="${path}/${paginationPreviousPageNum}" title="${previousPageLabel}"><<</a>
+    <a href="${servePath}${path}/1" title="${firstPageLabel}"><</a>
+    <a href="${servePath}${path}/${paginationPreviousPageNum}" title="${previousPageLabel}"><<</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
     <#if paginationPageNum == paginationCurrentPageNum>
-    <a href="${path}/${paginationPageNum}" class="current">${paginationPageNum}</a>
+    <a href="${servePath}${path}/${paginationPageNum}" class="current">${paginationPageNum}</a>
     <#else>
-    <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
+    <a href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
     </#if>
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
-    <a href="${path}/${paginationNextPageNum}" title="${nextPagePabel}">></a>
-    <a href="${path}/${paginationPageCount}" title="${lastPageLabel}">>></a>
+    <a href="${servePath}${path}/${paginationNextPageNum}" title="${nextPagePabel}">></a>
+    <a href="${servePath}${path}/${paginationPageCount}" title="${lastPageLabel}">>></a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
