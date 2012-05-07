@@ -107,7 +107,7 @@
                     </th>
                     <td valign="top" style="min-width: 190px;">
                         <input type="text" class="normalInput" id="commentValidate"/>
-                        <img id="captcha" alt="validate" src="/captcha.do" />
+                        <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
                     </td>
                     <td>
                         <span class="error-msg" id="commentErrorTip"></span>
