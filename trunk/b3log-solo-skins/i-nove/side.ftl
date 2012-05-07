@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div>
-                        <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
+                        <a title="${comment.commentContent}" class='side-comment' href="${servePath}${comment.commentSharpURL}">
                             ${comment.commentContent}
                         </a>
                     </div>
@@ -43,7 +43,7 @@
             <#list mostCommentArticles as article>
             <li>
                 <a title="${article.articleTitle}"
-                   href="${article.articlePermalink}">
+                   href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleCommentCount}]</sup>
                     ${article.articleTitle}
                 </a>
@@ -59,7 +59,7 @@
             <#list mostViewCountArticles as article>
             <li>
                 <a title="${article.articleTitle}"
-                   href="${article.articlePermalink}">
+                   href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleViewCount}]</sup>
                     ${article.articleTitle}
                 </a>
@@ -75,10 +75,10 @@
         <ul class="navi-tags">
             <#list mostUsedTags as tag>
             <li>
-                <a href="/tag-articles-feed.do?oId=${tag.oId}">
+                <a href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
                     <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                 </a>
-                <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                     ${tag.tagTitle}</a>(${tag.tagPublishedRefCount})
             </li>
             </#list>
@@ -110,11 +110,11 @@
             <#list archiveDates as archiveDate>
             <li>
                 <#if "en" == localeString?substring(0, 2)>
-                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>
-                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 </#if>

@@ -18,7 +18,7 @@
                         <div class="left main">
                             <div class="article">
                                 <h2 class="article-title">
-                                    <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                                    <a class="no-underline" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
                                     <#if article.hasUpdated>
                                     <sup class="red">
                                         ${updatedLabel}
@@ -32,7 +32,7 @@
                                 </h2>
                                 <div class="margin5">
                                     <div class="article-date left">
-                                        <a class="left" title="${article.authorName}" href="/authors/${article.authorId}">
+                                        <a class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                                             <span class="authorIcon"></span>
                                             ${article.authorName}
                                         </a>
@@ -44,7 +44,7 @@
                                         </#if>
                                     </div>
                                     <div class="right">
-                                        <a href="${article.articlePermalink}#comments" class="left">
+                                        <a href="${servePath}${article.articlePermalink}#comments" class="left">
                                             <span class="left articles-commentIcon" title="${commentLabel}"></span>
                                             ${article.articleCommentCount}
                                         </a>
@@ -60,7 +60,7 @@
                                     </#if>
                                 </div>
                                 <div class="margin5 paddingTop12">
-                                    <a class="left" href="${article.articlePermalink}">
+                                    <a class="left" href="${servePath}${article.articlePermalink}">
                                         <span title="${viewLabel}" class="left article-browserIcon"></span>
                                         ${article.articleViewCount}
                                     </a>
@@ -68,7 +68,7 @@
                                         <span title="${tagLabel}" class="tagsIcon"></span>
                                         <#list article.articleTags?split(",") as articleTag>
                                         <span>
-                                            <a href="/tags/${articleTag?url('UTF-8')}">
+                                            <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>
@@ -78,13 +78,13 @@
                                 <div>
                                     <#if nextArticlePermalink??>
                                     <div class="right">
-                                        <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                        <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                     </div>
                                     <div class="clear"></div>
                                     </#if>
                                     <#if previousArticlePermalink??>
                                     <div class="right">
-                                        <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                        <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                     </div>
                                     </#if>
                                     <div class="clear"></div>
