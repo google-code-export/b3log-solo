@@ -3,7 +3,7 @@
     <div class="content">
         <div class="moon-current-icon"></div>
         <#list users as user>
-        <a class="star-icon" href="/authors/${user.oId}">
+        <a class="star-icon" href="${servePath}/authors/${user.oId}">
             ${user.userName}
         </a>
         </#list>
@@ -14,7 +14,7 @@
 <div class="header-navi">
     <div class="header-navi-main content">
         <div class="left">
-            <a href="/" class="header-title">
+            <a href="${servePath}" class="header-title">
                 ${blogTitle}
             </a>
             <span class="sub-title">${blogSubtitle}</span>
@@ -22,14 +22,14 @@
         <div class="right">
             <ul class="tabs">
                 <li class="tab">
-                    <a href="/">${homeLabel}</a>
+                    <a href="${servePath}">${homeLabel}</a>
                 </li>
                 <li class="tab">
-                    <a href="/tags.html">${allTagsLabel}</a>
+                    <a href="${servePath}/tags.html">${allTagsLabel}</a>
                 </li>
                 <#if 0 != pageNavigations?size>
                 <li class="tab" id="header-pages">
-                    <a href="/">
+                    <a href="${servePath}">
                         <span class="left">
                             ${pageLabel}
                         </span>
@@ -46,7 +46,7 @@
                 </li>
                 </#if>
                 <li class="tab">
-                    <a href="/blog-articles-feed.do">
+                    <a href="${servePath}/blog-articles-feed.do">
                         <span class="left">${atomLabel}</span>
                         <span class="atom-icon"></span>
                         <span class="clear"></span>

@@ -16,7 +16,7 @@
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
             <#list mostViewCountArticles as article>
-            <a title="${article.articleTitle}" href="${article.articlePermalink}">
+            <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                 <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
             </a>
             </#list>
@@ -32,7 +32,7 @@
         <div class="recent-comments">
             <#list recentComments as comment>
             <div>
-                <a href="${comment.commentSharpURL}">
+                <a href="${servePath}${comment.commentSharpURL}">
                     <img class='left' title="${comment.commentContent}"
                          alt='${comment.commentName}'
                          src='${comment.commentThumbnailURL}'/>
@@ -56,7 +56,7 @@
                 <#list mostCommentArticles as article>
                 <li>
                     <sup>[${article.articleCommentCount}]</sup>
-                    <a title="${article.articleTitle}" href="${article.articlePermalink}">
+                    <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>
                 </li>
@@ -71,11 +71,11 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li class="mostUsedTags">
-                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}(${tag.tagPublishedRefCount})
                     </a>
-                    <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
-                         alt="${tag.tagTitle}" src="/images/feed.png"/>
+                    <img onclick="window.location='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"
+                         alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
                 </li>
                 </#list>
             </ul>
@@ -107,11 +107,11 @@
                 <#list archiveDates as archiveDate>
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                        title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                         ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
                     <#else>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                        title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
                     </#if>
