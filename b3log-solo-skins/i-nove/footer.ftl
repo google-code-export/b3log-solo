@@ -1,5 +1,5 @@
 <div class="left copyright">
-    <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+    <span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a><br/>
     Powered by
     <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
         ${b3logLabel}&nbsp;

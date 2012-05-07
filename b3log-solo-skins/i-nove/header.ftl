@@ -1,6 +1,6 @@
 <div class="header">
     <h1 class="title">
-        <a href="/" id="logoTitle" >
+        <a href="${servePath}" id="logoTitle" >
             ${blogTitle}
         </a>
     </h1>
@@ -10,7 +10,7 @@
     <div class="left">
         <ul>
             <li>
-                <a class="home" href="/"></a>
+                <a class="home" href="${servePath}"></a>
             </li>
             <#list pageNavigations as page>
             <li>
@@ -20,12 +20,12 @@
             </li>
             </#list>
             <li>
-                <a href="/tags.html">${allTagsLabel}</a>
+                <a href="${servePath}/tags.html">${allTagsLabel}</a>
             </li>
             <li>
-                <a href="/blog-articles-feed.do">
+                <a href="${servePath}/blog-articles-feed.do">
                     Atom
-                    <img src="/images/feed.png" alt="Atom"/>
+                    <img src="${staticServePath}/images/feed.png" alt="Atom"/>
                 </a>
             </li>
             <li>
