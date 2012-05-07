@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, May 4, 2012
+ * @version 1.0.2.9, May 7, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -644,19 +644,24 @@ $.extend(Page.prototype, {
     /* 
      * @description 显示回复评论的浮出层
      * @parma {Dom} it 触发事件的 dom
-     * @param {string} id 被回复的评论 id
-     * @param {Int} top it top 位置相对浮出层的高度
+     * @param {String} id 被回复的评论 id
+     * @param {Int} top 位置相对浮出层的高度
+     * @param {String} [parentTag] it 如果嵌入在 position 为 relative 的元素 A 中时，需取到 A 元素
      */
-    showComment: function (it, id, top) {
+    showComment: function (it, id, top, parentTag) {
+        var positionTop = parseInt($(it).position().top);
+        if (parentTag) {
+            positionTop = parseInt($(it).parents(parentTag).position().top);
+        }
         if ( $("#commentRef" + id).length > 0) {
             // 此处重复设置 top 是由于评论为异步，原有回复评论的显示位置应往下移动
-            $("#commentRef" + id).show().css("top", ($(it).position().top + top) + "px");
+            $("#commentRef" + id).show().css("top", (positionTop + top) + "px");
         } else {
             var $refComment = $("#" + id).clone();
             $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
             $refComment.find("#replyForm").remove();
             $("#comments").append($refComment);
-            $("#commentRef" + id).css("top", ($(it).position().top + top) + "px");
+            $("#commentRef" + id).css("top", (positionTop + top) + "px");
         }
     },
 
