@@ -23,7 +23,7 @@
                             </div>
                             <div class="left">
                                 <h2 class="article-title">
-                                    <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                                    <a class="no-underline" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
                                     <#if article.hasUpdated>
                                     <sup class="red">
                                         ${updatedLabel}
@@ -42,9 +42,9 @@
                                     ${article.articleCreateDate?string("yyyy HH:mm:ss")}
                                     </#if>
                                     by
-                                    <a title="${article.authorName}" href="/authors/${article.authorId}">
+                                    <a title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                                         ${article.authorName}</a> |
-                                    <a href="${article.articlePermalink}#comments">
+                                    <a href="${servePath}${article.articlePermalink}#comments">
                                         ${article.articleCommentCount}${commentLabel}
                                     </a>
                                 </div>
@@ -62,23 +62,23 @@
                                 ${tag1Label}
                                 <#list article.articleTags?split(",") as articleTag>
                                 <span>
-                                    <a href="/tags/${articleTag?url('UTF-8')}">
+                                    <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                         ${articleTag}</a><#if articleTag_has_next>,</#if>
                                 </span>
                                 </#list>
                                 &nbsp;&nbsp;${viewCount1Label}
-                                <a href="${article.articlePermalink}">
+                                <a href="${servePath}${article.articlePermalink}">
                                     ${article.articleViewCount}
                                 </a>
                             </div>
                             <div class="clear"></div>
                             <div>
                                 <#if nextArticlePermalink??>
-                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                 <br>
                                 </#if>
                                 <#if previousArticlePermalink??>
-                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                 </#if>
                             </div>
                             <div id="relevantArticles" class="article-relative left relevantArticles"></div>

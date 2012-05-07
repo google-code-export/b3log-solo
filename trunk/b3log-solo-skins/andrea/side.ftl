@@ -15,9 +15,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <a
-                        title="${article.articleTitle}"
-                        href="${article.articlePermalink}">
+                    <a title="${article.articleTitle}" href="${servePath}/${article.articlePermalink}">
                         <sup>[${article.articleCommentCount}]</sup>
                         ${article.articleTitle}
                     </a>
@@ -35,7 +33,7 @@
                     <a class="author" title="${comment.commentName}" target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}
                     </a>:
-                    <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
+                    <a title="${comment.commentContent}" class='side-comment' href="${servePath}/${comment.commentSharpURL}">
                         ${comment.commentContent}
                     </a>
                 </li>
@@ -50,7 +48,7 @@
                 <#list mostViewCountArticles as article>
                 <li>
                     <a title="${article.articleTitle}"
-                       href="${article.articlePermalink}">
+                       href="${servePath}/${article.articlePermalink}">
                         <sup>[${article.articleViewCount}]</sup>
                         ${article.articleTitle}
                     </a>
@@ -70,10 +68,10 @@
             <ul class="navi-tags">
                 <#list mostUsedTags as tag>
                 <li>
-                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
-                    <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
-                         alt="${tag.tagTitle}" src="/images/feed.png"/>
+                    <img onclick="window.location='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"
+                         alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
                 </li>
                 </#list>
             </ul>
@@ -110,11 +108,11 @@
                 <#list archiveDates as archiveDate>
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                        title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                         ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
                     <#else>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                        title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
                     </#if>
