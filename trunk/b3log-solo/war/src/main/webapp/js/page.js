@@ -526,7 +526,7 @@ $.extend(Page.prototype, {
             }
             $.ajax({
                 type: "POST",
-                url: latkeConfig.staticServer + latkeConfig.contextPath + "/add-" + type + "-comment.do",
+                url: latkeConfig.servePath + "/add-" + type + "-comment.do",
                 cache: false,
                 contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
