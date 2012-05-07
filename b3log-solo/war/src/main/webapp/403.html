@@ -27,11 +27,12 @@
                         <h2>403 Forbidden</h2>
                         <ul>
                             <li>
-                                <a href="">Click</a> to <a href="">Index</a>
+                                <a class="index" href="javascript: void(0)">Click</a> 
+                                to <a class="index" href="javascript: void(0)">Index</a>
                             </li>
                             <li>
-                                <a href="login?to=/admin-index.do#main">Click</a> to 
-                                <a href="login?to=/admin-index.do#main">Login</a>
+                                <a class="login" href="javascript: void(0)">Click</a> to 
+                                <a class="login" href="javascript: void(0)">Login</a>
                             </li>
                             <li>
                                 Visit
@@ -41,8 +42,10 @@
                                 </a>
                             </li>
                         </ul>
-                        <img alt="forbidden" src="images/forbidden.png"/>
-                        <span class="clear"></span>
+                        <img alt="forbidden" src="images/forbidden.png" class="img" />
+                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="favicon.png"/>
+                        </a>
                     </div>
                     <span class="clear"></span>
                 </div>
@@ -58,8 +61,16 @@
                 </a>
             </div>
         </div>
+        <script type="text/javascript" src="/js/lib/jquery/jquery.min.js?${staticResourceVersion}" charset="utf-8"></script>
         <script>
+            var servePath = location.href.substring(0, location.href.indexOf("/admin-index.do"));
+            $(".index").click(function () {
+                location.href = servePath;
+            });
             
+            $(".login").click(function () {
+                location.href = servePath  + "/login?goto=" + encodeURI(servePath + "/admin-index.do#main");
+            });
         </script>
     </body>
 </html>
