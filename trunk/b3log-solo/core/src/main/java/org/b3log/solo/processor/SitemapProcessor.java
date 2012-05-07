@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Site map (sitemap) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 15, 2011
+ * @version 1.0.0.3, May 7, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -62,18 +62,15 @@ public final class SitemapProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(SitemapProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SitemapProcessor.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepositoryImpl articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepositoryImpl articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
@@ -81,13 +78,11 @@ public final class SitemapProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository =
-            TagRepositoryImpl.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateRepositoryImpl.getInstance();
+    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
 
     /**
      * Returns the sitemap.
@@ -117,8 +112,7 @@ public final class SitemapProcessor {
             LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
                 return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
@@ -133,15 +127,13 @@ public final class SitemapProcessor {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addArticles(final Sitemap sitemap,
-                             final JSONObject preference) throws Exception {
+    private void addArticles(final Sitemap sitemap, final JSONObject preference) throws Exception {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         // XXX: query all articles?
         final Query query = new Query().setCurrentPageNum(1).
-                addFilter(Article.ARTICLE_IS_PUBLISHED,
-                          FilterOperator.EQUAL, true).
-                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
         // Closes cache avoid Java heap space out of memory while caching 
         // query results
@@ -154,17 +146,13 @@ public final class SitemapProcessor {
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.getJSONObject(i);
-            final String permalink =
-                    article.getString(Article.ARTICLE_PERMALINK);
+            final String permalink = article.getString(Article.ARTICLE_PERMALINK);
 
             final URL url = new URL();
             url.setLoc("http://" + host + permalink);
 
-            final Date updateDate =
-                    (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-            final String lastMod =
-                    DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
-                    updateDate);
+            final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+            final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
             url.setLastMod(lastMod);
 
             sitemap.addURL(url);
@@ -178,8 +166,7 @@ public final class SitemapProcessor {
      * @param preference the specified preference
      * @throws Exception exception 
      */
-    private void addPages(final Sitemap sitemap,
-                          final JSONObject preference) throws Exception {
+    private void addPages(final Sitemap sitemap, final JSONObject preference) throws Exception {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         final JSONObject result = pageRepository.get(new Query());
@@ -203,16 +190,14 @@ public final class SitemapProcessor {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addTags(final Sitemap sitemap,
-                         final JSONObject preference) throws Exception {
+    private void addTags(final Sitemap sitemap, final JSONObject preference) throws Exception {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         final JSONObject result = tagRepository.get(new Query());
         final JSONArray tags = result.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.getJSONObject(i);
-            final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE),
-                                                  "UTF-8");
+            final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE), "UTF-8");
 
             final URL url = new URL();
             url.setLoc("http://" + host + "/tags/" + link);
@@ -233,16 +218,14 @@ public final class SitemapProcessor {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addArchives(final Sitemap sitemap,
-                             final JSONObject preference) throws Exception {
+    private void addArchives(final Sitemap sitemap, final JSONObject preference) throws Exception {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         final JSONObject result = archiveDateRepository.get(new Query());
         final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < archiveDates.length(); i++) {
             final JSONObject archiveDate = archiveDates.getJSONObject(i);
-            final long time =
-                    archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = ArchiveDate.DATE_FORMAT.format(time);
 
             final URL url = new URL();
