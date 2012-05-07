@@ -43,9 +43,9 @@ overflow: hidden;
 </style>
 <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="/favicon.png" />
-<script type='text/javascript' src='/skins/${skinDirName}/js/l10n.js?${staticResourceVersion}'></script>
-<script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type='text/javascript' src='/skins/${skinDirName}/themes/core/core.js?${staticResourceVersion}'></script>
+<script type='text/javascript' src='${staticServePath}/skins/${skinDirName}/js/l10n.js?${staticResourceVersion}'></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+<script type='text/javascript' src='${staticServePath}/skins/${skinDirName}/themes/core/core.js?${staticResourceVersion}'></script>
 <script type="text/javascript">
 	// Hides the addressbar on non-post pages
 	function hideURLbar() { window.scrollTo(0,1); }
