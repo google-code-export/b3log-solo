@@ -149,7 +149,7 @@
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-title a").first().text();
-            commentHTML += '&nbsp;@&nbsp;<a href="' + latkeConfig.servePath + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+            commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 23);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
