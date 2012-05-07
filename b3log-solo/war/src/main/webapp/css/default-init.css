@@ -3,7 +3,7 @@
  * 403, article-pwd, init, login, over-quota and kill-browser page style.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, May 4, 2012
+ * @version 1.0.0.9, May 7, 2012
 */
 html {
     height: 100%;
@@ -203,7 +203,7 @@ input:focus {
     margin: 12px 0 0 12px;
 }
 
-.forbidden img {
+.forbidden .img {
     margin: 38px 10px 0 0;
     width: 96px;
     height: 96px;
