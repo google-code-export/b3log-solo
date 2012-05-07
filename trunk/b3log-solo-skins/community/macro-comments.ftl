@@ -158,7 +158,7 @@
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-top a").first().text();
-            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+            commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 11);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
