@@ -18,7 +18,7 @@
                 <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                 </#if>
                 <#if comment.isReply>&nbsp;@
-                <a href="${article.permalink}#${comment.commentOriginalCommentId}"
+                <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 20);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if>
@@ -135,7 +135,7 @@
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
-            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+            commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 20);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
