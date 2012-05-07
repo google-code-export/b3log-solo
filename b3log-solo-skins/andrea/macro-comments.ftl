@@ -16,7 +16,7 @@
                    target="_blank">${comment.commentName}</a>
                 </#if><#if comment.isReply>
                 @
-                <a href="${article.permalink}#${comment.commentOriginalCommentId}"
+                <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 20);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if>
@@ -115,7 +115,7 @@
 </#macro>
 
 <#macro comment_script oId>
-<script type="text/javascript" src="/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     var page = new Page({
         "nameTooLongLabel": "${nameTooLongLabel}",

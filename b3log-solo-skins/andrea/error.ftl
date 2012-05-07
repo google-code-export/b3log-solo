@@ -18,7 +18,7 @@
                     <div class="main-content">
                         <div class="paddingBottom12">
                             <h1>${notFoundLabel}</h1>
-                            <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+                            <a href="${servePath}">${returnTo1Label}${blogTitle}</a>
                         </div>
                     </div>
                     <div class="main-footer"></div>

@@ -1,7 +1,7 @@
 <div class="header">
     <div class="left">
         <h1>
-            <a href="/">
+            <a href="${servePath}">
                 ${blogTitle}
             </a>
         </h1>
@@ -31,13 +31,13 @@
     <div class="right">
         <ul>
             <li>
-                <a class="home" href="/">Blog</a>
+                <a class="home" href="${servePath}">Blog</a>
             </li>
             <li>
-                <a href="/tags.html">Tags</a>
+                <a href="${servePath}/tags.html">Tags</a>
             </li>
             <li>
-                <a href="/blog-articles-feed.do">
+                <a href="${servePath}/blog-articles-feed.do">
                     Atom
                 </a>
             </li>
