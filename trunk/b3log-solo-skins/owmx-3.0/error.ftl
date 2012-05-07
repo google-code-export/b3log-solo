@@ -15,7 +15,7 @@
             <div id="b">
                 <article>
                     <h1 class="error-title">${notFoundLabel}</h1>
-                    <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+                    <a href="${servePath}">${returnTo1Label}${blogTitle}</a>
                 </article>
                 <#include "side.ftl">
                 <div class="clear"></div>

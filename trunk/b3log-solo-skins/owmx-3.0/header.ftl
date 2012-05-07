@@ -1,5 +1,5 @@
 <header>
-    <a href="/" id="logoTitle">${blogTitle}</a>
+    <a href="${servePath}" id="logoTitle">${blogTitle}</a>
 	<p>${blogSubtitle}</p>
 </header><!--
     <div class="right" id="statistic">
