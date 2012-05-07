@@ -8,7 +8,7 @@
 <meta name="revised" content="B3log, ${year}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 <meta http-equiv="Window-target" content="_top" />
-<link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/themes/default/style.css?${staticResourceVersion}" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/themes/default/style.css?${staticResourceVersion}" charset="utf-8" />
 <style type="text/css">
 #headerbar, #wptouch-login, #wptouch-search {
 	background: #000000 url(/skins/${skinDirName}/themes/core/core-images/head-fade-bk.png);
@@ -41,8 +41,8 @@ overflow: hidden;
 }
 
 </style>
-<link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-<link rel="icon" type="image/png" href="/favicon.png" />
+<link href="${servePath}/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+<link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
 <script type='text/javascript' src='${staticServePath}/skins/${skinDirName}/js/l10n.js?${staticResourceVersion}'></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type='text/javascript' src='${staticServePath}/skins/${skinDirName}/themes/core/core.js?${staticResourceVersion}'></script>
