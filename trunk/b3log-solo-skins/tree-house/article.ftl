@@ -21,7 +21,7 @@
                             <div class="article">
                                 <div class="article-header">
                                     <h2 class="marginBottom12">
-                                        <a class="no-underline" href="${article.articlePermalink}">
+                                        <a class="no-underline" href="${servePath}${article.articlePermalink}">
                                             ${article.articleTitle}
                                             <#if article.hasUpdated>
                                             <sup>
@@ -44,7 +44,7 @@
                                     </h2>
                                     <div class="marginLeft12">
                                         <#list article.articleTags?split(",") as articleTag>
-                                        <a class="article-tags" href="/tags/${articleTag?url('UTF-8')}">
+                                        <a class="article-tags" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                             ${articleTag}</a>
                                         </#list>
                                         <div class="clear"></div>
@@ -61,22 +61,22 @@
                                 <div class="article-details-footer">
                                     <div class="left">
                                         <#if nextArticlePermalink??>
-                                        <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                        <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                         <br/>
                                         </#if>
                                         <#if previousArticlePermalink??>
-                                        <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                        <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                         </#if>
                                     </div>
                                     <div class="right">
                                         <span class="article-create-date left">
                                             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                         </span>
-                                        <a href="${article.articlePermalink}#comments" class="left">
+                                        <a href="${servePath}${article.articlePermalink}#comments" class="left">
                                             <span class="left commentIcon" title="${commentLabel}"></span>
                                             &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                         </a>
-                                        <a href="${article.articlePermalink}" class="left">
+                                        <a href="${servePath}${article.articlePermalink}" class="left">
                                             <span class="left browserIcon" title="${viewLabel}"></span>
                                             &nbsp;&nbsp;${article.articleViewCount}&nbsp;&nbsp;
                                         </a>
