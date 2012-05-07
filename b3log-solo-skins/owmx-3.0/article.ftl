@@ -29,17 +29,17 @@
                     </h1>
                     <section class="meta">
                         <p> 
-                            ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a> |
+                            ${author1Label}<a href="${servePath}/authors/${article.authorId}">${article.authorName}</a> |
                             <#if article.hasUpdated>
                             ${updateDateLabel}:${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
                             <#else>
                             ${createDateLabel}:${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                             </#if>
-                            ${viewCount1Label}<a href="${article.articlePermalink}">
+                            ${viewCount1Label}<a href="${servePath}${article.articlePermalink}">
                                 <span class="left article-browserIcon" title="${viewLabel}"></span>
                                 ${article.articleViewCount}
                             </a> | ${commentCount1Label}  
-                            <a href="${article.articlePermalink}#comments">
+                            <a href="${servePath}${article.articlePermalink}#comments">
                                 <span class="left articles-commentIcon" title="${commentLabel}"></span>
                                 ${article.articleCommentCount}
                             </a>
@@ -48,7 +48,7 @@
                             ${tags1Label} 
                             <#list article.articleTags?split(",") as articleTag>
                             <span>
-                                <a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
+                                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
                             </span>
                             </#list>
                         </p>
@@ -64,12 +64,12 @@
                     <div class="marginBottom12">
                         <#if nextArticlePermalink??>
                         <div class="right">
-                            <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                            <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                         </div><div class="clear"></div>
                         </#if>
                         <#if previousArticlePermalink??>
                         <div class="right">
-                            <a href="${previousArticlePermalink}" >${previousArticle1Label}${previousArticleTitle}</a>
+                            <a href="${servePath}${previousArticlePermalink}" >${previousArticle1Label}${previousArticleTitle}</a>
                         </div>
                         </#if>
                         <div class="clear"></div>
