@@ -71,7 +71,7 @@
 <div id="headerbar">
     <div id="headerbar-title">
         <!-- This fetches the admin selection logo icon for the header, which is also the bookmark icon -->
-        <img id="logo-icon" src="/skins/${skinDirName}/images/icon-pool/Apps.png" alt="aln" />
+        <img id="logo-icon" src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt="aln" />
         <a href="${servePath}">${blogTitle}</a>
     </div>
     <div id="headerbar-menu">

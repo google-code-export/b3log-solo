@@ -71,7 +71,7 @@
             <p>
                 <input type="text" id="commentValidate" tabindex="5" />
                 <label for="url">${captchaLabel}</label>
-                <img id="captcha" alt="validate" src="/captcha.do" />
+                <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
             </p>
             <p>
                 <input class="reply-button" id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
