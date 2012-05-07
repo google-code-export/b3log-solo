@@ -94,7 +94,7 @@
                 <input type="text" class="normalInput" id="commentValidate"/>
             </td>
             <td>
-                <img id="captcha" alt="validate" src="/captcha.do" />
+                <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
             </td>
             <th align="right">
                 <span class="error-msg" id="commentErrorTip"></span>
