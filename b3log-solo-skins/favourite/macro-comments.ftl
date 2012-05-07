@@ -18,7 +18,7 @@
                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                     <#if comment.isReply>
                     @
-                    <a href="${article.permalink}#${comment.commentOriginalCommentId}"
+                    <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                        onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 3);"
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                     </#if>
@@ -140,7 +140,7 @@
         
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-author>a").text();
-            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+            commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 3);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }

@@ -1,6 +1,6 @@
 <div class="header">
     <h1 class="title">
-        <a href="/" id="logoTitle" >
+        <a href="${servePath}" id="logoTitle" >
             ${blogTitle}
         </a>
     </h1>
