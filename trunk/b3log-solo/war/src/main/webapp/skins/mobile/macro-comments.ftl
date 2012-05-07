@@ -21,7 +21,7 @@
                         </#if>
                         <#if comment.isReply>
                         @
-                        <a href="${article.permalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
+                        <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
                         </#if>
                     </div>
                     <#if article.commentable>
@@ -42,7 +42,7 @@
     <#if article.commentable>
     <div id="textinputwrap">
         <div id="refresher" style="display:none;">
-            <img src="/skins/${skinDirName}/images/good.png" alt="checkmark" />
+            <img src="${staticServePath}/skins/${skinDirName}/images/good.png" alt="checkmark" />
             <h3>${commentSuccess}</h3>
             <a href="javascript:this.location.reload();">${refresh2CComment}</a>
         </div>
@@ -76,7 +76,7 @@
             <p>
                 <input class="reply-button" id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
             <div id="loading" style="display:none">
-                <img src="/skins/${skinDirName}/themes/core/core-images/comment-ajax-loader.gif" alt="" /> <p>${publishing}</p>
+                <img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/comment-ajax-loader.gif" alt="" /> <p>${publishing}</p>
             </div>
             </p>
         </div>
@@ -86,7 +86,7 @@
 </#macro>
 
 <#macro comment_script oId>
-<script type="text/javascript" src="/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     Page.prototype.submitComment = function (commentId, state) {
         if (!state) {

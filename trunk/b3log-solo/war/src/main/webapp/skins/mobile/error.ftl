@@ -15,7 +15,7 @@
                 <h1 class="error-title">${sorryLabel}</h1>
                 <div class="error-panel">
                     <h1>${notFoundLabel}</h1>
-                    ${returnTo1Label}<a href="http://${blogHost}">${blogTitle}</a>
+                    ${returnTo1Label}<a href="${servePath}">${blogTitle}</a>
                 </div>
         	</div>
         </div>
