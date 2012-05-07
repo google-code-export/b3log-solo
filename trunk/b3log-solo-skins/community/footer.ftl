@@ -1,7 +1,7 @@
 <div class="content paddingTop12 paddingBottom12">
     <div class="left">
         <div>
-            <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a>
+            <span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a>
         </div>
         Powered by
         <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">

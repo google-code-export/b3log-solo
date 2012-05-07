@@ -15,18 +15,18 @@
                 <span class="left">
                     by&nbsp;
                 </span>
-                <a class="left" title="${article.authorName}" href="/authors/${article.authorId}">
+                <a class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                     ${article.authorName}
                 </a>
                 <span class="clear"></span>
             </li>
             <li>
-                <a href="${article.articlePermalink}" title="${viewLabel}">
+                <a href="${servePath}${article.articlePermalink}" title="${viewLabel}">
                     ${viewLabel} (${article.articleViewCount})
                 </a>
             </li>
             <li>
-                <a title="${commentLabel}" href="${article.articlePermalink}#comments">
+                <a title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
                     ${commentLabel} (${article.articleCommentCount})
                 </a>
             </li>
@@ -34,7 +34,7 @@
     </div>
     <div class="article-main">
         <h2 class="title">
-            <a class="no-underline" href="${article.articlePermalink}">
+            <a class="no-underline" href="${servePath}${article.articlePermalink}">
                 ${article.articleTitle}
             </a>
             <#if article.hasUpdated>
@@ -52,7 +52,7 @@
             ${article.articleAbstract}
         </div>
         <div class="read-more">
-            <a href="${article.articlePermalink}">
+            <a href="${servePath}${article.articlePermalink}">
                 <span class="left">${readmore2Label}</span>
                 <span class="read-more-icon"></span>
                 <span class="clear"></span>
@@ -65,13 +65,13 @@
         <ul>
             <#list article.articleTags?split(",") as articleTag>
             <li>
-                <a href="/tags/${articleTag?url('UTF-8')}">
+                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}
                 </a>
             </li>
             </#list>
             <li>
-                <a href="${article.articlePermalink}">
+                <a href="${servePath}${article.articlePermalink}">
                     ${createDateLabel}:${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
                 </a>
             </li>
@@ -83,19 +83,19 @@
 <#if 0 != paginationPageCount>
 <div class="pagination">
     <#if 1 != paginationPageNums?first>
-    <a href="${path}/1">${firstPageLabel}</a>
-    <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
+    <a href="${servePath}${path}/1">${firstPageLabel}</a>
+    <a id="previousPage" href="${servePath}${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
     <#if paginationPageNum == paginationCurrentPageNum>
-    <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
+    <a href="${servePath}${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
     <#else>
-    <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
+    <a href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
     </#if>
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
-    <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
-    <a href="${path}/${paginationPageCount}">${lastPageLabel}</a>
+    <a id="nextPage" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel}</a>
+    <a href="${servePath}${path}/${paginationPageCount}">${lastPageLabel}</a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
