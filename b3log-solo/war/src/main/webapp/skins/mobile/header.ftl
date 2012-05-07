@@ -20,7 +20,7 @@
             <input type="hidden" name="sitesearch" value="${blogHost}" />
             <input type="text" placeholder="Search..." id="search" name="q" /> 
             <input name="submit" type="submit" tabindex="1" id="search-submit" placeholder="Search..."  />
-            <a href="javascript:void(0)"><img class="head-close" src="/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
+            <a href="javascript:void(0)"><img class="head-close" src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
         </form>
     </div>
 </div>
@@ -28,23 +28,23 @@
     <div id="wptouch-menu-inner">
         <div id="menu-head">
             <div id="tabnav">
-                <a href="#head-pages"><img src="/skins/${skinDirName}/images/icon-pool/Pages.png" alt=""/></a>
-                <a href="#head-tags"><img src="/skins/${skinDirName}/images/icon-pool/Tags.png" alt=""/></a>
-                <a href="#head-cats"><img src="/skins/${skinDirName}/images/icon-pool/Archives.png" alt=""/></a>
+                <a href="#head-pages"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Pages.png" alt=""/></a>
+                <a href="#head-tags"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Tags.png" alt=""/></a>
+                <a href="#head-cats"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Archives.png" alt=""/></a>
             </div>
 
             <ul id="head-pages">
-                <li><a href="/admin-index.do#main"><img src="/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
+                <li><a href="${servePath}/admin-index.do#main"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
                 <#list pageNavigations as page>
-                <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
+                <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
                 </#list>           
-                <li><a href="/blog-articles-rss.do"><img src="/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
-                <!--<li><a href="mailto:b3log-solo@googlecode.com"><img src="/skins/${skinDirName}/images/icon-pool/Mail.png" alt="" />E-Mail</a></li>-->
+                <li><a href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
+                <!--<li><a href="mailto:b3log-solo@googlecode.com"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Mail.png" alt="" />E-Mail</a></li>-->
             </ul>
             <ul id="head-tags">
                 <#if 0 != mostUsedTags?size>
                 <#list mostUsedTags as tag>
-                <li><a href="/tags/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle} <span>(${tag.tagPublishedRefCount})</span></a></li>
+                <li><a href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle} <span>(${tag.tagPublishedRefCount})</span></a></li>
                 </#list>
                 </#if>
             </ul>
@@ -53,10 +53,10 @@
                 <#list archiveDates as archiveDate>
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
                         ${archiveDate.monthName} ${archiveDate.archiveDateYear} <span>(${archiveDate.archiveDatePublishedArticleCount})</span></a>
                     <#else>
-                    <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} <span>(${archiveDate.archiveDatePublishedArticleCount})</span></a>
                     </#if>
                 </li>
@@ -72,7 +72,7 @@
     <div id="headerbar-title">
         <!-- This fetches the admin selection logo icon for the header, which is also the bookmark icon -->
         <img id="logo-icon" src="/skins/${skinDirName}/images/icon-pool/Apps.png" alt="aln" />
-        <a href="/">${blogTitle}</a>
+        <a href="${servePath}">${blogTitle}</a>
     </div>
     <div id="headerbar-menu">
         <a href="javascript:void(0)"></a>
@@ -86,7 +86,7 @@
     <!-- #start the Prowl Message Area -->
     <div id="prowl-message" style="display:none">
         <div id="push-style-bar"></div><!-- filler to get the styling just right -->
-        <img src="/skins/${skinDirName}/themes/core/core-images/push-icon.png" alt="push icon" />
+        <img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/push-icon.png" alt="push icon" />
         <h4>Send a Message</h4>
         <p>This message will be pushed to the admin's iPhone instantly.</p><!--TODO instant msg-->
 

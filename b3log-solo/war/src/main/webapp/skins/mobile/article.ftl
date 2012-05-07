@@ -12,7 +12,7 @@
         <#include "header.ftl">
         <div class="content single">
             <div class="post">
-                <a class="sh2" href="${article.articlePermalink}" rel="bookmark">${article.articleTitle}</a>
+                <a class="sh2" href="${servePath}${article.articlePermalink}" rel="bookmark">${article.articleTitle}</a>
                 <div class="single-post-meta-top">
                     <#if article.hasUpdated>
                     ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -37,29 +37,29 @@
                 <div class="single-post-meta-bottom">
                     ${tags1Label}
                     <#list article.articleTags?split(",") as articleTag>
-                    <a href="/tags/${articleTag?url('UTF-8')}" rel="tag">${articleTag}</a><#if articleTag_has_next>,</#if>
+                    <a href="${servePath}/tags/${articleTag?url('UTF-8')}" rel="tag">${articleTag}</a><#if articleTag_has_next>,</#if>
                     </#list>
                 </div>   
                 <ul id="post-options">
                     <#if nextArticlePermalink??>
-                    <li><a href="${nextArticlePermalink}" id="oprev"></a></li>
+                    <li><a href="${servePath}${nextArticlePermalink}" id="oprev"></a></li>
                     </#if>
-                    <li><a href="mailto:?subject=${article.authorName} - ${article.articleTitle}&body=Check out this post: http://${blogHost}${article.articlePermalink}" id="omail"></a></li>
-                    <li><a href="javascript:void(0)" onclick="window.open('http://service.weibo.com/share/share.php?url=http://${blogHost}${article.articlePermalink}&title=B3LOG%20-%20${article.articleTitle}', '_blank');" id="otweet"></a></li>		
+                    <li><a href="mailto:?subject=${article.authorName} - ${article.articleTitle}&body=Check out this post: ${servePath}${article.articlePermalink}" id="omail"></a></li>
+                    <li><a href="javascript:void(0)" onclick="window.open('http://service.weibo.com/share/share.php?url=${servePath}${article.articlePermalink}&title=B3LOG%20-%20${article.articleTitle}', '_blank');" id="otweet"></a></li>		
                     <li><a href="javascript:void(0)" id="obook"></a></li>
                     <#if previousArticlePermalink??>
-                    <li><a href="${previousArticlePermalink}" id="onext"></a></li>
+                    <li><a href="${servePath}${previousArticlePermalink}" id="onext"></a></li>
                     </#if>
                 </ul>
             </div>
             <div id="bookmark-box" style="display:none">
                 <ul>
-                    <li><a  href="http://del.icio.us/post?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/delicious.jpg" alt="" /> Del.icio.us</a></li>
-                    <li><a href="http://digg.com/submit?phase=2&url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/digg.jpg" alt="" /> Digg</a></li>
-                    <li><a href="http://technorati.com/faves?add=http://localhost/blog/?p=12" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/technorati.jpg" alt="" /> Technorati</a></li>
-                    <li><a href="http://ma.gnolia.com/bookmarklet/add?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/magnolia.jpg" alt="" /> Magnolia</a></li>
-                    <li><a href="http://www.newsvine.com/_wine/save?popoff=0&u=http://localhost/blog/?p=12&h=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/newsvine.jpg" target="_blank"> Newsvine</a></li>
-                    <li class="noborder"><a href="http://reddit.com/submit?url=http://localhost/blog/?p=12&title=${article.articleTitle}" target="_blank"><img src="/skins/${skinDirName}/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
+                    <li><a  href="http://del.icio.us/post?url=${servePath}/?p=12&title=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/delicious.jpg" alt="" /> Del.icio.us</a></li>
+                    <li><a href="http://digg.com/submit?phase=2&url=${servePath}/?p=12&title=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/digg.jpg" alt="" /> Digg</a></li>
+                    <li><a href="http://technorati.com/faves?add=${servePath}/?p=12" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/technorati.jpg" alt="" /> Technorati</a></li>
+                    <li><a href="http://ma.gnolia.com/bookmarklet/add?url=${servePath}/?p=12&title=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/magnolia.jpg" alt="" /> Magnolia</a></li>
+                    <li><a href="http://www.newsvine.com/_wine/save?popoff=0&u=${servePath}/?p=12&h=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/newsvine.jpg" target="_blank"> Newsvine</a></li>
+                    <li class="noborder"><a href="http://reddit.com/submit?url=${servePath}/?p=12&title=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
                 </ul>
             </div>
             <@comments commentList=articleComments article=article></@comments>
