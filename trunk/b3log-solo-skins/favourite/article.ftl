@@ -19,7 +19,7 @@
                     <div class="left main">
                         <div class="article">
                             <h2 class="article-title">
-                                <a class="no-underline" href="${article.articlePermalink}">
+                                <a class="no-underline" href="${servePath}${article.articlePermalink}">
                                     ${article.articleTitle}
                                 </a>
                                 <#if article.hasUpdated>
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="margin25">
-                                <a href="${article.articlePermalink}" class="left">
+                                <a href="${servePath}${article.articlePermalink}" class="left">
                                     <span class="left article-browserIcon" title="${viewLabel}"></span>
                                     <span class="count">${article.articleViewCount}</span>
                                 </a>
@@ -76,7 +76,7 @@
                                     </span>
                                     </#list>
                                 </div>
-                                <a href="${article.articlePermalink}#comments" class="left">
+                                <a href="${servePath}${article.articlePermalink}#comments" class="left">
                                     <span class="left articles-commentIcon" title="${commentLabel}"></span>
                                     <span class="count">${article.articleCommentCount}</span>
                                 </a>
@@ -91,13 +91,13 @@
                             <div>
                                 <#if nextArticlePermalink??>
                                 <div class="right">
-                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                    <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                 </div>
                                 <div class="clear"></div>
                                 </#if>
                                 <#if previousArticlePermalink??>
                                 <div class="right">
-                                    <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                    <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                 </div>
                                 </#if>
                                 <div class="clear"></div>

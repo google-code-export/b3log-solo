@@ -1,6 +1,6 @@
 <div class="info">
     <div class="copyright">
-        <span style="color:white;">&copy; ${year}</span> - <a style="color:white;" href="http://${blogHost}">${blogTitle}</a><br/>
+        <span style="color:white;">&copy; ${year}</span> - <a style="color:white;" href="${servePath}">${blogTitle}</a><br/>
         Powered by
         <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
             ${b3logLabel}&nbsp;
