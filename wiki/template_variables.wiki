@@ -8,8 +8,8 @@
 *公共的模板变量*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
-  <tr><td>servePath</td><td>String</td><td>应用路径，值如 http://localhost:8080/blog。可在 latke.properties 中配置</td><td>0.4.5 引入</td></tr>
-  <tr><td>staticServePath</td><td>String</td><td>静态资源路径，值如 http://localhost:8080/blog。可在 latke.properties 中配置</td><td>0.4.5 引入</td></tr>
+  <tr><td>servePath</td><td>String</td><td>应用路径，可在 latke.properties 中配置</td><td>0.4.5 引入</td></tr>
+  <tr><td>staticServePath</td><td>String</td><td>静态资源路径，可在 latke.properties 中配置</td><td>0.4.5 引入</td></tr>
   <tr><td>staticResourceVersion</td><td>String</td><td>js, css 版本号，防止缓存</td><td>0.4.0 引入</td></tr>
   <tr><td>topBarReplacement</td><td>String</td><td>公用 top-bar.ftl 内容</td><td>0.3.5 引入</td></tr>
   <tr><td>path</td><td>String</td><td>Action 路径</td><td></td></tr>
