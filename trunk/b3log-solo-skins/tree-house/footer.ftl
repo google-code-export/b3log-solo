@@ -10,6 +10,11 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
+    var latkeConfig = {
+        "servePath": "${servePath}",
+        "staticServePath": "${staticServePath}"
+    };
+        
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
