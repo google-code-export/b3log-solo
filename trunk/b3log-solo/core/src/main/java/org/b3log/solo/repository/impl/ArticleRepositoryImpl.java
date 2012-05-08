@@ -23,11 +23,7 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +33,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Apr 17, 2012
+ * @version 1.0.3.9, May 8, 2012
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository implements ArticleRepository {
@@ -133,7 +129,9 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
         final Query query = new Query().addFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.LESS_THAN, currentArticleCreateDate).
                 addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
                 addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(1).
-                setPageSize(1).setPageCount(1);
+                setPageSize(1).setPageCount(1).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -163,7 +161,9 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
         final Query query = new Query().addFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.GREATER_THAN, currentArticleCreateDate).
                 addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
                 addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).setCurrentPageNum(1).
-                setPageSize(1).setPageCount(1);
+                setPageSize(1).setPageCount(1).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);

@@ -60,7 +60,7 @@ import org.b3log.solo.util.Markdowns;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Apr 29, 2012
+ * @version 1.0.0.9, May 8, 2012
  * @since 0.3.5
  */
 public final class ArticleQueryService {
