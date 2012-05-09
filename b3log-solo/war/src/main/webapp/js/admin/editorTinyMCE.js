@@ -17,7 +17,7 @@
  * @fileoverview tinyMCE editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, May 2, 2012
+ * @version 1.0.0.4, May 9, 2012
  */
 admin.editors.tinyMCE = {
     /*
@@ -73,7 +73,7 @@ admin.editors.tinyMCE = {
                     theme_advanced_resizing : true,
                     theme_advanced_statusbar_location : "bottom",
                 
-                    extended_valid_elements: "link[type|rel|href|charset],pre[name|class],iframe[src|width|height|name|align]",
+                    extended_valid_elements: "link[type|rel|href|charset],pre[name|class],iframe[src|width|height|name|align],+a[*]",
 
                     valid_children : "+body[style]",
                     relative_urls: false,

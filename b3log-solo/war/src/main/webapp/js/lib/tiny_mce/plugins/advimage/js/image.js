@@ -123,7 +123,7 @@ var ImageDialog = {
     insertAndClose : function() {
         var ed = tinyMCEPopup.editor, f = document.forms[0], nl = f.elements, v, args = {}, el,
         fancyboxArgs = {};
-        
+
         if (nl.isFancybox.checked) {
             fancyboxArgs = {
                 title : nl.title.value,
@@ -189,7 +189,7 @@ var ImageDialog = {
                     ed.dom.setAttribs(el.parentNode, fancyboxArgs);
                 } else {
                     el.parentNode.outerHTML = el.outerHTML;
-                }  
+                }
             } else {
                 if (nl.isFancybox.checked) {
                     el.outerHTML = "<a rel='group' href='" + nl.src.value.replace(/ /g, '%20')
@@ -197,11 +197,17 @@ var ImageDialog = {
                 }       
             }
         } else {
+            tinymce.each(args, function(value, name) {
+                if (value === "") {
+                    delete args[name];
+                }
+            });
+
             if (nl.isFancybox.checked) {
                 ed.execCommand('mceInsertContent', false, '<a id="__mce_tmp_a"><img id="__mce_tmp" /></a>', {
                     skip_undo : 1
                 });
-            
+
                 ed.dom.setAttribs('__mce_tmp_a', fancyboxArgs);
                 ed.dom.setAttrib('__mce_tmp_a', 'id', '');
             } else {
