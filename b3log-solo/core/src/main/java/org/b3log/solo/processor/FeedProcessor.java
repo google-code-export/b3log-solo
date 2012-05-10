@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Arp 21, 2012
+ * @version 1.1.0.0, May 10, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -148,7 +148,7 @@ public final class FeedProcessor {
                 final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 entry.setTitle(title);
                 final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                                       : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
+                                       : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
                 entry.setSummary(summary);
                 final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
@@ -263,7 +263,7 @@ public final class FeedProcessor {
                 final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 entry.setTitle(title);
                 final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                                       : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
+                                       : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
                 entry.setSummary(summary);
                 final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 entry.setUpdated(updated);
@@ -358,7 +358,7 @@ public final class FeedProcessor {
                 final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 item.setTitle(title);
                 final String description = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                                           : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
+                                           : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
                 item.setDescription(description);
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 item.setPubDate(pubDate);
@@ -476,7 +476,7 @@ public final class FeedProcessor {
                 final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
                 item.setTitle(title);
                 final String description = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                                           : StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_ABSTRACT));
+                                           : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
                 item.setDescription(description);
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
                 item.setPubDate(pubDate);
