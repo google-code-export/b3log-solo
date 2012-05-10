@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta />
+        <meta charset="utf-8" />
         <meta name="robots" content="none" />
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
