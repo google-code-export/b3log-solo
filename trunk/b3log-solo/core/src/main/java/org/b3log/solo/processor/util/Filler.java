@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.5, May 4, 2012
+ * @version 1.0.5.6, May 10, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -657,13 +657,7 @@ public final class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            final String articleListStyle = preference.getString(Preference.ARTICLE_LIST_STYLE);
-            if ("titleOnly".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT, "");
-            } else if ("titleAndContent".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
-            }
-
+            processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
         } catch (final Exception e) {
@@ -707,12 +701,7 @@ public final class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            final String articleListStyle = preference.getString(Preference.ARTICLE_LIST_STYLE);
-            if ("titleOnly".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT, "");
-            } else if ("titleAndContent".equals(articleListStyle)) {
-                article.put(Article.ARTICLE_ABSTRACT, article.getString(Article.ARTICLE_CONTENT));
-            }
+            processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
         } catch (final Exception e) {
@@ -785,6 +774,34 @@ public final class Filler {
             throws ServiceException {
         for (final JSONObject article : articles) {
             setArticleExProperties(article, preference);
+        }
+    }
+
+    /**
+     * Processes the abstract of the specified article with the specified preference.
+     * 
+     * <p>
+     *   <ul>
+     *     <li>If the abstract is {@code null}, sets it with ""</li>
+     *     <li>If user configured preference "titleOnly", sets the abstract with ""</li>
+     *     <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li>
+     *   </ul>
+     * </p>
+     * 
+     * @param preference the specified preference
+     * @param article the specified article
+     */
+    private void processArticleAbstract(final JSONObject preference, final JSONObject article) {
+        final String articleAbstract = article.optString(Article.ARTICLE_ABSTRACT, null);
+        if (null == articleAbstract) {
+            article.put(Article.ARTICLE_ABSTRACT, "");
+        }
+
+        final String articleListStyle = preference.optString(Preference.ARTICLE_LIST_STYLE);
+        if ("titleOnly".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT, "");
+        } else if ("titleAndContent".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT, article.optString(Article.ARTICLE_CONTENT));
         }
     }
 

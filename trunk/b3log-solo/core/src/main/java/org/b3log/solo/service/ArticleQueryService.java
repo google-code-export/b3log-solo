@@ -60,7 +60,7 @@ import org.b3log.solo.util.Markdowns;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, May 8, 2012
+ * @version 1.0.1.0, May 10, 2012
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -703,11 +703,13 @@ public final class ArticleQueryService {
             article.put(ARTICLE_CONTENT, Markdowns.toHTML(content));
             Stopwatchs.end();
 
-            Stopwatchs.start("Abstract");
             final String abstractContent = article.optString(ARTICLE_ABSTRACT);
-            article.put(ARTICLE_ABSTRACT, Markdowns.toHTML(abstractContent));
-            Stopwatchs.end();
-
+            if (!Strings.isEmptyOrNull(abstractContent)) {
+                Stopwatchs.start("Abstract");
+                article.put(ARTICLE_ABSTRACT, Markdowns.toHTML(abstractContent));
+                Stopwatchs.end();
+            }
+            
             Stopwatchs.end();
         }
     }

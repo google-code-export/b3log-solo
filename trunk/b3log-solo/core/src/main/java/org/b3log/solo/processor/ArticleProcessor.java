@@ -72,7 +72,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.1, May 1, 2012
+ * @version 1.1.2.2, May 10, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -614,7 +614,7 @@ public final class ArticleProcessor {
             request.setAttribute(CACHED_PWD, article.optString(Article.ARTICLE_VIEW_PWD));
 
             // For <meta name="description" content="${article.articleAbstract}"/>
-            final String metaDescription = Jsoup.parse(article.getString(Article.ARTICLE_ABSTRACT)).text();
+            final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
