@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * @fileoverview util and every page should be userd.
+ * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, May 4, 2012
+ * @version 1.0.1.9, May 11, 2012
+ */
+
+/**
+ * @description Util
+ * @static
  */
 var Util = {
+    /**
+     * @description 检测页面错误
+     */
     error: function () {
         $("#tipMsg").text("Error: " + arguments[0] +
             " File: " + arguments[1] + "\nLine: " + arguments[2] +
@@ -28,6 +37,9 @@ var Util = {
         $("#loadMsg").text("");
     },
         
+    /**
+     * @description 非 IE6/7 的浏览器，跳转到 kill-browser 页面
+     */
     killIE: function () {
         if ($.browser.msie) {
             // kill IE6 and IE7
@@ -47,69 +59,34 @@ var Util = {
             }
         }
     },
-
-    getCursorEndPosition: function (textarea) {
-        textarea.focus();
-        if (textarea.setSelectionRange) { // W3C
-            return textarea.selectionEnd;
-        } else if (document.selection) { // IE
-            var i = 0,
-            oS = document.selection.createRange(),
-            oR = document.body.createTextRange(); 
-            oR.moveToElementText(textarea);
-            oS.getBookmark();
-            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
-                if (textarea.value.charAt(i) == '\n') {
-                    i ++;
-                }
-            }
-            return i;
-        }
-    },
     
-    _processEm: function (str) {
-        if (str.replace(/\s/g, "") === "") {
-            return "";
-        }
-        
-        var strList = [], 
-        resultStr = "",
-        brList = ["<br>", "<br/>", "<BR>", "<BR/>"];
-        for (var j = 0; j < brList.length; j++) {
-            if (str.indexOf(brList[j]) > -1) {
-                strList = str.split(brList[j]);
-            }
-        }
-        
-        if (strList.length === 0) {
-            return "<span class='em-span'>" + str + "</span>";
-        }
-        
-        for (var i = 0; i < strList.length; i++) {
-            resultStr += "<span class='em-span'>" + strList[i] + "</span>";
-            if (i !== strList.length - 1) {
-                resultStr +="<br class='em-br'>";
-            }
-        }
-        return resultStr;
-    },
-    
+    /**
+     * @description 替换[emXX] 为图片
+     * @param {String} str 替换字符串
+     * @returns {String} 替换后的字符
+     */
     replaceEmString: function (str) {
         var commentSplited = str.split("[em");
         if (commentSplited.length === 1) {
             return str;
         }
-        str = this._processEm(commentSplited[0]);
-        if ($.trim(commentSplited[0]) === "") {
-            str = "";
-        }
+        
+        str = commentSplited[0];
         for (var j = 1; j < commentSplited.length; j++) {
             var key = commentSplited[j].substr(0, 2);
-            str += "<span class='em" + key + "'></span>" + this._processEm(commentSplited[j].slice(3));
+            str += "<img src='" + latkeConfig.staticServePath + "/skins/" +
+            Label.skinDirName + "/images/emotions/em" + key + ".png' alt='" +
+            Label["em" + key + "Label"] + "' title='" +
+            Label["em" + key + "Label"] + "'/>" + commentSplited[j].substr(3);
         }
-        return str + "<div class='clear'></div>";
+        return str;
     },
     
+    /**
+     * @description URL 没有协议头，则自动加上 http://
+     * @param {String} url URL 地址
+     * @param {String} 添加后的URL
+     */
     proessURL: function (url) {
         if (!/^\w+:\/\//.test(url)) {
             url = "http://" + url;
@@ -117,6 +94,10 @@ var Util = {
         return url;
     },
     
+    /**
+     * @description 切换到手机版
+     * @param {String} skin 切换前的皮肤名称
+     */
     switchMobile: function (skin) {
         Cookie.createCookie("btouch_switch_toggle", skin, 365);
         setTimeout(function () {
@@ -124,6 +105,9 @@ var Util = {
         }, 1250); 
     },
     
+    /**
+     * @description topbar 相关事件
+     */
     setTopBar: function () {
         var $top = $("#top");
         if ($top.length === 1) {
@@ -139,14 +123,8 @@ var Util = {
                 $showTop.show();
             });
         }
-    } 
-};
-
-var Common = function (tips) {
-    this.tips = tips;
-};
-
-$.extend(Common.prototype, {
+    },
+    
     goTop: function () {
         window.scrollTo(0, 0);
     },
@@ -193,14 +171,7 @@ $.extend(Common.prototype, {
     replaceSideEm: function (comments) {
         for (var i = 0; i < comments.length; i++) {
             var $comment = $(comments[i]);
-            var commentSplited = $comment.html().split("[em");
-            var replacedStr = commentSplited[0];
-            for (var j = 1; j < commentSplited.length; j++) {
-                var key = commentSplited[j].substr(0, 2);
-                replacedStr += "[" + this.tips["em" + key + "Label"]  +
-                "]" + commentSplited[j].slice(3);
-            }
-            $comment.html(replacedStr);
+            $comment.html(Util.replaceEmString($comment.html()));
         }
     },
     
@@ -232,7 +203,7 @@ $.extend(Common.prototype, {
             return valA.localeCompare(valB);
         }));
     }
-});
+};
 
 if (!Cookie) {
     var Cookie = {

@@ -31,13 +31,14 @@ $.extend(Page.prototype, {
      * @param {String} name 用于区别回复评论还是对文章的评论
      */
     insertEmotions:  function (name) {
+        var _it = this;
         if (name === undefined) {
             name = "";
         }
         
         $("#emotions" + name + " span").click(function () {
             var $comment = $("#comment" + name);
-            var endPosition = Util.getCursorEndPosition($comment[0]);
+            var endPosition = _it._getCursorEndPosition($comment[0]);
             var key = "[" + this.className + "]",
             textValue  = $comment[0].value;
             textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
@@ -53,6 +54,30 @@ $.extend(Page.prototype, {
                 $comment[0].setSelectionRange(endPosition + 6, endPosition + 6);
             }
         });
+    },
+    
+    /**
+     * @description 获取当前光标最后位置
+     * @param {Dom} textarea 评论框对象
+     * @returns {Num} 光标位置
+     */
+    _getCursorEndPosition: function (textarea) {
+        textarea.focus();
+        if (textarea.setSelectionRange) { // W3C
+            return textarea.selectionEnd;
+        } else if (document.selection) { // IE
+            var i = 0,
+            oS = document.selection.createRange(),
+            oR = document.body.createTextRange(); 
+            oR.moveToElementText(textarea);
+            oS.getBookmark();
+            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
+                if (textarea.value.charAt(i) == '\n') {
+                    i ++;
+                }
+            }
+            return i;
+        }
     },
 
     /*
