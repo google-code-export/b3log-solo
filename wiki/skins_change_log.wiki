@@ -1,5 +1,16 @@
 #summary 版本更新
 === ver 0.4.5 ===
+ # images/emotions 中添加表情图片（从 /images/emotions 下任选一套)； CSS 中存在表情路径则进行修改
+ # tags.ftl
+{{{
+    common.buildTags() 修改为 Util.buildTags()
+}}}
+ # footer.ftl
+{{{
+var common = new Common({XXX}); 修改为 var Label = {XXX};
+common.goTop();common.goBottom();common.init();common.replaceSideEm(XXX); 相应修改为 
+Util.goTop();Util.goBottom();Util.init();Util.replaceSideEm(XXX); 并放入 $(document).ready(function () {}); 中
+}}}
  # article.ftl
 如果“随机阅读显示数目”/“相关阅读显示数目”/“站外相关阅读显示数目”配置为 0 时，不发加载请求：
 {{{
@@ -15,7 +26,7 @@
 }}}
 === ver 0.4.1 ===
  # footer.ftl
-  底部添加 ${plugins}
+ 底部添加 ${plugins}
  # page.ftl 
 {{{
 <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
@@ -35,7 +46,7 @@
 <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
 }}}
  # macro-comments.ftl
- 由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
+由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
 {{{ 
 <#if article.commentable>
 XXX
