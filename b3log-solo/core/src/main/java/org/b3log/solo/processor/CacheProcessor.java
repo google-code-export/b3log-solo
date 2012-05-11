@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
-import org.b3log.latke.action.ActionException;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Cache processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 11, 2011
+ * @version 1.1.0.1, May 11, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -56,21 +55,29 @@ public final class CacheProcessor {
      * Clears cache with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/clear-cache.do"}, method = HTTPRequestMethod.POST)
-    public void clearCache(final HTTPRequestContext context) {
-        final HttpServletRequest httpServletRequest = context.getRequest();
-        final HttpServletResponse httpServletResponse = context.getResponse();
+    @RequestProcessing(value = "/clear-cache.do", method = HTTPRequestMethod.POST)
+    public void clearCache(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        LoginProcessor.tryLogInWithCookie(request, response);
+
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
             final String all = requestJSONObject.optString("all");
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
-                final String uri = requestJSONObject.getString(Common.URI);
-                clearPageCache(uri, httpServletRequest, httpServletResponse);
+                final String uri = requestJSONObject.optString(Common.URI);
+                clearPageCache(uri);
             } else { // Clears all page caches
-                clearAllPageCache(httpServletRequest, httpServletResponse);
+                clearAllPageCache();
             }
 
             context.setRenderer(new DoNothingRenderer());
@@ -83,18 +90,8 @@ public final class CacheProcessor {
      * Clears a page cache specified by the given URI.
      *
      * @param uri the specified URI
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
      */
-    private void clearPageCache(final String uri, final HttpServletRequest request, final HttpServletResponse response)
-            throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
+    private void clearPageCache(final String uri) {
         final String pageCacheKey = PageCaches.getPageCacheKey(uri, null);
         LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]", pageCacheKey);
 
@@ -103,19 +100,8 @@ public final class CacheProcessor {
 
     /**
      * Clears all page cache.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
      */
-    private void clearAllPageCache(final HttpServletRequest request, final HttpServletResponse response)
-            throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
+    private void clearAllPageCache() {
         PageCaches.removeAll();
     }
 }
