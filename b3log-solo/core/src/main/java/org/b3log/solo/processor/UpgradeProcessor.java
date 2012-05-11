@@ -99,7 +99,7 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.4.1".equals(version)) { // 0.4.1 -> 0.4.5
+            if ("0.4.1".equals(version)) {
                 v041ToV045();
             } else {
                 final String msg = "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";

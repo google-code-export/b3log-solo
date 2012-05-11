@@ -25,7 +25,7 @@
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>solo-demo</application>
-    <version>041</version>
+    <version>045</version>
     
     <sessions-enabled>true</sessions-enabled>
     

@@ -641,7 +641,6 @@ public final class ArticleMgmtService {
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
-            // TODO: 88250, 041, original comment id and name default value
             if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }

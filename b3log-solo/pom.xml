@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.1.7, May 8, 2012
+    Version: 2.0.1.8, May 11, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
     <packaging>pom</packaging>
-    <version>0.4.1</version>
+    <version>0.4.5</version>
     <name>B3log Solo</name>
     <url>http://b3log-solo.googlecode.com</url>
     <description>
@@ -28,7 +28,7 @@
     <!-- Properties -->
     <properties>
         <servlet.version>2.5</servlet.version>
-        <org.b3log.solo.version>0.4.1</org.b3log.solo.version>
+        <org.b3log.solo.version>0.4.5</org.b3log.solo.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-repository-sleepycat.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-sleepycat.version>
