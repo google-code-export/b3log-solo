@@ -35,7 +35,7 @@
 <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
 }}}
  # macro-comments.ftl
-由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
+ 由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
 {{{ 
 <#if article.commentable>
 XXX
