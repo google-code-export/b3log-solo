@@ -158,8 +158,7 @@ public final class SoloServletListener extends AbstractServletListener {
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}], bypasses blog view count",
-                       httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             // Creates a session
