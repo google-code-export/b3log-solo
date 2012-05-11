@@ -86,7 +86,7 @@
         </div>
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
-        p <#if 0 != randomArticlesDisplayCount>
+        <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();
         </#if>
         <#if 0 != relevantArticlesDisplayCount>

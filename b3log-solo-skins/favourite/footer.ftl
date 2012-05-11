@@ -9,7 +9,7 @@
         Theme by <a style="color:white;" href="http://www.iprimidieci.com/" target="_blank">Primi</a> & <a style="color:white;" href="http://lamb.b3log.org" target="_blank">Lamb</a>.
     </div>
     <div class="right goTop">
-        <span onclick="common.goTop();">${goTopLabel}</span>
+        <span onclick="Util.goTop();">${goTopLabel}</span>
     </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
@@ -20,7 +20,7 @@
         "staticServePath": "${staticServePath}"
     };
     
-    var common = new Common({
+    var Label = {
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
@@ -42,8 +42,11 @@
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
-    });
-    common.init();
-    common.replaceSideEm($(".side-navi .navi-comments .side-comment"));
+    };
+    
+    $(document).ready(function () {
+        Util.init();
+        Util.replaceSideEm($(".side-navi .navi-comments .side-comment"));
+    });    
 </script>
 ${plugins}

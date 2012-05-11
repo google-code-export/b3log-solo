@@ -33,7 +33,7 @@
             <#list recentComments as comment>
             <div>
                 <a href="${servePath}${comment.commentSharpURL}">
-                    <img class='left' title="${comment.commentContent}"
+                    <img class='left'
                          alt='${comment.commentName}'
                          src='${comment.commentThumbnailURL}'/>
                 </a>

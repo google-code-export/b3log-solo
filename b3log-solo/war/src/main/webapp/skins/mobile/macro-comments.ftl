@@ -175,7 +175,7 @@
     (function () {
         page.load();
         // emotions
-        page.replaceCommentsEm("#comments .comment-content");
+        page.replaceCommentsEm("#commentlist .combody");
             <#nested>
         })();
 </script>

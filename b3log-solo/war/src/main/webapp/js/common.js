@@ -125,10 +125,25 @@ var Util = {
         }
     },
     
+    /**
+     * @description 回到顶部
+     */
     goTop: function () {
-        window.scrollTo(0, 0);
+        var acceleration = acceleration || 0.1;
+
+        var y = $(window).scrollTop();
+        var speed = 1 + acceleration;
+        window.scrollTo(0, Math.floor(y / speed));
+
+        if (y > 0) {
+            var invokeFunction = "Util.goTop(" + acceleration + ")";
+            window.setTimeout(invokeFunction, 16);
+        }
     },
     
+    /**
+     * @description 回到底部
+     */
     goBottom: function (bottom) {
         if (!bottom) {
             bottom = 0;

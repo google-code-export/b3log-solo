@@ -44,7 +44,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            common.buildTags();
+            Util.buildTags();
         </script>
     </body>
 </html>

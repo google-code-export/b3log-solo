@@ -11,7 +11,7 @@
         Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a>.
     </div>
     <div class="right nowrap">
-        <div class="goTop right" onclick="common.goTop();">${goTopLabel}</div>
+        <div class="goTop right" onclick="Util.goTop();">${goTopLabel}</div>
         <br/>
         <div class="right">
             ${viewCount1Label}
@@ -40,7 +40,7 @@
         "staticServePath": "${staticServePath}"
     };
     
-    var common = new Common({
+    var Label = {
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
@@ -63,10 +63,10 @@
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
-    }),
+    },
     maxLength = parseInt("${mostCommentArticles?size}");
 
-    (function () {
+    $(document).ready(function () {
         // article header: user list.
         var isAuthorArticle = false;
         $(".header-user a").each(function () {
@@ -80,8 +80,7 @@
             $(".moon-current-icon").removeClass().addClass("moon-icon");
         }
 
-        common.init();
-        common.replaceSideEm($(".recent-comments div"));
+        Util.init();
         
         $(".footer-block").each(function (num) {
             var $lis = $(this).find("li");
@@ -92,7 +91,7 @@
                 $(this).find("h4").append("<span class='down-icon' onmouseover=\"showFooterBlock(this, " + num + ");\"></span>");
             }
         });
-    })();
+    });
 
     var showFooterBlock = function (it, num) {
         var $li = $($(".footer-block").get(num)).find("li");

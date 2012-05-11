@@ -3,7 +3,7 @@
  * skin favoutite style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Jan 5, 2012
+ * @version 1.0.0.6, May 11, 2012
 */
 body {
     background: url("../images/bg.jpg") repeat scroll left top transparent;
@@ -310,7 +310,7 @@ h5 {
     color: #074A7E;
 }
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
-    background-image: url("../../../images/emotions-blue.png");
+    background-image: url("../../favourite/images/emotions/emotions-blue.png");
 }
 .error-msg {
     color: #3366CC;
@@ -337,10 +337,10 @@ h5 {
 }
 .side-navi .navi-comments .side-comment img {
     border: 0px;
-    height: 24px;
+    height: 16px;
     margin-right: 0px;
     padding: 0px;
-    width: 24px;
+    width: 16px;
 }
 .side-navi .navi-comments li {
     padding: 2px 0;

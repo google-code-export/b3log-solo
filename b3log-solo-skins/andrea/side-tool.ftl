@@ -17,7 +17,7 @@
             <a title="blue" id="blueBG"></a>
         </li>
         <li>
-            <span id="goTop" onclick="common.goTop();" title="${goTopLabel}"></span>
+            <span id="goTop" onclick="Util.goTop();" title="${goTopLabel}"></span>
         </li>
     </ul>
 </div>
