@@ -71,10 +71,10 @@
         <#if isLoggedIn>
         <span>${userName}</span>
         <#if isAdmin>
-        <a href="javascript:common.clearCache('all');">
+        <a href="javascript:Util.clearCache('all');">
             ${clearAllCacheLabel}
         </a>
-        <a href="javascript:common.clearCache();">
+        <a href="javascript:Util.clearCache();">
             ${clearCacheLabel}
         </a>
         <a href="${contextPath}/admin-index.do#main" title="${adminLabel}">

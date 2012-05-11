@@ -5,8 +5,8 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-<div class='goTopIcon' onclick='common.goTop();'></div>
-<div class='goBottomIcon' onclick='common.goBottom();'></div>
+<div class='goTopIcon' onclick='Util.goTop();'></div>
+<div class='goBottomIcon' onclick='Util.goBottom();'></div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
@@ -15,7 +15,7 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         "staticServePath": "${staticServePath}"
     };
         
-    var common = new Common({
+    var Label = {
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
@@ -37,8 +37,11 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
+    };
+    
+    $(document).ready(function () {
+        Util.init();
+        Util.replaceSideEm($("#recentComments li a"));
     });
-    common.init();
-    common.replaceSideEm($("#recentComments li a"));
 </script>
 ${plugins}

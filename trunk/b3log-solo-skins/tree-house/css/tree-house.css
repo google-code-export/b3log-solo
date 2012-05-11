@@ -3,7 +3,7 @@
  * skin tree-house style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Jan 5, 2012
+ * @version 1.0.0.7, May 11, 2012
 */
 html {
     min-width: 948px;
@@ -264,7 +264,7 @@ img.comment-picture {
     resize: vertical;
 }
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
-    background-image: url("../../../images/emotions-blue.png");
+    background-image: url("../../tree-house/images/emotions/emotions-blue.png");
     margin-right: 2px;
 }
 .error-msg {
@@ -291,9 +291,9 @@ img.comment-picture {
     background-image: url("../images/bg-heading-about-us.png");
 }
 #sideNavi #recentComments img {
-    height: 24px;
-    vertical-align: top;
-    width: 24px;
+    height: 16px;
+    vertical-align: middle;
+    width: 16px;
 }
 #sideNavi #recentCommentsLabel {
     background-image: url("../images/bg-heading-portfolio.png");

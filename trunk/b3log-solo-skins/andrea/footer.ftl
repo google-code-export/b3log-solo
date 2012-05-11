@@ -8,14 +8,13 @@
     Theme by <a href="http://www.madeincima.eu/" target="_blank">Andrea</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
     var latkeConfig = {
         "servePath": "${servePath}",
         "staticServePath": "${staticServePath}"
     };
     
-    var common = new Common({
+    var Label = {
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
@@ -37,7 +36,7 @@
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
-    });
+    };
 
     // init brush
     var buildBrush = function () {
@@ -46,9 +45,9 @@
     };
 
     // init
-    (function () {
-        common.init();
-        common.replaceSideEm($("#naviComments li"));
+    $(document).ready(function () {
+        Util.init();
+        Util.replaceSideEm($("#naviComments li"));
     
         // brush
         buildBrush();
@@ -89,6 +88,7 @@
                 "padding-left": "9px"
             }, 600 );
         });
-    })();
+    });
 </script>
+<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 ${plugins}

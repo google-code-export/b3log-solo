@@ -3,7 +3,7 @@
  * skin community style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Oct 15, 2011
+ * @version 1.0.0.6, May 11, 2012
 */
 body {
     background-color: #EFEFEF;
@@ -417,7 +417,8 @@ a.header-title {
 }
 
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
-    background-image: url("../../../images/emotions-black.png");
+    background-image: url("../../community/images/emotions/emotions-black.png");
+    margin: 0 12px;
 }
 /* footer secondary */
 .footer-secondary {

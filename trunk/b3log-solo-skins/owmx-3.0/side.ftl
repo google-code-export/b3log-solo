@@ -61,7 +61,7 @@
                     </a>
                 </div>
                 <div>
-                    <a title="${comment.commentContent}" class='side-comment' href="${servePath}${comment.commentSharpURL}">
+                    <a class='side-comment' href="${servePath}${comment.commentSharpURL}">
                         ${comment.commentContent}
                     </a>
                 </div>

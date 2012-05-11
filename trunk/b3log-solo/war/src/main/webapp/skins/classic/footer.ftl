@@ -5,8 +5,8 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-<div class='goTopIcon' onclick='common.goTop();'></div>
-<div class='goBottomIcon' onclick='common.goBottom();'></div>
+<div class='goTopIcon' onclick='Util.goTop();'></div>
+<div class='goBottomIcon' onclick='Util.goBottom();'></div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
@@ -15,7 +15,8 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "staticServePath": "${staticServePath}"
     };
 
-    var common = new Common({
+    var Label = {
+        "skinDirName": "${skinDirName}",
         "em00Label": "${em00Label}",
         "em01Label": "${em01Label}",
         "em02Label": "${em02Label}",
@@ -31,7 +32,7 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
-    });
+    };
     
     var collapseArchive = function (it, year) {
         var tag = true,
@@ -56,7 +57,7 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         });
     };
     
-    (function () {
+    $(document).ready(function () {
         var currentYear = (new Date()).getFullYear(),
         year = currentYear;
         $("#archiveSide li").each(function (i) {
@@ -75,8 +76,8 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
             }
         });
         
-        common.init();
-        common.replaceSideEm($("#recentComments li"));
-    })();
+        Util.init();
+        Util.replaceSideEm($("#recentComments li"));
+    });
 </script>
 ${plugins}

@@ -12,7 +12,7 @@ Update: 	Dongxu Wang 2011-02-24
 /*
  * skin owmx-3.0 style
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Jan 5, 2012
+ * @version 1.0.0.6, May 11, 2012
 */
 /* Reset */
 header, footer, article, nav, section, aside, time, hgroup {
@@ -271,7 +271,8 @@ aside ul.aside-comments div.left>div>div {
     display: none;
 }
 aside ul.aside-comments .side-comment img{
-    border:0px;height:24px;width:24px;padding:0px;margin-right: 0px;
+    border:0px;height:16px;width:16px;padding:0px;margin-right: 0px;
+    margin-top: 0;
 }
 aside ul.aside-comments li {
     padding:2px 0;
