@@ -23,9 +23,38 @@ Util.goTop();Util.goBottom();Util.init();Util.replaceSideEm(XXX); 并放入 $(do
     page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
 </#if>
 }}}
+ # 服务器请求路径
+ 请求服务器资源时，需要使用 ${serverScheme}://${serverHost}:${serverPort}${contextPath}/xxx
+
+ 其中，${serverScheme}://${serverHost}:${serverPort} 可以使用 ${server} 表示；
+ ${serverScheme}://${serverHost}:${serverPort}${contextPath} 可以使用 _<font color='red'>${servePath}</font>_ 表示。
+
+ 请求静态服务器资源时，需要使用 ${staticServerScheme}://${staticServerHost}:${staticServerPort}/xxx
+
+ 其中，${staticServerScheme}://${staticServerHost}:${staticServerPort} 可以使用 ${staticServer} 表示；
+ ${staticServerScheme}://${staticServerHost}:${staticServerPort} 可以使用 _<font color='red'>${staticServePath}</font>_ 表示。
+
+ 这样做主要是为了能使应用部署在不同的上下文路径（context path）时代码可以不用修改；可以进行静态资源分离，单独将静态资源部署到另一 HTTP 服务器。
+
+ <b>修改步骤</b>：
+
+ 查找皮肤模版中 `<link>`、`<script>`、`<img>`、`<a>` 等标签的链接地址，静态资源请求加入 `${staticServePath}`作为前缀，比如引入 css；其他请求加入 `${servePath}` 作为前缀，比如点击链接。
+
+ <b>关注</b>：
+  * CSS 中请求资源时一定要使用相对路径（../）
+  * JS 中请求资源（AJAX）时一定要使用 ${servePath}/${staticServePath} 等服务器变量，建议在 footer.ftl 中初始化一个 JS 对象 latkeConfig：
+{{{
+var latkeConfig = {
+    "servePath": "${servePath}",
+    "staticServePath": "${staticServePath}"
+};
+}}}
+  在 JS 请求资源时统一使用该对象
+  * 插件模版 plugin.ftl 中也可以使用服务器变量
+
 === ver 0.4.1 ===
  # footer.ftl
- 底部添加 ${plugins}
+  底部添加 ${plugins}
  # page.ftl 
 {{{
 <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
@@ -45,7 +74,7 @@ Util.goTop();Util.goBottom();Util.init();Util.replaceSideEm(XXX); 并放入 $(do
 <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
 }}}
  # macro-comments.ftl
-由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
+ 由于添加了“是否允许评论”功能，须在回复按钮和评论表单外加上
 {{{ 
 <#if article.commentable>
 XXX
