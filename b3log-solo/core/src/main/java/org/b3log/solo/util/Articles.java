@@ -114,7 +114,7 @@ public final class Articles {
             return false;
         }
 
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
         if (null != session) {
             @SuppressWarnings("unchecked")
             Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);

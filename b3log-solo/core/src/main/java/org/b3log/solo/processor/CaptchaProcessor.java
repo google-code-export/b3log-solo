@@ -138,12 +138,12 @@ public final class CaptchaProcessor {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
 
-            final HttpSession httpSession = request.getSession();
-            LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]",
-                       new Object[]{captcha,
-                                    httpSession.getId()});
-            httpSession.setAttribute(CAPTCHA, captcha);
-
+            final HttpSession httpSession = request.getSession(false);
+            if (null != httpSession) {
+                LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]", new Object[]{captcha, httpSession.getId()});
+                httpSession.setAttribute(CAPTCHA, captcha);
+            }
+            
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
@@ -182,8 +182,7 @@ public final class CaptchaProcessor {
 
                 final BufferedInputStream bufferedInputStream =
                         new BufferedInputStream(zipFile.getInputStream(zipEntry));
-                final byte[] captchaCharData = new byte[bufferedInputStream.
-                        available()];
+                final byte[] captchaCharData = new byte[bufferedInputStream.available()];
                 bufferedInputStream.read(captchaCharData);
                 bufferedInputStream.close();
 

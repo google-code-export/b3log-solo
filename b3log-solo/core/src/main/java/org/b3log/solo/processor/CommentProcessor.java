@@ -114,16 +114,18 @@ public final class CommentProcessor {
         }
 
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final HttpSession session = httpServletRequest.getSession();
-        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-        if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+        final HttpSession session = httpServletRequest.getSession(false);
+        if (null != session) {
+            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+                jsonObject.put(Keys.STATUS_CODE, false);
+                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
-            return;
+                return;
+            }
+
+            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
-
-        session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         try {
             final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
@@ -179,7 +181,7 @@ public final class CommentProcessor {
 
         final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
-                
+
         final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
@@ -192,16 +194,18 @@ public final class CommentProcessor {
         }
 
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final HttpSession session = httpServletRequest.getSession();
-        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-        if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+        final HttpSession session = httpServletRequest.getSession(false);
+        if (null != session) {
+            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+                jsonObject.put(Keys.STATUS_CODE, false);
+                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
-            return;
+                return;
+            }
+
+            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
-
-        session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         try {
             final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
