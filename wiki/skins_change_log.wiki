@@ -15,7 +15,7 @@
 }}}
 === ver 0.4.1 ===
  # footer.ftl
- 底部添加 ${plugins}
+  底部添加 ${plugins}
  # page.ftl 
 {{{
 <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
