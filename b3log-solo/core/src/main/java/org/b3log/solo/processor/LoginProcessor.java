@@ -213,25 +213,28 @@ public final class LoginProcessor {
         try {
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
-                if ("b3log-latke".equals(cookie.getName())) {
-                    final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                    final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-                    if (Strings.isEmptyOrNull(userEmail)) {
-                        break;
-                    }
+                if (!"b3log-latke".equals(cookie.getName())) {
+                    continue;
+                }
 
-                    final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
-                    if (null == user) {
-                        break;
-                    }
+                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                    final String userPassword = user.optString(User.USER_PASSWORD);
-                    final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
-                    if (MD5.hash(userPassword).equals(hashPassword)) {
-                        Sessions.login(request, response, user);
-                        LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
-                    }
+                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+                if (Strings.isEmptyOrNull(userEmail)) {
+                    break;
+                }
+
+                final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
+                if (null == user) {
+                    break;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
+                if (MD5.hash(userPassword).equals(hashPassword)) {
+                    Sessions.login(request, response, user);
+                    LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
                 }
             }
         } catch (final Exception e) {
