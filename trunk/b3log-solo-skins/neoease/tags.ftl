@@ -31,7 +31,7 @@
         </div>
         <#include "footer.ftl">
         <script type="text/javascript">
-            common.buildTags();
+            Util.buildTags();
         </script>
     </body>
 </html>
