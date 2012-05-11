@@ -30,8 +30,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  * 
  * <p>
- *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is 
- *   NOT cluster-safe.
+ *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
@@ -189,14 +188,13 @@ public final class Statistics {
      * Blog statistic view count +1.
      * 
      * <p>
-     * If it is a search engine bot made the specified request, will NOT
-     * increment blog statistic view count.
+     * If it is a search engine bot made the specified request, will NOT increment blog statistic view count.
      * </p>
      * 
      * <p>
-     * There is a cron job (/console/stat/viewcnt) to flush the blog view count 
-     * from cache to datastore.
+     * There is a cron job (/console/stat/viewcnt) to flush the blog view count from cache to datastore.
      * </p>
+     * 
      * @param request the specified request
      * @throws RepositoryException repository exception
      * @throws JSONException json exception 
@@ -278,8 +276,7 @@ public final class Statistics {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void decPublishedBlogArticleCount()
-            throws JSONException, RepositoryException {
+    public void decPublishedBlogArticleCount() throws JSONException, RepositoryException {
         final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");

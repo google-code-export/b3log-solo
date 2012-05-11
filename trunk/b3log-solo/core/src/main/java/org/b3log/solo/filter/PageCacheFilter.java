@@ -95,7 +95,7 @@ public final class PageCacheFilter implements Filter {
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
         final long startTimeMillis = System.currentTimeMillis();
-        request.setAttribute(AbstractCacheablePageAction.START_TIME_MILLIS, startTimeMillis);
+        request.setAttribute(Keys.HttpRequest.START_TIME_MILLIS, startTimeMillis);
 
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();

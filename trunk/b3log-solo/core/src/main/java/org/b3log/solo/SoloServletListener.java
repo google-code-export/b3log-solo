@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -152,11 +153,22 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
-        final HttpServletRequest servletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
-        final String requestURI = servletRequest.getRequestURI();
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
+        final String requestURI = httpServletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
-        resolveSkinDir(servletRequest);
+        if (Requests.searchEngineBotRequest(httpServletRequest)) {
+            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}], bypasses blog view count",
+                       httpServletRequest.getHeader("User-Agent"));
+            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
+        } else {
+            // Creates a session
+            final HttpSession session = httpServletRequest.getSession();
+            LOGGER.log(Level.FINE, "Creates a session[id={0}, remoteAddr={1}, User-Agent={2}]",
+                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent")});
+        }
+
+        resolveSkinDir(httpServletRequest);
 
 //        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
 //            || Skips.isStatic(requestURI)) {
