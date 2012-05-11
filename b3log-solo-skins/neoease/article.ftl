@@ -95,6 +95,7 @@
         </div>
         <#include "footer.ftl">
         <@comment_script oId=article.oId>
+        page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();
         </#if>
