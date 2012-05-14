@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.3, Jan 5, 2012
+ * @version 1.0.1.4, Jan 14, 2012
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -208,7 +208,7 @@ textarea, input {
 /* start frame */
 .wrapper {
     margin: 0 auto;
-    width: 960px;
+    width: 990px;
 }
 
 .body {
@@ -216,10 +216,9 @@ textarea, input {
 }
 
 .main {
-    float: left;
     margin: 16px 0 50px;
     overflow: hidden;
-    width: 667px;
+    width: 990px;
 }
 /* end frame */
 
@@ -252,7 +251,7 @@ textarea, input {
     float: right;
     font-size: 14px;
     height: 20px;
-    line-height: 20px;
+    line-height: 145%;
     padding: 3px 10px 3px 28px;
     width: 24px;
     -moz-transition: width 0.4s ease, background 0.4s ease;
@@ -503,6 +502,7 @@ textarea, input {
 }
 
 .article-body {
+    line-height: 145%;
     overflow: hidden;
     word-wrap: break-word;
 }
@@ -782,7 +782,7 @@ textarea, input {
 
 #tagsSide li a {
     float: left;
-    line-height: 20px;
+    line-height: 145%;
     margin-right: 7px;
     white-space: nowrap;
 }

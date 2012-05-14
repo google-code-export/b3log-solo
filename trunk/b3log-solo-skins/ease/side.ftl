@@ -27,7 +27,7 @@
                         <span class="clear"></span>
                     </div>
                     <div class="recent-comments-content">
-                        <a href="${comment.commentSharpURL}">
+                        <a href="${servePath}${comment.commentSharpURL}">
                             ${comment.commentContent}
                         </a>
                     </div>
@@ -44,8 +44,8 @@
         <ul class="side-li">
             <#list mostCommentArticles as article>
             <li>
+                <sup>[${article.articleCommentCount}]</sup>
                 <a title="${article.articleTitle}" href="${article.articlePermalink}">
-                    <sup>[${article.articleCommentCount}]</sup>
                     ${article.articleTitle}
                 </a>
             </li>
@@ -59,8 +59,8 @@
         <ul class="side-li">
             <#list mostViewCountArticles as article>
             <li>
+                <sup>[${article.articleViewCount}]</sup>
                 <a title="${article.articleTitle}" href="${article.articlePermalink}">
-                    <sup>[${article.articleViewCount}]</sup>
                     ${article.articleTitle}
                 </a>
             </li>
@@ -75,7 +75,7 @@
             <#list mostUsedTags as tag>
             <li>
                 <a data-count="${tag.tagPublishedRefCount}"
-                   href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
+                   href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
                     <span>${tag.tagTitle}</span>
                 </a>
             </li>
@@ -107,11 +107,11 @@
             <#list archiveDates as archiveDate>
             <li data-year="${archiveDate.archiveDateYear}">
                 <#if "en" == localeString?substring(0, 2)>
-                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>
-                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 </#if>

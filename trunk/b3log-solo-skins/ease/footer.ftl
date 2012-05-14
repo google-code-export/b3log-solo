@@ -1,7 +1,7 @@
 <div class="footer">
     <div class="wrapper">
         <div class="left">
-            <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+            <span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a><br/>
             Powered by
             <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
                 ${b3logLabel}&nbsp;
@@ -17,10 +17,13 @@
     </div>
 </div>
 <div id="goTop" onclick="goTop()">TOP</div>
-<script type="text/javascript" src="/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="/skins/${skinDirName}/js/${skinDirName}${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
-    var common = new Common({
+    var latkeConfig = {
+        "servePath": "${servePath}",
+        "staticServePath": "${staticServePath}"
+    };
+    
+    var Label = {
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
@@ -42,19 +45,9 @@
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
-    });
-    common.init();
-    common.replaceSideEm($(".recent-comments-content"));
-    common.buildTags("tagsSide");
-    
-    // recent comments
-    $(".recent-comments .recent-comments-main").each(function () {
-        if ($(this).find(".recent-comments-content>a").height() < 30) {
-            $(this).find(".expand-ico").remove();
-        } else {
-            $(this).find(".expand-ico").parent().next().css({
-                "white-space": "nowrap"
-            });
-        }
-    });
+    };
 </script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/skins/${skinDirName}/js/${skinDirName}${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+${plugins}

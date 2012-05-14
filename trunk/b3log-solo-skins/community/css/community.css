@@ -3,7 +3,7 @@
  * skin community style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, May 11, 2012
+ * @version 1.0.0.7, May 15, 2012
 */
 body {
     background-color: #EFEFEF;
@@ -195,6 +195,10 @@ a.header-title {
     overflow: hidden;
 }
 
+.article-body {
+    line-height: 145%;
+}
+
 .article-body a {
     color: #075181;
 }
@@ -306,7 +310,7 @@ a.header-title {
 
 .article-relative a {
     color: #555555;
-    line-height: 20px;
+    line-height: 145%;
 }
 
 #comments {

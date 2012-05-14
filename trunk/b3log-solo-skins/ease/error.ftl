@@ -15,7 +15,7 @@
             <div class="wrapper">
                 <div class="error">
                     <h2 >${sorryLabel} ${notFoundLabel}</h2>
-                    <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+                    <a href="${servePath}">${returnTo1Label}${blogTitle}</a>
                 </div>
                 <#include "side.ftl">
                 <div class="clear"></div>

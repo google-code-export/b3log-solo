@@ -2,7 +2,7 @@
  * skin andrea style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, May 11, 2012
+ * @version 1.0.0.9, May 15, 2012
 */
 body {
     background-image: url("../images/bg-grey.jpg");
@@ -123,7 +123,7 @@ a:hover {
 .main-content > h2 {
     color: #BE0700;
     font-size: 20px;
-    line-height: 20px;
+    line-height: 145%;
     margin-bottom: 18px;
     font-family: 'Neucha', \5fae\8f6f\96c5\9ed1;
 }
@@ -218,7 +218,7 @@ a:hover {
     margin-top: 15px;
     padding: 20px 0 25px 0;
     overflow: hidden;
-    line-height: 20px;
+    line-height: 145%;
 }
 
 .article-abstract p:first-child:first-letter, .article-abstract:first-letter {
@@ -450,6 +450,7 @@ a:hover {
     margin-top: 15px;
     overflow: hidden;
     padding: 20px 0 25px;
+    line-height: 145%;
 }
 
 .article-body p:first-child:first-letter, .article-body:first-letter{

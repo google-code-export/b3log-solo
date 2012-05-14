@@ -15,8 +15,6 @@
                 <div class="main">
                     <#include "article-list.ftl">
                 </div>
-                <#include "side.ftl">
-                <div class="clear"></div>
             </div>
         </div>
         <#include "footer.ftl">
