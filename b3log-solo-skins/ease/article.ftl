@@ -16,7 +16,7 @@
                 <div class="main">
                     <div class="page">
                         <h2>
-                            <a class="article-title" href="${article.articlePermalink}">
+                            <a class="article-title" href="${servePath}${article.articlePermalink}">
                                 ${article.articleTitle}
                             </a>
                             <#if article.hasUpdated>
@@ -39,14 +39,14 @@
                                 </#if>
                             </span>
                             <span class="user-ico" title="${authorLabel}">
-                                <a href="/authors/${article.authorId}">${article.authorName}</a>
+                                <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                             </span>
                         </div>
                         <div class="right article-element">
-                            <a href="${article.articlePermalink}#comments">
+                            <a href="${servePath}${article.articlePermalink}#comments">
                                 ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                             </a>&nbsp;&nbsp;
-                            <a href="${article.articlePermalink}">
+                            <a href="${servePath}${article.articlePermalink}">
                                 ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="article-element">
                             <span class="tag-ico" title="${tagsLabel}">
                                 <#list article.articleTags?split(",") as articleTag>
-                                <a href="/tags/${articleTag?url('UTF-8')}">
+                                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                     ${articleTag}</a><#if articleTag_has_next>,</#if>
                                 </#list>
                             </span>
@@ -70,12 +70,12 @@
                         <div class="article-panel1">
                             <#if nextArticlePermalink??>
                             <div class="right">
-                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                             </div><div class="clear"></div>
                             </#if>                            
                             <#if previousArticlePermalink??>
                             <div class="right">
-                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                             </div>
                             </#if>
                             <div class="clear"></div>

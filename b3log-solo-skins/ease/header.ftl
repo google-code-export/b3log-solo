@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="left">
             <h1>
-                <a class="title" href="/">
+                <a class="title" href="${servePath}">
                     ${blogTitle}
                 </a>
             </h1>
@@ -23,7 +23,7 @@
     <div class="wrapper">
         <ul>
             <li>
-                <a href="/">${indexLabel}</a>
+                <a href="${servePath}">${indexLabel}</a>
             </li>
             <#list pageNavigations as page>
             <li>
@@ -31,10 +31,10 @@
             </li>
             </#list>  
             <li>
-                <a href="/tags.html">${allTagsLabel}</a>  
+                <a href="${servePath}/tags.html">${allTagsLabel}</a>  
             </li>
             <li>
-                <a href="/blog-articles-feed.do">Atom<img src="/images/feed.png" alt="Atom"/></a>
+                <a href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
             </li>
         </ul>
         <div class="right">
