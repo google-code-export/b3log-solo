@@ -21,7 +21,7 @@ jdbc.password=
 }}}
 
 <li>部署到 ROOT 目录下</li>
-将 `${b3log-solo-mysql-x.x.x}` 下的内容拷贝到 ROOT 下（tomcat/webapps/ROOT）
+将 `${b3log-solo-mysql-x.x.x}` 下的内容拷贝到 ROOT 下（tomcat/webapps/ROOT）（请先备份原有 ROOT 内容，清空后将安装包加下目录下内容拷贝至此）
 <li>启动容器</li>
 <li>在浏览器中访问：[http://${server}:${port}] 进行初始化</li>
 </ol>
@@ -32,5 +32,6 @@ _备注_：
  * `${b3log-solo-mysql-x.x.x}` 为 B3log Solo for MySQL 根目录（请注意解压目录）
 ----
 _注意_：
- * 目前只能部署到 ROOT 下（不带应用路径）
+ * 0.4.1 只能部署到 ROOT 下
+ * 0.4.5 后可以部署到 tomcat/webapps/xxx 下，请注意配置 latke.properties 配置文件
  * 注意启动日志
