@@ -33,5 +33,5 @@ _备注_：
 ----
 _注意_：
  * 0.4.1 只能部署到 ROOT 下
- * 0.4.5 后可以部署到 tomcat/webapps/xxx 下，请注意配置 latke.properties 配置文件
+ * 0.4.5 后可以部署到 tomcat/webapps/xxx 下，请注意配置 latke.properties
  * 注意启动日志
