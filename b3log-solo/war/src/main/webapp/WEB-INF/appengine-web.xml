@@ -55,7 +55,9 @@
         <include path="/skins/**/*.jpg" />
         <include path="/skins/**/*.swf" />
         <include path="/skins/**/*.gif" />
+        
         <include path="/css/*.css" />
+        <include path="/css/**.css" />
         
         <include path="/images/*.png" />
         <include path="/images/**/*.png" />
