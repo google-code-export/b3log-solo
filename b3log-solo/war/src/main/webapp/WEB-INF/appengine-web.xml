@@ -68,11 +68,13 @@
         <include path="/plugins/**/*.html" />
         <include path="/plugins/**/*.htm" />
         
+        <include path="/over-quota.html" />
+        
         <include path="/403.html" />
     </static-files>
     
     <static-error-handlers>
-        <handler file="over-quota.html" error-code="over_quota" />
+        <handler file="over-quota.html" />
     </static-error-handlers>
 </appengine-web-app>
 
