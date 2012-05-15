@@ -1,8 +1,8 @@
 /**
- * 403, article-pwd, init, login, over-quota and kill-browser page style.
+ * 403, 500, article-pwd, init, login and kill-browser page style.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, May 7, 2012
+ * @version 1.0.1.0, May 11, 2012
 */
 html {
     height: 100%;
@@ -168,25 +168,25 @@ input:focus {
 }
 /* end article-pwd */
 
-/* start over-quota */
-.over-quota {
+/* start 500 */
+.error500 {
     height: auto; 
     margin: 60px 0pt;
 }
 
-.over-quota ul {
+.error500 ul {
     width: 50%;
     margin: 12px 0 0 12px;
     float: left;
 }
 
-.over-quota .img-forbidden {
+.error500 .img-forbidden {
     margin: 38px 10px 0 0;
     width: 96px;
     height: 96px;
     float: right;
 }
-/* end over-quota */
+/* end 500 */
 
 /* start 403 */
 .forbidden {

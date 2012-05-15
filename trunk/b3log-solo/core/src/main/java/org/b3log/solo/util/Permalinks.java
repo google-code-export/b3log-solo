@@ -30,7 +30,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Dec 15, 2011
+ * @version 1.1.0.7, May 11, 2012
  * @since 0.3.1
  */
 public final class Permalinks {
@@ -55,7 +55,8 @@ public final class Permalinks {
         "/archives/",
         "/article",
         "/console/",
-        "/over-quota.html",
+        "/500.html",
+        "/403.html",
         "/tags.html",
         "/tags",
         "/page",
