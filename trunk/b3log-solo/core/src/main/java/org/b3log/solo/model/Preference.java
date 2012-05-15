@@ -264,11 +264,11 @@ public final class Preference {
         /**
          * Default meta keywords..
          */
-        public static final String DEFAULT_META_KEYWORDS = "GAE 博客,GAE blog,b3log";
+        public static final String DEFAULT_META_KEYWORDS = "Java 博客,GAE,b3log";
         /**
          * Default meta description..
          */
-        public static final String DEFAULT_META_DESCRIPTION = "An open source blog based on GAE Java. GAE Java 开源博客";
+        public static final String DEFAULT_META_DESCRIPTION = "An open source blog with Java. Java 开源博客";
         /**
          * Default HTML head to append.
          */
