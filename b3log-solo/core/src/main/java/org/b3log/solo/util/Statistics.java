@@ -15,6 +15,10 @@
  */
 package org.b3log.solo.util;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +38,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Feb 10, 2012
+ * @version 1.0.1.9, May 16, 2012
  * @since 0.3.1
  */
 public final class Statistics {
@@ -48,13 +52,21 @@ public final class Statistics {
      */
     private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
     /**
-     * Online visitor count.
-     */
-    private static int onlineVisitorCount = 0;
-    /**
      * Repository cache prefix, refers to GAERepository#CACHE_KEY_PREFIX.
      */
     public static final String REPOSITORY_CACHE_KEY_PREFIX = "repository";
+    /**
+     * Online visitor cache.
+     * 
+     * <p>
+     * &lt;ip, recentTime&gt;
+     * </p>
+     */
+    private static final Map<String, Long> ONLINE_VISITORS = new HashMap<String, Long>();
+    /**
+     * Online visitor expiration in 5 minutes.
+     */
+    private static final int ONLINE_VISITOR_EXPIRATION = 300000;
 
     /**
      * Gets the online visitor count.
@@ -62,28 +74,36 @@ public final class Statistics {
      * @return online visitor count
      */
     public static int getOnlineVisitorCount() {
-        return onlineVisitorCount;
+        return ONLINE_VISITORS.size();
     }
 
     /**
-     * Increments the online visitor count.
+     * Refreshes online visitor count for the specified request.
+     * 
+     * @param request the specified request
      */
-    public static void incOnlineVisitorCount() {
-        ++onlineVisitorCount;
-        LOGGER.log(Level.INFO, "Inced online visitor count [{0}]", onlineVisitorCount);
+    public static void onlineVisitorCount(final HttpServletRequest request) {
+        ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
+        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
-     * Decrements the online visitor count.
+     * Removes the expired online visitor.
      */
-    public static void decOnlineVisitorCount() {
-        --onlineVisitorCount;
+    public static void removeExpiredOnlineVisitor() {
+        final long currentTimeMillis = System.currentTimeMillis();
 
-        if (0 > onlineVisitorCount) {
-            onlineVisitorCount = 0;
+        final Iterator<Entry<String, Long>> iterator = ONLINE_VISITORS.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Entry<String, Long> onlineVisitor = iterator.next();
+
+            if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
+                iterator.remove();
+                LOGGER.log(Level.FINEST, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+            }
         }
 
-        LOGGER.log(Level.INFO, "Deced online visitor count [{0}]", onlineVisitorCount);
+        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
