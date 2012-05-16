@@ -1,22 +1,35 @@
 <div class="footer">
     <div class="wrapper">
         <div class="left">
-            <span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a><br/>
+            <span class="ft-gray">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a>
             Powered by
             <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
                 ${b3logLabel}&nbsp;
                 <span style="color: orangered; font-weight: bold;">Solo</span></a>,
             ver ${version}&nbsp;&nbsp;
-            Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a>
-            & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+            Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         </div>
-        <a class="right" target="_blank" href="http://code.google.com/appengine/">
-            <img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" />
-        </a>
+        <div class="right">
+            ${viewCount1Label}
+            <span class="tip">
+                ${statistic.statisticBlogViewCount}
+            </span>
+            &nbsp;&nbsp;
+            ${articleCount1Label}
+            <span class="tip">
+                ${statistic.statisticPublishedBlogArticleCount}
+            </span>
+            &nbsp;&nbsp;
+            ${commentCount1Label}
+            <span class="tip">
+                ${statistic.statisticPublishedBlogCommentCount}
+            </span>
+            <span class="translate-ico" onclick="goTranslate()"></span>
+        </div>
         <div class="clear"></div>
     </div>
 </div>
-<div id="goTop" onclick="goTop()">TOP</div>
+<div id="goTop" onclick="Util.goTop()">TOP</div>
 <script type="text/javascript">
     var latkeConfig = {
         "servePath": "${servePath}",
