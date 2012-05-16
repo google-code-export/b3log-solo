@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.7, May 16, 2012
+ * @version 1.0.5.8, May 16, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -204,7 +204,7 @@ public final class Filler {
      * @param dataModel data model
      * @throws ServiceException service exception
      */
-    private void fillLinks(final Map<String, Object> dataModel) throws ServiceException {
+    public void fillLinks(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Links");
         try {
             final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
