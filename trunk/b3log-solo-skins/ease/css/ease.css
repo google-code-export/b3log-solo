@@ -210,7 +210,6 @@ textarea, input {
 .body {
     margin: 0 auto 50px;
     width: 990px;
-    min-height: 380px;
 }
 /* end frame */
 
@@ -266,7 +265,7 @@ textarea, input {
 
 .nav {
     background-color: #FFF;
-    box-shadow: 0 0 8px #a7a7a7;
+    box-shadow: 0 3px 5px #cecece, 0 10px 5px -10px #e2e2e2 inset;
     height: 28px;
 }
 
@@ -369,12 +368,20 @@ textarea, input {
     color: #676767;
 }
 
+.article-body>div {
+    min-height: 32px;
+}
+
 .article-info, .article-title {
     text-align: center;
 }
 
 .article-title h2 {
     display: inline;
+}
+
+.article-title span {
+    cursor: pointer;
 }
 /* end article list */
 
@@ -554,14 +561,18 @@ textarea, input {
 end article*/
 
 /* start tags */
+#tags {
+    padding: 50px 70px 20px;
+}
+
 #tags li {
     float: left;
-    list-style: none;
     height: 38px;
 }
 
 #tags a:hover {
     text-shadow: 0 0 2px;
+    text-decoration: none;
 }
 
 #tags a {
@@ -572,51 +583,28 @@ end article*/
     padding: 3px 12px;
 }
 
-#tagsSide li a {
-    float: left;
-    line-height: 145%;
-    margin-right: 7px;
-    white-space: nowrap;
-}
-
-.tags1 {
+.tags1, .tags1:visited {
     font-size: 12px;
     color: #a7a7a7;
 }
 
-.tags2 {
+.tags2, .tags2:visited {
     font-size: 14px;
     color: #808080;
 }
 
-.tags3 {
+.tags3, .tags3:visited {
     font-size: 16px;
     color: #595959;
 }
 
-.tags4 {
+.tags4, .tags4:visited {
     font-size: 18px;
     color: #323232;
 }
 
-.tags5 {
+.tags5, .tags5:visited {
     font-size: 20px;
     color: #0a0a0a;
-}
-
-#tagsSide .tags2 {
-    font-size: 14px;
-}
-
-#tagsSide .tags3 {
-    font-size: 16px;
-}
-
-#tagsSide .tags4 {
-    font-size: 18px;
-}
-
-#tagsSide .tags5 {
-    font-size: 20px;
 }
 /* end tags */

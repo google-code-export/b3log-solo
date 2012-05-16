@@ -37,6 +37,8 @@
     };
     
     var Label = {
+        "contentLabel": "${contentLabel}",
+        "abstractLabel": "${abstractLabel}",
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
