@@ -1,12 +1,11 @@
-@charset "utf-8";
 /*
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Jan 14, 2012
+ * @version 1.0.0.4, May 16, 2012
 */
 /* start base */
-html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
+html, body, div, ul, li{
     margin: 0;
     padding: 0;
 }
@@ -14,26 +13,24 @@ html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
 body {
     font-family: "Lucida Grande",Verdana,\5fae\8f6f\96c5\9ed1;
     font-size: 12px;
-    background-color: #F9F9F9;
-    color: #333;
 }
 
-a:link {
+a {
     outline: none;
-    color: #21759B;
+    color: #009EB8;
     text-decoration: none;
 }
 
 a:visited {
-    color: #555777;
+    color: #00b4d2;
 }
 
 a:hover {
-    color: #D54E21;    
+    text-decoration: underline;
 }
 
 a:active {
-    color: #333;
+    color: #00889f;
 }
 
 img {
@@ -68,13 +65,26 @@ textarea, input {
     display: none;
 }
 
+.ft-gray {
+    color: #808080;
+}
+
+.ft-gray:visited {
+    color: #9a9a9a
+}
+
+.ft-gray:hover {
+    color: #676767;
+    text-decoration: none;
+}
+
 .logo {
     padding: 0 5px;
-    text-shadow: 0 0 1px #EEE;
+    text-shadow: 0 0 1px #e2e2e2;
 }
 
 .tip {
-    color: #D54E21;
+    color: #808080;
     font-size: 11px;
 }
 
@@ -129,46 +139,33 @@ textarea, input {
 .em14 {
     background-position: -96px -48px;
 }
-.em-span {
-    line-height: 24px;
-    float: left;
-}
-
-.em-br {
-    line-height: 24px;
-}
 /* end base */
 
 /* start ico */
-.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search,
-.translate-ico, .feed-ico {
+.expand-ico, 
+.collapse-ico, 
+#search,
+.translate-ico {
     background-image: url("/skins/neoease/images/icons.png");
-}
-
-.feed-ico {
-    background-position: right -146px;
-    background-repeat: no-repeat;
-    color: #333;
-    padding-right: 24px;
 }
 
 .translate-ico {
     background-position: 1px -125px;
     background-repeat: no-repeat;
-    border: 1px solid #999;
-    border-radius: 3px 3px 3px 3px;
+    border: 1px solid #e2e2e2;
+    border-radius: 3px;
     cursor: pointer;
     float: right;
     height: 16px;
-    margin: 6px 0 0 18px;
+    margin: -3px 0 0 18px;
     padding: 1px;
     width: 16px;
 }
 
 .translate-ico:hover {
-    border-color: #D54E21;
-    box-shadow: 0 0 1px #999;
-    background-color: #F2F2F2;
+    border-color: #9a9a9a;
+    box-shadow: 0 0 1px #808080;
+    background-color: #fefefe;
 }
 
 .expand-ico, .collapse-ico {
@@ -207,36 +204,30 @@ textarea, input {
 
 /* start frame */
 .wrapper {
-    margin: 0 auto;
-    width: 990px;
+    margin: 0 50px;
 }
 
 .body {
-    border-top: 2px solid #DDD;
-}
-
-.main {
-    margin: 16px 0 50px;
-    overflow: hidden;
+    margin: 0 auto 50px;
     width: 990px;
+    min-height: 380px;
 }
 /* end frame */
 
 /* start header */
 .header {
-    background: url("/skins/neoease/images/icons.png") repeat-x scroll 0 -220px #F2F2F2;
-    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    background-color: #fefefe;
 }
 
 .header .title {
-    border-bottom: 1px solid #242424;
-    color: #000;
+    border-bottom: 1px solid #808080;
     font-size: 26px;
     font-weight: normal;
 }
 
 .header .sub-title {
-    color: #242424;
     font-size: 11px;
 }
 
@@ -244,10 +235,10 @@ textarea, input {
     background-position: 7px -99px;
     background-repeat: no-repeat;
     background-color: #FFF;
-    border: 1px solid #DDD;
+    border: 1px solid #e2e2e2;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
-    color: #888;
+    color: #808080;
     float: right;
     font-size: 14px;
     height: 20px;
@@ -260,13 +251,23 @@ textarea, input {
 }
 
 #search:focus {
-    background-color: #F9F9F9;
+    background-color: #FeFeFe;
     width: 196px;
 }
 
+.banner {
+    margin-bottom: 20px;
+}
+
+.banner .notice {
+    float: left;
+    margin: 20px 0 0 50px;
+}
+
 .nav {
-    background-color: #E9E9E9;
-    border-bottom: 1px solid #CCCCCC;
+    background-color: #FFF;
+    box-shadow: 0 0 8px #a7a7a7;
+    height: 28px;
 }
 
 .nav ul {
@@ -279,38 +280,19 @@ textarea, input {
 }
 
 .nav a {
-    color: #666666;
     display: block;
     float: left;
     font-size: 14px;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 15px;
-    text-shadow: 0 1px 0 #EEE;
-}
-
-.nav a:hover {
-    color: #D54E21;
-    background-color: #DDD;
-}
-
-.nav .current {
-    background-color: #DDD;
-    margin: -1px 0;
-    padding-right: 2px;
-}
-
-.nav .current a  {    
-    background-color: #F9F9F9;
-    border-color: #CCCCCC #CCCCCC #F9F9F9;
-    border-style: solid;
-    border-width: 1px 1px 3px;
-    font-weight: 700;
     height: 33px;
     line-height: 33px;
     margin: -2px 0 -3px;
-    color: #333;
-    text-shadow : 1px 1px 1px #C6D9E9;
+    padding-right: 30px;
+    text-shadow: 0 1px 0 #e2e2e2;
+}
+
+.nav a.current  {    
+    color: #00b4d2;
+    font-weight: 700;
 }
 
 .nav img {
@@ -324,23 +306,14 @@ textarea, input {
 
 /* start footer */
 .footer {
-    background-color: #E9E9E9;
-    border-top: 3px solid #DDD;
-    color: #999;
+    background-color: #FDFDFD;
+    border-top: 3px solid #e2e2e2;
     font-size: 11px;
     padding: 12px 0;
 }
 
-.footer a {
-    color: #787878;
-}
-
-.footer a:hover {
-    color: #D54E21;
-}
-
 #goTop {
-    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDD;
+    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #f6f6f6;
     border-radius: 2px 2px 0 0;
     cursor: pointer;
     font-size: 11px;
@@ -348,157 +321,29 @@ textarea, input {
     line-height: 21px;
     padding: 0 10px 0 23px;
     position: absolute;
-    right: 56px;
+    right: 50px;
     display: none;
 }
 
 #goTop:hover {
-    background-color: #EAEAEA;
+    background-color: #e2e2e2;
 }
 /* end footer*/
 
-/* start side */
-.side {
-    float: right;
-    overflow: hidden;
-    width: 278px;
-    margin-bottom: 50px;
-}
-
-.side>div {
-    border-bottom: 1px solid #DEDEDE;
-    padding: 10px 5px 15px;
-}
-
-.side h4 {
-    font-size: 14px;
-    line-height: 32px;
-}
-
-.side ul {
-    list-style: none;
-}
-
-#archiveSide {
-    list-style: square outside none;
-    margin-left: 18px;
-}
-
-#archiveSide .archive-year {
-    color: #D54E21;
-    font-weight: bold;
-    height: 18px;
-    line-height: 18px;
-    list-style: none;
-}
-
-.side a {
-    line-height: 18px;
-}
-
-.side sup {
-    color: #333;
-}
-
-.side .side-li li {
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    -o-text-overflow: ellipsis;   
-    width: 268px;
-}
-
-.side .side-li a {
-    white-space: nowrap;
-}
-
-.recent-comments img {
-    background-color: #FFF;
-    border: 1px solid #999;
-    padding: 1px;
-    width: 32px;
-    height: 32px;
-    margin-top: 1px;
-}
-
-.recent-comments-main {
-    float: left;
-    margin: 0 0 9px 3px;
-    width: 229px;
-}
-
-.recent-comments-main .expand-ico, .recent-comments-main .collapse-ico {
-    background-position: 0 -86px;
-    float: right;
-    width: 16px;
-    -moz-transition: opacity 400ms ease;
-    -webkit-transition: opacity 400ms ease;
-    transition: opacity 400ms ease;
-    opacity:0;
-    filter: alpha(opacity=0);
-}
-
-.recent-comments li:hover .expand-ico, .recent-comments li:hover .collapse-ico {
-    opacity:1;
-    filter: alpha(opacity=100);
-}
-
-.recent-comments-main .collapse-ico {
-    background-position: 0 -70px;
-}
-
-.recent-comments-content {
-    height: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;   
-}
-/* end side */
-
 /* start article list */
+.body > ul {
+    list-style: none;
+}
+
 .article {
-    border-bottom: 1px solid #CCC;
-    padding: 0 5px 10px;
-    margin-top: 20px;
+    border-bottom: 1px solid #f6f6f6;
+    padding: 50px 70px 20px;
 }
 
-.article-element {
-    font-size: 11px;
-    line-height: 16px;
-    margin: 12px 0;
-}
-
-.article-element a {
-    border-bottom: 1px solid #DFDFDF;
-    color: #555;    
-    text-decoration: none;
-    padding-bottom: 1px;
-}
-
-.article-element a:hover { 
-    color: #D54E21;
-    border-bottom-color: #D54E21;
-}
-
-.article-title {
-    color: #21759B;
-    font-size: 20px;
-    font-weight: normal;
-}
-
-.article-title:hover {
-    color: #D54E21;
-}
-
-.article .expand-ico, .article .collapse-ico {
-    float: right;
-    margin-top: 9px;
-    padding-right: 6px;
-    width: 15px;
-    background-position: 0 -86px;
-}
-
-.article .collapse-ico {
-    background-position: 0 -70px;
+.article:hover {
+    border-bottom-color: #e2e2e2;
+    box-shadow: 0 0 1px #f6f6f6 inset;
+    background-color: #fefefe;
 }
 
 .article-body {
@@ -507,86 +352,33 @@ textarea, input {
     word-wrap: break-word;
 }
 
-.article-body h1 {
-    font-size: 2em;
-    margin: .67em 0;
-}
-
-.article-body h2 {
-    font-size: 1.5em;
-    margin: .75em 0;
-}
-
-.article-body h3 {
-    font-size: 1.17em;
-    margin: .83em 0;
-}
-
-.article-body h4 {
-    margin: 1.12em 0;
-}
-
-.article-body h4 {
-    font-size: .83em;
-    margin: 1.5em 0;
-}
-
-.article-body h6 {
-    font-size: .75em;
-    margin: 1.67em 0;
-}
-
 .article-body ol, .article-body ul {
     margin-left: 40px;
 }
 
 .article-body a {
-    border-bottom: 1px solid #DFDFDF;
+    color: #808080;
+    text-decoration: underline;
+}
+
+.article-body a:vidited {
+    color: #9a9a9a
 }
 
 .article-body a:hover {
-    color: #D54E21;
-    border-bottom: 1px solid #D54E21;
+    color: #676767;
 }
 
-.article-body p {
-    line-height: 18px;
+.article-info, .article-title {
+    text-align: center;
 }
 
-.pagination {
-    margin-top: 30px;
-    line-height: 21px;
-}
-
-.pagination a {
-    border: 1px solid #C5C3C2;
-    font-size: 10px;
-    margin: 2px;
-    padding: 1px 5px ;
-    text-decoration: none;
-    background-color: #F2F2F2;
-}
-
-.pagination a.current {
-    background-color: #FFF;
-    font-weight: bold;
-    padding: 2px 6px;
-    color: #000;
-}
-
-.pagination a:hover {
-    background-color: #F3DEDD;
-    color: #D54E21;
-    border: 1px solid #D54E21;
-}
-
-.page {
-    margin-top: 20px;
-    padding: 0 5px 5px;
+.article-title h2 {
+    display: inline;
 }
 /* end article list */
 
-/* start article */
+/* start article 
 .article-panel1 {
     background-color: #F2F2F2;
     padding: 5px 10px;
@@ -759,7 +551,7 @@ textarea, input {
     border-color: #76B33A #98C64C #98C64C #76B33A;
     color: #074A7E;
 }
-/* end article*/
+end article*/
 
 /* start tags */
 #tags li {
@@ -773,8 +565,8 @@ textarea, input {
 }
 
 #tags a {
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 1px 1px 3px #333;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #e2e2e2;
     float: left;
     margin: 3px 6px;
     padding: 3px 12px;
@@ -789,26 +581,27 @@ textarea, input {
 
 .tags1 {
     font-size: 12px;
-    color: #A1A1A1;
+    color: #a7a7a7;
 }
 
 .tags2 {
     font-size: 14px;
-    color: #687F95;
+    color: #808080;
 }
 
 .tags3 {
     font-size: 16px;
-    color: #4C6E90;
+    color: #595959;
 }
 
 .tags4 {
     font-size: 18px;
-    color: #258;
+    color: #323232;
 }
 
 .tags5 {
     font-size: 20px;
+    color: #0a0a0a;
 }
 
 #tagsSide .tags2 {
@@ -827,39 +620,3 @@ textarea, input {
     font-size: 20px;
 }
 /* end tags */
-
-/* start others */
-.main>h2 {
-    margin-top: 16px;
-}
-
-.error {
-    background-image: url("/skins/neoease/images/404.png");
-    float: left;
-    height: 536px;
-    margin: 50px 80px;
-    position: relative;
-    width: 363px;
-}
-
-.error h2 {
-    left: -68px;
-    position: absolute;
-    top: -20px;
-}
-
-.error a {
-    background-color: #9CD941;
-    border: 265px none;
-    bottom: 12px;
-    color: #333555;
-    float: left;
-    padding: 10px 15px;
-    position: absolute;
-    right: -106px;
-}
-
-.error a:hover {
-    background-color: #ADEb51;
-}
-/* end others */
