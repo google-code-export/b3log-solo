@@ -152,7 +152,7 @@
                     </th>
                     <td>
                         <select id="editorType">
-                            <option value="tinyMCE">tinyMCE</option>
+                            <option value="tinyMCE">TinyMCE</option>
                             <option value="CodeMirror-Markdown">CodeMirror(Markdown)</option>
                             <option value="KindEditor">KindEditor</option>
                         </select>
