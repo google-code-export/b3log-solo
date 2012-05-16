@@ -39,8 +39,6 @@ import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.taskqueue.TaskQueueService;
-import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
@@ -78,10 +76,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * B3log Rhythm address.
      */
     public static final String B3LOG_RHYTHM_ADDRESS = "http://b3log-rhythm.appspot.com:80";
-    /**
-     * Task queue service.
-     */
-    private TaskQueueService taskQueueService;
     /**
      * Enter escape.
      */
@@ -126,8 +120,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerEventProcessor();
 
-        taskQueueService = TaskQueueServiceFactory.getTaskQueueService();
-
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -143,12 +135,11 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
-        Statistics.incOnlineVisitorCount();
     }
 
+    // Note: This method will never invoked on GAE production environment
     @Override
     public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
-        Statistics.decOnlineVisitorCount();
     }
 
     @Override
@@ -161,26 +152,16 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
-            // Gets a session
+            // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                        new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                                     session.isNew()});
+            // Online visitor count
+            Statistics.onlineVisitorCount(httpServletRequest);
         }
 
         resolveSkinDir(httpServletRequest);
-
-//        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
-//            || Skips.isStatic(requestURI)) {
-//            return;
-//        }
-
-        // For request statistics
-//        final Queue queue = taskQueueService.getQueue("request-stat-queue");
-//        final Task task = new Task();
-//        task.setURL("/console/stat/request");
-//        queue.add(task);
-//        LOGGER.log(Level.FINEST, "Added a task");
     }
 
     @Override

@@ -30,7 +30,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Statistic;
@@ -48,14 +47,13 @@ import org.json.JSONObject;
  * Statistics of B3log Solo: 
  * 
  *   <ul>
- *     <li>{@link #statRequest(org.b3log.latke.servlet.HTTPRequestContext) Increments request counting}</li>
  *     <li>{@link #viewCounter(org.b3log.latke.servlet.HTTPRequestContext) Blog/Article view counting}</li>
  *     <li>TODO: 88250, stat proc</li>
  *   </ul>
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 20, 2011
+ * @version 1.0.1.4, May 16, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -65,10 +63,6 @@ public final class StatProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(StatProcessor.class.getName());
-    /**
-     * Request statistics URI.
-     */
-    public static final String STAT_REQUEST_URI = "/console/stat/request";
     /**
      * Statistic repository.
      */
@@ -83,19 +77,17 @@ public final class StatProcessor {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Increments request counter.
+     * Online visitor count refresher.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = STAT_REQUEST_URI, method = HTTPRequestMethod.POST)
-    public void statRequest(final HTTPRequestContext context) {
-        Stopwatchs.start("Inc Request Stat.");
+    @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
+    public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
+        LOGGER.log(Level.INFO, "Refreshes online visitor count");
 
         context.setRenderer(new DoNothingRenderer());
 
-        LOGGER.log(Level.FINER, "Inc Request Stat.");
-
-        Stopwatchs.end();
+        Statistics.removeExpiredOnlineVisitor();
     }
 
     /**

@@ -62,8 +62,7 @@ public final class CaptchaProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(CaptchaProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class.getName());
     /**
      * Length of captcha.
      */
@@ -71,8 +70,7 @@ public final class CaptchaProcessor {
     /**
      * Images service.
      */
-    private static final ImageService IMAGE_SERVICE =
-            ImageServiceFactory.getImageService();
+    private static final ImageService IMAGE_SERVICE = ImageServiceFactory.getImageService();
     /**
      * Random.
      */
@@ -101,16 +99,14 @@ public final class CaptchaProcessor {
      * Captcha &lt;"imageName", Image&gt;.
      * For example &lt;"0/5.png", Image&gt;.
      */
-    private static final Map<String, Image> CAPTCHAS =
-            new HashMap<String, Image>();
+    private static final Map<String, Image> CAPTCHAS = new HashMap<String, Image>();
 
     /**
      * Gets captcha.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/captcha.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/captcha.do", method = HTTPRequestMethod.GET)
     public void get(final HTTPRequestContext context) {
         final PNGRenderer renderer = new PNGRenderer();
         context.setRenderer(renderer);
@@ -124,8 +120,7 @@ public final class CaptchaProcessor {
             String captcha = "";
             final List<Image> images = new ArrayList<Image>();
             for (int i = 0; i < LENGTH; i++) {
-                final String column = String.valueOf(RANDOM.nextInt(
-                        MAX_CAPTCHA_COLUM));
+                final String column = String.valueOf(RANDOM.nextInt(MAX_CAPTCHA_COLUM));
                 captcha += column;
                 final String imageName = row + "/" + column + ".png";
                 final Image captchaChar = CAPTCHAS.get(imageName);
@@ -143,7 +138,7 @@ public final class CaptchaProcessor {
                 LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]", new Object[]{captcha, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
-            
+
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
@@ -160,9 +155,7 @@ public final class CaptchaProcessor {
     private static void loadCaptchas() {
         LOGGER.info("Loading captchas....");
         try {
-            final URL captchaURL =
-                    SoloServletListener.class.getClassLoader().getResource(
-                    "captcha.zip");
+            final URL captchaURL = SoloServletListener.class.getClassLoader().getResource("captcha.zip");
             final ZipFile zipFile = new ZipFile(captchaURL.getFile());
             final Set<String> imageNames = new HashSet<String>();
             for (int row = 0; row < MAX_CAPTCHA_ROW; row++) {
@@ -172,22 +165,19 @@ public final class CaptchaProcessor {
 
             }
 
-            final ImageService imageService =
-                    ImageServiceFactory.getImageService();
+            final ImageService imageService = ImageServiceFactory.getImageService();
 
             final Iterator<String> i = imageNames.iterator();
             while (i.hasNext()) {
                 final String imageName = i.next();
                 final ZipEntry zipEntry = zipFile.getEntry(imageName);
 
-                final BufferedInputStream bufferedInputStream =
-                        new BufferedInputStream(zipFile.getInputStream(zipEntry));
+                final BufferedInputStream bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry));
                 final byte[] captchaCharData = new byte[bufferedInputStream.available()];
                 bufferedInputStream.read(captchaCharData);
                 bufferedInputStream.close();
 
-                final Image captchaChar =
-                        imageService.makeImage(captchaCharData);
+                final Image captchaChar = imageService.makeImage(captchaCharData);
 
                 CAPTCHAS.put(imageName, captchaChar);
             }
