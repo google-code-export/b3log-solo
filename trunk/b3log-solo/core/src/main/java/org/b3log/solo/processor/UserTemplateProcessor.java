@@ -99,10 +99,6 @@ public final class UserTemplateProcessor {
         final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
 
         try {
-            if (Templates.hasExpression(template, "<#list links as link>")) {
-                filler.fillLinks(dataModel);
-            }
-
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
