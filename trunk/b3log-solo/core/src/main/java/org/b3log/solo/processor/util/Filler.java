@@ -51,10 +51,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.model.Statistic;
+import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
@@ -78,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.6, May 10, 2012
+ * @version 1.0.5.7, May 16, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -590,6 +587,13 @@ public final class Filler {
         try {
             LOGGER.finer("Filling page navigations....");
             final List<JSONObject> pages = pageRepository.getPages();
+
+            for (final JSONObject page : pages) {
+                if ("page".equals(page.optString(Page.PAGE_TYPE))) {
+                    final String permalink = page.optString(Page.PAGE_PERMALINK);
+                    page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
+                }
+            }
 
             dataModel.put(Common.PAGE_NAVIGATIONS, pages);
         } catch (final RepositoryException e) {
