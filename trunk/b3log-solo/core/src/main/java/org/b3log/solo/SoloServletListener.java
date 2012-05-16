@@ -161,10 +161,11 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
-            // Creates a session
+            // Gets a session
             final HttpSession session = httpServletRequest.getSession();
-            LOGGER.log(Level.FINE, "Creates a session[id={0}, remoteAddr={1}, User-Agent={2}]",
-                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent")});
+            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                                    session.isNew()});
         }
 
         resolveSkinDir(httpServletRequest);
