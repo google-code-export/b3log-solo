@@ -4,7 +4,7 @@
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.2.0, Mar 14, 2012
 */
-*,html,body {
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
 }
@@ -443,15 +443,6 @@ button:hover,.button:hover {
 
 .em14 {
     background-position: -96px -48px;
-}
-
-.em-span {
-    line-height: 24px;
-    float: left;
-}
-
-.em-br {
-    line-height: 24px;
 }
 /* end emotions */
 

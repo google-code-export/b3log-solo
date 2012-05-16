@@ -41,6 +41,7 @@
         top: 0;
         width: 26px;
         border-radius: 0 0 0 15px;
+        z-index: 10;
     }
 
     #showTop:hover {

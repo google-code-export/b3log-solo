@@ -2,11 +2,11 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.5, May 4, 2012
+ * @version 1.0.3.6, May 15, 2012
 */
 
 /* start resset */
-*, input, textarea {
+body, input, textarea {
     font-family: sans-serif,\5fae\8f6f\96c5\9ed1;
 }
 html, body {
