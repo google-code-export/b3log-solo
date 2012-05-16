@@ -66,6 +66,8 @@
                         <param>admin.js</param>
                         <param>editor.js</param>
                         <param>editorTinyMCE.js</param>
+                        <param>editorKindEditor</param>
+                        <param>editorCodeMirror</param>
                         <param>tablePaginate.js</param>
                         <param>article.js</param>
                         <param>comment.js</param>
