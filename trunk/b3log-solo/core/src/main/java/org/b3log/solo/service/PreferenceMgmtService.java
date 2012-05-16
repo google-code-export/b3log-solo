@@ -47,7 +47,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Feb 1, 2012
+ * @version 1.0.0.5, May 16, 2012
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -142,7 +142,7 @@ public final class PreferenceMgmtService {
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
             LOGGER.log(Level.FINER, "Skin path[{0}]", skinPath);
             Templates.CACHE.clear();
-
+            
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
@@ -157,6 +157,9 @@ public final class PreferenceMgmtService {
             if (!preference.has(PAGE_CACHE_ENABLED)) {
                 preference.put(PAGE_CACHE_ENABLED, oldPreference.getBoolean(PAGE_CACHE_ENABLED));
             }
+            
+            final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+            Templates.enableCache(pageCacheEnabled);
 
             final String version = oldPreference.optString(VERSION);
             if (!Strings.isEmptyOrNull(version)) {

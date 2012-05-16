@@ -44,6 +44,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.model.Skin;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.9, May 11, 2011
+ * @version 1.0.7.0, May 16, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -195,7 +196,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Loading preference....");
 
         final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
-        JSONObject preference = null;
+        JSONObject preference;
 
         try {
             preference = preferenceRepository.get(Preference.PREFERENCE);
@@ -205,6 +206,9 @@ public final class SoloServletListener extends AbstractServletListener {
             }
 
             Skins.loadSkins(preference);
+
+            final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+            Templates.enableCache(pageCacheEnabled);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
