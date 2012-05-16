@@ -22,7 +22,8 @@
  */
 var getArticle = function (it, id) {
     var $abstract = $("#abstract" + id),
-    $content = $("#content" + id);
+    $content = $("#content" + id),
+    $it = $(it);
     
     if ($content.html() === "") {
         $.ajax({
@@ -31,24 +32,24 @@ var getArticle = function (it, id) {
             dataType: "html",
             beforeSend: function () {
                 $abstract.css("background",
-                    "url(/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center transparent");
+                    "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center transparent");
             },
             success: function(result, textStatus){
-                it.className = "collapse-ico";
+                $it.text(Label.abstractLabel);
                 $content.html(result);
                 $abstract.hide().css("background", "none");
                 $content.fadeIn("slow");
             }
         });
     } else {
-        if (it.className === "expand-ico") {
+        if ($it.text() === Label.contentLabel) {
             $abstract.hide();
             $content.fadeIn();
-            it.className = "collapse-ico";
+            $it.text(Label.abstractLabel);
         } else {
             $content.hide();
             $abstract.fadeIn();
-            it.className = "expand-ico";
+            $it.text(Label.contentLabel);
         }
     }
     

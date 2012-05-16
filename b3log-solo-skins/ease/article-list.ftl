@@ -17,7 +17,7 @@
                 </sup>
                 </#if>
             </h2>
-                <span onclick="getArticle(this, '${article.oId}');">More</span>
+            <span onclick="getArticle(this, '${article.oId}');">${contentLabel}</span>
             <div class="right">
                 <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
@@ -44,7 +44,7 @@
                 <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
             </div>
             <div class="left">
-                ${tagsLabel}
+                ${tag1Label}
                 <#list article.articleTags?split(",") as articleTag>
                 <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a><#if articleTag_has_next>,</#if>
