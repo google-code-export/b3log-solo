@@ -97,6 +97,13 @@ public final class UserTemplateProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
+        if (null == template) {
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
@@ -104,7 +111,7 @@ public final class UserTemplateProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillSide(request, dataModel, preference);
+            filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
