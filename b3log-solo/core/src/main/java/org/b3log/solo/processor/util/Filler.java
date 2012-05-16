@@ -577,6 +577,54 @@ public final class Filler {
     }
 
     /**
+     * Fills the specified template.
+     *
+     * @param template the specified template
+     * @param dataModel data model
+     * @param preference the specified preference
+     * @throws ServiceException service exception
+     */
+    public void fillUserTemplate(final Template template, final Map<String, Object> dataModel, final JSONObject preference)
+            throws ServiceException {
+        Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
+        try {
+            LOGGER.log(Level.FINE, "Filling user template[name{0}]", template.getName());
+
+            if (Templates.hasExpression(template, "<#list links as link>")) {
+                fillLinks(dataModel);
+            }
+
+            if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
+                fillRecentComments(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#list mostUsedTags as tag>")) {
+                fillMostUsedTags(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#list mostCommentArticles as article>")) {
+                fillMostCommentArticles(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#list mostViewCountArticles as article>")) {
+                fillMostViewCountArticles(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
+                fillArchiveDates(dataModel, preference);
+            }
+
+            final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
+            dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Fills user template failed", e);
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
      * Fills page navigations.
      *
      * @param dataModel data model
