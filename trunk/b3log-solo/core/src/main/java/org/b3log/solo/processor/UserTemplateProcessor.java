@@ -29,6 +29,7 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
@@ -82,7 +83,7 @@ public final class UserTemplateProcessor {
      * @param response the specified HTTP servlet response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/.+\\.html", method = HTTPRequestMethod.GET, uriPatternsMode = URIPatternMode.REGEX)
     public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         final String requestURI = request.getRequestURI();
