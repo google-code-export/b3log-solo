@@ -20,11 +20,9 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.latke.util.Requests;
-import org.b3log.solo.processor.util.TopBars;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import freemarker.template.Template;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -56,7 +54,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, May 4, 2012
+ * @version 1.1.0.8, May 17, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -150,52 +148,13 @@ public final class IndexProcessor {
     }
 
     /**
-     * Handles errors with the specified context.
-     * 
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response 
-     */
-    @RequestProcessing(value = "/error.do", method = HTTPRequestMethod.GET)
-    public void handleErrors(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("error.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        try {
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            // Adds the top bar HTML content for output
-            final String topBarHTML = TopBars.getTopBarHTML(request, response);
-            dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY, topBarHTML);
-
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
-            }
-        }
-    }
-
-    /**
      * Shows kill browser page with the specified context.
      * 
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response 
      */
-    @RequestProcessing(value = {"/kill-browser.html"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/kill-browser.html", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
         context.setRenderer(renderer);
