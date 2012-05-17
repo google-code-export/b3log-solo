@@ -26,10 +26,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
+import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, May 1, 2012
+ * @version 1.0.0.9, May 17, 2012
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -96,8 +98,8 @@ public final class InitCheckFilter implements Filter {
                 context.setRequest((HttpServletRequest) request);
                 context.setResponse((HttpServletResponse) response);
 
-                request.setAttribute("requestURI", Latkes.getContextPath() + "/init");
-                request.setAttribute("method", "GET");
+                request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
+                request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
 
                 HTTPRequestDispatcher.dispatch(context);
             } else {

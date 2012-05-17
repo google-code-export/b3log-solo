@@ -27,10 +27,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
+import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
@@ -45,7 +47,7 @@ import org.json.JSONObject;
  * Article/Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, May 2, 2012
+ * @version 1.0.1.6, May 17, 2012
  * @since 0.3.1
  * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext, 
  * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) 
@@ -159,13 +161,13 @@ public final class PermalinkFilter implements Filter {
 
         if (null != article) {
             request.setAttribute(Article.ARTICLE, article);
-            request.setAttribute("requestURI", Latkes.getContextPath() + "/article");
+            request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/article");
         } else {
             request.setAttribute(Page.PAGE, page);
-            request.setAttribute("requestURI", Latkes.getContextPath() + "/page");
+            request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/page");
         }
 
-        request.setAttribute("method", "GET");
+        request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
 
         HTTPRequestDispatcher.dispatch(context);
     }
