@@ -367,7 +367,19 @@ public final class ArticleProcessor {
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(pathBuilder.toString());
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
+
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
+            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
+
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                filler.setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    filler.setArticlesExProperties(articles, author, preference);
+                }
+            }
 
             jsonObject.put(Keys.RESULTS, result);
 

@@ -40,6 +40,7 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -250,6 +251,16 @@ public final class ArticleConsole {
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
+
+            final JSONArray excludes = new JSONArray();
+            excludes.put(Article.ARTICLE_CONTENT);
+            excludes.put(Article.ARTICLE_UPDATE_DATE);
+            excludes.put(Article.ARTICLE_CREATE_DATE);
+            excludes.put(Article.ARTICLE_AUTHOR_EMAIL);
+            excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
+            excludes.put(Article.ARTICLE_IS_PUBLISHED);
+            excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
+            requestJSONObject.put(Keys.EXCLUDES, excludes);
 
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
 
