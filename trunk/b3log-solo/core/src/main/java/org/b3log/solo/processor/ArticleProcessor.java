@@ -63,6 +63,7 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
@@ -72,7 +73,7 @@ import org.b3log.solo.service.ArchiveDateQueryService;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.2, May 10, 2012
+ * @version 1.1.2.3, May 17, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -114,10 +115,6 @@ public final class ArticleProcessor {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
     /**
      * Default update count for article random value.
      */
@@ -323,7 +320,6 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/get-article-content", method = HTTPRequestMethod.GET)
     public void getArticleContent(final HTTPRequestContext context, final HttpServletRequest request) {
-        // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
         if (Strings.isEmptyOrNull(articleId)) {
@@ -346,6 +342,43 @@ public final class ArticleProcessor {
         }
 
         renderer.setContent(content);
+    }
+
+    /**
+     * Gets articles paged with the specified context.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/articles/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    public void getArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject jsonObject = new JSONObject();
+        final int currentPageNum = getArticlesPagedCurrentPageNum(request.getRequestURI());
+
+        Stopwatchs.start("Get Articles Paged[pageNum=" + currentPageNum + ']');
+
+        try {
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+            final StringBuilder pathBuilder = new StringBuilder();
+            pathBuilder.append(currentPageNum).append('/').append(pageSize).append('/').append(windowSize);
+
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(pathBuilder.toString());
+            requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
+            final JSONObject result = articleQueryService.getArticles(requestJSONObject);
+
+            jsonObject.put(Keys.RESULTS, result);
+
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            renderer.setJSONObject(jsonObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets article paged failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -706,6 +739,18 @@ public final class ArticleProcessor {
         } else {
             return path.substring(0, idx);
         }
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getArticlesPagedCurrentPageNum(final String requestURI) {
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/articles/").length());
+
+        return Requests.getCurrentPageNum(pageNumString);
     }
 
     /**
