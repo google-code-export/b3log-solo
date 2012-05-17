@@ -1,6 +1,7 @@
 #summary 版本更新
 === ver 0.4.5 ===
- # images/emotions 中添加表情图片（从 /images/emotions 下任选一套)； CSS 中存在表情路径则进行修改.
+ # 皮肤中删除 error.ftl，参考 [https://code.google.com/p/b3log-solo/issues/detail?id=411 Issue 411].
+ # images/emotions 中添加表情图片（从 /images/emotions 下任选一套)； CSS 中存在表情路径则进行修改
  # tags.ftl
 {{{
 common.buildTags() 修改为 Util.buildTags()
