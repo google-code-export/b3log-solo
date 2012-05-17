@@ -202,9 +202,12 @@ public final class ArticleQueryService {
      * object.
      *
      * <p>
-     * If the property "articleIsPublished" of the specified request json object
-     * is {@code true}, the returned articles all are published, {@code false}
-     * otherwise.
+     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles all are published, 
+     * {@code false} otherwise.
+     * </p>
+     * 
+     * <p>
+     * Specified the "excludes" for results properties exclusion.
      * </p>
      * 
      * @param requestJSONObject the specified request json object, for example,
@@ -213,7 +216,8 @@ public final class ArticleQueryService {
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
      *     "paginationWindowSize": 10,
-     *     "articleIsPublished": boolean
+     *     "articleIsPublished": boolean,
+     *     "excludes": ["", ....] // Optional
      * }, see {@link Pagination} for more details
      * </pre>
      * @return for example,
@@ -231,10 +235,10 @@ public final class ArticleQueryService {
      *         "articleViewCount": int,
      *         "articleTags": "tag1, tag2, ....",
      *         "articlePutTop": boolean,
-     *         "articleIsPublished": boolean // optional, default is true
      *         "articleSignId": "",
      *         "articleViewPwd": "",
-     *         "articleEditorType": ""
+     *         "articleEditorType": "",
+     *         .... // Specified by the "excludes"
      *      }, ....]
      * }
      * </pre>, order by article update date and sticky(put top).
@@ -273,6 +277,8 @@ public final class ArticleQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            JSONArray excludes = requestJSONObject.optJSONArray(Keys.EXCLUDES);
+            excludes = null == excludes ? new JSONArray() : excludes;
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
@@ -286,14 +292,9 @@ public final class ArticleQueryService {
                 markdown(article);
 
                 // Remove unused properties
-                article.remove(ARTICLE_CONTENT);
-                article.remove(ARTICLE_ABSTRACT);
-                article.remove(ARTICLE_UPDATE_DATE);
-                article.remove(ARTICLE_CREATE_DATE);
-                article.remove(ARTICLE_AUTHOR_EMAIL);
-                article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
-                article.remove(ARTICLE_IS_PUBLISHED);
-                article.remove(ARTICLE_RANDOM_DOUBLE);
+                for (int j = 0; j < excludes.length(); j++) {
+                    article.remove(excludes.optString(j));
+                }
             }
 
             ret.put(ARTICLES, articles);
@@ -709,7 +710,7 @@ public final class ArticleQueryService {
                 article.put(ARTICLE_ABSTRACT, Markdowns.toHTML(abstractContent));
                 Stopwatchs.end();
             }
-            
+
             Stopwatchs.end();
         }
     }
