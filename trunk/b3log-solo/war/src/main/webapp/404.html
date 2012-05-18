@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>404 Not Found</title>
+        <title>404 Not Found!</title>
         <meta name="keywords" content="GAE 博客,GAE blog,b3log" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客" />
         <meta name="author" content="B3log Team" />
@@ -23,26 +23,8 @@
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main forbidden">
-                        <h2>403 Forbidden</h2>
-                        <ul>
-                            <li>
-                                <a class="index" href="javascript: void(0)">Click</a> 
-                                to <a class="index" href="javascript: void(0)">Index</a>
-                            </li>
-                            <li>
-                                <a class="login" href="javascript: void(0)">Click</a> to 
-                                <a class="login" href="javascript: void(0)">Login</a>
-                            </li>
-                            <li>
-                                Visit
-                                <a href="http://b3log-solo.googlecode.com" target="_blank">
-                                    <span style="color: orange;">B</span><span style="color: blue;"><sup>3</sup></span><span style="color: green;">L</span><span style="color: red;">O</span><span style="color: blue;">G</span>
-                                    <span class="solo">Solo</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <img alt="forbidden" src="images/forbidden.png" class="img" />
+                    <div class="main">
+                        <h2>404 Not Found!</h2>
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="favicon.png"/>
                         </a>
@@ -53,7 +35,7 @@
         </div>
         <div class="footerWrapper">
             <div class="footer">
-                &copy; 2011
+                &copy; 2012
                 Powered by
                 <a href="http://b3log-solo.googlecode.com" target="_blank">
                     <span style="color: orange;">B</span><span style="color: blue;"><sup>3</sup></span><span style="color: green;">L</span><span style="color: red;">O</span><span style="color: blue;">G</span>
@@ -61,16 +43,5 @@
                 </a>
             </div>
         </div>
-        <script type="text/javascript" src="/js/lib/jquery/jquery.min.js?${staticResourceVersion}" charset="utf-8"></script>
-        <script>
-            var servePath = location.href.substring(0, location.href.indexOf("/admin-index.do"));
-            $(".index").click(function () {
-                location.href = servePath;
-            });
-            
-            $(".login").click(function () {
-                location.href = servePath  + "/login?goto=" + encodeURI(servePath + "/admin-index.do#main");
-            });
-        </script>
     </body>
 </html>
