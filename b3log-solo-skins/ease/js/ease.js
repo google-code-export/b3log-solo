@@ -18,7 +18,7 @@
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, May 16, 2012
+ * @version 1.0.0.4, May 18, 2012
  */
 var getArticle = function (it, id) {
     var $abstract = $("#abstract" + id),
@@ -32,7 +32,7 @@ var getArticle = function (it, id) {
             dataType: "html",
             beforeSend: function () {
                 $abstract.css("background",
-                    "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center transparent");
+                    "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
             },
             success: function(result, textStatus){
                 $it.text(Label.abstractLabel);
@@ -63,12 +63,23 @@ var goTranslate = function () {
 var getNextPage = function () {
     var $more = $(".article-next");
     currentPage += 1;
+    var path = "/articles/";
+    if(location.pathname.indexOf("tags") > -1) {
+        var tagsPathnaem = location.pathname.split("/tags/");
+        var tags = tagsPathnaem[1].split("/");
+        path = "/articles/tag/" + tags[0] + "/";
+    } else if (location.pathname.indexOf("archives") > -1) {
+        var archivesPathnaem = location.pathname.split("/archives/");
+        var archives = archivesPathnaem[1].split("/");
+        path = "/articles/archives/" + archives[0] + "/" + archives[1] + "/";
+    }
+    
     $.ajax({
-        url: "/articles/" + currentPage,
+        url: latkeConfig.staticServePath + path + currentPage,
         type: "GET",
         beforeSend: function () {
             $more.css("background",
-                "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center transparent");
+                "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
         },
         success: function(result, textStatus){
             if (textStatus !== "success") {
