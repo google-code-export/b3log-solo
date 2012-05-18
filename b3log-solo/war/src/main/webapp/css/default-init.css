@@ -168,47 +168,26 @@ input:focus {
 }
 /* end article-pwd */
 
-/* start 500 */
-.error500 {
+/* start error */
+
+.error {
     height: auto; 
     margin: 60px 0pt;
 }
 
-.error500 ul {
+.error ul {
     width: 50%;
     margin: 12px 0 0 12px;
     float: left;
 }
 
-.error500 .img-forbidden {
+.error .img-forbidden {
     margin: 38px 10px 0 0;
     width: 96px;
     height: 96px;
     float: right;
 }
 /* end 500 */
-
-/* start 403 */
-.forbidden {
-    height: 251px;
-    padding-top: 87px; 
-    width: 370px; 
-    padding-left: 100px;
-}
-
-.forbidden ul {
-    width: 50%;
-    float: left;
-    margin: 12px 0 0 12px;
-}
-
-.forbidden .img {
-    margin: 38px 10px 0 0;
-    width: 96px;
-    height: 96px;
-    float: right;
-}
-/* end 403 */
 
 /* start login */
 .login table {
