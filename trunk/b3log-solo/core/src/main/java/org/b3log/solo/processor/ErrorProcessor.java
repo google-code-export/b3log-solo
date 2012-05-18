@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.processor;
 
-import freemarker.template.Template;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,39 +23,26 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
- * User template processor.
+ * Error processor.
  * 
- * <p>
- * User can add a template (for example "links.ftl") then visits the page ("links.html").
- * </p>
- * 
- * <p>
- * See <a href="https://code.google.com/p/b3log-solo/issues/detail?id=409">issue 409</a> for more details.
- * </p>
- *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, May 16, 2012
+ * @version 1.0.0.0, May 18, 2012
  * @since 0.4.5
  */
 @RequestProcessor
-public final class UserTemplateProcessor {
+public final class ErrorProcessor {
 
     /**
      * Logger.
@@ -82,28 +69,19 @@ public final class UserTemplateProcessor {
      * @param response the specified HTTP servlet response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
-    public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/error/*.html", method = HTTPRequestMethod.GET)
+    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.FINE, "Shows page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
+        LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
 
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final ConsoleRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
-        renderer.setTemplateName(templateName);
+        renderer.setTemplateName("error" + File.separatorChar + templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
-        if (null == template) {
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
-            }
-        }
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
@@ -111,10 +89,7 @@ public final class UserTemplateProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
