@@ -7,6 +7,4 @@ Disallow: /logout
 Disallow: /tags
 Disallow: /authors/*
 Disallow: /console/*
-Disallow: /403.html
-Disallow: /404.html
-Disallow: /500.html
+Disallow: /error/*
