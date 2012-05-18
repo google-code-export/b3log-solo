@@ -4,14 +4,26 @@
     <head>
         <@head title="${blogTitle}">
         <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+        <meta name="description" content=""/>
         </@head>
     </head>
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
-            <#include "article-list.ftl">
+            <#if 0 != links?size>
+            <ul class="other-main links">
+                <#list links as link>
+                <li>
+                    <a href="${link.linkAddress}" alt="${link.linkTitle}" target="_blank">
+                        <img alt="${link.linkTitle}"
+                             src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
+                    <a href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">${link.linkTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+            </#if>
         </div>
         <#include "footer.ftl">
     </body>

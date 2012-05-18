@@ -47,7 +47,7 @@
                 ${tag1Label}
                 <#list article.articleTags?split(",") as articleTag>
                 <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                    ${articleTag}</a><#if articleTag_has_next>,</#if>
+                    ${articleTag}</a><#if articleTag_has_next>, </#if>
                 </#list>
             </div>
             <div class="clear"></div>
@@ -55,3 +55,6 @@
     </li>
     </#list>
 </ul>
+<#if paginationCurrentPageNum != paginationPageCount>
+<div class="article-next ft-gray" onclick="getNextPage()" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
+</#if>

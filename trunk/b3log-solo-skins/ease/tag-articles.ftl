@@ -11,20 +11,14 @@
         ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
-            <div class="wrapper">
-                <div class="main">
-                    <h2>
-                        <a href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="feed-ico">
-                            ${tag1Label}
-                            ${tag.tagTitle}
-                            (${tag.tagPublishedRefCount})
-                        </a>
-                    </h2>
-                    <#include "article-list.ftl">
-                </div>
-                <#include "side.ftl">
-                <div class="clear"></div>
-            </div>
+            <h2>
+                <a href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="feed-ico">
+                    ${tag1Label}
+                    ${tag.tagTitle}
+                    (${tag.tagPublishedRefCount})
+                </a>
+            </h2>
+            <#include "article-list.ftl">
         </div>
         <#include "footer.ftl">
     </body>

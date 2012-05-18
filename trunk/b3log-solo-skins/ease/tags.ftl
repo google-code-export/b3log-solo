@@ -11,7 +11,7 @@
         ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
-            <ul id="tags" class="tags">
+            <ul id="tags" class="other-main">
                 <#list tags as tag>
                 <li>
                     <a data-count="${tag.tagPublishedRefCount}"
