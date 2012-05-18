@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, May 11, 2012
+ * @version 1.0.2.0, May 16, 2012
  */
 
 /**
@@ -85,7 +85,7 @@ var Util = {
     /**
      * @description URL 没有协议头，则自动加上 http://
      * @param {String} url URL 地址
-     * @param {String} 添加后的URL
+     * @returns {String} 添加后的URL
      */
     proessURL: function (url) {
         if (!/^\w+:\/\//.test(url)) {
@@ -151,12 +151,18 @@ var Util = {
         window.scrollTo(0, $("body").height() - $(window).height() - bottom);
     },
     
+    /**
+     * @description 页面初始化执行的函数 
+     */
     init: function () {
         //window.onerror = Util.error;
         Util.killIE();
         Util.setTopBar();
     },
 
+    /**
+     * @description topbar 清除缓存按钮事件
+     */
     clearCache: function (all) {
         var data = {};
         if (all === "all") {
@@ -183,6 +189,10 @@ var Util = {
         });
     },
 
+    /**
+     * @description 替换侧边栏表情为图片
+     * @param {Dom} comments 评论内容元素
+     */
     replaceSideEm: function (comments) {
         for (var i = 0; i < comments.length; i++) {
             var $comment = $(comments[i]);
@@ -190,6 +200,10 @@ var Util = {
         }
     },
     
+    /**
+     * @description 根据 tags，穿件云效果
+     * @param {String} [id] tags 根元素 id，默认为 tags
+     */
     buildTags: function (id) {
         id = id || "tags";
         
@@ -217,11 +231,46 @@ var Util = {
             // 对中英文排序的处理
             return valA.localeCompare(valB);
         }));
+    },
+    
+    /**
+     * @description 时间戳转化为时间格式
+     * @param {String} time 时间
+     * @param {String} format 格式化后日期格式
+     * @returns {String} 格式化后的时间
+     */
+    toDate: function (time, format) {
+        var dateTime = new Date(time),
+        formatDate;
+        var year = dateTime.getFullYear(),
+        month = dateTime.getMonth() + 1,
+        date = dateTime.getDate(),
+        hour = dateTime.getHours() + 1,
+        minute = dateTime.getMinutes() + 1;
+        
+        switch (format) {
+            case "yy-MM-dd HH:mm":
+                formatDate = year.toString().substr(2) + "-" + month + "-" + date + " " + hour + ":" + minute;
+                break;
+            default:
+                break;
+        }
+        
+        return formatDate;
     }
 };
 
 if (!Cookie) {
+    /**
+     * @description Cookie 相关操作
+     * @static
+     */
     var Cookie = {
+        /**
+         * @description 读取 cookie
+         * @param {String} name cookie key
+         * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
+         */
         readCookie: function (name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
@@ -232,12 +281,22 @@ if (!Cookie) {
             }
             return "";
         },
-
+        
+        /**
+         * @description 清除 Cookie
+         * @param {String} name 清除 key 为 name 的该条 Cookie
+         */
         eraseCookie: function (name) {
             this.createCookie(name,"",-1);
         },
 
-        createCookie: function (name,value,days) {
+        /**
+         * @description 创建 Cookie
+         * @param {String} name 每条 Cookie 唯一的 key
+         * @param {String} value 每条 Cookie 对应的值
+         * @param {Int} days Cookie 保存时间
+         */
+        createCookie: function (name, value, days) {
             var expires = "";
             if (days) {
                 var date = new Date();

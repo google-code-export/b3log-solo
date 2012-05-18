@@ -37,6 +37,11 @@
     };
     
     var Label = {
+        "tag1Label": "${tag1Label}",
+        "viewLabel": "${viewLabel}",
+        "commentLabel": "${commentLabel}",
+        "topArticleLabel": "${topArticleLabel}",
+        "updatedLabel": "${updatedLabel}",
         "contentLabel": "${contentLabel}",
         "abstractLabel": "${abstractLabel}",
         "clearAllCacheLabel": "${clearAllCacheLabel}",

@@ -59,55 +59,207 @@ var getArticle = function (it, id) {
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
 };
+
+var getNextPage = function () {
+    var $more = $(".article-next");
+    currentPage += 1;
+    $.ajax({
+        url: "/articles/" + currentPage,
+        type: "GET",
+        beforeSend: function () {
+            $more.css("background",
+                "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center transparent");
+        },
+        success: function(result, textStatus){
+            if (textStatus !== "success") {
+                return;
+            }
+            var articlesHTML = "",
+            pagination = result.rslts.pagination;
+            
+            // append articles
+            for (var i = 0; i < result.rslts.articles.length; i++) {
+                var article = result.rslts.articles[i];
+                
+                articlesHTML += '<li class="article">' + 
+                '<div class="article-title">' +
+                '<h2>' +
+                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
+                article.articleTitle + 
+                '</a>';
+                if (article.hasUpdated) {
+                    articlesHTML += '<sup class="tip">' + Label.updatedLabel + '</sup>';
+                }
+            
+                if (article.articlePutTop) {
+                    articlesHTML += '<sup class="tip">' + Label.topArticleLabel + '</sup>';
+                }
+            
+                articlesHTML += '</h2>' +
+                '<span onclick="getArticle(this, \'' + article.oId + '\');">' + Label.contentLabel + '</span>' +
+                '<div class="right">' +
+                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '#comments">' +
+                + article.articleCommentCount + '&nbsp;&nbsp;' + Label.commentLabel +
+                '</a>&nbsp;&nbsp;' +
+                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
+                article.articleViewCount + '&nbsp;&nbsp;' + Label.viewLabel +
+                '</a>' +
+                '</div>' +
+                '<div class="clear"></div>' +
+                '</div>' +
+                '<div class="article-body">' +
+                '<div id="abstract' + article.oId + '">' +
+                article.articleAbstract + 
+                '</div>' +
+                '<div id="content' + article.oId + '" class="none"></div>' +
+                '</div>' +
+                '<div class="article-info">' +
+                '<div class="right">';
+                if (article.hasUpdated) {
+                    articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
+                } else {
+                    articlesHTML +=  Util.toDate(article.articleCreateDate, 'yy-MM-dd HH:mm');
+                }
+            
+                articlesHTML += ' <a href="' + latkeConfig.servePath + '/authors/' + article.authorId + '">' + article.authorName + '</a>' +
+                '</div>' +
+                '<div class="left">' +
+                Label.tag1Label + " ";
+        
+                var articleTags = article.articleTags.split(",");
+                for (var j = 0; j < articleTags.length; j++) {
+                    articlesHTML +=  '<a href="' + latkeConfig.servePath + '/tags/' + encodeURIComponent(articleTags[j])  + '">' +
+                    articleTags[j] + '</a>';
+            
+                    if (j < articleTags.length - 1) {
+                        articlesHTML += ", ";
+                    }
+                }
+                
+                articlesHTML += '</div>' +
+            '<div class="clear"></div>' +
+            '</div>' +
+            '</li>';
+            }
+        
+            $(".body>ul").append(articlesHTML);
+            
+            // 最后一页处理
+            if (pagination.paginationPageCount === currentPage) {
+                $more.remove();
+            } else {
+                $more.css("background", "none");  
+            }
+        }
+    });
+};
+
+var ease = {
+    $header: $(".header"),
+    $banner: $(".header").find(".banner"),
+    headerH: $(".header").height(),
+    $body: $(".body"),
+    $nav: $(".nav"),
+    getCurrentPage: function () {
+        var $next = $(".article-next");
+        if ($next.length > 0) {
+            window.currentPage = $next.data("page");
+        }
+    },
+    
+    setNavCurrent: function () {
+        $(".nav ul a").each(function () {
+            var $this = $(this);
+            if ($this.attr("href") === latkeConfig.servePath + location.pathname) {
+                $this.addClass("current");
+            } else if (/\/[0-9]+$/.test(location.pathname)) {
+                $(".nav ul li")[0].className = "current";
+            }
+        });
+    },
+    
+    initCommon: function () {
+        Util.init();
+        Util.replaceSideEm($(".recent-comments-content"));
+        Util.buildTags("tagsSide");
+        this.$body.css("paddingTop", this.headerH + "px");
+    },
+    
+    initArchives: function () {
+        var $archives = $(".archives");
+        if ($archives.length < 1) {
+            return;
+        }
+        
+        var years = [],
+        $archiveList = $archives.find("span").each(function () {
+            var year = $(this).data("year"),
+            tag = true;
+            for (var i = 0; i < years.length; i++) {
+                if (year === years[i]) {
+                    tag = false;
+                    break;
+                }
+            }
+            if (tag) {
+                years.push(year);
+            }
+        });
+        
+        var yearsHTML = "";
+        for (var j = 0; j < years.length; j++) {
+            var monthsHTML = "";
+            for (var l = 0; l < $archiveList.length; l++) {
+                var $month = $($archiveList[l]);
+                if ($month.data("year") === years[j]) {
+                    monthsHTML += $month.html();
+                }
+            }
+            yearsHTML += "<div><h3 class='ft-gray'>" + years[j] + "</h3>" + monthsHTML + "</div>";
+        }
+        
+        $archives.html(yearsHTML);
+    },
+    
+    scrollEvent: function () {
+        var _it = this;
+        $(window).scroll(function () {
+            // go top icon show or hide
+            var y = $(window).scrollTop();
+
+            if (y > _it.headerH) {
+                var bodyH = $(window).height();
+                var top =  y + bodyH - 21;
+                if ($("body").height() - 58 <= y + bodyH) {
+                    top = $(".footer").offset().top - 21; 
+                }
+                $("#goTop").fadeIn("slow").css("top", top);
+            } else {
+                $("#goTop").hide();
+            }
+        
+            // header event
+            if (y > _it.headerH && _it.$banner.css("display") !== "none") {
+                _it.$header.css("top", "0");
+                _it.$banner.css("display", "none");
+                _it.$body.css("paddingTop", _it.$nav.height() + "px");
+            }
+        
+            if (y < _it.headerH && _it.$banner.css("display") !== "block") {
+                _it.$header.css("top", "auto");
+                _it.$banner.css("display", "block");
+                _it.$body.css("paddingTop", _it.headerH + "px");
+            }
+        
+        // show next page
+        });
+    }
+};
     
 (function () {
-    var $header = $(".header"),
-    $banner = $header.find(".banner"),
-    headerH = $header.height(),
-    $body = $(".body"),
-    $nav = $(".nav");
-    $(window).scroll(function () {
-        // go top icon show or hide
-        var y = $(window).scrollTop();
-
-        if (y > headerH) {
-            var bodyH = $(window).height();
-            var top =  y + bodyH - 21;
-            if ($("body").height() - 58 <= y + bodyH) {
-                top = $(".footer").offset().top - 21; 
-            }
-            $("#goTop").fadeIn("slow").css("top", top);
-        } else {
-            $("#goTop").hide();
-        }
-        
-        // header event
-        if (y > headerH && $banner.css("display") !== "none") {
-            $header.css("top", "0");
-            $banner.css("display", "none");
-            $body.css("paddingTop", $nav.height() + "px");
-        }
-        
-        if (y < headerH && $banner.css("display") !== "block") {
-            $header.css("top", "auto");
-            $banner.css("display", "block");
-            $body.css("paddingTop", headerH + "px");
-        }
-    });
-    
-    $body.css("paddingTop", headerH + "px");
-    
-    // nav current
-    $(".nav ul a").each(function () {
-        var $this = $(this);
-        if ($this.attr("href") === latkeConfig.servePath + location.pathname) {
-            $this.addClass("current");
-        } else if (/\/[0-9]+$/.test(location.pathname)) {
-            $(".nav ul li")[0].className = "current";
-        }
-    });
-    
-    Util.init();
-    Util.replaceSideEm($(".recent-comments-content"));
-    Util.buildTags("tagsSide");
+    ease.getCurrentPage();
+    ease.initCommon();
+    ease.scrollEvent();
+    ease.setNavCurrent();
+    ease.initArchives();
 })();
