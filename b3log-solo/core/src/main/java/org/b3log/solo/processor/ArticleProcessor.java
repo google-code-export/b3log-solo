@@ -67,13 +67,13 @@ import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
-import org.b3log.solo.service.ArchiveDateQueryService;
+import org.b3log.solo.service.*;
 
 /**
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.3, May 17, 2012
+ * @version 1.1.2.4, May 21, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -87,6 +87,10 @@ public final class ArticleProcessor {
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService = TagQueryService.getInstance();
     /**
      * Comment query service.
      */
@@ -358,6 +362,8 @@ public final class ArticleProcessor {
         Stopwatchs.start("Get Articles Paged[pageNum=" + currentPageNum + ']');
 
         try {
+            jsonObject.put(Keys.STATUS_CODE, true);
+
             final JSONObject preference = preferenceQueryService.getPreference();
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
@@ -382,15 +388,82 @@ public final class ArticleProcessor {
             }
 
             jsonObject.put(Keys.RESULTS, result);
-
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-            renderer.setJSONObject(jsonObject);
         } catch (final Exception e) {
+            jsonObject.put(Keys.STATUS_CODE, false);
             LOGGER.log(Level.SEVERE, "Gets article paged failed", e);
         } finally {
             Stopwatchs.end();
         }
+
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+    }
+
+    /**
+     * Gets tag articles paged with the specified context.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/articles/tags/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    public void getTagArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject jsonObject = new JSONObject();
+
+        final String tagTitle = getTagArticlesPagedTag(request.getRequestURI());
+        final int currentPageNum = getTagArticlesPagedCurrentPageNum(request.getRequestURI());
+
+        Stopwatchs.start("Get Tag-Articles Paged[tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
+
+        try {
+            jsonObject.put(Keys.STATUS_CODE, true);
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+            final JSONObject tagQueryResult = tagQueryService.getTagByTitle(tagTitle);
+
+            if (null == tagQueryResult) {
+                throw new Exception("Can not foud tag[title=" + tagTitle + "]");
+            }
+
+            final JSONObject tag = tagQueryResult.getJSONObject(Tag.TAG);
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+            final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
+
+            final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
+
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                filler.setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    filler.setArticlesExProperties(articles, author, preference);
+                }
+            }
+
+            final JSONObject result = new JSONObject();
+            final JSONObject pagination = new JSONObject();
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            result.put(Pagination.PAGINATION, pagination);
+
+            result.put(Article.ARTICLES, articles);
+
+            jsonObject.put(Keys.RESULTS, result);
+        } catch (final Exception e) {
+            jsonObject.put(Keys.STATUS_CODE, false);
+            LOGGER.log(Level.SEVERE, "Gets article paged failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
     }
 
     /**
@@ -763,6 +836,28 @@ public final class ArticleProcessor {
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/articles/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getTagArticlesPagedCurrentPageNum(final String requestURI) {
+        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+    }
+
+    /**
+     * Gets the request tag from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return tag
+     */
+    private static String getTagArticlesPagedTag(final String requestURI) {
+        final String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
+
+        return StringUtils.substringBefore(tagAndPageNum, "/");
     }
 
     /**
