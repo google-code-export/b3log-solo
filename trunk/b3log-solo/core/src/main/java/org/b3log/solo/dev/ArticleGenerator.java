@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Generates some dummy articles for development testing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Apr 8, 2012
+ * @version 1.0.0.3, May 21, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -86,7 +86,7 @@ public final class ArticleGenerator {
                 // XXX: http://en.wikipedia.org/wiki/Markov_chain
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
                 article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
-                article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
+                article.put(Article.ARTICLE_TAGS_REF, "tag1,tag2");
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
