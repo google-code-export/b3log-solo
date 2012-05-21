@@ -421,7 +421,6 @@ public final class ArticleProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject tagQueryResult = tagQueryService.getTagByTitle(tagTitle);
 
