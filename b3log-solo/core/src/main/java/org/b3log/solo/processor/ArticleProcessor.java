@@ -466,6 +466,70 @@ public final class ArticleProcessor {
     }
 
     /**
+     * Gets tag articles paged with the specified context.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/articles/archives/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    public void getArchivesArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject jsonObject = new JSONObject();
+
+        final String archiveDateString = getArchivesArticlesPagedArchive(request.getRequestURI());
+        final int currentPageNum = getArchivesArticlesPagedCurrentPageNum(request.getRequestURI());
+
+        Stopwatchs.start("Get Archive-Articles Paged[archive=" + archiveDateString + ", pageNum=" + currentPageNum + ']');
+
+        try {
+            jsonObject.put(Keys.STATUS_CODE, true);
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+
+            final JSONObject archiveQueryResult = archiveDateQueryService.getByArchiveDateString(archiveDateString);
+            if (null == archiveQueryResult) {
+                throw new Exception("Can not foud archive[archiveDate=" + archiveDateString + "]");
+            }
+
+            final JSONObject archiveDate = archiveQueryResult.getJSONObject(ArchiveDate.ARCHIVE_DATE);
+            final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
+
+            final int articleCount = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
+
+            final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
+
+            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                filler.setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    filler.setArticlesExProperties(articles, author, preference);
+                }
+            }
+
+            final JSONObject result = new JSONObject();
+            final JSONObject pagination = new JSONObject();
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            result.put(Pagination.PAGINATION, pagination);
+
+            result.put(Article.ARTICLES, articles);
+
+            jsonObject.put(Keys.RESULTS, result);
+        } catch (final Exception e) {
+            jsonObject.put(Keys.STATUS_CODE, false);
+            LOGGER.log(Level.SEVERE, "Gets article paged failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+    }
+
+    /**
      * Shows author articles with the specified context.
      * 
      * @param context the specified context
@@ -854,9 +918,39 @@ public final class ArticleProcessor {
      * @return tag
      */
     private static String getTagArticlesPagedTag(final String requestURI) {
-        final String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
+        String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
+
+        if (!tagAndPageNum.endsWith("/")) {
+            tagAndPageNum += "/";
+        }
 
         return StringUtils.substringBefore(tagAndPageNum, "/");
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getArchivesArticlesPagedCurrentPageNum(final String requestURI) {
+        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+    }
+
+    /**
+     * Gets the request archive from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return archive, for example "2012/05"
+     */
+    private static String getArchivesArticlesPagedArchive(final String requestURI) {
+        String archiveAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/archives/").length());
+
+        if (!archiveAndPageNum.endsWith("/")) {
+            archiveAndPageNum += "/";
+        }
+
+        return StringUtils.substringBeforeLast(archiveAndPageNum, "/");
     }
 
     /**
