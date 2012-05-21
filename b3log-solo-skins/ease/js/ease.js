@@ -18,7 +18,7 @@
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, May 18, 2012
+ * @version 1.0.0.5, May 21, 2012
  */
 var getArticle = function (it, id) {
     var $abstract = $("#abstract" + id),
@@ -32,7 +32,7 @@ var getArticle = function (it, id) {
             dataType: "html",
             beforeSend: function () {
                 $abstract.css("background",
-                    "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
+                    "url(" + latkeConfig.staticServePath + "/skins/ease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
             },
             success: function(result, textStatus){
                 $it.text(Label.abstractLabel);
@@ -79,12 +79,13 @@ var getNextPage = function () {
         type: "GET",
         beforeSend: function () {
             $more.css("background",
-                "url(" + latkeConfig.staticServePath + "/skins/neoease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
+                "url(" + latkeConfig.staticServePath + "/skins/ease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
         },
         success: function(result, textStatus){
-            if (textStatus !== "success") {
+            if (!result.sc) {
                 return;
             }
+            
             var articlesHTML = "",
             pagination = result.rslts.pagination;
             
@@ -235,9 +236,23 @@ var ease = {
     scrollEvent: function () {
         var _it = this;
         $(window).scroll(function () {
-            // go top icon show or hide
             var y = $(window).scrollTop();
-
+        
+            // header event
+            if (y >= _it.headerH && _it.$banner.css("display") === "block" && 
+                $("body").height() - $(window).height() > _it.headerH * 2) {
+                _it.$header.css("top", "0");
+                _it.$banner.css("display", "none");
+                _it.$body.css("paddingTop", _it.$nav.height() + "px");
+            }
+        
+            if (y < _it.headerH && _it.$banner.css("display") === "none") {
+                _it.$header.css("top", "auto");
+                _it.$banner.css("display", "block");
+                _it.$body.css("paddingTop", _it.headerH + "px");
+            }
+            
+            // go top icon show or hide
             if (y > _it.headerH) {
                 var bodyH = $(window).height();
                 var top =  y + bodyH - 21;
@@ -248,22 +263,32 @@ var ease = {
             } else {
                 $("#goTop").hide();
             }
-        
-            // header event
-            if (y > _it.headerH && _it.$banner.css("display") !== "none") {
-                _it.$header.css("top", "0");
-                _it.$banner.css("display", "none");
-                _it.$body.css("paddingTop", _it.$nav.height() + "px");
-            }
-        
-            if (y < _it.headerH && _it.$banner.css("display") !== "block") {
-                _it.$header.css("top", "auto");
-                _it.$banner.css("display", "block");
-                _it.$body.css("paddingTop", _it.headerH + "px");
-            }
-        
-        // show next page
+        // TODO: show next page
         });
+    },
+    
+    setDynamic: function () {
+        var $dynamic = $(".dynamic");
+        if ($(".dynamic").length < 1) {
+            return;
+        }
+        
+        var $comments = $dynamic.find(".side-comments"),
+        $tags = $dynamic.find(".side-tags"),
+        $mostComment = $dynamic.find(".side-most-comment"),
+        $mostView = $dynamic.find(".side-most-view");
+        
+        if ($comments.height() > $tags.height()) {
+            $tags.height($comments.height());
+        } else {
+            $comments.height($tags.height());
+        }
+        
+        if ($mostComment.height() > $mostView.height()) {
+            $mostView.height($mostComment.height());
+        } else {
+            $mostComment.height($mostView.height());
+        }
     }
 };
     
@@ -273,4 +298,5 @@ var ease = {
     ease.scrollEvent();
     ease.setNavCurrent();
     ease.initArchives();
+    ease.setDynamic();
 })();

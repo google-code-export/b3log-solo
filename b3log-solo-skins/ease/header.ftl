@@ -15,12 +15,14 @@
         </#if>
         <div class="clear"></div>
     </div>
-
     <div class="nav">
         <div class="wrapper">
             <ul>
                 <li>
                     <a class="ft-gray" href="${servePath}/">${indexLabel}</a>
+                </li>
+                 <li>
+                    <a class="ft-gray" href="${servePath}/dynamic.html">${dynamicLabel}</a>
                 </li>
                 <li>
                     <a class="ft-gray" href="${servePath}/tags.html">${allTagsLabel}</a>  
