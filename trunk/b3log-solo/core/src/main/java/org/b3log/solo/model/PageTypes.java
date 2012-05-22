@@ -19,7 +19,8 @@ package org.b3log.solo.model;
  * This class defines all page types language configuration keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 18, 2011
+ * @version 1.0.0.2, May 22, 2012
+ * @since 0.3.1
  */
 public final class PageTypes {
 
@@ -55,6 +56,10 @@ public final class PageTypes {
      * Key of kill browser page label.
      */
     public static final String KILL_BROWSER_PAGE = "killBrowserPageLabel";
+    /**
+     * Key of user template page label.
+     */
+    public static final String USER_TEMPLATE_PAGE = "userTemplatePageLabel";
 
     /**
      * Private default constructor.
