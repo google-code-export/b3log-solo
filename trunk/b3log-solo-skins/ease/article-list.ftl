@@ -7,12 +7,12 @@
                     ${article.articleTitle}
                 </a>
                 <#if article.hasUpdated>
-                <sup class="tip">
+                <sup class="ft-gray">
                     ${updatedLabel}
                 </sup>
                 </#if>
                 <#if article.articlePutTop>
-                <sup class="tip">
+                <sup class="ft-gray">
                     ${topArticleLabel}
                 </sup>
                 </#if>

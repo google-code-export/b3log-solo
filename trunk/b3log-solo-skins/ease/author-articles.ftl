@@ -11,14 +11,8 @@
         ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
-            <div class="wrapper">
-                <div class="main">
-                    <h2>${author1Label}${authorName}</h2>
-                    <#include "article-list.ftl">
-                </div>
-                <#include "side.ftl">
-                <div class="clear"></div>
-            </div>
+            <h2>${author1Label}${authorName}</h2>
+            <#include "article-list.ftl">
         </div>
         <#include "footer.ftl">
     </body>

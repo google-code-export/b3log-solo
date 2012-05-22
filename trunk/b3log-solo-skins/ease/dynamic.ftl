@@ -21,7 +21,7 @@
                             <img class='comment-header'
                                  alt='${comment.commentName}'
                                  src='${comment.commentThumbnailURL}'/>
-                            <div class='comment-panel' onclick="window.location.href='${servePath}${comment.commentSharpURL}';">
+                            <div class='comment-panel'>
                                 <span class="left">
                                     <#if "http://" == comment.commentURL>
                                     ${comment.commentName}
@@ -31,6 +31,7 @@
                                 </span>
                                 <div class="right ft-gray">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                    <a href="${servePath}${comment.commentSharpURL}">${viewLabel}</a>
                                 </div>
                                 <span class="clear"></span>
                                 <div class="article-body">   

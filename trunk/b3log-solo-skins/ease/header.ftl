@@ -20,8 +20,13 @@
             <ul>
                 <li>
                     <a class="ft-gray" href="${servePath}/">${indexLabel}</a>
+                </li>  
+                <#list pageNavigations as page>
+                <li>
+                    <a class="ft-gray" href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
                 </li>
-                 <li>
+                </#list>  
+                <li>
                     <a class="ft-gray" href="${servePath}/dynamic.html">${dynamicLabel}</a>
                 </li>
                 <li>
@@ -33,11 +38,6 @@
                 <li>
                     <a class="ft-gray" href="${servePath}/links.html">${linkLabel}</a>
                 </li>
-                <#list pageNavigations as page>
-                <li>
-                    <a class="ft-gray" href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
-                </li>
-                </#list>  
                 <li>
                     <a class="ft-gray" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
                 </li>

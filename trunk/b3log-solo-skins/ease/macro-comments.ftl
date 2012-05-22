@@ -1,13 +1,7 @@
 <#macro comments commentList article>
-<div class="share">
-    <a class="share-comment" href="#commentForm">
-        ${commentList?size}&nbsp;&nbsp;${commentLabel}
-    </a>
-    <span class="clear"></span>
-</div>
 <div id="comments">
     <#list commentList as comment>
-    <div id="${comment.oId}" class="<#if comment_index % 2 == 0>comment-even<#else>comment-odd</#if>">
+    <div id="${comment.oId}">
         <img class="comment-header" title="${comment.commentName}"
              alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
         <div class="comment-panel">
@@ -24,10 +18,9 @@
                 </#if>
             </div>
             <#if article.commentable>
-            <div class="right">
+            <div class="right  ft-gray">
+                ${comment.commentDate?string("yy-MM-dd HH:mm")}
                 <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                &nbsp;|&nbsp;
-                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
             </div>
             </#if>
             <span class="clear"></span>
@@ -39,7 +32,6 @@
 </div>
 <#if article.commentable>
 <div class="form">
-    <h4>${postCommentsLabel}</h4>
     <table id="commentForm">
         <tbody>
             <tr>
@@ -85,22 +77,26 @@
                 </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     <input type="text" class="normalInput" id="commentValidate"/>
                     <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
                 </td>
-                <th>
-                    <span class="tip" id="commentErrorTip"></span>
-                </th>
             </tr>
             <tr>
-                <td colspan="2" align="right">
+                <td>
+                    <span class="ft-gray" id="commentErrorTip"></span>
+                </td>
+                <td align="right">
                     <button id="submitCommentButton" onclick="page.submitComment();">${submmitCommentLabel}</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+<#if externalRelevantArticlesDisplayCount?? && 0 != externalRelevantArticlesDisplayCount>
+<div id="externalRelevantArticles" class="article-relative"></div>
+</#if>
+<span class="clear"></span>
 </#if>
 </#macro>
 
@@ -123,13 +119,7 @@
     });
 
     var addComment = function (result, state) {
-        var oddEven = "";
-        if ($("#comments>div").first().hasClass("comment-even")) {
-            oddEven = "comment-odd";
-        } else {
-            oddEven = "comment-even";
-        }
-        var commentHTML = '<div id="' + result.oId + '" class="oddEven"><img class="comment-header" \
+        var commentHTML = '<div id="' + result.oId + '"><img class="comment-header" \
             title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
             '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
 
@@ -140,9 +130,9 @@
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
             
-        commentHTML += '</div><div class="right"><a href="javascript:replyTo(\'' + result.oId 
-            + '\');">${replyLabel}</a>' + ' &nbsp;|&nbsp;' +  result.commentDate
-            + '</div><span class="clear"></span><div class="article-body">' + 
+        commentHTML += '</div><div class="right ft-gray">' +  result.commentDate.substring(2, 16)
+            + '&nbsp;<a href="javascript:replyTo(\'' + result.oId 
+            + '\');">${replyLabel}</a></div><span class="clear"></span><div class="article-body">' + 
             Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div></div><span class="clear"></span></div>';
 
