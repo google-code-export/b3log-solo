@@ -3,8 +3,8 @@
 <html>
     <head>
         <@head title="${blogTitle}">
-        <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content=""/>
+        <meta name="keywords" content="${metaKeywords},${dynamicLabel}"/>
+        <meta name="description" content="${metaDescription},${dynamicLabel}"/>
         </@head>
     </head>
     <body>

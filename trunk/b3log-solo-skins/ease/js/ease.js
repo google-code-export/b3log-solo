@@ -263,7 +263,6 @@ var ease = {
             } else {
                 $("#goTop").hide();
             }
-        // TODO: show next page
         });
     },
     
@@ -291,12 +290,14 @@ var ease = {
         }
         
         // emotions
-        $(".article-body").html(Util.replaceEmString($(".article-body").html()));
+        $(".article-body").each(function () {
+           this.innerHTML = Util.replaceEmString($(this).html());
+        });
     },
     
     setArticleRelative: function () {
         var $relevantArticles = $("#relevantArticles"),
-        $randomArticles = $("#randomArticles")
+        $randomArticles = $("#randomArticles");
         if ($relevantArticles.length !== 1 || $randomArticles.length !== 1) {
             return;
         }

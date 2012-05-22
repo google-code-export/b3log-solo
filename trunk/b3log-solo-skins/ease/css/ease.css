@@ -150,7 +150,7 @@ textarea, input {
     cursor: pointer;
     float: right;
     height: 16px;
-    margin: -3px 0 0 18px;
+    margin-top: -3px;
     padding: 1px;
     width: 16px;
 }
@@ -265,6 +265,11 @@ textarea, input {
     border-top: 2px solid #e2e2e2;
     font-size: 11px;
     padding: 12px 0;
+    -webkit-text-size-adjust:none;
+}
+
+.footer .right {
+    width: 290px;
 }
 
 #goTop {
@@ -378,7 +383,7 @@ textarea, input {
 }
 
 #externalRelevantArticles {
-    width: 298px;
+    width: 297px;
     margin-top: 0;
 }
 /* end article*/
@@ -439,7 +444,9 @@ textarea, input {
     white-space: nowrap;
 }
 
-.form input[type="text"], .form input[type="password"], .form textarea {
+.form input[type="text"], 
+.form input[type="password"], 
+.form textarea {
     background-color: #FEFEFE;
     border-width: 0;
     box-shadow: 0 0 2px #E2E2E2;
@@ -453,7 +460,8 @@ textarea, input {
     width: 260px;
 }
 
-.form input:focus, .form textarea:focus {
+.form input:focus, 
+.form textarea:focus {
     box-shadow: 0 0 4px #E2E2E2;
 }
 
@@ -493,18 +501,18 @@ textarea, input {
     height: 38px;
 }
 
-#tags a:hover {
-    text-shadow: 0 0 2px;
-    text-decoration: none;
-    box-shadow: 0 0 4px #E2E2E2;
-}
-
 #tags a {
     margin: 3px 6px;
     padding: 3px 12px;
     background-color: #FEFEFE;
     box-shadow: 0 0 2px #E2E2E2;
     float: left;
+}
+
+#tags a:hover {
+    text-shadow: 0 0 2px;
+    text-decoration: none;
+    box-shadow: 0 0 4px #E2E2E2;
 }
 
 .tags1, .tags1:visited {
@@ -570,7 +578,7 @@ textarea, input {
     line-height: 20px;
     margin: 20px;
     padding: 10px 20px 20px;
-    width: 395px;
+    width: 393px;
 }
 
 .dynamic .module:hover {
@@ -586,7 +594,7 @@ textarea, input {
 }
 
 .dynamic .side-tags {
-    width: 190px;
+    width: 186px;
 }
 
 .dynamic .side-tags li {
