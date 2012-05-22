@@ -19,12 +19,12 @@
                             ${article.articleTitle}
                         </a>
                         <#if article.hasUpdated>
-                        <sup class="tip">
+                        <sup class="ft-gray">
                             ${updatedLabel}
                         </sup>
                         </#if>
                         <#if article.articlePutTop>
-                        <sup class="tip">
+                        <sup class="ft-gray">
                             ${topArticleLabel}
                         </sup>
                         </#if>
@@ -42,36 +42,38 @@
                 <div class="article-body">
                     ${article.articleContent}
                     <#if "" != article.articleSign.signHTML?trim>
-                    <div>
+                    <p>
                         ${article.articleSign.signHTML}
-                    </div>
+                    </p>
                     </#if>
                 </div>
                 <div class="article-info">
                     <div class="right">
                         <#if article.hasUpdated>
-                        ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                        ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
                         <#else>
-                        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                        ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                         </#if>
                         <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                     </div>
                     <div class="left">
                         ${tag1Label}
                         <#list article.articleTags?split(",") as articleTag>
-                        <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                            ${articleTag}</a><#if articleTag_has_next>,</#if>
+                        <a href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
                         </#list>
                     </div>
                     <div class="clear"></div>
                 </div>
-                <div class="article-panel2">
-                    <div id="relevantArticles" class="left" style="width: 50%;"></div>
-                    <div id="randomArticles" class="left"></div>
-                    <div class="clear" style="height: 15px;"></div>
-                    <div id="externalRelevantArticles"></div>
+                <div>
+                    <#if 0 != relevantArticlesDisplayCount>
+                    <div id="relevantArticles" class="article-relative"></div>
+                    </#if>
+                    <#if 0 != randomArticlesDisplayCount>
+                    <div id="randomArticles" class="article-relative"></div>
+                    </#if>
+                    <div class="clear"></div>
                 </div>
-                <div class="article-panel1">
+                <div>
                     <#if nextArticlePermalink??>
                     <div class="left">
                         <span class="ft-gray">&lt;</span>
@@ -93,10 +95,10 @@
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != randomArticlesDisplayCount>
-        page.loadRandomArticles();
+        page.loadRandomArticles('<h4 class="ft-gray">${randomArticlesLabel}</h4>');
         </#if>
         <#if 0 != relevantArticlesDisplayCount>
-        page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticlesLabel}</h4>');
+        page.loadRelevantArticles('${article.oId}', '<h4 class="ft-gray">${relevantArticlesLabel}</h4>');
         </#if>
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");

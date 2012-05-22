@@ -11,17 +11,17 @@
         </div>
         <div class="right">
             ${viewCount1Label}
-            <span class="tip">
+            <span class="ft-gray">
                 ${statistic.statisticBlogViewCount}
             </span>
             &nbsp;&nbsp;
             ${articleCount1Label}
-            <span class="tip">
+            <span class="ft-gray">
                 ${statistic.statisticPublishedBlogArticleCount}
             </span>
             &nbsp;&nbsp;
             ${commentCount1Label}
-            <span class="tip">
+            <span class="ft-gray">
                 ${statistic.statisticPublishedBlogCommentCount}
             </span>
             <span class="translate-ico" onclick="goTranslate()"></span>

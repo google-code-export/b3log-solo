@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, May 7, 2012
+ * @version 1.0.3.0, May 22, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -131,128 +131,128 @@ $.extend(Page.prototype, {
             switch (languages[i]) {
                 case "groovy":
                     languages[i] =  'groovy				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushGroovy.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushGroovy.js';
                     break;
                 case "java":
                     languages[i] =  'java				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJava.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJava.js';
                     break;
                 case "php":
                     languages[i] =  'php				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPhp.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPhp.js';
                     break;
                 case "scala":
                     languages[i] =  'scala				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushScala.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushScala.js';
                     break;
                 case "sql":
                     languages[i] =  'sql				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushSql.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushSql.js';
                     break;
                 case "applescript":
                     languages[i] =  'applescript			' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushAppleScript.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushAppleScript.js';
                     break;
                 case "as3": 
                 case "actionscript3":
                     languages[i] =  'actionscript3 as3                  ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushAS3.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushAS3.js';
                     break;
                 case "bash":
                 case "shell":
                     languages[i] =  'bash shell                         ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushBash.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushBash.js';
                     break;
                 case "coldfusion":
                 case "cf":
                     languages[i] =  'coldfusion cf			' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushColdFusion.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushColdFusion.js';
                     break;
                 case "c#":
                 case "c-sharp":
                 case "csharp":
                     languages[i] =  'c# c-sharp csharp                  ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCSharp.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCSharp.js';
                     break;
                 case "cpp":
                 case "c":
                     languages[i] =  'cpp c				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCpp.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCpp.js';
                     break;	
                 case "css":
                     languages[i] =  'css				' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCss.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushCss.js';
                     break;
                 case "delphi":
                 case "pascal":
                     languages[i] =  'delphi pascal			' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushDelphi.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushDelphi.js';
                     break;			
                 case "diff":
                 case "patch":
                 case "pas":
                     languages[i] =  'diff patch pas			' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushDiff.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushDiff.js';
                     break;			
                 case "erl":
                 case "erlang":
                     languages[i] =  'erl erlang                         ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushErlang.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushErlang.js';
                     break;			
                 case "js":
                 case "jscript":
                 case "javascript":
                     languages[i] =  'js jscript javascript              ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJScript.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJScript.js';
                     break;			
                 case "jfx":
                 case "javafx":
                     languages[i] =  'jfx javafx                 	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJavaFX.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushJavaFX.js';
                     break;			
                 case "perl":
                 case "pl":
                     languages[i] =  'perl pl                    	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPerl.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPerl.js';
                     break;			
                 case "plain":
                 case "text":
                     languages[i] =  'text plain                 	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPlain.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPlain.js';
                     break;			
                 case "ps":
                 case "powershell":
                     languages[i] =  'ps powershell                      ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPowerShell.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPowerShell.js';
                     break;			
                 case "py":
                 case "python":
                     languages[i] =  'py python                          ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPython.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushPython.js';
                     break;			
                 case "rails":
                 case "ror":
                 case "ruby":
                 case "rb":
                     languages[i] =  'ruby rails ror rb          	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushRuby.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushRuby.js';
                     break;	
                 case "sass":
                 case "scss":
                     languages[i] =  'sass scss                  	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushSass.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushSass.js';
                     break;
                 case "vb":
                 case "vbnet":
                     languages[i] =  'vb vbnet                   	' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushVb.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushVb.js';
                     break;			
                 case "xml":
                 case "xhtml":
                 case "xslt": 
                 case "html":
                     languages[i] =  'xml xhtml xslt html                ' +
-                        latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushXml.js';
+                    latkeConfig.staticServePath + '/js/lib/SyntaxHighlighter/scripts/shBrushXml.js';
                     break;	
                 default:
                     break;
@@ -419,6 +419,7 @@ $.extend(Page.prototype, {
             success: function(result, textStatus){
                 var randomArticles = result.randomArticles;
                 if (0 === randomArticles.length) {
+                    $("#randomArticles").remove();
                     return;
                 }
 
@@ -443,34 +444,34 @@ $.extend(Page.prototype, {
      * @param {String} headTitle 相关文章标题
      */
     loadRelevantArticles: function (id, headTitle) {
-        try {
-            $.ajax({
-                url: latkeConfig.staticServePath + "/article/id/" + id + "/relevant/articles",
-                type: "GET",
-                success: function(data, textStatus){
-                    var articles = data.relevantArticles;
-                    if (0 === articles.length) {
-                        $("#relevantArticles").remove();
-                        return;
-                    }
-                    var listHtml = "";
-                    for (var i = 0; i < articles.length; i++) {
-                        var article = articles[i];
-                        var title = article.articleTitle;
-                        var articleLiHtml = "<li>"
-                        + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
-                        +  title + "</a></li>"
-                        listHtml += articleLiHtml
-                    }
-                
-                    var relevantArticleListHtml = headTitle 
-                    + "<ul class='marginLeft12'>"
-                    + listHtml + "</ul>";
-                    $("#relevantArticles").append(relevantArticleListHtml);
+        $.ajax({
+            url: latkeConfig.staticServePath + "/article/id/" + id + "/relevant/articles",
+            type: "GET",
+            success: function(data, textStatus){
+                var articles = data.relevantArticles;
+                if (0 === articles.length) {
+                    $("#relevantArticles").remove();
+                    return;
                 }
-            });
-        } catch (e) {
-        }
+                var listHtml = "";
+                for (var i = 0; i < articles.length; i++) {
+                    var article = articles[i];
+                    var title = article.articleTitle;
+                    var articleLiHtml = "<li>"
+                    + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
+                    +  title + "</a></li>"
+                    listHtml += articleLiHtml
+                }
+                
+                var relevantArticleListHtml = headTitle 
+                + "<ul class='marginLeft12'>"
+                + listHtml + "</ul>";
+                $("#relevantArticles").append(relevantArticleListHtml);
+            },
+            error: function () {
+                $("#relevantArticles").remove(); 
+            }
+        });
     },
     
     /*
@@ -488,11 +489,12 @@ $.extend(Page.prototype, {
                 cache: true,
                 dataType:"jsonp",
                 error: function(){
-                // alert("Error loading articles from Rhythm");
+                    $("#externalRelevantArticles").remove();
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
                     if (0 === articles.length) {
+                        $("#externalRelevantArticles").remove();
                         return;
                     }
                     var listHtml = "";

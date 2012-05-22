@@ -15,10 +15,10 @@
  */
 
 /**
- * @fileoverview neoease js.
+ * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, May 21, 2012
+ * @version 1.0.0.6, May 22, 2012
  */
 var getArticle = function (it, id) {
     var $abstract = $("#abstract" + id),
@@ -67,7 +67,7 @@ var getNextPage = function () {
     if(location.pathname.indexOf("tags") > -1) {
         var tagsPathnaem = location.pathname.split("/tags/");
         var tags = tagsPathnaem[1].split("/");
-        path = "/articles/tag/" + tags[0] + "/";
+        path = "/articles/tags/" + tags[0] + "/";
     } else if (location.pathname.indexOf("archives") > -1) {
         var archivesPathnaem = location.pathname.split("/archives/");
         var archives = archivesPathnaem[1].split("/");
@@ -100,11 +100,11 @@ var getNextPage = function () {
                 article.articleTitle + 
                 '</a>';
                 if (article.hasUpdated) {
-                    articlesHTML += '<sup class="tip">' + Label.updatedLabel + '</sup>';
+                    articlesHTML += '<sup class="ft-gray">' + Label.updatedLabel + '</sup>';
                 }
             
                 if (article.articlePutTop) {
-                    articlesHTML += '<sup class="tip">' + Label.topArticleLabel + '</sup>';
+                    articlesHTML += '<sup class="ft-gray">' + Label.topArticleLabel + '</sup>';
                 }
             
                 articlesHTML += '</h2>' +
@@ -289,6 +289,23 @@ var ease = {
         } else {
             $mostComment.height($mostView.height());
         }
+        
+        // emotions
+        $(".article-body").html(Util.replaceEmString($(".article-body").html()));
+    },
+    
+    setArticleRelative: function () {
+        var $relevantArticles = $("#relevantArticles"),
+        $randomArticles = $("#randomArticles")
+        if ($relevantArticles.length !== 1 || $randomArticles.length !== 1) {
+            return;
+        }
+        
+        if ($relevantArticles.height() > $randomArticles.height()) {
+            $randomArticles.height($relevantArticles.height());
+        } else {
+            $relevantArticles.height($randomArticles.height());
+        }
     }
 };
     
@@ -297,6 +314,10 @@ var ease = {
     ease.initCommon();
     ease.scrollEvent();
     ease.setNavCurrent();
+    
     ease.initArchives();
     ease.setDynamic();
+    setTimeout(function () {
+        ease.setArticleRelative();
+    }, 2000);
 })();
