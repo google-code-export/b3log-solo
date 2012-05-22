@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.8, May 16, 2012
+ * @version 1.0.5.9, May 22, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -480,6 +480,10 @@ public final class Filler {
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+
+            final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
+            dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
@@ -541,6 +545,12 @@ public final class Filler {
 
             final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
 
+            if (null == template) {
+                LOGGER.fine("The skin dose not contain [side.ftl] template");
+
+                return;
+            }
+
 // TODO:       fillRecentArticles(dataModel, preference);
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);
@@ -565,10 +575,7 @@ public final class Filler {
             if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
                 fillArchiveDates(dataModel, preference);
             }
-
-            final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
-            dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
-        } catch (final JSONException e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Fills side failed", e);
             throw new ServiceException(e);
         } finally {

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -32,6 +33,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
@@ -51,7 +53,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, May 16, 2012
+ * @version 1.0.0.1, May 22, 2012
  * @since 0.4.5
  */
 @RequestProcessor
@@ -115,6 +117,11 @@ public final class UserTemplateProcessor {
             filler.fillBlogFooter(dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+
+            request.setAttribute(AbstractCacheablePageAction.CACHED_OID, "No id");
+            request.setAttribute(AbstractCacheablePageAction.CACHED_TITLE, requestURI);
+            request.setAttribute(AbstractCacheablePageAction.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE_PAGE));
+            request.setAttribute(AbstractCacheablePageAction.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
