@@ -64,11 +64,11 @@ var getNextPage = function () {
                 article.articleTitle + 
                 '</a>';
                 if (article.hasUpdated) {
-                    articlesHTML += '<sup class="ft-gray">' + Label.updatedLabel + '</sup>';
+                    articlesHTML += '<sup>' + Label.updatedLabel + '</sup>';
                 }
             
                 if (article.articlePutTop) {
-                    articlesHTML += '<sup class="ft-gray">' + Label.topArticleLabel + '</sup>';
+                    articlesHTML += '<sup>' + Label.topArticleLabel + '</sup>';
                 }
             
                 articlesHTML += '</h2>' +
