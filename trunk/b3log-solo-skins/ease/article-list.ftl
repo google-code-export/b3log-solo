@@ -35,7 +35,7 @@
             <div id="content${article.oId}" class="none"></div>
         </div>
         <div class="article-info">
-            <div class="right">
+            <div class="right ft-gray">
                 <#if article.hasUpdated>
                 ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
                 <#else>
@@ -43,7 +43,7 @@
                 </#if>
                 <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
             </div>
-            <div class="left">
+            <div class="left ft-gray">
                 ${tag1Label}
                 <#list article.articleTags?split(",") as articleTag>
                 <a href="${servePath}/tags/${articleTag?url('UTF-8')}">

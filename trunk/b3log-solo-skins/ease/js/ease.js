@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, May 22, 2012
+ * @version 1.0.0.7, May 23, 2012
  */
 var getArticle = function (it, id) {
     var $abstract = $("#abstract" + id),
@@ -126,7 +126,7 @@ var getNextPage = function () {
                 '<div id="content' + article.oId + '" class="none"></div>' +
                 '</div>' +
                 '<div class="article-info">' +
-                '<div class="right">';
+                '<div class="right ft-gray">';
                 if (article.hasUpdated) {
                     articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
                 } else {
@@ -135,7 +135,7 @@ var getNextPage = function () {
             
                 articlesHTML += ' <a href="' + latkeConfig.servePath + '/authors/' + article.authorId + '">' + article.authorName + '</a>' +
                 '</div>' +
-                '<div class="left">' +
+                '<div class="left ft-gray">' +
                 Label.tag1Label + " ";
         
                 var articleTags = article.articleTags.split(",");
