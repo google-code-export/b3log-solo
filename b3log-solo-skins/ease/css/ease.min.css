@@ -6,13 +6,13 @@ a:hover{text-decoration:underline;}
 a:active{color:#00889f;}
 img{vertical-align:middle;border:0;}
 textarea,input{outline:none;}
-sup{font-size: 10px;-webkit-text-size-adjust:none;}
+sup{font-size: 10px;-webkit-text-size-adjust:none;font-weight: normal;}
 .right{float:right;}
 .clear{background-color:transparent;border:0;clear:both;display:block;font-size:0;height:0;line-height:0;overflow:hidden;}
 .none{display:none;}
 .ft-gray{color:gray;}
-.ft-gray:hover{color:#676767;text-decoration:none;}
 .ft-gray:visited{color:#9a9a9a;}
+.ft-gray:hover{color:#676767;text-decoration:none;}
 .logo{text-shadow:0 0 1px #e2e2e2;padding:0 5px;}
 .em00,.em01,.em02,.em03,.em04,.em05,.em06,.em07,.em08,.em09,.em10,.em11,.em12,.em13,.em14{background-image:url(../../ease/images/emotions/emotions-classic.png);float:left;height:24px;margin-right:5px;width:24px;}
 .em01{background-position:-24px 0;}
@@ -65,7 +65,7 @@ sup{font-size: 10px;-webkit-text-size-adjust:none;}
 #relevantArticles{margin-right:40px;}
 #externalRelevantArticles{width:297px;margin-top:0;}
 #comments{position:relative;padding:20px 70px;}
-.comment-header{float:left;background-color:#FFF;border:1px solid #DEDEDE;padding:2px;}
+.comment-header{float:left;background-color:#FFF;border:1px solid #DEDEDE;padding:2px;height:60px;}
 .comment-panel{float:left;line-height:16px;min-height:64px;overflow:hidden;width:760px;margin:0 10px 20px;}
 .comment-body-ref{background-color:#FEFEFE;box-shadow:0 0 2px #E2E2E2;display:block;left:140px;opacity:0.9;filter:alpha(opacity=90);position:absolute;padding:10px;}
 .comment-body-ref > .comment-header{border:0 none;float:right;height:48px;padding:0;}

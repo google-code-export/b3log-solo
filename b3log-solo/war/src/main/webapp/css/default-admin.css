@@ -2,7 +2,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.6, May 15, 2012
+ * @version 1.0.3.7, May 23, 2012
 */
 
 /* start resset */
@@ -367,10 +367,10 @@ button#submitArticle {
     box-shadow: 1px 1px 3px #333333;
     line-height: 16px;
     margin: 24px 12px;
-    padding: 10px 5px;
+    padding: 5px;
     text-align: center;
-    width: 306px;
 }
+
 #skinMain .skinItem.selected {
     background-color: #D54121;
 }
