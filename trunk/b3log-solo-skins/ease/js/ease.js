@@ -33,8 +33,8 @@ var getNextPage = function () {
         var tags = tagsPathnaem[1].split("/");
         path = "/articles/tags/" + tags[0] + "/";
     } else if (location.pathname.indexOf("archives") > -1) {
-        var archivesPathnaem = location.pathname.split("/archives/");
-        var archives = archivesPathnaem[1].split("/");
+        var archivesPathname = location.pathname.split("/archives/");
+        var archives = archivesPathname[1].split("/");
         path = "/articles/archives/" + archives[0] + "/" + archives[1] + "/";
     }
     
@@ -190,10 +190,46 @@ var ease = {
                     monthsHTML += $month.html();
                 }
             }
+            
             yearsHTML += "<div><h3 class='ft-gray'>" + years[j] + "</h3>" + monthsHTML + "</div>";
         }
         
         $archives.html(yearsHTML);
+        
+        // position
+        var $items = $(".archives>div"),
+        line = 0,
+        top = 0,
+        heights = [];
+       
+        for (var m = 0; m < $items.length; m++) {
+            for (var n = 0; n < 3; n++) {
+                if (m >= $items.length) {
+                     break;
+                }
+                
+                $items[m].style.left = (n * 318) + "px";
+                
+                if (line > 0) {
+                    if ($items[m - 3].style.top !== "") {
+                        top = parseInt($items[m - 3].style.top);
+                    }
+                    $items[m].style.top = $($items[m - 3]).height() + 60 + top + "px";
+                    
+                    heights[n] = parseInt($items[m].style.top) + $($items[m]).height() + 60;
+                } else {
+                    heights[n] = $($items[m]).height() + 60;
+                }
+                
+                if (n < 2) {
+                    m += 1;
+                }
+            }
+            line += 1;
+        }
+        
+        // archive height
+        $archives.height(heights.sort()[2]);
     },
     
     scrollEvent: function () {
@@ -254,7 +290,7 @@ var ease = {
         
         // emotions
         $(".article-body").each(function () {
-           this.innerHTML = Util.replaceEmString($(this).html());
+            this.innerHTML = Util.replaceEmString($(this).html());
         });
     },
     
