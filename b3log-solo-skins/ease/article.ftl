@@ -19,12 +19,12 @@
                             ${article.articleTitle}
                         </a>
                         <#if article.hasUpdated>
-                        <sup class="ft-gray">
+                        <sup>
                             ${updatedLabel}
                         </sup>
                         </#if>
                         <#if article.articlePutTop>
-                        <sup class="ft-gray">
+                        <sup>
                             ${topArticleLabel}
                         </sup>
                         </#if>
