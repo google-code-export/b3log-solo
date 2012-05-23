@@ -17,7 +17,6 @@
                 </sup>
                 </#if>
             </h2>
-            <span onclick="getArticle(this, '${article.oId}');">${contentLabel}</span>
             <div class="right">
                 <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}

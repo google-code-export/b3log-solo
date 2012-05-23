@@ -20,42 +20,6 @@
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.7, May 23, 2012
  */
-var getArticle = function (it, id) {
-    var $abstract = $("#abstract" + id),
-    $content = $("#content" + id),
-    $it = $(it);
-    
-    if ($content.html() === "") {
-        $.ajax({
-            url: "/get-article-content?id=" + id,
-            type: "GET",
-            dataType: "html",
-            beforeSend: function () {
-                $abstract.css("background",
-                    "url(" + latkeConfig.staticServePath + "/skins/ease/images/ajax-loader.gif) no-repeat scroll center center #fefefe");
-            },
-            success: function(result, textStatus){
-                $it.text(Label.abstractLabel);
-                $content.html(result);
-                $abstract.hide().css("background", "none");
-                $content.fadeIn("slow");
-            }
-        });
-    } else {
-        if ($it.text() === Label.contentLabel) {
-            $abstract.hide();
-            $content.fadeIn();
-            $it.text(Label.abstractLabel);
-        } else {
-            $content.hide();
-            $abstract.fadeIn();
-            $it.text(Label.contentLabel);
-        }
-    }
-    
-    return false;
-};
-
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
 };
@@ -108,7 +72,6 @@ var getNextPage = function () {
                 }
             
                 articlesHTML += '</h2>' +
-                '<span onclick="getArticle(this, \'' + article.oId + '\');">' + Label.contentLabel + '</span>' +
                 '<div class="right">' +
                 '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '#comments">' +
                 + article.articleCommentCount + '&nbsp;&nbsp;' + Label.commentLabel +
