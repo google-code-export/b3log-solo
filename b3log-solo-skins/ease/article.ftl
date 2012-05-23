@@ -48,15 +48,15 @@
                     </#if>
                 </div>
                 <div class="article-info">
-                    <div class="right">
-                        <#if article.hasUpdated>
-                        ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                        <#else>
-                        ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                        </#if>
+                    <div class="right ft-gray">
+                            <#if article.hasUpdated>
+                            ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
+                            <#else>
+                            ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
+                            </#if>
                         <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                     </div>
-                    <div class="left">
+                    <div class="left ft-gray">
                         ${tag1Label}
                         <#list article.articleTags?split(",") as articleTag>
                         <a href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
