@@ -34,6 +34,7 @@ import org.b3log.solo.model.Preference;
 import org.jsoup.Jsoup;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
@@ -915,13 +916,20 @@ public final class ArticleProcessor {
      * Gets the request tag from the specified request URI.
      * 
      * @param requestURI the specified request URI
-     * @return tag
+     * @return tag, returns "" if failed
      */
     private static String getTagArticlesPagedTag(final String requestURI) {
         String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
 
         if (!tagAndPageNum.endsWith("/")) {
             tagAndPageNum += "/";
+        }
+
+        try {
+            tagAndPageNum = URLEncoder.encode(tagAndPageNum, "UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.SEVERE, "Gets tag title failed[requestURI=" + requestURI + ']', e);
+            tagAndPageNum = "";
         }
 
         return StringUtils.substringBefore(tagAndPageNum, "/");
