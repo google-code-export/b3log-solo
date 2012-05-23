@@ -85,8 +85,10 @@ sup{font-size: 10px;-webkit-text-size-adjust:none;font-weight: normal;}
 .tags3,.tags3:visited{font-size:16px;color:#595959;}
 .tags4,.tags4:visited{font-size:18px;color:#323232;}
 .tags5,.tags5:visited{font-size:20px;color:#0a0a0a;}
-.archives > div{background-color:#FEFEFE;box-shadow:0 0 2px #E2E2E2;float:left;height:360px;line-height:20px;text-align:center;width:276px;margin:20px;}
-.archives a{display:block;}
+.archives{position: relative;}
+.archives > div{ background-color: #FEFEFE;box-shadow: 0 0 2px #E2E2E2;padding-bottom: 20px;line-height: 20px;margin: 20px;width: 276px;position: absolute;top: 0;}
+.archives h3 {text-align: center;}
+.archives a{display:block;margin-left: 80px;}
 .dynamic .module{background-color:#FEFEFE;box-shadow:0 0 2px #E2E2E2;float:left;line-height:20px;width:393px;margin:20px;padding:10px 20px 20px;}
 .dynamic .side-comments{width:600px;}
 .dynamic .side-comments .comment-panel{width:510px;}

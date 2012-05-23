@@ -541,23 +541,32 @@ sup {
 /* end tags */
 
 /* start archives */
+.archives {
+    position: relative;
+}
+
 .archives > div {
     background-color: #FEFEFE;
     box-shadow: 0 0 2px #E2E2E2;
-    float: left;
-    height: 360px;
+    padding-bottom: 20px;
     line-height: 20px;
     margin: 20px;
-    text-align: center;
     width: 276px;
+    position: absolute;
+    top: 0;
 }
 
-.archives>div:hover {
+.archives h3 {
+    text-align: center;
+}
+
+.archives > div:hover {
     box-shadow: 0 0 4px #E2E2E2;
 }
 
 .archives a {
     display: block;
+    margin-left: 80px;
 }
 /* end archives */
 
