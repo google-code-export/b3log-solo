@@ -412,7 +412,15 @@ public final class ArticleProcessor {
     public void getTagArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject jsonObject = new JSONObject();
 
-        final String tagTitle = getTagArticlesPagedTag(request.getRequestURI());
+        String tagTitle = getTagArticlesPagedTag(request.getRequestURI());
+
+        try {
+            tagTitle = URLEncoder.encode(tagTitle, "UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.SEVERE, "Gets tag title failed[requestURI=" + request.getRequestURI() + ']', e);
+            tagTitle = "";
+        }
+
         final int currentPageNum = getTagArticlesPagedCurrentPageNum(request.getRequestURI());
 
         Stopwatchs.start("Get Tag-Articles Paged[tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
@@ -916,20 +924,13 @@ public final class ArticleProcessor {
      * Gets the request tag from the specified request URI.
      * 
      * @param requestURI the specified request URI
-     * @return tag, returns "" if failed
+     * @return tag
      */
     private static String getTagArticlesPagedTag(final String requestURI) {
         String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
 
         if (!tagAndPageNum.endsWith("/")) {
             tagAndPageNum += "/";
-        }
-
-        try {
-            tagAndPageNum = URLEncoder.encode(tagAndPageNum, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.SEVERE, "Gets tag title failed[requestURI=" + requestURI + ']', e);
-            tagAndPageNum = "";
         }
 
         return StringUtils.substringBefore(tagAndPageNum, "/");
