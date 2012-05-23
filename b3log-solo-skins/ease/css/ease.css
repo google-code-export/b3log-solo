@@ -155,7 +155,7 @@ sup {
     cursor: pointer;
     float: right;
     height: 16px;
-    margin-top: -3px;
+    margin: -3px 0 0 15px;;
     padding: 1px;
     width: 16px;
 }
@@ -273,10 +273,6 @@ sup {
     -webkit-text-size-adjust: none;
 }
 
-.footer .right {
-    width: 290px;
-}
-
 #goTop {
     background: url("/skins/ease/images/icons.png") no-repeat scroll 5px -51px #f6f6f6;
     border-radius: 2px 2px 0 0;
@@ -302,7 +298,7 @@ sup {
 
 .article {
     border-bottom: 1px solid #f6f6f6;
-    padding: 50px 70px 20px;
+    padding: 20px 70px 20px;
 }
 
 .article:hover {

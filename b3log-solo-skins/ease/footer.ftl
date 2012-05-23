@@ -10,21 +10,24 @@
             Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         </div>
         <div class="right">
-            ${viewCount1Label}
-            <span class="ft-gray">
-                ${statistic.statisticBlogViewCount}
-            </span>
-            &nbsp;&nbsp;
-            ${articleCount1Label}
-            <span class="ft-gray">
-                ${statistic.statisticPublishedBlogArticleCount}
-            </span>
-            &nbsp;&nbsp;
-            ${commentCount1Label}
-            <span class="ft-gray">
-                ${statistic.statisticPublishedBlogCommentCount}
-            </span>
+            <div class="left">
+                ${viewCount1Label}
+                <span class="ft-gray">
+                    ${statistic.statisticBlogViewCount}
+                </span>
+                &nbsp;&nbsp;
+                ${articleCount1Label}
+                <span class="ft-gray">
+                    ${statistic.statisticPublishedBlogArticleCount}
+                </span>
+                &nbsp;&nbsp;
+                ${commentCount1Label}
+                <span class="ft-gray">
+                    ${statistic.statisticPublishedBlogCommentCount}
+                </span>
+            </div>
             <span class="translate-ico" onclick="goTranslate()"></span>
+            <div class="clear"></div>
         </div>
         <div class="clear"></div>
     </div>
