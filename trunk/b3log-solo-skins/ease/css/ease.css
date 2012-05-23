@@ -44,6 +44,7 @@ textarea, input {
 
 sup {
     font-size: 10px;
+    font-weight: normal;
     -webkit-text-size-adjust: none;
 }
 
@@ -396,6 +397,7 @@ sup {
     background-color: #FFF;
     border: 1px solid #DEDEDE;
     padding: 2px;
+    height: 60px;
 }
 
 .comment-panel {
