@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, May 23, 2012
+ * @version 1.0.0.8, May 24, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -292,20 +292,6 @@ var ease = {
         $(".article-body").each(function () {
             this.innerHTML = Util.replaceEmString($(this).html());
         });
-    },
-    
-    setArticleRelative: function () {
-        var $relevantArticles = $("#relevantArticles"),
-        $randomArticles = $("#randomArticles");
-        if ($relevantArticles.length !== 1 || $randomArticles.length !== 1) {
-            return;
-        }
-        
-        if ($relevantArticles.height() > $randomArticles.height()) {
-            $randomArticles.height($relevantArticles.height());
-        } else {
-            $relevantArticles.height($randomArticles.height());
-        }
     }
 };
     
@@ -317,7 +303,4 @@ var ease = {
     
     ease.initArchives();
     ease.setDynamic();
-    setTimeout(function () {
-        ease.setArticleRelative();
-    }, 2000);
 })();
