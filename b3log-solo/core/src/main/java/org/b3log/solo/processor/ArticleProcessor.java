@@ -35,6 +35,7 @@ import org.jsoup.Jsoup;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
@@ -415,7 +416,7 @@ public final class ArticleProcessor {
         String tagTitle = getTagArticlesPagedTag(request.getRequestURI());
 
         try {
-            tagTitle = URLEncoder.encode(tagTitle, "UTF-8");
+            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
             LOGGER.log(Level.SEVERE, "Gets tag title failed[requestURI=" + request.getRequestURI() + ']', e);
             tagTitle = "";
