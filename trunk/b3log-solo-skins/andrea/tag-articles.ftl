@@ -16,7 +16,8 @@
                 <div class="main">
                     <div class="main-content">
                         <h2>
-                            ${tag1Label}${tag.tagTitle}(${tag.tagPublishedRefCount})
+                            ${tag1Label}
+                             <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
                         </h2>
                         <#include "article-list.ftl">
                     </div>

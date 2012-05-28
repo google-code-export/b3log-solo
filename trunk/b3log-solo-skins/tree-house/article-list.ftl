@@ -2,7 +2,7 @@
 <div class="article">
     <div class="article-header">
         <h2>
-            <a class="no-underline" href="${servePath}${article.articlePermalink}">
+            <a rel="bookmark" class="no-underline" href="${servePath}${article.articlePermalink}">
                 ${article.articleTitle}
                 <#if article.hasUpdated>
                 <sup>
@@ -26,14 +26,14 @@
             </#if>
         </div>
         <div class="article-comment">
-            <a href="${servePath}${article.articlePermalink}#comments">
+            <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                 ${commentLabel}(${article.articleCommentCount})
             </a>
         </div>
     </div>
     <div class="right article-main">
         <#list article.articleTags?split(",") as articleTag>
-        <a class="article-tags" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+        <a rel="tag" class="article-tags" href="${servePath}/tags/${articleTag?url('UTF-8')}">
             ${articleTag}</a>
         </#list>
         <div class="clear"></div>

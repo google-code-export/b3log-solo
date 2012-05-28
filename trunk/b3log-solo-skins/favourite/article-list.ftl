@@ -1,7 +1,7 @@
 <#list articles as article>
 <div class="article">
     <h2 class="article-title">
-        <a class="no-underline" href="${servePath}${article.articlePermalink}">
+        <a rel="bookmark" class="no-underline" href="${servePath}${article.articlePermalink}">
             ${article.articleTitle}
         </a>
         <#if article.hasUpdated>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="margin25">
-        <a href="${servePath}${article.articlePermalink}" class="left">
+        <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
             <span class="count">${article.articleViewCount}</span>
         </a>
@@ -49,12 +49,12 @@
             <span class="tagsIcon" title="${tagLabel}"></span>
             <#list article.articleTags?split(",") as articleTag>
             <span class="count">
-                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a><#if articleTag_has_next>,</#if>
             </span>
             </#list>
         </div>
-        <a href="${servePath}${article.articlePermalink}#comments" class="left">
+        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
             <span class="left articles-commentIcon" title="${commentLabel}"></span>
             <span class="count">${article.articleCommentCount}</span>
         </a>

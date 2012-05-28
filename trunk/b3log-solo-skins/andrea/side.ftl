@@ -15,7 +15,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                    <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         <sup>[${article.articleCommentCount}]</sup>
                         ${article.articleTitle}
                     </a>
@@ -33,7 +33,7 @@
                     <a class="author" title="${comment.commentName}" target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}
                     </a>:
-                    <a title="${comment.commentContent}" class='side-comment' href="${servePath}/${comment.commentSharpURL}">
+                    <a rel="nofollow" title="${comment.commentContent}" class='side-comment' href="${servePath}/${comment.commentSharpURL}">
                         ${comment.commentContent}
                     </a>
                 </li>
@@ -47,7 +47,7 @@
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
-                    <a title="${article.articleTitle}"
+                    <a rel="nofollow" title="${article.articleTitle}"
                        href="${servePath}${article.articlePermalink}">
                         <sup>[${article.articleViewCount}]</sup>
                         ${article.articleTitle}
@@ -68,7 +68,7 @@
             <ul class="navi-tags">
                 <#list mostUsedTags as tag>
                 <li>
-                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
                     <img onclick="window.location='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"
                          alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
@@ -87,7 +87,7 @@
             <ul class="navi-tags">
                 <#list links as link>
                 <li>
-                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                    <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}</a>
                      <img onclick="window.location='${link.linkAddress}'"
                          alt="${link.linkTitle}" 

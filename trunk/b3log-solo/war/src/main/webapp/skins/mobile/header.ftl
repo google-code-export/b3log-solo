@@ -38,7 +38,7 @@
                 <#list pageNavigations as page>
                 <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
                 </#list>           
-                <li><a href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
+                <li><a rel="alternate" href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
                 <!--<li><a href="mailto:b3log-solo@googlecode.com"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Mail.png" alt="" />E-Mail</a></li>-->
             </ul>
             <ul id="head-tags">
@@ -72,7 +72,7 @@
     <div id="headerbar-title">
         <!-- This fetches the admin selection logo icon for the header, which is also the bookmark icon -->
         <img id="logo-icon" src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt="aln" />
-        <a href="${servePath}">${blogTitle}</a>
+        <a rel="nofollow" href="${servePath}">${blogTitle}</a>
     </div>
     <div id="headerbar-menu">
         <a href="javascript:void(0)"></a>

@@ -2,9 +2,9 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.0, Mar 14, 2012
+ * @version 1.0.2.1, Mar 28, 2012
 */
-html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p {
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
     margin: 0;
     padding: 0;
 }

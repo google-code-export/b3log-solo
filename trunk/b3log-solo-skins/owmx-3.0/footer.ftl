@@ -6,7 +6,7 @@
         ${b3logLabel}&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
     ver ${version}&nbsp;&nbsp;
-    Theme by <a href="http://dx.b3log.org/" target="_blank">DX</a> & <a href="http://www.jabz.info/contact/jonas-jared-jacek/" title="Profile of Jonas Jacek">Jonas Jacek</a>.
+    Theme by <a rel="friend" href="http://dx.b3log.org/" target="_blank">DX</a> & <a rel="friend" href="http://www.jabz.info/contact/jonas-jared-jacek/" title="Profile of Jonas Jacek">Jonas Jacek</a>.
     <div onclick="Util.goTop();">${goTopLabel}</div>
 </footer>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>

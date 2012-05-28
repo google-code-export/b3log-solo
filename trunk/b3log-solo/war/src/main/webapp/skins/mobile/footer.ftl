@@ -7,8 +7,8 @@
     <p><span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a></p>
     <p>Powered by <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
             ${b3logLabel}</a>,
-        Theme by <a href="http://dx.b3log.org" target="_blank">dx</a> &lt
-        <a href="http://www.bravenewcode.com/products/wptouch-pro">WPtouch</a>.</p>
+        Theme by <a rel="friend" href="http://dx.b3log.org" target="_blank">dx</a> &lt
+        <a rel="friend" href="http://www.bravenewcode.com/products/wptouch-pro">WPtouch</a>.</p>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>

@@ -32,7 +32,7 @@
                                 </h2>
                                 <div class="margin5">
                                     <div class="article-date left">
-                                        <a class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
+                                        <a rel="nofollow" class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                                             <span class="authorIcon"></span>
                                             ${article.authorName}
                                         </a>
@@ -44,7 +44,7 @@
                                         </#if>
                                     </div>
                                     <div class="right">
-                                        <a href="${servePath}${article.articlePermalink}#comments" class="left">
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
                                             <span class="left articles-commentIcon" title="${commentLabel}"></span>
                                             ${article.articleCommentCount}
                                         </a>
@@ -60,7 +60,7 @@
                                     </#if>
                                 </div>
                                 <div class="margin5 paddingTop12">
-                                    <a class="left" href="${servePath}${article.articlePermalink}">
+                                    <a rel="nofollow" class="left" href="${servePath}${article.articlePermalink}">
                                         <span title="${viewLabel}" class="left article-browserIcon"></span>
                                         ${article.articleViewCount}
                                     </a>
@@ -68,7 +68,7 @@
                                         <span title="${tagLabel}" class="tagsIcon"></span>
                                         <#list article.articleTags?split(",") as articleTag>
                                         <span>
-                                            <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>

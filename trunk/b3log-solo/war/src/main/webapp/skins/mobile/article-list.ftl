@@ -18,12 +18,12 @@
 			<div class="cal-month month-${article.articleUpdateDate?string("MM")}">${article.articleUpdateDate?string("MM")}</div>
 			<div class="cal-date">${article.articleUpdateDate?string("dd")}</div>
 		</div>	
-		<a class="h2" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
+		<a rel="bookmark" class="h2" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
 		<div class="post-author">
 			<span class="lead">By</span> ${article.authorName}<br />
 			<span class="lead">${tags1Label}</span> 
             <#list article.articleTags?split(",") as articleTag>
-                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a><#if articleTag_has_next>,</#if>
             </#list>		
 		</div>	

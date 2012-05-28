@@ -30,18 +30,18 @@
                             <span class="left">
                                 by&nbsp;
                             </span>
-                            <a class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}}">
+                            <a rel="nofollow" class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}}">
                                 ${article.authorName}
                             </a>
                             <span class="clear"></span>
                         </li>
                         <li>
-                            <a href="${servePath}${article.articlePermalink}" title="${viewLabel}">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}" title="${viewLabel}">
                                 ${viewLabel} (${article.articleViewCount})
                             </a>
                         </li>
                         <li>
-                            <a title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
+                            <a rel="nofollow" title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
                                 ${commentLabel} (${article.articleCommentCount})
                             </a>
                         </li>
@@ -73,7 +73,7 @@
                         <span class="tag-icon" title="${tagsLabel}"></span>
                         ${tags1Label}
                         <#list article.articleTags?split(",") as articleTag>
-                        <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                             ${articleTag}</a><#if articleTag_has_next>,</#if>
                         </#list>
                     </div>

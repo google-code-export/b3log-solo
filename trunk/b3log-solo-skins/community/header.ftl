@@ -14,7 +14,7 @@
 <div class="header-navi">
     <div class="header-navi-main content">
         <div class="left">
-            <a href="${servePath}" class="header-title">
+            <a rel="nofollow" href="${servePath}" class="header-title">
                 ${blogTitle}
             </a>
             <span class="sub-title">${blogSubtitle}</span>
@@ -46,7 +46,7 @@
                 </li>
                 </#if>
                 <li class="tab">
-                    <a href="${servePath}/blog-articles-feed.do">
+                    <a rel="alternate" href="${servePath}/blog-articles-feed.do">
                         <span class="left">${atomLabel}</span>
                         <span class="atom-icon"></span>
                         <span class="clear"></span>

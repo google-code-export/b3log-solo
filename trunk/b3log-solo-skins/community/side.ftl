@@ -16,7 +16,7 @@
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
             <#list mostViewCountArticles as article>
-            <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+            <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                 <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
             </a>
             </#list>
@@ -32,7 +32,7 @@
         <div class="recent-comments">
             <#list recentComments as comment>
             <div>
-                <a href="${servePath}${comment.commentSharpURL}">
+                <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">
                     <img class='left'
                          alt='${comment.commentName}'
                          src='${comment.commentThumbnailURL}'/>
@@ -56,7 +56,7 @@
                 <#list mostCommentArticles as article>
                 <li>
                     <sup>[${article.articleCommentCount}]</sup>
-                    <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                    <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>
                 </li>
@@ -71,7 +71,7 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li class="mostUsedTags">
-                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}(${tag.tagPublishedRefCount})
                     </a>
                     <img onclick="window.location='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"
@@ -88,7 +88,7 @@
             <ul id="sideLink">
                 <#list links as link>
                 <li class="mostUsedTags">
-                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                    <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
                     <img onclick="window.location='${link.linkAddress}'" 

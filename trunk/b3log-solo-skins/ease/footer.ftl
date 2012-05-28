@@ -7,7 +7,7 @@
                 ${b3logLabel}&nbsp;
                 <span style="color: orangered; font-weight: bold;">Solo</span></a>,
             ver ${version}&nbsp;&nbsp;
-            Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+            Theme by <a rel="friend" rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         </div>
         <div class="right">
             <div class="left">
