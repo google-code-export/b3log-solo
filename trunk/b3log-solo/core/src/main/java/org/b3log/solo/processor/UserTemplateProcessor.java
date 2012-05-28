@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, May 22, 2012
+ * @version 1.0.0.2, May 28, 2012
  * @since 0.4.5
  */
 @RequestProcessor
@@ -102,6 +102,8 @@ public final class UserTemplateProcessor {
         if (null == template) {
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
