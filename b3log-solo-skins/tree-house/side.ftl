@@ -32,7 +32,7 @@
         <ul id="recentComments">
             <#list recentComments as comment>
             <li>
-                <a href="${servePath}${comment.commentSharpURL}" title="${comment.commentContent}">
+                <a rel="nofollow" href="${servePath}${comment.commentSharpURL}" title="${comment.commentContent}">
                     ${comment.commentName}: ${comment.commentContent}
                 </a>
             </li>
@@ -48,7 +48,7 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleCommentCount}]</sup>${article.articleTitle}
                 </a>
             </li>
@@ -64,7 +64,7 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                <a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
                 </a>
             </li>
@@ -80,7 +80,7 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                     ${tag.tagTitle}(${tag.tagPublishedRefCount})
                 </a>
                 <img onclick="window.location='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"
@@ -98,7 +98,7 @@
         <ul id="sideLink">
             <#list links as link>
             <li>
-                <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                     ${link.linkTitle}
                 </a>
                 <img onclick="window.location='${link.linkAddress}'"

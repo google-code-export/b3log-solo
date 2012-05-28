@@ -44,12 +44,12 @@
                                         ${tags1Label}
                                         <#list article.articleTags?split(",") as articleTag>
                                         <span>
-                                            <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>&nbsp;&nbsp;&nbsp;
                                         <#-- 注释掉填充用户名部分
-                                        ${author1Label}<a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+                                        ${author1Label}<a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                                         -->
                                     </div>
                                 </div>
@@ -76,11 +76,11 @@
                                     <span class="article-create-date left">
                                         ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                     </span>
-                                    <a href="${servePath}${article.articlePermalink}#comments" class="left">
+                                    <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
                                         <span class="left commentIcon" title="${commentLabel}"></span>
                                         <span class="left">${article.articleCommentCount}</span>&nbsp;&nbsp;
                                     </a>
-                                    <a href="${servePath}${article.articlePermalink}" class="left">
+                                    <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
                                         <span class="left browserIcon" title="${viewLabel}"></span>
                                         <span id="articleViewCount">${article.articleViewCount}</span>
                                     </a>

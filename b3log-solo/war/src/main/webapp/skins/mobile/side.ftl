@@ -21,7 +21,7 @@
                     ${comment.commentName}<#else>
                     <a target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}</a></#if>:
-                    <a class='side-comment' title="${comment.commentContent}" href="${servePath}${comment.commentSharpURL}">
+                    <a rel="nofollow" class='side-comment' title="${comment.commentContent}" href="${servePath}${comment.commentSharpURL}">
                         ${comment.commentContent}
                     </a>
                 </li>
@@ -40,7 +40,8 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <sup>[${article.articleCommentCount}]</sup><a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
+                    <sup>[${article.articleCommentCount}]</sup><a rel="nofollow" title="${article.articleTitle}" 
+                                                                  href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
                 </li>
                 </#list>
             </ul>
@@ -57,7 +58,7 @@
             <ul id="mostViewCountArticles">
                 <#list mostViewCountArticles as article>
                 <li>
-                    <sup>[${article.articleViewCount}]</sup><a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
+                    <sup>[${article.articleViewCount}]</sup><a rel="nofollow" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">${article.articleTitle}</a>
                 </li>
                 </#list>
             </ul>
@@ -74,10 +75,10 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
-                    <a href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
+                    <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
                         <img alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
                     </a>
-                    <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}</a>
                     (${tag.tagPublishedRefCount})
                 </li>
@@ -96,10 +97,10 @@
             <ul id="sideLink">
                 <#list links as link>
                 <li>
-                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         <img alt="${link.linkTitle}"
                              src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
-                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
+                    <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
                     </a>
                     <#-- ${link.linkDescription} -->
                 </li>

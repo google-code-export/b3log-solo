@@ -7,7 +7,7 @@
         </div>
         <div class="left">
             <h2>
-                <a href="${servePath}${article.articlePermalink}" title="${tags1Label}${article.articleTags}">
+                <a rel="bookmark" href="${servePath}${article.articlePermalink}" title="${tags1Label}${article.articleTags}">
                     ${article.articleTitle}
                 </a>
                 <#if article.hasUpdated>
@@ -28,9 +28,9 @@
                 ${article.articleCreateDate?string("yyyy HH:mm:ss")}
                 </#if>
                 by
-                <a class="underline" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
+                <a rel="nofollow" class="underline" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                     ${article.authorName}</a> |
-                <a class="underline" href="${servePath}${article.articlePermalink}#comments">
+                <a rel="nofollow" class="underline" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount}${commentLabel}
                 </a>
             </div>

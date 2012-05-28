@@ -25,7 +25,7 @@
             </div>
             <#if article.commentable>
             <div class="right">
-                <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                <a rel="nofollow" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                 &nbsp;|&nbsp;
                 ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
             </div>
@@ -140,7 +140,7 @@
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
             
-        commentHTML += '</div><div class="right"><a href="javascript:replyTo(\'' + result.oId 
+        commentHTML += '</div><div class="right"><a rel="nofollow" href="javascript:replyTo(\'' + result.oId 
             + '\');">${replyLabel}</a>' + ' &nbsp;|&nbsp;' +  result.commentDate
             + '</div><span class="clear"></span><div class="article-body">' + 
             Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))

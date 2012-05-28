@@ -15,18 +15,18 @@
                 <span class="left">
                     by&nbsp;
                 </span>
-                <a class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
+                <a rel="nofollow" class="left" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                     ${article.authorName}
                 </a>
                 <span class="clear"></span>
             </li>
             <li>
-                <a href="${servePath}${article.articlePermalink}" title="${viewLabel}">
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}" title="${viewLabel}">
                     ${viewLabel} (${article.articleViewCount})
                 </a>
             </li>
             <li>
-                <a title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
+                <a rel="nofollow" title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
                     ${commentLabel} (${article.articleCommentCount})
                 </a>
             </li>
@@ -34,7 +34,7 @@
     </div>
     <div class="article-main">
         <h2 class="title">
-            <a class="no-underline" href="${servePath}${article.articlePermalink}">
+            <a rel="bookmark" class="no-underline" href="${servePath}${article.articlePermalink}">
                 ${article.articleTitle}
             </a>
             <#if article.hasUpdated>
@@ -65,7 +65,7 @@
         <ul>
             <#list article.articleTags?split(",") as articleTag>
             <li>
-                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}
                 </a>
             </li>

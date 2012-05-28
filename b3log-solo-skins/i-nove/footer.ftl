@@ -5,7 +5,7 @@
         ${b3logLabel}&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
     ver ${version}&nbsp;&nbsp;
-    Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+    Theme by <a rel="friend" href="http://www.neoease.com" target="_blank">NeoEase</a> & <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="Util.goTop();">${goTopLabel}</span>

@@ -22,7 +22,7 @@
                     <#if article.commentable>
                     <div class="right">
                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                        <a class="no-underline"
+                        <a rel="nofollow" class="no-underline"
                            href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                     </div>
                     </#if>
@@ -156,7 +156,7 @@
         }
 
         commentHTML += '<div class="right">' + result.commentDate
-            + '&nbsp;<a class="no-underline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+            + '&nbsp;<a rel="nofollow" class="no-underline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
             + '</div><div class="clear"></div></div><div><img alt="' + $("#commentName" + state).val()
             + '" src="' + result.commentThumbnailURL + '" class="comment-picture left"/>'
             + '<div class="comment-content">'

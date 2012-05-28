@@ -50,7 +50,7 @@
                     <ul>
                         <#list mostUsedTags as tag>
                         <li>
-                            <a href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
+                            <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
                                title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
                                 <span>${tag.tagTitle}</span>
                             </a>
@@ -67,10 +67,11 @@
                     <ul>
                         <#list mostCommentArticles as article>
                         <li>
-                            <a class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" class="left" title="${article.articleTitle}" 
+                               href="${servePath}${article.articlePermalink}">
                                 ${article.articleTitle}
                             </a>
-                            <a class="ft-gray right" href="${servePath}${article.articlePermalink}#comments">
+                            <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}#comments">
                                 ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                             </a>
                             <span class="clear"></span>
@@ -85,10 +86,10 @@
                     <ul>
                         <#list mostViewCountArticles as article>
                         <li>
-                            <a  class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                                 ${article.articleTitle}
                             </a>
-                            <a class="ft-gray right" href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}">
                                 ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                             </a>
                             <span class="clear"></span>

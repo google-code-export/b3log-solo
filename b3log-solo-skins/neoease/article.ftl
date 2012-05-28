@@ -39,14 +39,14 @@
                                 </#if>
                             </span>
                             <span class="user-ico" title="${authorLabel}">
-                                <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+                                <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                             </span>
                         </div>
                         <div class="right article-element">
-                            <a href="${servePath}${article.articlePermalink}#comments">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                                 ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                             </a>&nbsp;&nbsp;
-                            <a href="${servePath}${article.articlePermalink}">
+                            <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                 ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="article-element">
                             <span class="tag-ico" title="${tagsLabel}">
                                 <#list article.articleTags?split(",") as articleTag>
-                                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                     ${articleTag}</a><#if articleTag_has_next>,</#if>
                                 </#list>
                             </span>

@@ -28,7 +28,7 @@
                     <div class="comdater">
                         <!--<span>TODO wptouch_moderate_comment_link(get_comment_ID())</span>-->
                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                        <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                        <a rel="nofollow" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                     </div>	
                     </#if>
                 </div><!--end comtop-->

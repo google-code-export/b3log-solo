@@ -25,7 +25,7 @@
             <div class="clear"></div>
             <#if article.commentable>
             <div class="reply">
-                <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                <a rel="nofollow" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
             </div>
             </#if>
         </div>
@@ -165,7 +165,7 @@
 
         commentHTML += '&nbsp;' + result.commentDate
             + '</div><div class="comment-content">' + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
-            + '</div><div class="clear"></div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+            + '</div><div class="clear"></div><div class="reply"><a rel="nofollow" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
             + '</div></div><div class="clear"></div></div>';
 
         return commentHTML;

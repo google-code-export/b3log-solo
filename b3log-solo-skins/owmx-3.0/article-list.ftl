@@ -1,6 +1,6 @@
 <#list articles as article>
 <h1>
-    <a href="${servePath}${article.articlePermalink}">
+    <a rel="bookmark" href="${servePath}${article.articlePermalink}">
         ${article.articleTitle}
     </a>
     <#if article.hasUpdated>
@@ -17,18 +17,18 @@
 <div class="article-body">${article.articleAbstract}</div>
 <section class="meta">
     <p>
-        ${author1Label}<a href="${servePath}/authors/${article.authorId}">${article.authorName}</a> |
+        ${author1Label}<a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a> |
         <#if article.hasUpdated>
         ${updateDateLabel}:
 	    ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm")}
         <#else>
         ${createDateLabel}:
 	    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
-        </#if> | ${viewCount1Label} <a href="${servePath}${article.articlePermalink}">
+        </#if> | ${viewCount1Label} <a rel="nofollow" href="${servePath}${article.articlePermalink}">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
             ${article.articleViewCount}
         </a> | ${commentCount1Label} 
-        <a href="${servePath}${article.articlePermalink}#comments">
+        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
             <span class="left articles-commentIcon" title="${commentLabel}"></span>
 	        ${article.articleCommentCount}
         </a>
@@ -37,7 +37,7 @@
         ${tags1Label} 
         <#list article.articleTags?split(",") as articleTag>
         <span>
-            <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
 	            ${articleTag}
             </a><#if articleTag_has_next>,</#if>
         </span>

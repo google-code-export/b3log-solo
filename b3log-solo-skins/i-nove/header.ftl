@@ -10,7 +10,7 @@
     <div class="left">
         <ul>
             <li>
-                <a class="home" href="${servePath}"></a>
+                <a rel="nofollow" class="home" href="${servePath}"></a>
             </li>
             <#list pageNavigations as page>
             <li>
@@ -23,7 +23,7 @@
                 <a href="${servePath}/tags.html">${allTagsLabel}</a>
             </li>
             <li>
-                <a href="${servePath}/blog-articles-feed.do">
+                <a rel="alternate" href="${servePath}/blog-articles-feed.do">
                     Atom
                     <img src="${staticServePath}/images/feed.png" alt="Atom"/>
                 </a>

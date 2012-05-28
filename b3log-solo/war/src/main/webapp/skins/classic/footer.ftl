@@ -4,7 +4,7 @@ Powered by
     ${b3logLabel}&nbsp;
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
-Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <div class='goTopIcon' onclick='Util.goTop();'></div>
 <div class='goBottomIcon' onclick='Util.goBottom();'></div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>

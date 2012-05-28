@@ -20,7 +20,7 @@
                     ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                     </#if>
                     &rsaquo; ${article.authorName}<br />
-                    <a href="#comments">${skipToComment}</a>
+                    <a rel="nofollow" href="#comments">${skipToComment}</a>
                 </div>
             </div>
             <div class="clearer"></div>
@@ -37,7 +37,7 @@
                 <div class="single-post-meta-bottom">
                     ${tags1Label}
                     <#list article.articleTags?split(",") as articleTag>
-                    <a href="${servePath}/tags/${articleTag?url('UTF-8')}" rel="tag">${articleTag}</a><#if articleTag_has_next>,</#if>
+                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}" rel="tag">${articleTag}</a><#if articleTag_has_next>,</#if>
                     </#list>
                 </div>   
                 <ul id="post-options">

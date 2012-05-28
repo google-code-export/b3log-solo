@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div>
-                        <a title="${comment.commentContent}" class='side-comment' href="${servePath}${comment.commentSharpURL}">
+                        <a rel="nofollow" title="${comment.commentContent}" class='side-comment' href="${servePath}${comment.commentSharpURL}">
                             ${comment.commentContent}
                         </a>
                     </div>
@@ -42,7 +42,7 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a title="${article.articleTitle}"
+                <a rel="nofollow" title="${article.articleTitle}"
                    href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleCommentCount}]</sup>
                     ${article.articleTitle}
@@ -58,7 +58,7 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <a title="${article.articleTitle}"
+                <a rel="nofollow" title="${article.articleTitle}"
                    href="${servePath}${article.articlePermalink}">
                     <sup>[${article.articleViewCount}]</sup>
                     ${article.articleTitle}
@@ -75,10 +75,10 @@
         <ul class="navi-tags">
             <#list mostUsedTags as tag>
             <li>
-                <a href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
+                <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
                     <img alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
                 </a>
-                <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                     ${tag.tagTitle}</a>(${tag.tagPublishedRefCount})
             </li>
             </#list>
@@ -92,7 +92,7 @@
         <ul id="sideLink" class="navi-tags">
             <#list links as link>
             <li>
-                <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                     <img alt="${link.linkTitle}" 
                          src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" />
                     ${link.linkTitle}

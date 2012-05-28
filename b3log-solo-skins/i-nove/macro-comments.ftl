@@ -25,7 +25,7 @@
                 </div>
                 <div class="right">
                     <#if article.commentable>
-                    <a class="no-underline" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                    <a rel="nofollow" class="no-underline" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                     </#if>
                 </div>
                 <div class="clear"></div>
@@ -141,7 +141,7 @@
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 3);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
-        commentHTML += '</div><div class="right"> <a class="no-underline" href="javascript:replyTo(\''
+        commentHTML += '</div><div class="right"> <a rel="nofollow" class="no-underline" href="javascript:replyTo(\''
             + result.oId + '\');">${replyLabel}</a>'
             +'</div><div class="clear"></div><div class="comment-content">'
             + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))

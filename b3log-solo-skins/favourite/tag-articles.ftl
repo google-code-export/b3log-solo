@@ -20,9 +20,9 @@
                             ${tag1Label}
                         </div>
                         <div class="kind-panel">
-                            <span id="tagArticlesTag">
+                            <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}"><span id="tagArticlesTag">
                                 ${tag.tagTitle}
-                            </span>(${tag.tagPublishedRefCount})
+                            </span>(${tag.tagPublishedRefCount})</a>
                         </div>
                         <#include "article-list.ftl">
                     </div>

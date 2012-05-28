@@ -42,9 +42,9 @@
                                     ${article.articleCreateDate?string("yyyy HH:mm:ss")}
                                     </#if>
                                     by
-                                    <a title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
+                                    <a rel="nofollow" title="${article.authorName}" href="${servePath}/authors/${article.authorId}">
                                         ${article.authorName}</a> |
-                                    <a href="${servePath}${article.articlePermalink}#comments">
+                                    <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                                         ${article.articleCommentCount}${commentLabel}
                                     </a>
                                 </div>
@@ -62,12 +62,12 @@
                                 ${tag1Label}
                                 <#list article.articleTags?split(",") as articleTag>
                                 <span>
-                                    <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                         ${articleTag}</a><#if articleTag_has_next>,</#if>
                                 </span>
                                 </#list>
                                 &nbsp;&nbsp;${viewCount1Label}
-                                <a href="${servePath}${article.articlePermalink}">
+                                <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                     ${article.articleViewCount}
                                 </a>
                             </div>

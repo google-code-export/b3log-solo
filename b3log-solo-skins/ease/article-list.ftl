@@ -40,7 +40,7 @@
                 <#else>
                 ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                 </#if>
-                <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+                <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
             </div>
             <div class="left ft-gray">
                 ${tag1Label}

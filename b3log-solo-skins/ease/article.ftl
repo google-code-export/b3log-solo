@@ -30,10 +30,10 @@
                         </#if>
                     </h2>
                     <div class="right">
-                        <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
+                        <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
                             ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                         </a>&nbsp;&nbsp;
-                        <a class="ft-gray" href="${servePath}${article.articlePermalink}">
+                        <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}">
                             ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                             <#else>
                             ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                             </#if>
-                        <a href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+                        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                     </div>
                     <div class="left ft-gray">
                         ${tag1Label}

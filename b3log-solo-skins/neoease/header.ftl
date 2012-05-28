@@ -23,7 +23,7 @@
     <div class="wrapper">
         <ul>
             <li>
-                <a href="${servePath}">${indexLabel}</a>
+                <a rel="nofollow" href="${servePath}">${indexLabel}</a>
             </li>
             <#list pageNavigations as page>
             <li>
@@ -34,7 +34,7 @@
                 <a href="${servePath}/tags.html">${allTagsLabel}</a>  
             </li>
             <li>
-                <a href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
+                <a rel="alternate" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
             </li>
         </ul>
         <div class="right">

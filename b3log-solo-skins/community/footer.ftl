@@ -8,7 +8,7 @@
             ${b3logLabel}&nbsp;
             <span style="color: orangered; font-weight: bold;">Solo</span></a>,
         ver ${version}&nbsp;&nbsp;
-        Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a>.
+        Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a rel="friend" href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a>.
     </div>
     <div class="right nowrap">
         <div class="goTop right" onclick="Util.goTop();">${goTopLabel}</div>

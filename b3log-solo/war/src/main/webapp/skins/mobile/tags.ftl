@@ -15,7 +15,7 @@
                 <ul id="tags">
                     <#list tags as tag>
                     <span>
-                        <a data-count="${tag.tagPublishedRefCount}"
+                        <a rel="tag" data-count="${tag.tagPublishedRefCount}"
                            href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
                             <span>${tag.tagTitle}</span>
                             (<b>${tag.tagPublishedRefCount}</b>)

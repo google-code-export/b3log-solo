@@ -44,7 +44,7 @@
                                     </h2>
                                     <div class="marginLeft12">
                                         <#list article.articleTags?split(",") as articleTag>
-                                        <a class="article-tags" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                        <a rel="tag" class="article-tags" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                                             ${articleTag}</a>
                                         </#list>
                                         <div class="clear"></div>
@@ -72,11 +72,11 @@
                                         <span class="article-create-date left">
                                             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                         </span>
-                                        <a href="${servePath}${article.articlePermalink}#comments" class="left">
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
                                             <span class="left commentIcon" title="${commentLabel}"></span>
                                             &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                         </a>
-                                        <a href="${servePath}${article.articlePermalink}" class="left">
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
                                             <span class="left browserIcon" title="${viewLabel}"></span>
                                             &nbsp;&nbsp;${article.articleViewCount}&nbsp;&nbsp;
                                         </a>
