@@ -59,7 +59,7 @@
                     <div class="left ft-gray">
                         ${tag1Label}
                         <#list article.articleTags?split(",") as articleTag>
-                        <a href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
+                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
                         </#list>
                     </div>
                     <div class="clear"></div>

@@ -17,7 +17,7 @@
  * skin ease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, May 24, 2012
+ * @version 1.0.1.0, May 28, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -26,7 +26,7 @@ html, body, div, ul, li {
 }
 
 body {
-    font-family: "Lucida Grande",Verdana,\5fae\8f6f\96c5\9ed1;
+    font-family: Verdana,arial,\5fae\8f6f\96c5\9ed1;
     font-size: 12px;
 }
 
@@ -466,7 +466,7 @@ sup {
     background-color: #FEFEFE;
     border-width: 0;
     box-shadow: 0 0 2px #E2E2E2;
-    font-family: "Lucida Grande",Verdana,\5fae\8f6f\96c5\9ed1;
+    font-family: Verdana,arial,\5fae\8f6f\96c5\9ed1;
     font-size: 12px;
     margin: 0 5px 10px 0;
     outline: medium none;
