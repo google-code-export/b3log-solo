@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, May 24, 2012
+ * @version 1.0.0.9, May 28, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -60,7 +60,7 @@ var getNextPage = function () {
                 articlesHTML += '<li class="article">' + 
                 '<div class="article-title">' +
                 '<h2>' +
-                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
+                '<a rel="bookmark" class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
                 article.articleTitle + 
                 '</a>';
                 if (article.hasUpdated) {
@@ -73,10 +73,10 @@ var getNextPage = function () {
             
                 articlesHTML += '</h2>' +
                 '<div class="right">' +
-                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '#comments">' +
+                '<a rel="nofollow" class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '#comments">' +
                 + article.articleCommentCount + '&nbsp;&nbsp;' + Label.commentLabel +
                 '</a>&nbsp;&nbsp;' +
-                '<a class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
+                '<a rel="nofollow" class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
                 article.articleViewCount + '&nbsp;&nbsp;' + Label.viewLabel +
                 '</a>' +
                 '</div>' +
@@ -103,7 +103,7 @@ var getNextPage = function () {
         
                 var articleTags = article.articleTags.split(",");
                 for (var j = 0; j < articleTags.length; j++) {
-                    articlesHTML +=  '<a href="' + latkeConfig.servePath + '/tags/' + encodeURIComponent(articleTags[j])  + '">' +
+                    articlesHTML +=  '<a rel="tag" href="' + latkeConfig.servePath + '/tags/' + encodeURIComponent(articleTags[j])  + '">' +
                     articleTags[j] + '</a>';
             
                     if (j < articleTags.length - 1) {

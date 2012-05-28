@@ -31,7 +31,7 @@
                                 </span>
                                 <div class="right ft-gray">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <a href="${servePath}${comment.commentSharpURL}">${viewLabel}</a>
+                                    <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">${viewLabel}</a>
                                 </div>
                                 <span class="clear"></span>
                                 <div class="article-body">   

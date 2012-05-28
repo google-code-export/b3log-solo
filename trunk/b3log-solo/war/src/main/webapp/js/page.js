@@ -427,7 +427,8 @@ $.extend(Page.prototype, {
                 for (var i = 0; i < randomArticles.length; i++) {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
-                    var randomArticleLiHtml = "<li>" + "<a title='" + title + "' href='" + article.articlePermalink +"'>" +  title + "</a></li>";
+                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + 
+                        article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
                 
@@ -458,7 +459,7 @@ $.extend(Page.prototype, {
                     var article = articles[i];
                     var title = article.articleTitle;
                     var articleLiHtml = "<li>"
-                    + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
+                    + "<a rel='nofollow' title='" + title + "' href='" + article.articlePermalink + "'>"
                     +  title + "</a></li>"
                     listHtml += articleLiHtml
                 }
@@ -502,7 +503,7 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
+                        + "<a rel='nofollow' title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
                         +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }

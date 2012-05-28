@@ -19,7 +19,7 @@
         <div class="wrapper">
             <ul>
                 <li>
-                    <a class="ft-gray" href="${servePath}/">${indexLabel}</a>
+                    <a rel="nofollow" class="ft-gray" href="${servePath}/">${indexLabel}</a>
                 </li>  
                 <#list pageNavigations as page>
                 <li>
@@ -39,7 +39,7 @@
                     <a class="ft-gray" href="${servePath}/links.html">${linkLabel}</a>
                 </li>
                 <li>
-                    <a class="ft-gray" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
+                    <a rel="alternate" class="ft-gray" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
                 </li>
             </ul>
             <form target="_blank" method="get" action="http://www.google.com/search">

@@ -20,7 +20,7 @@
             <#if article.commentable>
             <div class="right  ft-gray">
                 ${comment.commentDate?string("yy-MM-dd HH:mm")}
-                <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                <a rel="nofollow" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
             </div>
             </#if>
             <span class="clear"></span>

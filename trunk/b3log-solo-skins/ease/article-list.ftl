@@ -3,7 +3,7 @@
     <li class="article">
         <div class="article-title">
             <h2>
-                <a class="ft-gray" href="${servePath}${article.articlePermalink}">
+                <a rel="bookmark" class="ft-gray" href="${servePath}${article.articlePermalink}">
                     ${article.articleTitle}
                 </a>
                 <#if article.hasUpdated>
@@ -18,10 +18,10 @@
                 </#if>
             </h2>
             <div class="right">
-                <a class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
+                <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                 </a>&nbsp;&nbsp;
-                <a class="ft-gray" href="${servePath}${article.articlePermalink}">
+                <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}">
                     ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                 </a>
             </div>
@@ -45,7 +45,7 @@
             <div class="left ft-gray">
                 ${tag1Label}
                 <#list article.articleTags?split(",") as articleTag>
-                <a href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                 </#list>
             </div>
