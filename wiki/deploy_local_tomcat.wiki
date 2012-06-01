@@ -21,6 +21,14 @@ jdbc.password=
 }}}
 <li>修改应用路径</li>
 修改 `${b3log-solo-x.x.x}/WEB-INF/classes/latke.properties` 中的 `Server` 区域，配置成部署路径。
+{{{
+serverScheme=http
+serverHost=你自己的域名
+serverPort=80
+staticServerScheme=http
+staticServerHost=你自己的域名
+staticServerPort=80
+}}}
 <li>部署</li>
 将 `${b3log-solo-mysql-x.x.x}` 下的内容拷贝到部署目录下（tomcat/webapps/${contextPath}）
 <li>启动容器</li>
