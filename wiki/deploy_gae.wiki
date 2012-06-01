@@ -15,22 +15,19 @@
 }}}
 
 修改 `${b3log-solo-x.x.x}/WEB-INF/classes/latke.properties` 中的 `Server` 区域，配置成自己的访问地址。
+{{{
 serverScheme=http
-
 serverHost=你自己的域名
 serverPort=80
 staticServerScheme=http
 staticServerHost=你自己的域名
 staticServerPort=80
-
+}}}
+{{{
 runtimeEnv=GAE
-
-
 cache=GAE
-
-
 userService=GAE
-
+}}}
 
 <li>上传 Solo</li>
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
