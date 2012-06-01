@@ -23,11 +23,7 @@ staticServerScheme=http
 staticServerHost=你自己的域名
 staticServerPort=80
 }}}
-{{{
-runtimeEnv=GAE
-cache=GAE
-userService=GAE
-}}}
+
 
 <li>上传 Solo</li>
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
