@@ -21,7 +21,7 @@ serverHost=你自己的域名
 serverPort=端口填 80
 staticServerScheme=http
 staticServerHost=你自己的域名
-staticServerPort=这里端口填 80
+staticServerPort=端口填 80
 }}}
 
 
