@@ -24,10 +24,10 @@ jdbc.password=
 {{{
 serverScheme=http
 serverHost=你自己的域名
-serverPort=80
+serverPort=端口填 80
 staticServerScheme=http
 staticServerHost=你自己的域名
-staticServerPort=80
+staticServerPort=端口填 80
 }}}
 <li>部署</li>
 将 `${b3log-solo-mysql-x.x.x}` 下的内容拷贝到部署目录下（tomcat/webapps/${contextPath}）
