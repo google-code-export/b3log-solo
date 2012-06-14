@@ -1,6 +1,6 @@
 #summary 非官方皮肤
 ==iDream==
- http://imgmi.net/a/a4903728.png
+ https://public.bay.livefilestore.com/y1pUidxM1MOcXu1Tt6uykYakIVdhUx2vc8gYAjDN6PkX_qJ7KjVzhMZhYSnQlTb1Bqj0WbPCVroopEN83vXnJT8dg/iDream.png.jpg
  # 下载地址：http://code.google.com/p/noday/downloads/list
  # 作者：<a href="http://www.noday.net" target="_blank">燃烧</a>
 ==5stylesm==
