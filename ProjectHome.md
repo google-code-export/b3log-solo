@@ -1,0 +1,1 @@
+<font color='red'>项目已经迁往 <a href='https://github.com/b3log/b3log-solo'>GitHub</a>，2012 年 5 月 31 日。</font>
